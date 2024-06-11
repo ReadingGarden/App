@@ -24,8 +24,9 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp.router(
           theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
               textTheme:
-                  const TextTheme(bodyMedium: TextStyle(color: Colors.blue))),
+                  const TextTheme(bodyMedium: TextStyle(color: Colors.black))),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
           // routeInformationProvider: router.routeInformationProvider,

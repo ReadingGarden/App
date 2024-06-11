@@ -81,19 +81,19 @@ class SignupPage extends ConsumerWidget {
     }
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: Widgets.appBar(context),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Column(
+      body: SingleChildScrollView(
+        child: Container(
+          margin:
+              EdgeInsets.only(top: 20.h, bottom: 32.h, left: 20.w, right: 20.w),
+          child: Column(
+            children: [
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                       alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(bottom: 60.h),
                       height: 36.h,
                       child: Text(
                         '회원가입',
@@ -123,27 +123,30 @@ class SignupPage extends ConsumerWidget {
                           validateFunction: _validate)),
                 ],
               ),
-            ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: [
-                      const Text(
+              Container(
+                margin: EdgeInsets.only(
+                    top: (pwdCheckErrorText == null) ? 112.h : 59.h),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 24.h),
+                      height: 40.h,
+                      child: const Text(
                         '이메일로 회원가입 시 이용약관 및\n개인정보수집이용에 동의하는 것으로 간주됩니다',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: AppColors.textGreyColor),
                       ),
-                      Widgets.button(
-                        '이메일로\n회원가입',
-                        isValid,
-                        () => postSignup(context, ref),
-                      ),
-                    ],
-                  ),
-                ))
-          ],
+                    ),
+                    Widgets.button(
+                      '이메일로\n회원가입',
+                      isValid,
+                      () => postSignup(context, ref),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

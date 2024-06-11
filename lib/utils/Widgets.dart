@@ -9,44 +9,43 @@ import '../utils/AppColors.dart';
 class Widgets {
   static AppBar appBar(BuildContext context) {
     return AppBar(
+      // 스크롤 -> 반투명 없애기
+      scrolledUnderElevation: 0,
+      backgroundColor: Colors.white,
       leading: GestureDetector(
         onTap: () {
           context.pop();
         },
         child: Container(
+          alignment: Alignment.center,
           width: 32.r,
           height: 32.r,
-          color: Colors.amber,
-          child: SvgPicture.asset('assets/images/'),
+          color: Colors.transparent,
+          child: SvgPicture.asset('assets/images/back_btn.svg'),
         ),
       ),
     );
   }
 
-  static Container button(
+  static button(
     String title,
     bool isValid,
     Function function,
   ) {
-    return Container(
-      alignment: Alignment.center,
-      // padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: GestureDetector(
-        onTap: () => isValid ? function() : null,
-        child: Container(
-          height: 60.h,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.r),
-              color: isValid
-                  ? AppColors.primaryColor
-                  : AppColors.primaryGreyColor),
-          child: Center(
-              child: Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white),
-          )),
-        ),
+    return GestureDetector(
+      onTap: () => isValid ? function() : null,
+      child: Container(
+        height: 60.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            color:
+                isValid ? AppColors.primaryColor : AppColors.primaryGreyColor),
+        child: Center(
+            child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
+        )),
       ),
     );
   }
