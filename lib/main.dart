@@ -19,14 +19,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: const Size(360, 690),
+      designSize: const Size(360, 800),
       minTextAdapt: true,
       builder: (context, child) {
         return MaterialApp.router(
           theme: ThemeData(
               scaffoldBackgroundColor: Colors.white,
-              textTheme:
-                  const TextTheme(bodyMedium: TextStyle(color: Colors.black))),
+              textTheme: TextTheme(
+                // headlineMedium: TextStyle(
+                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+                titleMedium: TextStyle(
+                    fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+                // labelMedium: TextStyle(
+                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+                // displayMedium: TextStyle(
+                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+                // bodyLarge: TextStyle(
+                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+
+                bodyMedium: TextStyle(
+                    fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+                bodySmall: TextStyle(
+                    fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+              )),
+
           debugShowCheckedModeBanner: false,
           routerConfig: router,
           // routeInformationProvider: router.routeInformationProvider,

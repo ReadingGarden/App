@@ -1,3 +1,4 @@
+import 'package:book_flutter/onboarding/SignupPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -51,83 +52,96 @@ class LoginPage extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: Widgets.appBar(context),
-      body: SingleChildScrollView(
-        child: Container(
-          margin:
-              EdgeInsets.only(top: 20.h, bottom: 60.h, left: 20.w, right: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(bottom: 60.h),
-                height: 72.h,
-                child: Text(
-                  '책을 읽어서\n나만의 가든을 꾸며봐요',
-                  style: TextStyle(fontSize: 24.sp),
+      body: GestureDetector(
+        onTap: () {
+          // 키보드 내리기
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(
+                top: 20.h, bottom: 60.h, left: 24.w, right: 24.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(bottom: 60.h),
+                  height: 72.h,
+                  child: Text(
+                    '책을 읽어서\n나만의 가든을 꾸며봐요',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600, fontSize: 24.sp),
+                  ),
                 ),
-              ),
-              SizedBox(
-                  child: Widgets.textfield(ref, _emailController, '이메일',
-                      '이메일을 입력해주세요', errorText, loginErrorProvider)),
-              Container(
-                  margin: EdgeInsets.only(bottom: 24.h),
-                  child: Widgets.textfield(ref, _pwdController, '비밀번호',
-                      '비밀번호를 입력해주세요', errorText, loginErrorProvider)),
-              Widgets.button('이메일로\n로그인', true, () => postLogin(context, ref)),
-              Container(
-                margin: EdgeInsets.only(top: 18.h, bottom: 56.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      '비밀번호 찾기',
-                      style: TextStyle(color: AppColors.textGreyColor),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                      child: VerticalDivider(
-                        thickness: 1,
-                        color: AppColors.textGreyColor,
+                SizedBox(
+                    child: Widgets.textfield(ref, _emailController, '이메일',
+                        '이메일을 입력해주세요', errorText, loginErrorProvider)),
+                Container(
+                    margin: EdgeInsets.only(bottom: 24.h),
+                    child: Widgets.textfield(ref, _pwdController, '비밀번호',
+                        '비밀번호를 입력해주세요', errorText, loginErrorProvider,
+                        isPwd: true)),
+                Widgets.button(
+                    '이메일로\n로그인', true, () => postLogin(context, ref)),
+                Container(
+                  margin: EdgeInsets.only(top: 18.h, bottom: 56.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () => context.goNamed('pwd-find'),
+                        child: const Text(
+                          '비밀번호 찾기',
+                          style: TextStyle(color: AppColors.textGreyColor),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                        onTap: () => context.goNamed('signup'),
-                        child: Text(
-                          '회원가입',
-                          style: TextStyle(color: AppColors.primaryColor),
-                        ))
-                  ],
+                      const SizedBox(
+                        height: 10,
+                        child: VerticalDivider(
+                          thickness: 1,
+                          color: AppColors.textGreyColor,
+                        ),
+                      ),
+                      GestureDetector(
+                          onTap: () => context.goNamed('signup'),
+                          child: const Text(
+                            '회원가입',
+                            style: TextStyle(color: AppColors.primaryColor),
+                          ))
+                    ],
+                  ),
                 ),
-              ),
-              const Divider(
-                thickness: 1,
-                color: AppColors.dividerGreyColor,
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: const Color(0xFF2E2E2E),
-                      radius: 27.5.r,
-                      child: SvgPicture.asset('assets/images/apple_logo.svg'),
-                    ),
-                    CircleAvatar(
-                      backgroundColor: const Color(0xFFF5F5F5),
-                      radius: 27.5.r,
-                      child: SvgPicture.asset('assets/images/google_logo.svg'),
-                    ),
-                    CircleAvatar(
-                      backgroundColor: const Color(0xFFFFEF5E),
-                      radius: 27.5.r,
-                      child: SvgPicture.asset('assets/images/kakao_logo.svg'),
-                    )
-                  ],
+                const Divider(
+                  thickness: 1,
+                  color: AppColors.dividerGreyColor,
                 ),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: const Color(0xFF2E2E2E),
+                        radius: 27.5.r,
+                        child: SvgPicture.asset('assets/images/apple_logo.svg'),
+                      ),
+                      CircleAvatar(
+                        backgroundColor: const Color(0xFFF5F5F5),
+                        radius: 27.5.r,
+                        child:
+                            SvgPicture.asset('assets/images/google_logo.svg'),
+                      ),
+                      CircleAvatar(
+                        backgroundColor: const Color(0xFFFFEF5E),
+                        radius: 27.5.r,
+                        child: SvgPicture.asset('assets/images/kakao_logo.svg'),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

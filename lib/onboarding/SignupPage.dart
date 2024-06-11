@@ -82,70 +82,76 @@ class SignupPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: Widgets.appBar(context),
-      body: SingleChildScrollView(
-        child: Container(
-          margin:
-              EdgeInsets.only(top: 20.h, bottom: 32.h, left: 20.w, right: 20.w),
-          child: Column(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.only(bottom: 60.h),
-                      height: 36.h,
-                      child: Text(
-                        '회원가입',
-                        style: TextStyle(fontSize: 24.sp),
-                      )),
-                  SizedBox(
-                      child: Widgets.textfield(ref, _emailController, '이메일',
-                          '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
-                          validateFunction: _validate)),
-                  SizedBox(
-                      child: Widgets.textfield(
-                          ref,
-                          _pwdController,
-                          '비밀번호',
-                          '6자 이상 12자 이하로 입력해주세요',
-                          pwdErrorText,
-                          pwdErrorProvider,
-                          validateFunction: _validate)),
-                  SizedBox(
-                      child: Widgets.textfield(
-                          ref,
-                          _pwdCheckController,
-                          '비밀번호 확인',
-                          '비밀번호를 다시 입력해주세요',
-                          pwdCheckErrorText,
-                          pwdCheckErrorProvider,
-                          validateFunction: _validate)),
-                ],
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    top: (pwdCheckErrorText == null) ? 112.h : 59.h),
-                child: Column(
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(
+                top: 20.h, bottom: 32.h, left: 24.w, right: 24.w),
+            child: Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 24.h),
-                      height: 40.h,
-                      child: const Text(
-                        '이메일로 회원가입 시 이용약관 및\n개인정보수집이용에 동의하는 것으로 간주됩니다',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: AppColors.textGreyColor),
-                      ),
-                    ),
-                    Widgets.button(
-                      '이메일로\n회원가입',
-                      isValid,
-                      () => postSignup(context, ref),
-                    ),
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(bottom: 60.h),
+                        height: 36.h,
+                        child: Text(
+                          '회원가입',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 24.sp),
+                        )),
+                    SizedBox(
+                        child: Widgets.textfield(ref, _emailController, '이메일',
+                            '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
+                            validateFunction: _validate)),
+                    SizedBox(
+                        child: Widgets.textfield(
+                            ref,
+                            _pwdController,
+                            '비밀번호',
+                            '6자 이상 12자 이하로 입력해주세요',
+                            pwdErrorText,
+                            pwdErrorProvider,
+                            validateFunction: _validate,
+                            isPwd: true)),
+                    SizedBox(
+                        child: Widgets.textfield(
+                            ref,
+                            _pwdCheckController,
+                            '비밀번호 확인',
+                            '비밀번호를 다시 입력해주세요',
+                            pwdCheckErrorText,
+                            pwdCheckErrorProvider,
+                            validateFunction: _validate,
+                            isPwd: true)),
                   ],
                 ),
-              )
-            ],
+                Container(
+                  margin: EdgeInsets.only(
+                      top: (pwdCheckErrorText == null) ? 112.h : 59.h),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(bottom: 24.h),
+                        height: 40.h,
+                        child: const Text(
+                          '이메일로 회원가입 시 이용약관 및\n개인정보수집이용에 동의하는 것으로 간주됩니다',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: AppColors.textGreyColor),
+                        ),
+                      ),
+                      Widgets.button(
+                        '이메일로\n회원가입',
+                        isValid,
+                        () => postSignup(context, ref),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

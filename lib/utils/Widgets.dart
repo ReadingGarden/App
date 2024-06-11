@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../utils/AppColors.dart';
 
 class Widgets {
-  static AppBar appBar(BuildContext context) {
+  static appBar(BuildContext context) {
     return AppBar(
       // 스크롤 -> 반투명 없애기
       scrolledUnderElevation: 0,
@@ -44,43 +44,33 @@ class Widgets {
             child: Text(
           title,
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16.sp,
+              color: Colors.white),
         )),
       ),
     );
   }
 
-  // static Align bottomButton(String title, Function function) {
-  //   return Align(
-  //     alignment: Alignment.bottomCenter,
-  //     heightFactor: 11,
-  //     child: GestureDetector(
-  //       onTap: () => function(),
-  //       child: Container(
-  //         decoration: BoxDecoration(color: Colors.amber),
-  //         height: 60,
-  //         child: Center(child: Text(title)),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  static Container textfield(
+  static textfield(
       WidgetRef ref,
       TextEditingController controller,
       String label,
       String hintText,
       String? errorText,
       StateProvider<String?> errorProvider,
-      {Function? validateFunction}) {
+      {Function? validateFunction,
+      bool? isPwd}) {
     return Container(
-      // padding: EdgeInsets.symmetric(horizontal: 20.w),
-      // width: 360.w,
-      height: (errorText == null) ? 92.h : 112.h,
+      padding: (errorText == null)
+          ? EdgeInsets.only(top: 8.h, bottom: 24.h)
+          : EdgeInsets.only(top: 8.h, bottom: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          Container(
+            margin: EdgeInsets.only(bottom: 4.h),
             height: 20.h,
             child: Text(
               label,
@@ -97,6 +87,7 @@ class Widgets {
                 validateFunction();
               }
             },
+            obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
               fillColor: AppColors.textFieldColor,
               filled: true,
