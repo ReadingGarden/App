@@ -1,10 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
-import '../utils/SharedPreferences.dart';
+// import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
 import 'OnboardingProvider.dart';
 
@@ -58,10 +59,9 @@ class SignupPage extends ConsumerWidget {
       } else {
         emailErrorNotifier.state = null;
       }
-      if (_pwdController.text.isEmpty ||
-          _pwdController.text.length < 6 ||
-          _pwdController.text.length > 12) {
+      if (_pwdController.text.length < 6 || _pwdController.text.length > 12) {
         pwdErrorNotifier.state = '비밀번호 규칙을 확인해주세요';
+        isValid = false;
       } else {
         pwdErrorNotifier.state = null;
       }
@@ -83,54 +83,68 @@ class SignupPage extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: Widgets.appBar(context),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('회원가입'),
-                SizedBox(
-                    child: Widgets.textfield(ref, _emailController, '이메일',
-                        '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
-                        validateFunction: _validate)),
-                SizedBox(
-                    child: Widgets.textfield(ref, _pwdController, '비밀번호',
-                        '6자 이상 12자 이하로 입력해주세요', pwdErrorText, pwdErrorProvider,
-                        validateFunction: _validate)),
-                SizedBox(
-                    child: Widgets.textfield(
-                        ref,
-                        _pwdCheckController,
-                        '비밀번호 확인',
-                        '비밀번호를 다시 입력해주세요',
-                        pwdCheckErrorText,
-                        pwdCheckErrorProvider,
-                        validateFunction: _validate)),
-              ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      height: 36.h,
+                      child: Text(
+                        '회원가입',
+                        style: TextStyle(fontSize: 24.sp),
+                      )),
+                  SizedBox(
+                      child: Widgets.textfield(ref, _emailController, '이메일',
+                          '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
+                          validateFunction: _validate)),
+                  SizedBox(
+                      child: Widgets.textfield(
+                          ref,
+                          _pwdController,
+                          '비밀번호',
+                          '6자 이상 12자 이하로 입력해주세요',
+                          pwdErrorText,
+                          pwdErrorProvider,
+                          validateFunction: _validate)),
+                  SizedBox(
+                      child: Widgets.textfield(
+                          ref,
+                          _pwdCheckController,
+                          '비밀번호 확인',
+                          '비밀번호를 다시 입력해주세요',
+                          pwdCheckErrorText,
+                          pwdCheckErrorProvider,
+                          validateFunction: _validate)),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.topCenter,
-                color: Colors.blue,
-                child: Column(
-                  children: [
-                    const Text(
-                      '이메일로 회원가입 시 이용약관 및\n개인정보수집이용에 동의하는 것으로 간주됩니다',
-                      textAlign: TextAlign.center,
-                    ),
-                    Widgets.button(
-                      '이메일로\n회원가입',
-                      isValid,
-                      () => postSignup(context, ref),
-                    ),
-                  ],
-                ),
-              ))
-        ],
+            Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  child: Column(
+                    children: [
+                      const Text(
+                        '이메일로 회원가입 시 이용약관 및\n개인정보수집이용에 동의하는 것으로 간주됩니다',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: AppColors.textGreyColor),
+                      ),
+                      Widgets.button(
+                        '이메일로\n회원가입',
+                        isValid,
+                        () => postSignup(context, ref),
+                      ),
+                    ],
+                  ),
+                ))
+          ],
+        ),
       ),
     );
   }

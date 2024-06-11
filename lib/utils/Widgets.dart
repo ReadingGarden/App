@@ -17,7 +17,7 @@ class Widgets {
           width: 32.r,
           height: 32.r,
           color: Colors.amber,
-          child: SvgPicture.asset('assetName'),
+          child: SvgPicture.asset('assets/images/'),
         ),
       ),
     );
@@ -77,7 +77,7 @@ class Widgets {
     return Container(
       // padding: EdgeInsets.symmetric(horizontal: 20.w),
       // width: 360.w,
-      height: 112.h,
+      height: (errorText == null) ? 92.h : 112.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
