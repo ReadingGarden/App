@@ -1,8 +1,10 @@
-import 'package:book_flutter/onboarding/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+
+import '../utils/AppColors.dart';
 
 class Widgets {
   static AppBar appBar(BuildContext context) {
@@ -12,24 +14,39 @@ class Widgets {
           context.pop();
         },
         child: Container(
+          width: 32.r,
+          height: 32.r,
           color: Colors.amber,
-          width: 50,
+          child: SvgPicture.asset('assetName'),
         ),
       ),
     );
   }
 
-  static GestureDetector button(
+  static Container button(
     String title,
     bool isValid,
     Function function,
   ) {
-    return GestureDetector(
-      onTap: () => isValid ? function() : null,
-      child: Container(
-        decoration: BoxDecoration(color: isValid ? Colors.amber : Colors.grey),
-        height: 60,
-        child: Center(child: Text(title)),
+    return Container(
+      alignment: Alignment.center,
+      // padding: EdgeInsets.symmetric(horizontal: 20.w),
+      child: GestureDetector(
+        onTap: () => isValid ? function() : null,
+        child: Container(
+          height: 60.h,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20.r),
+              color: isValid
+                  ? AppColors.primaryColor
+                  : AppColors.primaryGreyColor),
+          child: Center(
+              child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white),
+          )),
+        ),
       ),
     );
   }
@@ -58,10 +75,18 @@ class Widgets {
       StateProvider<String?> errorProvider,
       {Function? validateFunction}) {
     return Container(
+      // padding: EdgeInsets.symmetric(horizontal: 20.w),
+      // width: 360.w,
+      height: 112.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label),
+          SizedBox(
+            height: 20.h,
+            child: Text(
+              label,
+            ),
+          ),
           TextField(
             controller: controller,
             onChanged: (value) {
@@ -74,8 +99,10 @@ class Widgets {
               }
             },
             decoration: InputDecoration(
+              fillColor: AppColors.textFieldColor,
               filled: true,
               hintText: hintText,
+              hintStyle: const TextStyle(color: AppColors.textFieldHintColor),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
                   borderSide:
@@ -89,13 +116,17 @@ class Widgets {
                   borderSide:
                       BorderSide(color: Colors.transparent, width: 1.w)),
               errorText: errorText,
-              errorStyle: const TextStyle(color: Colors.red),
+              errorStyle: const TextStyle(
+                color: AppColors.textFieldErrorColor,
+              ),
               errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
-                  borderSide: BorderSide(color: Colors.red, width: 1.w)),
+                  borderSide: BorderSide(
+                      color: AppColors.textFieldErrorColor, width: 1.w)),
               focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
-                  borderSide: BorderSide(color: Colors.red, width: 1.w)),
+                  borderSide: BorderSide(
+                      color: AppColors.textFieldErrorColor, width: 1.w)),
             ),
           ),
         ],

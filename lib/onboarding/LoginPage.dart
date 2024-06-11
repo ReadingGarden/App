@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../utils/AppColors.dart';
 import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
 import 'OnboardingProvider.dart';
@@ -49,74 +50,87 @@ class LoginPage extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: Widgets.appBar(context),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('책을 읽어서\n 나만의 가든을 꾸며봐요'),
-                SizedBox(
-                    child: Widgets.textfield(ref, _emailController, '이메일',
-                        '이메일을 입력해주세요', errorText, loginErrorProvider)),
-                SizedBox(
-                    child: Widgets.textfield(ref, _pwdController, '비밀번호',
-                        '비밀번호를 입력해주세요', errorText, loginErrorProvider)),
-                Widgets.button(
-                    '이메일로\n로그인', true, () => postLogin(context, ref)),
-                SizedBox(
-                  child: Row(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    height: 72.h,
+                    child: Text(
+                      '책을 읽어서\n나만의 가든을 꾸며봐요',
+                      style: TextStyle(fontSize: 24.sp),
+                    ),
+                  ),
+                  SizedBox(
+                      child: Widgets.textfield(ref, _emailController, '이메일',
+                          '이메일을 입력해주세요', errorText, loginErrorProvider)),
+                  SizedBox(
+                      child: Widgets.textfield(ref, _pwdController, '비밀번호',
+                          '비밀번호를 입력해주세요', errorText, loginErrorProvider)),
+                  Widgets.button(
+                      '이메일로\n로그인', true, () => postLogin(context, ref)),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('비밀번호 찾기'),
+                      Text(
+                        '비밀번호 찾기',
+                        style: TextStyle(color: AppColors.textGreyColor),
+                      ),
                       SizedBox(
                         height: 10,
                         child: VerticalDivider(
                           thickness: 1,
-                          color: Colors.black,
+                          color: AppColors.textGreyColor,
                         ),
                       ),
                       GestureDetector(
                           onTap: () => context.goNamed('signup'),
-                          child: Text('회원가입'))
+                          child: Text(
+                            '회원가입',
+                            style: TextStyle(color: AppColors.primaryColor),
+                          ))
                     ],
                   ),
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Colors.black,
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              alignment: Alignment.topCenter,
-              color: Colors.blue,
-              // margin: EdgeInsets.only(bottom: 30.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.black,
-                    radius: 30.r,
+                  const Divider(
+                    thickness: 1,
+                    color: AppColors.dividerGreyColor,
                   ),
-                  CircleAvatar(
-                    backgroundColor: Colors.grey,
-                    radius: 30.r,
-                  ),
-                  CircleAvatar(
-                    backgroundColor: Colors.yellow,
-                    radius: 30.r,
-                  )
                 ],
               ),
             ),
-          ),
-        ],
+            Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.topCenter,
+                // margin: EdgeInsets.only(bottom: 30.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.black,
+                      radius: 30.r,
+                    ),
+                    CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      radius: 30.r,
+                    ),
+                    CircleAvatar(
+                      backgroundColor: Colors.yellow,
+                      radius: 30.r,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       builder: (context, child) {
         return MaterialApp.router(
+          theme: ThemeData(
+              textTheme:
+                  const TextTheme(bodyMedium: TextStyle(color: Colors.blue))),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
           // routeInformationProvider: router.routeInformationProvider,
