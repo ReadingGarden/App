@@ -1,3 +1,4 @@
+import 'package:book_flutter/onboarding/PwdFindPage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,6 +37,10 @@ final GoRouter router = GoRouter(
                     name: 'signup-end',
                     builder: (context, state) => SignupEndPage(),
                   )
-                ])
+                ]),
+            GoRoute(
+                path: 'pwd-find',
+                name: 'pwd-find',
+                builder: (context, state) => PwdFindPage())
           ]),
     ]);

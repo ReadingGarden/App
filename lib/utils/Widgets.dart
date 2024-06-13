@@ -80,7 +80,7 @@ class Widgets {
             controller: controller,
             onChanged: (value) {
               // errorText 초기화
-              // ref.read(errorProvider.notifier).state = null;
+              ref.read(errorProvider.notifier).state = null;
             },
             onSubmitted: (value) {
               if (validateFunction != null) {
