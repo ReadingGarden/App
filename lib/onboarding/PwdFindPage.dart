@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
@@ -14,6 +15,8 @@ final authErrorProvider = StateProvider<String?>((ref) => null);
 final authButtonProvider = StateProvider<bool>((ref) => false);
 // 인증 번호 전송 상태를 관리하는 프로바이더
 final authSendProvider = StateProvider<bool>((ref) => false);
+// 인증 번호 입력 상태를 관리하는 프로바이더
+final authCheckProvider = StateProvider<bool>((ref) => false);
 
 class PwdFindPage extends ConsumerWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -21,8 +24,6 @@ class PwdFindPage extends ConsumerWidget {
 
   // 인증번호 전송 후
   bool isAuthSend = false;
-  // 다음 버튼 활성화 여부
-  bool isNext = false;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,6 +36,9 @@ class PwdFindPage extends ConsumerWidget {
     // 인증번호 전송 상태 구독
     final authSendBool = ref.watch(authSendProvider);
     final authSendNotifier = ref.read(authSendProvider.notifier);
+
+    // 인즡번호 입력 상태 구독
+    final authCheckBool = ref.watch(authCheckProvider);
 
     void _emailValidate() {
       final emailErrorNotifier = ref.read(emailErrorProvider.notifier);
@@ -62,7 +66,7 @@ class PwdFindPage extends ConsumerWidget {
       //   authErrorNotifier.state = null;
       // }
       if (_authController.text.length == 6) {
-        isNext = true;
+        ref.read(authCheckProvider.notifier).state = true;
       }
     }
 
@@ -149,11 +153,8 @@ class PwdFindPage extends ConsumerWidget {
                 margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
                 child: Widgets.button(
                   '다음',
-                  isNext,
-                  () {
-                    //TODO: - 비밀번호 설정 페이지로
-                    // authSendNotifier.state = true;
-                  },
+                  authCheckBool,
+                  () => context.goNamed('pwd-setting'),
                 ))
             : Container(
                 margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),

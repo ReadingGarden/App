@@ -1,4 +1,3 @@
-import 'package:book_flutter/onboarding/PwdFindPage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -6,6 +5,8 @@ import '../main.dart';
 import '../ErrorPage.dart';
 import '../garden/GardenPage.dart';
 import '../onboarding/LoginPage.dart';
+import '../onboarding/PwdFindPage.dart';
+import '../onboarding/PwdSettingPage.dart';
 import '../onboarding/SignupPage.dart';
 
 final GoRouter router = GoRouter(
@@ -41,6 +42,12 @@ final GoRouter router = GoRouter(
             GoRoute(
                 path: 'pwd-find',
                 name: 'pwd-find',
-                builder: (context, state) => PwdFindPage())
+                builder: (context, state) => PwdFindPage(),
+                routes: [
+                  GoRoute(
+                      path: 'pwd-setting',
+                      name: 'pwd-setting',
+                      builder: (context, state) => PwdSettingPage())
+                ])
           ]),
     ]);
