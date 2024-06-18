@@ -5,11 +5,14 @@ import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
+import 'OnboardingProvider.dart';
 
 // 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final pwdErrorProvider = StateProvider<String?>((ref) => null);
 // 비밀번호 확인 에러 메시지 상태를 관리하는 프로바이더
 final pwdCheckErrorProvider = StateProvider<String?>((ref) => null);
+// 비밀번호 유효성 상태를 관리하는 프로바이더
+final isValidProvider = StateProvider<bool>((ref) => false);
 
 class PwdSettingPage extends ConsumerWidget {
   final String user_email;
@@ -19,45 +22,49 @@ class PwdSettingPage extends ConsumerWidget {
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _pwdCheckController = TextEditingController();
 
-  bool isValid = false;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pwdErrorText = ref.watch(pwdErrorProvider);
     final pwdCheckErrorText = ref.watch(pwdCheckErrorProvider);
+    final isValid = ref.watch(isValidProvider);
 
-    void putPwdUpdate() {
+    void putPwdUpdate() async {
       final data = {
         "user_email": user_email,
         "user_password": _pwdController.text
       };
 
-      // 200
-      // context.goNamed('login');
+      final response =
+          await ref.read(OnboardingProvider.putPwdUpdateProvider(data).future);
+      if (response?.statusCode == 200) {
+        // TODO: - 새로운 비밀번호가 생성되었습니다 토스트
+        context.goNamed('login');
+      }
     }
 
     void _validate() {
       final pwdErrorNotifier = ref.read(pwdErrorProvider.notifier);
       final pwdCheckErrorNotifier = ref.read(pwdCheckErrorProvider.notifier);
+      final isValidNotifier = ref.read(isValidProvider.notifier);
+
+      bool isPwdValid = true;
+      bool isPwdCheckValid = true;
 
       if (_pwdController.text.length < 6 || _pwdController.text.length > 12) {
         pwdErrorNotifier.state = '비밀번호 규칙을 확인해주세요';
-        isValid = false;
+        isPwdValid = false;
       } else {
         pwdErrorNotifier.state = null;
       }
       if (_pwdController.text != _pwdCheckController.text) {
         pwdCheckErrorNotifier.state = '동일한 비밀번호를 입력해주세요';
-        isValid = false;
+        isPwdCheckValid = false;
       } else {
         pwdCheckErrorNotifier.state = null;
       }
 
       // 최종 확인
-      if (pwdErrorNotifier.state == null &&
-          pwdCheckErrorNotifier.state == null) {
-        isValid = true;
-      }
+      isValidNotifier.state = isPwdValid && isPwdCheckValid;
     }
 
     return Scaffold(

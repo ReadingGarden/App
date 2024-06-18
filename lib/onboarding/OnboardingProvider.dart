@@ -39,4 +39,12 @@ class OnboardingProvider {
         ref.watch(OnboardingProvider.onboardingServiceProvider);
     return onboardingService.postPwdFindCheck(data);
   });
+
+  //PUT(Pwd-Update) 요청을 처리하는 ...
+  static final putPwdUpdateProvider =
+      FutureProvider.family<Response?, Map>((ref, data) async {
+    final onboardingService =
+        ref.watch(OnboardingProvider.onboardingServiceProvider);
+    return onboardingService.putPwdUpdate(data);
+  });
 }

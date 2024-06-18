@@ -12,11 +12,11 @@ import 'OnboardingProvider.dart';
 final emailErrorProvider = StateProvider<String?>((ref) => null);
 // 인증번호 에러 메시지 상태를 관리하는 프로바이더
 final authErrorProvider = StateProvider<String?>((ref) => null);
-// 인증 번호 전송 버튼 활성화 상태를 관리하는 프로바이더
+// 인증번호 전송 버튼 활성화 상태를 관리하는 프로바이더
 final authButtonProvider = StateProvider<bool>((ref) => false);
-// 인증 번호 전송 상태를 관리하는 프로바이더
+// 인증번호 전송 상태를 관리하는 프로바이더
 final authSendProvider = StateProvider<bool>((ref) => false);
-// 인증 번호 입력 상태를 관리하는 프로바이더
+// 인증번호 입력 상태를 관리하는 프로바이더
 final authCheckProvider = StateProvider<bool>((ref) => false);
 
 class PwdFindPage extends ConsumerWidget {
