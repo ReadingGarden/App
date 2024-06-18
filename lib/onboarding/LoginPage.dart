@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
-// import '../utils/SharedPreferences.dart';
+import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
 import 'OnboardingProvider.dart';
 
@@ -29,7 +29,10 @@ class LoginPage extends ConsumerWidget {
     final response =
         await ref.read(OnboardingProvider.postLoginProvider(data).future);
     if (response?.statusCode == 200) {
-      // 가든 페이지로
+      // access,refresh 저장하고 가든 페이지로
+
+      saveAccess(response?.data['data']['access_token']);
+      saveRefresh(response?.data['data']['refresh_token']);
       context.goNamed('garden');
     } else if (response?.statusCode == 400) {
       _loginError(context, ref);
@@ -37,7 +40,7 @@ class LoginPage extends ConsumerWidget {
   }
 
   void _loginError(BuildContext context, WidgetRef ref) {
-    // TODO - 에러 노디파이어 하나로 합치기
+    // TODO - 에러 노티파이어 하나로 합치기
     final emailErrorNotifier = ref.read(loginErrorProvider.notifier);
     final pwdErrorNotifier = ref.read(loginErrorProvider.notifier);
 
