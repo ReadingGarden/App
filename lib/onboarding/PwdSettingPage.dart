@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
@@ -11,6 +12,10 @@ final pwdErrorProvider = StateProvider<String?>((ref) => null);
 final pwdCheckErrorProvider = StateProvider<String?>((ref) => null);
 
 class PwdSettingPage extends ConsumerWidget {
+  final String user_email;
+
+  PwdSettingPage({required this.user_email});
+
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _pwdCheckController = TextEditingController();
 
@@ -20,6 +25,16 @@ class PwdSettingPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pwdErrorText = ref.watch(pwdErrorProvider);
     final pwdCheckErrorText = ref.watch(pwdCheckErrorProvider);
+
+    void putPwdUpdate() {
+      final data = {
+        "user_email": user_email,
+        "user_password": _pwdController.text
+      };
+
+      // 200
+      // context.goNamed('login');
+    }
 
     void _validate() {
       final pwdErrorNotifier = ref.read(pwdErrorProvider.notifier);
@@ -98,10 +113,8 @@ class PwdSettingPage extends ConsumerWidget {
           margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
           child: Widgets.button(
             '비밀번호\n저장하기',
-            isValid,
-            () {
-              print('로그인 페이지로');
-            },
+            !isValid,
+            () => putPwdUpdate(),
           ),
         ));
   }

@@ -23,4 +23,20 @@ class OnboardingProvider {
         ref.watch(OnboardingProvider.onboardingServiceProvider);
     return onboardingService.postSignup(data);
   });
+
+  // POST(Pwd-Find) 요청을 처리하는 FutureProvider
+  static final postPwdFindProvider =
+      FutureProvider.family<Response?, Map>((ref, data) async {
+    final onboardingService =
+        ref.watch(OnboardingProvider.onboardingServiceProvider);
+    return onboardingService.postPwdFind(data);
+  });
+
+  //POST(Pwd-Find Check) 요청을 처리하는 ...
+  static final postPwdFindCheckProvider =
+      FutureProvider.family<Response?, Map>((ref, data) async {
+    final onboardingService =
+        ref.watch(OnboardingProvider.onboardingServiceProvider);
+    return onboardingService.postPwdFindCheck(data);
+  });
 }

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
+import 'OnboardingProvider.dart';
 
 // 이메일 에러 메시지 상태를 관리하는 프로바이더
 final emailErrorProvider = StateProvider<String?>((ref) => null);
@@ -27,45 +28,61 @@ class PwdFindPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 이메일 텍스트 필드 에러 메세지 상태 구독
     final emailErrorText = ref.watch(emailErrorProvider);
+    // 인증번호 텍스트 필드 에러 메세지 상태 구독
     final authErrorText = ref.watch(authErrorProvider);
-
     // 인증번호 전송 버튼 상태 구독
     final authButtonBool = ref.watch(authButtonProvider);
-
     // 인증번호 전송 상태 구독
     final authSendBool = ref.watch(authSendProvider);
-    final authSendNotifier = ref.read(authSendProvider.notifier);
-
     // 인즡번호 입력 상태 구독
     final authCheckBool = ref.watch(authCheckProvider);
 
-    void _emailValidate() {
-      final emailErrorNotifier = ref.read(emailErrorProvider.notifier);
+    void postPwdFind(context, ref) async {
+      ref.read(authButtonProvider.notifier).state = false;
 
+      final data = {"user_email": _emailController.text};
+
+      final response =
+          await ref.read(OnboardingProvider.postPwdFindProvider(data).future);
+      if (response?.statusCode == 200) {
+        ref.read(authSendProvider.notifier).state = true;
+      } else if (response?.statusCode == 400) {
+        ref.read(emailErrorProvider.notifier).state = '등록되지 않은 이메일 주소입니다';
+      }
+    }
+
+    void postPwdFindCheck(BuildContext context, ref) async {
+      final data = {
+        "user_email": _emailController.text,
+        "auth_number": _authController.text
+      };
+
+      final response = await ref
+          .read(OnboardingProvider.postPwdFindCheckProvider(data).future);
+      if (response?.statusCode == 200) {
+        context.goNamed('pwd-setting', extra: _emailController.text);
+      } else if (response?.statusCode == 400) {
+        ref.read(authErrorProvider.notifier).state = '인증번호 불일치';
+      }
+    }
+
+    void _emailValidate() {
       if (!Functions.emailValidation(_emailController.text)) {
-        emailErrorNotifier.state = '올바르지 않은 이메일 형식이에요';
+        ref.read(emailErrorProvider.notifier).state = '올바르지 않은 이메일 형식이에요';
       } else {
-        emailErrorNotifier.state = null;
+        ref.read(emailErrorProvider.notifier).state = null;
       }
 
       // 최종 확인
-      if (emailErrorNotifier.state == null) {
+      if (ref.read(emailErrorProvider.notifier).state == null) {
         ref.read(authButtonProvider.notifier).state = true;
       }
     }
 
     void _authValidate() {
-      final authErrorNotifier = ref.read(authErrorProvider.notifier);
-
-      // TODO: - 인증 번호 에러 메세지 적용
-
-      // if (_authController.text.length < 6 || _authController.text.length > 12) {
-      //   authErrorNotifier.state = '에러메세지를 입력해주세요';
-      // } else {
-      //   authErrorNotifier.state = null;
-      // }
-      if (_authController.text.length == 6) {
+      if (_authController.text.length == 5) {
         ref.read(authCheckProvider.notifier).state = true;
       }
     }
@@ -130,9 +147,10 @@ class PwdFindPage extends ConsumerWidget {
                               ),
                               Container(
                                   height: 20.h,
-                                  // alignment: Alignment.centerRight,
                                   margin: EdgeInsets.only(
-                                      bottom: 42.h, right: 16.w),
+                                      bottom:
+                                          (authErrorText == null) ? 42.h : 52.h,
+                                      right: 16.w),
                                   child: Text(
                                     '03:00',
                                     style: TextStyle(
@@ -154,17 +172,14 @@ class PwdFindPage extends ConsumerWidget {
                 child: Widgets.button(
                   '다음',
                   authCheckBool,
-                  () => context.goNamed('pwd-setting'),
+                  () => postPwdFindCheck(context, ref),
                 ))
             : Container(
                 margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
                 child: Widgets.button(
                   '인증번호\n전송',
                   authButtonBool,
-                  () {
-                    // TODO: - 전송 api 안에서 변경
-                    authSendNotifier.state = true;
-                  },
+                  () => postPwdFind(context, ref),
                 )));
   }
 }

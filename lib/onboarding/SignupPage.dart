@@ -168,32 +168,35 @@ class SignupEndPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Widgets.appBar(context),
-      body: Column(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                color: Colors.amberAccent,
-              ),
-              Text('새로운 가드너 탄생'),
-              Text('나의 첫번째 가든을 확인해보세요!'),
-              Center(
-                child: Container(
-                  width: 300,
-                  height: 300,
-                  color: Colors.amber,
+        appBar: Widgets.appBar(context),
+        body: Column(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.amberAccent,
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-              child: Widgets.button('시작하기', true, () => singupEnd(context)))
-        ],
-      ),
-    );
+                Text('새로운 가드너 탄생'),
+                Text('나의 첫번째 가든을 확인해보세요!'),
+                Center(
+                  child: Container(
+                    width: 300,
+                    height: 300,
+                    color: Colors.amber,
+                  ),
+                ),
+              ],
+            ),
+            // Expanded(
+            //     child: Widgets.button('시작하기', true, () => singupEnd(context)))
+          ],
+        ),
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
+          child: Widgets.button('시작하기', true, () => singupEnd(context)),
+        ));
   }
 }
