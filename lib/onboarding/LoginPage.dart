@@ -32,7 +32,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   //로그인
-  void postLogin(BuildContext context, WidgetRef ref) async {
+  void postLogin() async {
     final data = {
       "user_email": _emailController.text,
       "user_password": _pwdController.text,
@@ -49,12 +49,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       saveRefresh(response?.data['data']['refresh_token']);
       context.goNamed('garden');
     } else if (response?.statusCode == 400) {
-      _loginError(context, ref);
+      _loginError();
     }
   }
 
   //로그인 에러
-  void _loginError(BuildContext context, WidgetRef ref) {
+  void _loginError() {
     // TODO - 에러 노티파이어 하나로 합치기
     final emailErrorNotifier = ref.read(loginErrorProvider.notifier);
     final pwdErrorNotifier = ref.read(loginErrorProvider.notifier);
@@ -100,8 +100,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Widgets.textfield(ref, _pwdController, '비밀번호',
                         '비밀번호를 입력해주세요', errorText, loginErrorProvider,
                         isPwd: true)),
-                Widgets.button(
-                    '이메일로\n로그인', true, () => postLogin(context, ref)),
+                Widgets.button('이메일로\n로그인', true, () => postLogin()),
                 Container(
                   margin: EdgeInsets.only(top: 18.h, bottom: 56.h),
                   child: Row(
