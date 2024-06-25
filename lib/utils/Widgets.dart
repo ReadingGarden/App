@@ -123,4 +123,29 @@ class Widgets {
       ),
     );
   }
+
+  static toast(String msg) {
+    return Container(
+      width: 312.w,
+      height: 40.h,
+      padding: EdgeInsets.only(left: 16.w, top: 8.h, bottom: 8.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.r),
+        color: const Color(0xFF3C3C3C).withOpacity(0.9),
+      ),
+      child: Row(
+        children: [
+          Container(
+              width: 24.r,
+              height: 24.r,
+              margin: EdgeInsets.only(right: 10.w),
+              child: SvgPicture.asset('assets/images/check-circle.svg')),
+          Text(
+            msg,
+            style: TextStyle(fontSize: 14.sp, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
 }
