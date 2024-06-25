@@ -85,6 +85,7 @@ flutter:
     - family: SUIT
       fonts:
         - asset: assets/fonts/SUIT-ttf/SUIT-Bold.ttf
+          weight: 700
         - asset: assets/fonts/SUIT-ttf/SUIT-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/SUIT-ttf/SUIT-Medium.ttf

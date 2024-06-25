@@ -8,6 +8,7 @@ import '../onboarding/LoginPage.dart';
 import '../onboarding/PwdFindPage.dart';
 import '../onboarding/PwdSettingPage.dart';
 import '../onboarding/SignupPage.dart';
+import '../onboarding/StartPage.dart';
 
 final GoRouter router = GoRouter(
     initialLocation: '/',
@@ -18,6 +19,10 @@ final GoRouter router = GoRouter(
         name: 'splash',
         builder: (BuildContext context, GoRouterState state) => SplashPage(),
       ),
+      GoRoute(
+          path: '/start',
+          name: 'start',
+          builder: (context, state) => StartPage()),
       GoRoute(
           path: '/garden',
           name: 'garden',

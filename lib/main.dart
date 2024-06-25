@@ -24,23 +24,14 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp.router(
           theme: ThemeData(
+              fontFamily: 'SUIT',
               scaffoldBackgroundColor: Colors.white,
               textTheme: TextTheme(
-                // headlineMedium: TextStyle(
-                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
-                titleMedium: TextStyle(
-                    fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
-                // labelMedium: TextStyle(
-                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
-                // displayMedium: TextStyle(
-                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
-                // bodyLarge: TextStyle(
-                //     fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
-
-                bodyMedium: TextStyle(
-                    fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
-                bodySmall: TextStyle(
-                    fontFamily: 'SUIT', fontSize: 14.sp, color: Colors.black),
+                //앱바
+                titleLarge: const TextStyle(color: Colors.black),
+                titleMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
+                bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
+                bodySmall: TextStyle(fontSize: 14.sp, color: Colors.black),
               )),
 
           debugShowCheckedModeBanner: false,
@@ -62,7 +53,7 @@ class SplashPage extends ConsumerWidget {
 
     // 1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () {
-      isAutoLogin ? context.go('/login') : context.go('/garden');
+      isAutoLogin ? context.go('/start') : context.go('/garden');
       // context.go('/login');
     });
 
