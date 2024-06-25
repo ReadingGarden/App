@@ -93,9 +93,8 @@ class OnboardingService {
   // 비밀번호 설정하기 (no token)
   Future<Response?> putPwdUpdate(Map data) async {
     try {
-      final response = await _dio.post(
-          '${Constant.URL}auth/find-password/update-password',
-          data: data);
+      final response = await _dio
+          .put('${Constant.URL}auth/find-password/update-password', data: data);
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
