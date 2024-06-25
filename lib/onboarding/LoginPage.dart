@@ -31,7 +31,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     fToast.init(context);
   }
 
-  //로그인
+  //로그인 api
   void postLogin() async {
     final data = {
       "user_email": _emailController.text,

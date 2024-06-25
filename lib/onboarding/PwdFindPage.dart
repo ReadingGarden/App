@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
@@ -19,15 +20,29 @@ final authSendProvider = StateProvider<bool>((ref) => false);
 // 인증번호 입력 상태를 관리하는 프로바이더
 final authCheckProvider = StateProvider<bool>((ref) => false);
 
-class PwdFindPage extends ConsumerWidget {
+class PwdFindPage extends ConsumerStatefulWidget {
+  @override
+  _PwdFindPageState createState() => _PwdFindPageState();
+}
+
+class _PwdFindPageState extends ConsumerState<PwdFindPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _authController = TextEditingController();
+
+  late FToast fToast;
 
   // 인증번호 전송 후
   bool isAuthSend = false;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // 이메일 텍스트 필드 에러 메세지 상태 구독
     final emailErrorText = ref.watch(emailErrorProvider);
     // 인증번호 텍스트 필드 에러 메세지 상태 구독
@@ -39,7 +54,8 @@ class PwdFindPage extends ConsumerWidget {
     // 인즡번호 입력 상태 구독
     final authCheckBool = ref.watch(authCheckProvider);
 
-    void postPwdFind(context, ref) async {
+    //비밀번호 찾기 api
+    void postPwdFind() async {
       ref.read(authButtonProvider.notifier).state = false;
 
       final data = {"user_email": _emailController.text};
@@ -47,12 +63,14 @@ class PwdFindPage extends ConsumerWidget {
       final response =
           await ref.read(OnboardingProvider.postPwdFindProvider(data).future);
       if (response?.statusCode == 200) {
+        fToast.showToast(child: Widgets.toast('인증번호가 발송되었습니다'));
         ref.read(authSendProvider.notifier).state = true;
       } else if (response?.statusCode == 400) {
         ref.read(emailErrorProvider.notifier).state = '등록되지 않은 이메일 주소입니다';
       }
     }
 
+    //비밀번호 인증 확인 api
     void postPwdFindCheck(BuildContext context, ref) async {
       final data = {
         "user_email": _emailController.text,
@@ -152,7 +170,7 @@ class PwdFindPage extends ConsumerWidget {
                                           (authErrorText == null) ? 42.h : 52.h,
                                       right: 16.w),
                                   child: Text(
-                                    '03:00',
+                                    '05:00',
                                     style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w500,
@@ -179,7 +197,7 @@ class PwdFindPage extends ConsumerWidget {
                 child: Widgets.button(
                   '인증번호\n전송',
                   authButtonBool,
-                  () => postPwdFind(context, ref),
+                  () => postPwdFind(),
                 )));
   }
 }
