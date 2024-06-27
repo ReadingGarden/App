@@ -22,42 +22,45 @@ final GoRouter router = GoRouter(
       GoRoute(
           path: '/start',
           name: 'start',
-          builder: (context, state) => StartPage()),
+          builder: (context, state) => StartPage(),
+          routes: [
+            GoRoute(
+                path: 'login',
+                name: 'login',
+                builder: (BuildContext context, GoRouterState state) =>
+                    LoginPage(),
+                routes: [
+                  GoRoute(
+                      path: 'signup',
+                      name: 'signup',
+                      builder: (BuildContext context, GoRouterState state) =>
+                          SignupPage(),
+                      routes: [
+                        GoRoute(
+                          path: 'signup-end',
+                          name: 'signup-end',
+                          builder: (context, state) => SignupEndPage(),
+                        )
+                      ]),
+                  GoRoute(
+                      path: 'pwd-find',
+                      name: 'pwd-find',
+                      builder: (context, state) => PwdFindPage(),
+                      routes: [
+                        GoRoute(
+                            path: 'pwd-setting',
+                            name: 'pwd-setting',
+                            builder: (context, state) {
+                              final String user_email = state.extra as String;
+                              return PwdSettingPage(
+                                user_email: user_email,
+                              );
+                            })
+                      ])
+                ]),
+          ]),
       GoRoute(
           path: '/garden',
           name: 'garden',
           builder: (context, state) => GardenPage()),
-      GoRoute(
-          path: '/login',
-          name: 'login',
-          builder: (BuildContext context, GoRouterState state) => LoginPage(),
-          routes: [
-            GoRoute(
-                path: 'signup',
-                name: 'signup',
-                builder: (BuildContext context, GoRouterState state) =>
-                    SignupPage(),
-                routes: [
-                  GoRoute(
-                    path: 'signup-end',
-                    name: 'signup-end',
-                    builder: (context, state) => SignupEndPage(),
-                  )
-                ]),
-            GoRoute(
-                path: 'pwd-find',
-                name: 'pwd-find',
-                builder: (context, state) => PwdFindPage(),
-                routes: [
-                  GoRoute(
-                      path: 'pwd-setting',
-                      name: 'pwd-setting',
-                      builder: (context, state) {
-                        final String user_email = state.extra as String;
-                        return PwdSettingPage(
-                          user_email: user_email,
-                        );
-                      })
-                ])
-          ]),
     ]);
