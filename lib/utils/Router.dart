@@ -1,9 +1,11 @@
+import 'package:book_flutter/mypage/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../main.dart';
 import '../ErrorPage.dart';
 import '../garden/GardenPage.dart';
+import '../mypage/MyPage.dart';
 import '../onboarding/LoginPage.dart';
 import '../onboarding/PwdFindPage.dart';
 import '../onboarding/PwdSettingPage.dart';
@@ -63,4 +65,15 @@ final GoRouter router = GoRouter(
           path: '/garden',
           name: 'garden',
           builder: (context, state) => GardenPage()),
+      GoRoute(
+          path: '/mypage',
+          name: 'mypage',
+          builder: (context, state) => MyPage(),
+          routes: [
+            GoRoute(
+              path: 'profile',
+              name: 'profile',
+              builder: (context, state) => ProfilePage(),
+            )
+          ]),
     ]);

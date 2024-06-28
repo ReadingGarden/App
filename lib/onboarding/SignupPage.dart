@@ -7,7 +7,7 @@ import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
 // import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
-import 'OnboardingProvider.dart';
+import '../core/provider/AuthServiceProvider.dart';
 
 // 이메일 에러 메시지 상태를 관리하는 프로바이더
 final emailErrorProvider = StateProvider<String?>((ref) => null);
@@ -33,7 +33,7 @@ class SignupPage extends ConsumerWidget {
     };
 
     final response =
-        await ref.read(OnboardingProvider.postSignupProvider(data).future);
+        await ref.read(AuthServiceProvider.postSignupProvider(data).future);
     if (response?.statusCode == 201) {
       // 회원가입 완료 페이지로
       context.goNamed('signup-end');

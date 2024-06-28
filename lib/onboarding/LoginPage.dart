@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../utils/AppColors.dart';
 import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
-import 'OnboardingProvider.dart';
+import '../core/provider/AuthServiceProvider.dart';
 
 // 이메일, 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final loginErrorProvider = StateProvider<String?>((ref) => null);
@@ -36,18 +36,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     final data = {
       "user_email": _emailController.text,
       "user_password": _pwdController.text,
+      //TODO: 고치기
       "use_fcm": "",
       "user_social_id": "",
       "user_social_type": ""
     };
 
     final response =
-        await ref.read(OnboardingProvider.postLoginProvider(data).future);
+        await ref.read(AuthServiceProvider.postLoginProvider(data).future);
     if (response?.statusCode == 200) {
       // access,refresh 저장하고 가든 페이지로
       saveAccess(response?.data['data']['access_token']);
       saveRefresh(response?.data['data']['refresh_token']);
-      context.goNamed('garden');
+      context.goNamed('mypage');
     } else if (response?.statusCode == 400) {
       _loginError();
     }

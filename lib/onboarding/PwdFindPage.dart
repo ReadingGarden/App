@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
-import 'OnboardingProvider.dart';
+import '../core/provider/AuthServiceProvider.dart';
 
 // 이메일 에러 메시지 상태를 관리하는 프로바이더
 final emailErrorProvider = StateProvider<String?>((ref) => null);
@@ -61,7 +61,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       final data = {"user_email": _emailController.text};
 
       final response =
-          await ref.read(OnboardingProvider.postPwdFindProvider(data).future);
+          await ref.read(AuthServiceProvider.postPwdFindProvider(data).future);
       if (response?.statusCode == 200) {
         fToast.showToast(child: Widgets.toast('인증번호가 발송되었습니다'));
         ref.read(authSendProvider.notifier).state = true;
@@ -78,7 +78,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       };
 
       final response = await ref
-          .read(OnboardingProvider.postPwdFindCheckProvider(data).future);
+          .read(AuthServiceProvider.postPwdFindCheckProvider(data).future);
       if (response?.statusCode == 200) {
         context.goNamed('pwd-setting', extra: _emailController.text);
       } else if (response?.statusCode == 400) {

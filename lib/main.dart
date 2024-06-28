@@ -29,8 +29,11 @@ class MyApp extends StatelessWidget {
               textTheme: TextTheme(
                 //앱바
                 titleLarge: const TextStyle(color: Colors.black),
+                //내부 텍스트 필드
                 titleMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
+                //기본 body 텍스트
                 bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
+                //텍스트 필드 에러 메세지
                 bodySmall: TextStyle(fontSize: 14.sp, color: Colors.black),
               )),
 
@@ -54,7 +57,6 @@ class SplashPage extends ConsumerWidget {
     // 1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () {
       isAutoLogin ? context.go('/start') : context.go('/garden');
-      // context.go('/login');
     });
 
     return const Scaffold(

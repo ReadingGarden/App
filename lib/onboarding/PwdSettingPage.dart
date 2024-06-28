@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../utils/AppColors.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
-import 'OnboardingProvider.dart';
+import '../core/provider/AuthServiceProvider.dart';
 
 // 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final pwdErrorProvider = StateProvider<String?>((ref) => null);
@@ -14,30 +15,45 @@ final pwdCheckErrorProvider = StateProvider<String?>((ref) => null);
 // 비밀번호 유효성 상태를 관리하는 프로바이더
 final isValidProvider = StateProvider<bool>((ref) => false);
 
-class PwdSettingPage extends ConsumerWidget {
+class PwdSettingPage extends ConsumerStatefulWidget {
+  const PwdSettingPage({required this.user_email});
+
   final String user_email;
 
-  PwdSettingPage({required this.user_email});
+  @override
+  _PwdSettingPageState createState() => _PwdSettingPageState();
+}
 
+class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _pwdCheckController = TextEditingController();
 
+  late FToast fToast;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final pwdErrorText = ref.watch(pwdErrorProvider);
     final pwdCheckErrorText = ref.watch(pwdCheckErrorProvider);
     final isValid = ref.watch(isValidProvider);
 
+    //비밀번호 업데이트 api
     void putPwdUpdate() async {
       final data = {
-        "user_email": user_email,
+        "user_email": widget.user_email,
         "user_password": _pwdController.text
       };
 
       final response =
-          await ref.read(OnboardingProvider.putPwdUpdateProvider(data).future);
+          await ref.read(AuthServiceProvider.putPwdUpdateProvider(data).future);
       if (response?.statusCode == 200) {
-        // TODO: - 새로운 비밀번호가 생성되었습니다 토스트
+        fToast.showToast(child: Widgets.toast('새로운 비밀번호가 생성되었습니다'));
         context.goNamed('login');
       }
     }
@@ -120,7 +136,7 @@ class PwdSettingPage extends ConsumerWidget {
           margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
           child: Widgets.button(
             '비밀번호\n저장하기',
-            !isValid,
+            isValid,
             () => putPwdUpdate(),
           ),
         ));
