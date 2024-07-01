@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/provider/ResponseProvider.dart';
 import '../utils/AppColors.dart';
@@ -86,7 +87,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               ),
             ),
             Widgets.subTitleList('계정 관리'),
-            _titleList('로그아웃', () {}),
+            _titleList('로그아웃', () {
+              Widgets.baseBottomSheet(context, '로그아웃 하시겠어요?',
+                  '이때까지 작성한 책 기록을 보려면 다시 로그인 해주셔야 해요.', '로그아웃', () {
+                //TODO: - 로그아웃 api 연결
+                context.goNamed('start');
+              });
+            }),
             GestureDetector(
               onTap: () => () {},
               child: Container(

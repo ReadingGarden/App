@@ -163,4 +163,64 @@ class Widgets {
       ),
     );
   }
+
+  static Future baseBottomSheet(BuildContext context, String title,
+      String content, String btnTitle, Function btnFunction) {
+    return showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return Container(
+            height: 340.h,
+            padding: EdgeInsets.only(
+                top: 30.h, left: 24.w, right: 24.w, bottom: 40.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style:
+                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 24.h, bottom: 30.h),
+                  height: 48.h,
+                  child: Text(
+                    content,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    Widgets.button(btnTitle, true, () {
+                      btnFunction();
+                    }),
+                    GestureDetector(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        margin: EdgeInsets.only(top: 12.h),
+                        height: 60.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: AppColors.cancelGreyColor),
+                        child: Center(
+                            child: Text(
+                          '취소',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                              color: AppColors.textFieldHintColor),
+                        )),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+        });
+  }
 }

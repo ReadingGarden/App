@@ -7,8 +7,10 @@ class AppColors {
   static const textGreyColor = Color(0xFF929292);
   static const textLightGreyColor = Color(0xFFBDBDBD);
   static const dividerGreyColor = Color(0xFFF0F0F0);
+
   static const borderGreyColor = Color(0xFFF1F1F1);
   static const shadowGreenColor = Color(0xFF97CDBD);
+  static const cancelGreyColor = Color(0xFFE7E7E7);
 
   static const textFieldColor = Color(0xFFF8F9FD);
   static const textFieldHintColor = Color(0xFFAAACAB);
