@@ -152,4 +152,15 @@ class Widgets {
       ),
     );
   }
+
+  static Widget subTitleList(String subTitle) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 24.h),
+      height: 20.h,
+      child: Text(
+        subTitle,
+        style: TextStyle(fontSize: 12.sp, color: AppColors.textLightGreyColor),
+      ),
+    );
+  }
 }

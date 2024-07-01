@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/provider/AuthServiceProvider.dart';
 import '../utils/AppColors.dart';
+import '../utils/Widgets.dart';
 
 class MyPage extends ConsumerStatefulWidget {
   @override
@@ -65,7 +66,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                     ),
                     SizedBox(
                         height: 20.h,
-                        child: Text('@이메일',
+                        child: Text(userResponse['user_email'] ?? '',
                             style: TextStyle(
                                 fontSize: 12.sp,
                                 color: AppColors.textLightGreyColor))),
@@ -110,7 +111,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                           margin: EdgeInsets.only(top: 1.h),
                           height: 24.h,
                           child: Text(
-                            '@4',
+                            userResponse['garden_count'].toString(),
                             style: TextStyle(
                                 fontSize: 18.sp, color: AppColors.primaryColor),
                           ),
@@ -132,7 +133,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                           margin: EdgeInsets.only(top: 1.h),
                           height: 24.h,
                           child: Text(
-                            '@4',
+                            userResponse['read_book_count'].toString(),
                             style: TextStyle(
                                 fontSize: 18.sp, color: AppColors.primaryColor),
                           ),
@@ -154,7 +155,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                           margin: EdgeInsets.only(top: 1.h),
                           height: 24.h,
                           child: Text(
-                            '@4',
+                            userResponse['like_book_count'].toString(),
                             style: TextStyle(
                                 fontSize: 18.sp, color: AppColors.primaryColor),
                           ),
@@ -174,7 +175,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                 _titleList('알림 설정', () {
                   print('알림설정 페이지로');
                 }),
-                _subTitleList('지원'),
+                Widgets.subTitleList('지원'),
                 _titleList('이용 가이드', () {
                   print('이용가이드 페이지로');
                 }),
@@ -187,7 +188,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                 _titleList('리뷰 작성하기', () {
                   print('리뷰작성하기 페이지로');
                 }),
-                _subTitleList('정보'),
+                Widgets.subTitleList('정보'),
                 _titleList('이용 약관', () {
                   print('이용 약관 페이지로');
                 }),
@@ -210,17 +211,6 @@ class _MyPageState extends ConsumerState<MyPage> {
           title,
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
         ),
-      ),
-    );
-  }
-
-  Widget _subTitleList(String subTitle) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 24.h),
-      height: 20.h,
-      child: Text(
-        subTitle,
-        style: TextStyle(fontSize: 12.sp, color: AppColors.textLightGreyColor),
       ),
     );
   }
