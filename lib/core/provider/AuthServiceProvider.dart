@@ -17,6 +17,13 @@ class AuthServiceProvider {
     return authService.postLogin(data);
   });
 
+  // POST(Logout) 요청을 처리하는 FutureProvider
+  static final postLogoutProvider = FutureProvider<Response?>((ref) async {
+    final authService = ref.watch(authServiceProvider);
+    final accessToken = await loadAccess();
+    return authService.postLogout(accessToken);
+  });
+
   // POST(Signup) 요청을 처리하는 FutureProvider
   static final postSignupProvider =
       FutureProvider.family<Response?, Map>((ref, data) async {
