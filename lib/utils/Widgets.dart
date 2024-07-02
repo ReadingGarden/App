@@ -14,7 +14,7 @@ class Widgets {
       backgroundColor: Colors.white,
       title: Text(
         title ?? '',
-        style: TextStyle(fontSize: 18.sp),
+        style: TextStyle(fontSize: 16.sp),
       ),
       leading: GestureDetector(
         onTap: () {
@@ -25,7 +25,7 @@ class Widgets {
           width: 32.r,
           height: 32.r,
           color: Colors.transparent,
-          child: SvgPicture.asset('assets/images/back_btn.svg'),
+          child: SvgPicture.asset('assets/images/angle-left.svg'),
         ),
       ),
     );

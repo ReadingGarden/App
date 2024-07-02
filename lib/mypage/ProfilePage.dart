@@ -51,7 +51,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 width: 20.r,
                 height: 20.r,
                 child: SvgPicture.asset(
-                  'assets/images/right_btn.svg',
+                  'assets/images/angle-right-b.svg',
                 ),
               ),
             ),
@@ -72,7 +72,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     width: 20.r,
                     height: 20.r,
                     child: SvgPicture.asset(
-                      'assets/images/right_btn.svg',
+                      'assets/images/angle-right-b.svg',
                     ),
                   ),
                 ],
@@ -132,7 +132,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     return GestureDetector(
       onTap: () => function(),
       child: Container(
-        padding: EdgeInsets.only(left: 24.w),
+        padding: EdgeInsets.only(left: 24.w, right: 24.w),
         alignment: Alignment.centerLeft,
         width: 360.w,
         height: 46.h,

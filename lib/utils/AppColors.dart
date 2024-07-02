@@ -7,9 +7,11 @@ class AppColors {
   static const textGreyColor = Color(0xFF929292);
   static const textLightGreyColor = Color(0xFFBDBDBD);
   static const dividerGreyColor = Color(0xFFF0F0F0);
+  static const thickDividerGreyColor = Color(0xFFF9F9F9);
+  static const lightDividerGreyColor = Color(0xFFF4F4F4);
 
   static const borderGreyColor = Color(0xFFF1F1F1);
-  static const shadowGreenColor = Color(0xFF97CDBD);
+  static const shadowGreyColor = Color(0xFFFDFDFD);
   static const cancelGreyColor = Color(0xFFE7E7E7);
 
   static const textFieldColor = Color(0xFFF8F9FD);
