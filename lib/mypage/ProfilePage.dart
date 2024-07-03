@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/User.dart';
 import '../core/provider/AuthServiceProvider.dart';
 import '../core/provider/ResponseProvider.dart';
 import '../utils/AppColors.dart';
@@ -46,7 +45,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             _titleList(
               '대표 프로필 변경',
               () {
-                context.goNamed('profile-image');
+                context.pushNamed('profile-image');
               },
               widget: Container(
                 alignment: Alignment.center,
@@ -60,7 +59,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             _titleList(
               '닉네임',
               () {
-                context.goNamed('nickname');
+                context.pushNamed('nickname');
               },
               widget: Row(
                 children: [

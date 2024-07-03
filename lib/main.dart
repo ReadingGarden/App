@@ -56,7 +56,7 @@ class SplashPage extends ConsumerWidget {
 
     // 1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () {
-      isAutoLogin ? context.go('/start') : context.go('/garden');
+      isAutoLogin ? context.go('/start') : context.go('bottom-navi');
     });
 
     return const Scaffold(

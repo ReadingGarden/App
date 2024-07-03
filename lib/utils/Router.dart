@@ -1,3 +1,4 @@
+import 'package:book_flutter/BottomNaviPage.dart';
 import 'package:book_flutter/mypage/AuthManagePage.dart';
 import 'package:book_flutter/mypage/NickNamePage.dart';
 import 'package:book_flutter/mypage/ProfileImagePage.dart';
@@ -65,11 +66,12 @@ final GoRouter router = GoRouter(
                 ]),
           ]),
       GoRoute(
-          path: '/garden',
-          name: 'garden',
-          builder: (context, state) => GardenPage()),
+        path: '/bottom-navi',
+        name: 'bottom-navi',
+        builder: (context, state) => BottomNaviPage(),
+      ),
       GoRoute(
-          path: '/mypage',
+          path: '/bottom-navi/mypage',
           name: 'mypage',
           builder: (context, state) => MyPage(),
           routes: [
@@ -95,4 +97,8 @@ final GoRouter router = GoRouter(
               builder: (context, state) => AuthManagePage(),
             )
           ]),
+      GoRoute(
+          path: '/garden',
+          name: 'garden',
+          builder: (context, state) => GardenPage()),
     ]);

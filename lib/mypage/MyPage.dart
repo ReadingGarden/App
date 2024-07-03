@@ -194,9 +194,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _subTitleList('설정'),
-                  Widgets.titleList('프로필', () => context.goNamed('profile')),
+                  Widgets.titleList('프로필', () => context.pushNamed('profile')),
                   Widgets.titleList(
-                      '계정 관리', () => context.goNamed('auth-manage')),
+                      '계정 관리', () => context.pushNamed('auth-manage')),
                   Widgets.titleList('알림 설정', () {}),
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),

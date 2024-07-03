@@ -48,7 +48,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       // access,refresh 저장하고 가든 페이지로
       saveAccess(response?.data['data']['access_token']);
       saveRefresh(response?.data['data']['refresh_token']);
-      context.goNamed('mypage');
+      context.goNamed('bottom-navi');
     } else if (response?.statusCode == 400) {
       _loginError();
     }
