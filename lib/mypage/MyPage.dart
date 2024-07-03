@@ -78,7 +78,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                 child: Text(userResponse['user_email'] ?? '',
                                     style: TextStyle(
                                         fontSize: 12.sp,
-                                        color: AppColors.textLightGreyColor))),
+                                        color: AppColors.grey_8D))),
                           ],
                         )
                       ],
@@ -90,7 +90,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                       width: 312.w,
                       decoration: BoxDecoration(
                           border: Border.all(
-                            color: AppColors.borderGreyColor.withOpacity(0.95),
+                            color: AppColors.grey_FA,
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -114,7 +114,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                     '가든 수',
                                     style: TextStyle(
                                         fontSize: 12.sp,
-                                        color: AppColors.textLightGreyColor),
+                                        color: AppColors.grey_8D),
                                   ),
                                 ),
                                 Container(
@@ -138,7 +138,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                     '읽은 책',
                                     style: TextStyle(
                                         fontSize: 12.sp,
-                                        color: AppColors.textLightGreyColor),
+                                        color: AppColors.grey_8D),
                                   ),
                                 ),
                                 Container(
@@ -162,7 +162,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                     '찜한 책',
                                     style: TextStyle(
                                         fontSize: 12.sp,
-                                        color: AppColors.textLightGreyColor),
+                                        color: AppColors.grey_8D),
                                   ),
                                 ),
                                 Container(
@@ -188,7 +188,7 @@ class _MyPageState extends ConsumerState<MyPage> {
               Container(
                 height: 8.h,
                 margin: EdgeInsets.only(bottom: 24.h),
-                color: AppColors.thickDividerGreyColor,
+                color: AppColors.grey_FA,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -202,7 +202,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),
                     height: 1.h,
-                    color: AppColors.lightDividerGreyColor.withOpacity(0.9),
+                    color: AppColors.grey_F2,
                   ),
                   _subTitleList('지원'),
                   _titleList('이용 가이드', () {
@@ -223,7 +223,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),
                     height: 1.h,
-                    color: AppColors.lightDividerGreyColor.withOpacity(0.9),
+                    color: AppColors.grey_F2,
                   ),
                   _subTitleList('기타'),
                   _titleList('이용 약관', () {
@@ -263,7 +263,7 @@ class _MyPageState extends ConsumerState<MyPage> {
       height: 20.h,
       child: Text(
         subTitle,
-        style: TextStyle(fontSize: 12.sp, color: AppColors.textLightGreyColor),
+        style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
       ),
     );
   }

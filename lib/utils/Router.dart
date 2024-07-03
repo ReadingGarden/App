@@ -1,3 +1,5 @@
+import 'package:book_flutter/mypage/NickNamePage.dart';
+import 'package:book_flutter/mypage/ProfileImagePage.dart';
 import 'package:book_flutter/mypage/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -71,9 +73,20 @@ final GoRouter router = GoRouter(
           builder: (context, state) => MyPage(),
           routes: [
             GoRoute(
-              path: 'profile',
-              name: 'profile',
-              builder: (context, state) => ProfilePage(),
-            )
+                path: 'profile',
+                name: 'profile',
+                builder: (context, state) => ProfilePage(),
+                routes: [
+                  GoRoute(
+                    path: 'nickname',
+                    name: 'nickname',
+                    builder: (context, state) => NickNamePage(),
+                  ),
+                  GoRoute(
+                    path: 'profileimage',
+                    name: 'profileimage',
+                    builder: (context, state) => ProfileImagePage(),
+                  )
+                ]),
           ]),
     ]);

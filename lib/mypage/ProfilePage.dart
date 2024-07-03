@@ -45,7 +45,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ),
             _titleList(
               '대표 프로필 변경',
-              () {},
+              () {
+                context.goNamed('profileimage');
+              },
               widget: Container(
                 alignment: Alignment.center,
                 width: 20.r,
@@ -64,7 +66,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 children: [
                   Text(
                     userResponse['user_nick'] ?? '',
-                    style: const TextStyle(color: AppColors.textLightGreyColor),
+                    style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
                     alignment: Alignment.center,
@@ -84,7 +86,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               () {},
               widget: Text(
                 userResponse['user_email'] ?? '',
-                style: const TextStyle(color: AppColors.textLightGreyColor),
+                style: const TextStyle(color: AppColors.grey_8D),
               ),
             ),
 
@@ -118,7 +120,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             //       style: TextStyle(
             //           fontSize: 16.sp,
             //           fontWeight: FontWeight.w500,
-            //           color: AppColors.textFieldErrorColor),
+            //           color: AppColors.errorRedColor),
             //     ),
             //   ),
             // )
