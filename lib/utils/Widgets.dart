@@ -42,8 +42,7 @@ class Widgets {
         height: 60.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
-            color:
-                isValid ? AppColors.primaryColor : AppColors.primaryGreyColor),
+            color: isValid ? AppColors.primaryColor : AppColors.grey_CA),
         child: Center(
             child: Text(
           title,
@@ -52,6 +51,30 @@ class Widgets {
               fontWeight: FontWeight.w600,
               fontSize: 16.sp,
               color: Colors.white),
+        )),
+      ),
+    );
+  }
+
+  static redButton(
+    String title,
+    Function function,
+  ) {
+    return GestureDetector(
+      onTap: () => function(),
+      child: Container(
+        height: 60.h,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            color: AppColors.buttonRedColor),
+        child: Center(
+            child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16.sp,
+              color: AppColors.errorRedColor),
         )),
       ),
     );
@@ -93,10 +116,10 @@ class Widgets {
             },
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
-              fillColor: AppColors.textFieldColor,
+              fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,
-              hintStyle: const TextStyle(color: AppColors.textFieldHintColor),
+              hintStyle: const TextStyle(color: AppColors.grey_8D),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
                   borderSide:
@@ -111,16 +134,16 @@ class Widgets {
                       BorderSide(color: Colors.transparent, width: 1.w)),
               errorText: errorText,
               errorStyle: const TextStyle(
-                color: AppColors.textFieldErrorColor,
+                color: AppColors.errorRedColor,
               ),
               errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
-                  borderSide: BorderSide(
-                      color: AppColors.textFieldErrorColor, width: 1.w)),
+                  borderSide:
+                      BorderSide(color: AppColors.errorRedColor, width: 1.w)),
               focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
-                  borderSide: BorderSide(
-                      color: AppColors.textFieldErrorColor, width: 1.w)),
+                  borderSide:
+                      BorderSide(color: AppColors.errorRedColor, width: 1.w)),
             ),
           ),
         ],
@@ -135,7 +158,7 @@ class Widgets {
       padding: EdgeInsets.only(left: 16.w, top: 8.h, bottom: 8.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: const Color(0xFF3C3C3C).withOpacity(0.9),
+        color: AppColors.black_4A,
       ),
       child: Row(
         children: [
@@ -149,6 +172,29 @@ class Widgets {
             style: TextStyle(fontSize: 14.sp, color: Colors.white),
           ),
         ],
+      ),
+    );
+  }
+
+  static Widget titleList(String title, Function function, {Widget? widget}) {
+    return GestureDetector(
+      onTap: () => function(),
+      child: Container(
+        padding: EdgeInsets.only(left: 24.w, right: 24.w),
+        alignment: Alignment.centerLeft,
+        width: 360.w,
+        height: 46.h,
+        color: Colors.transparent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 14.sp),
+            ),
+            widget ?? Container()
+          ],
+        ),
       ),
     );
   }
@@ -193,7 +239,7 @@ class Widgets {
                         height: 60.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.r),
-                            color: AppColors.cancelGreyColor),
+                            color: AppColors.grey_F2),
                         child: Center(
                             child: Text(
                           '취소',
@@ -201,7 +247,61 @@ class Widgets {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16.sp,
-                              color: AppColors.textFieldHintColor),
+                              color: AppColors.grey_8D),
+                        )),
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+  static Future deleteBottomSheet(BuildContext context, String title,
+      Widget content, String btnTitle, Function btnFunction) {
+    return showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.white,
+        builder: (context) {
+          return Container(
+            height: 340.h,
+            padding: EdgeInsets.only(
+                top: 30.h, left: 24.w, right: 24.w, bottom: 40.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style:
+                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                ),
+                Container(
+                    margin: EdgeInsets.only(top: 24.h, bottom: 30.h),
+                    height: 48.h,
+                    child: content),
+                Column(
+                  children: [
+                    Widgets.redButton(btnTitle, () {
+                      btnFunction();
+                    }),
+                    GestureDetector(
+                      onTap: () => context.pop(),
+                      child: Container(
+                        margin: EdgeInsets.only(top: 12.h),
+                        height: 60.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: AppColors.grey_F2),
+                        child: Center(
+                            child: Text(
+                          '취소',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                              color: AppColors.grey_8D),
                         )),
                       ),
                     )

@@ -12,4 +12,5 @@ class AppColors {
 
   static const shadowGreyColor = Color(0xffFDFDFD);
   static const errorRedColor = Color(0xffEE5757);
+  static const buttonRedColor = Color(0xffFFE7E7);
 }

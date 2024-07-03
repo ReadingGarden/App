@@ -194,30 +194,29 @@ class _MyPageState extends ConsumerState<MyPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _subTitleList('설정'),
-                  _titleList('프로필', () {
-                    context.goNamed('profile');
-                  }),
-                  _titleList('계정 관리', () {}),
-                  _titleList('알림 설정', () {}),
+                  Widgets.titleList('프로필', () => context.goNamed('profile')),
+                  Widgets.titleList(
+                      '계정 관리', () => context.goNamed('auth-manage')),
+                  Widgets.titleList('알림 설정', () {}),
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),
                     height: 1.h,
                     color: AppColors.grey_F2,
                   ),
                   _subTitleList('지원'),
-                  _titleList('이용 가이드', () {
+                  Widgets.titleList('이용 가이드', () {
                     ref.read(userResponseProvider.notifier).state['user_nick'] =
                         '변경';
 
                     print('이용가이드 페이지로');
                   }),
-                  _titleList('1:1 문의하기', () {
+                  Widgets.titleList('1:1 문의하기', () {
                     print('1:1 문의하기 페이지로');
                   }),
-                  _titleList('의견 보내기', () {
+                  Widgets.titleList('의견 보내기', () {
                     print('의견보내기 페이지로');
                   }),
-                  _titleList('리뷰 작성하기', () {
+                  Widgets.titleList('리뷰 작성하기', () {
                     print('리뷰작성하기 페이지로');
                   }),
                   Container(
@@ -226,30 +225,13 @@ class _MyPageState extends ConsumerState<MyPage> {
                     color: AppColors.grey_F2,
                   ),
                   _subTitleList('기타'),
-                  _titleList('이용 약관', () {
+                  Widgets.titleList('이용 약관', () {
                     print('이용 약관 페이지로');
                   }),
                 ],
               )
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _titleList(String title, Function function) {
-    return GestureDetector(
-      onTap: () => function(),
-      child: Container(
-        padding: EdgeInsets.only(left: 24.w),
-        alignment: Alignment.centerLeft,
-        color: Colors.transparent,
-        width: 360.w,
-        height: 46.h,
-        child: Text(
-          title,
-          style: TextStyle(fontSize: 14.sp),
         ),
       ),
     );

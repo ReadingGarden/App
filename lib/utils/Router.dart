@@ -1,3 +1,4 @@
+import 'package:book_flutter/mypage/AuthManagePage.dart';
 import 'package:book_flutter/mypage/NickNamePage.dart';
 import 'package:book_flutter/mypage/ProfileImagePage.dart';
 import 'package:book_flutter/mypage/ProfilePage.dart';
@@ -83,10 +84,15 @@ final GoRouter router = GoRouter(
                     builder: (context, state) => NickNamePage(),
                   ),
                   GoRoute(
-                    path: 'profileimage',
-                    name: 'profileimage',
+                    path: 'profile-image',
+                    name: 'profile-image',
                     builder: (context, state) => ProfileImagePage(),
                   )
                 ]),
+            GoRoute(
+              path: 'auth-manage',
+              name: 'auth-manage',
+              builder: (context, state) => AuthManagePage(),
+            )
           ]),
     ]);

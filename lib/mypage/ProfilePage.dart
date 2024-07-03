@@ -46,7 +46,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             _titleList(
               '대표 프로필 변경',
               () {
-                context.goNamed('profileimage');
+                context.goNamed('profile-image');
               },
               widget: Container(
                 alignment: Alignment.center,
