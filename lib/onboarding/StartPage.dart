@@ -35,8 +35,7 @@ class StartPage extends StatelessWidget {
                 ),
                 Text(
                   '하루하루 꾸준히 책을 보다보면\n내가 읽은 책이 꽃이 되어 가든을 가득 채울거에요',
-                  style: TextStyle(
-                      fontSize: 14.sp, color: AppColors.textGreyColor),
+                  style: TextStyle(fontSize: 14.sp, color: AppColors.grey_8D),
                 )
               ],
             )),

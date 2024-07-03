@@ -79,13 +79,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.only(
-                top: 20.h, bottom: 60.h, left: 24.w, right: 24.w),
+                top: 20.h,
+                bottom: (errorText == null) ? 80.h : 40.h,
+                left: 24.w,
+                right: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(bottom: 60.h),
+                  margin: EdgeInsets.only(bottom: 44.h),
                   height: 72.h,
                   child: Text(
                     '책을 읽어서\n나만의 가든을 꾸며봐요',
@@ -101,9 +104,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Widgets.textfield(ref, _pwdController, '비밀번호',
                         '비밀번호를 입력해주세요', errorText, loginErrorProvider,
                         isPwd: true)),
-                Widgets.button('이메일로\n로그인', true, () => postLogin()),
+                Widgets.button('이메일로 로그인', true, () => postLogin()),
                 Container(
-                  margin: EdgeInsets.only(top: 18.h, bottom: 56.h),
+                  margin: EdgeInsets.only(top: 24.h, bottom: 50.h),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -111,14 +114,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         onTap: () => context.goNamed('pwd-find'),
                         child: const Text(
                           '비밀번호 찾기',
-                          style: TextStyle(color: AppColors.textGreyColor),
+                          style: TextStyle(color: AppColors.grey_8D),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                        child: VerticalDivider(
-                          thickness: 1,
-                          color: AppColors.textGreyColor,
+                      Container(
+                        margin: EdgeInsets.only(left: 8.w, right: 10.w),
+                        child: const Text(
+                          '|',
+                          style: TextStyle(color: AppColors.grey_8D),
                         ),
                       ),
                       GestureDetector(
@@ -132,7 +135,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
                 const Divider(
                   thickness: 1,
-                  color: AppColors.dividerGreyColor,
+                  color: AppColors.grey_F2,
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
@@ -140,18 +143,18 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CircleAvatar(
-                        backgroundColor: const Color(0xFF2E2E2E),
+                        backgroundColor: AppColors.black_4A,
                         radius: 27.5.r,
                         child: SvgPicture.asset('assets/images/apple_logo.svg'),
                       ),
                       CircleAvatar(
-                        backgroundColor: const Color(0xFFF5F5F5),
+                        backgroundColor: AppColors.grey_F2,
                         radius: 27.5.r,
                         child:
                             SvgPicture.asset('assets/images/google_logo.svg'),
                       ),
                       CircleAvatar(
-                        backgroundColor: const Color(0xFFFFEF5E),
+                        backgroundColor: const Color(0xffFFEF5E),
                         radius: 27.5.r,
                         child: SvgPicture.asset('assets/images/kakao_logo.svg'),
                       )

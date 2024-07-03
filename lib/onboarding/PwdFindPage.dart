@@ -82,7 +82,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       if (response?.statusCode == 200) {
         context.goNamed('pwd-setting', extra: _emailController.text);
       } else if (response?.statusCode == 400) {
-        ref.read(authErrorProvider.notifier).state = '인증번호 불일치';
+        ref.read(authErrorProvider.notifier).state = '인증번호가 일치하지 않아요';
       }
     }
 
@@ -132,25 +132,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                             '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
                             validateFunction: _emailValidate)),
                     (!authSendBool)
-                        ? Container(
-                            padding: EdgeInsets.only(top: 8.h, bottom: 24.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                    margin: EdgeInsets.only(bottom: 4.h),
-                                    height: 20.h,
-                                    child: const Text('인증번호')),
-                                Container(
-                                  height: 54.h,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      color: const Color(0xFFF1F3F5)),
-                                )
-                              ],
-                            ),
-                          )
-                        : Stack(
+                        ? Stack(
                             alignment: Alignment.bottomRight,
                             children: [
                               SizedBox(
@@ -167,7 +149,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                                   height: 20.h,
                                   margin: EdgeInsets.only(
                                       bottom:
-                                          (authErrorText == null) ? 42.h : 52.h,
+                                          (authErrorText == null) ? 30.h : 42.h,
                                       right: 16.w),
                                   child: Text(
                                     '05:00',
@@ -177,7 +159,8 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                                         color: AppColors.primaryColor),
                                   )),
                             ],
-                          ),
+                          )
+                        : Container(),
                   ],
                 ),
               ],
@@ -195,7 +178,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
             : Container(
                 margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
                 child: Widgets.button(
-                  '인증번호\n전송',
+                  '인증번호 전송',
                   authButtonBool,
                   () => postPwdFind(),
                 )));

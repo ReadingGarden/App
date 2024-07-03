@@ -87,7 +87,7 @@ class SignupPage extends ConsumerWidget {
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.only(
-                top: 20.h, bottom: 32.h, left: 24.w, right: 24.w),
+                top: 20.h, bottom: 38.h, left: 24.w, right: 24.w),
             child: Column(
               children: [
                 Column(
@@ -95,7 +95,7 @@ class SignupPage extends ConsumerWidget {
                   children: [
                     Container(
                         alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(bottom: 60.h),
+                        margin: EdgeInsets.only(bottom: 62.h),
                         height: 36.h,
                         child: Text(
                           '회원가입',
@@ -130,20 +130,20 @@ class SignupPage extends ConsumerWidget {
                 ),
                 Container(
                   margin: EdgeInsets.only(
-                      top: (pwdCheckErrorText == null) ? 112.h : 59.h),
+                      top: (pwdCheckErrorText == null) ? 117.h : 57.h),
                   child: Column(
                     children: [
                       Container(
                         margin: EdgeInsets.only(bottom: 24.h),
-                        height: 40.h,
+                        height: 44.h,
                         child: const Text(
                           '이메일로 회원가입 시 이용약관 및\n개인정보수집이용에 동의하는 것으로 간주됩니다',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: AppColors.textGreyColor),
+                          style: TextStyle(color: AppColors.grey_8D),
                         ),
                       ),
                       Widgets.button(
-                        '이메일로\n회원가입',
+                        '이메일로 회원가입',
                         isValid,
                         () => postSignup(context, ref),
                       ),

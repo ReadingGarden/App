@@ -90,8 +90,9 @@ class Widgets {
       {Function? validateFunction,
       bool? isPwd}) {
     return Container(
+      // height: (errorText == null) ? 92.h : 112.h,
       padding: (errorText == null)
-          ? EdgeInsets.only(top: 8.h, bottom: 24.h)
+          ? EdgeInsets.only(top: 6.h, bottom: 12.h)
           : EdgeInsets.only(top: 8.h, bottom: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,7 +120,7 @@ class Widgets {
               fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,
-              hintStyle: const TextStyle(color: AppColors.grey_8D),
+              hintStyle: TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
                   borderSide:
@@ -133,7 +134,8 @@ class Widgets {
                   borderSide:
                       BorderSide(color: Colors.transparent, width: 1.w)),
               errorText: errorText,
-              errorStyle: const TextStyle(
+              errorStyle: TextStyle(
+                fontSize: 14.sp,
                 color: AppColors.errorRedColor,
               ),
               errorBorder: OutlineInputBorder(
