@@ -35,7 +35,25 @@ class _MemoPageState extends ConsumerState<MemoPage> {
             )
           ],
         ),
-        body: _emptyMemo());
+        body: (true) ? _memoList() : _emptyMemo());
+  }
+
+  Widget _memoList() {
+    return ListView(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      children: List.generate(
+        1,
+        (index) {
+          return Container(
+            width: 312.w,
+            height: 352.h,
+            decoration: BoxDecoration(
+                border: Border.all(color: Color(0xffF1F1F1)),
+                borderRadius: BorderRadius.circular(20.r)),
+          );
+        },
+      ),
+    );
   }
 
   Widget _emptyMemo() {
