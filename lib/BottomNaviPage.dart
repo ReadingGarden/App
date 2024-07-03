@@ -1,9 +1,10 @@
-import 'package:book_flutter/garden/GardenPage.dart';
-import 'package:book_flutter/mypage/MyPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'garden/GardenPage.dart';
+import 'memo/MemoPage.dart';
+import 'mypage/MyPage.dart';
 import 'utils/AppColors.dart';
 
 //현재 선택된 인덱스를 관리하는 ...
@@ -23,7 +24,7 @@ class BottomNaviPage extends ConsumerWidget {
         children: [
           GardenPage(),
           Center(child: Text('Search Screen')),
-          MyPage(),
+          MemoPage(),
           MyPage()
         ],
       ),
@@ -82,7 +83,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           _buildTabItem(
             index: 2,
             icon: Icons.memory,
-            label: 'MyPage',
+            label: 'Memo',
           ),
           _buildTabItem(
             index: 3,

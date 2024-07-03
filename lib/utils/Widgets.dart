@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../utils/AppColors.dart';
 
 class Widgets {
-  static appBar(BuildContext context, {String? title}) {
+  static appBar(BuildContext context, {String? title, List<Widget>? actions}) {
     return AppBar(
       // 스크롤 -> 반투명 없애기
       scrolledUnderElevation: 0,
@@ -28,6 +28,8 @@ class Widgets {
           child: SvgPicture.asset('assets/images/angle-left.svg'),
         ),
       ),
+
+      actions: actions,
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:book_flutter/BottomNaviPage.dart';
+import 'package:book_flutter/memo/MemoBookPage.dart';
 import 'package:book_flutter/mypage/AuthManagePage.dart';
 import 'package:book_flutter/mypage/NickNamePage.dart';
 import 'package:book_flutter/mypage/ProfileImagePage.dart';
@@ -9,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import '../main.dart';
 import '../ErrorPage.dart';
 import '../garden/GardenPage.dart';
+import '../memo/MemoPage.dart';
 import '../mypage/MyPage.dart';
 import '../onboarding/LoginPage.dart';
 import '../onboarding/PwdFindPage.dart';
@@ -70,6 +72,17 @@ final GoRouter router = GoRouter(
         name: 'bottom-navi',
         builder: (context, state) => BottomNaviPage(),
       ),
+      GoRoute(
+          path: '/bottom-navi/memo',
+          name: 'memo',
+          builder: (context, state) => MemoPage(),
+          routes: [
+            GoRoute(
+              path: 'memo-book',
+              name: 'memo-book',
+              builder: (context, state) => MemoBookPage(),
+            ),
+          ]),
       GoRoute(
           path: '/bottom-navi/mypage',
           name: 'mypage',
