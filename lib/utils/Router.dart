@@ -1,9 +1,3 @@
-import 'package:book_flutter/BottomNaviPage.dart';
-import 'package:book_flutter/memo/MemoBookPage.dart';
-import 'package:book_flutter/mypage/AuthManagePage.dart';
-import 'package:book_flutter/mypage/NickNamePage.dart';
-import 'package:book_flutter/mypage/ProfileImagePage.dart';
-import 'package:book_flutter/mypage/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,12 +5,19 @@ import '../main.dart';
 import '../ErrorPage.dart';
 import '../garden/GardenPage.dart';
 import '../memo/MemoPage.dart';
+import '../memo/MemoBookPage.dart';
 import '../mypage/MyPage.dart';
+import '../mypage/AlertSettingPage.dart';
+import '../mypage/AuthManagePage.dart';
+import '../mypage/NickNamePage.dart';
+import '../mypage/ProfileImagePage.dart';
+import '../mypage/ProfilePage.dart';
 import '../onboarding/LoginPage.dart';
 import '../onboarding/PwdFindPage.dart';
 import '../onboarding/PwdSettingPage.dart';
 import '../onboarding/SignupPage.dart';
 import '../onboarding/StartPage.dart';
+import '../BottomNaviPage.dart';
 
 final GoRouter router = GoRouter(
     initialLocation: '/',
@@ -108,6 +109,11 @@ final GoRouter router = GoRouter(
               path: 'auth-manage',
               name: 'auth-manage',
               builder: (context, state) => AuthManagePage(),
+            ),
+            GoRoute(
+              path: 'alert',
+              name: 'alert',
+              builder: (context, state) => AlertSettingPage(),
             )
           ]),
       GoRoute(

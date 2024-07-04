@@ -197,7 +197,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                   Widgets.titleList('프로필', () => context.pushNamed('profile')),
                   Widgets.titleList(
                       '계정 관리', () => context.pushNamed('auth-manage')),
-                  Widgets.titleList('알림 설정', () {}),
+                  Widgets.titleList('알림 설정', () => context.pushNamed('alert')),
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),
                     height: 1.h,

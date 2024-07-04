@@ -210,9 +210,12 @@ class Widgets {
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-            height: 340.h,
-            padding: EdgeInsets.only(
-                top: 30.h, left: 24.w, right: 24.w, bottom: 40.h),
+            height: 302.h,
+            margin: EdgeInsets.only(
+              top: 30.h,
+              left: 24.w,
+              right: 24.w,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -270,9 +273,8 @@ class Widgets {
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-            height: 340.h,
-            padding: EdgeInsets.only(
-                top: 30.h, left: 24.w, right: 24.w, bottom: 40.h),
+            height: 302.h,
+            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
