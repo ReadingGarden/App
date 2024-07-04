@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
+import '../utils/TimerNotifier.dart';
 import '../utils/Widgets.dart';
 import '../core/provider/AuthServiceProvider.dart';
 
@@ -39,6 +40,16 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+
+    //상태 초기화
+    Future.microtask(() {
+      ref.read(emailErrorProvider.notifier).state = null;
+      ref.read(authErrorProvider.notifier).state = null;
+      ref.read(authButtonProvider.notifier).state = false;
+      ref.read(authSendProvider.notifier).state = false;
+      ref.read(authCheckProvider.notifier).state = false;
+      ref.read(timerProvider.notifier).resetTimer();
+    });
   }
 
   @override
@@ -54,7 +65,11 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
     // 인즡번호 입력 상태 구독
     final authCheckBool = ref.watch(authCheckProvider);
 
-    //비밀번호 찾기 api
+    //타이머
+    final timeRemaining = ref.watch(timerProvider);
+    final timerNotifier = ref.read(timerProvider.notifier);
+
+    //인증번호 전송 api
     void postPwdFind() async {
       ref.read(authButtonProvider.notifier).state = false;
 
@@ -65,6 +80,8 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       if (response?.statusCode == 200) {
         fToast.showToast(child: Widgets.toast('인증번호가 발송되었습니다'));
         ref.read(authSendProvider.notifier).state = true;
+        ref.read(timerProvider.notifier).resetTimer();
+        timerNotifier.startTimer();
       } else if (response?.statusCode == 400) {
         ref.read(emailErrorProvider.notifier).state = '등록되지 않은 이메일 주소입니다';
       }
@@ -131,7 +148,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                         child: Widgets.textfield(ref, _emailController, '이메일',
                             '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
                             validateFunction: _emailValidate)),
-                    (!authSendBool)
+                    (authSendBool)
                         ? Stack(
                             alignment: Alignment.bottomRight,
                             children: [
@@ -149,10 +166,10 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                                   height: 20.h,
                                   margin: EdgeInsets.only(
                                       bottom:
-                                          (authErrorText == null) ? 30.h : 42.h,
+                                          (authErrorText == null) ? 30.h : 52.h,
                                       right: 16.w),
                                   child: Text(
-                                    '05:00',
+                                    '${(timeRemaining ~/ 60).toString().padLeft(2, '0')}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
                                     style: TextStyle(
                                         fontSize: 13.sp,
                                         fontWeight: FontWeight.w500,
@@ -167,7 +184,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
             ),
           )),
         ),
-        bottomNavigationBar: (authSendBool)
+        bottomNavigationBar: (authSendBool && (timeRemaining != 0))
             ? Container(
                 margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
                 child: Widgets.button(
