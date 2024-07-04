@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'core/provider/TokenProvider.dart';
+import 'utils/Functions.dart';
 import 'utils/Router.dart';
 
 void main() {
@@ -58,12 +60,16 @@ class MyApp extends StatelessWidget {
 class SplashPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // 자동로그인 판별
-    var isAutoLogin = true;
-
-    // 1초 후에 로그인 페이지로 이동
+    Functions.getAccess(ref);
+    //1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () {
-      isAutoLogin ? context.go('/start') : context.go('bottom-navi');
+      //Access 저장 되어있으면 자동 로그인
+      if (ref.watch(TokenProvider.accessProvider) == null) {
+        context.go('/start');
+      } else {
+        context.go('/bottom-navi');
+      }
+      print('SPLASH ${ref.watch(TokenProvider.accessProvider)}');
     });
 
     return const Scaffold(

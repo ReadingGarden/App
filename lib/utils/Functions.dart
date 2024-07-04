@@ -1,3 +1,6 @@
+import 'package:book_flutter/core/provider/TokenProvider.dart';
+import 'package:book_flutter/utils/SharedPreferences.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 class Functions {
@@ -16,5 +19,10 @@ class Functions {
   static DateTime formatString(String timeString) {
     DateFormat dateFormat = DateFormat('HH:mm');
     return dateFormat.parse(timeString);
+  }
+
+  //AccessToken 불러오기
+  static void getAccess(WidgetRef ref) async {
+    ref.read(TokenProvider.accessProvider.notifier).state = await loadAccess();
   }
 }
