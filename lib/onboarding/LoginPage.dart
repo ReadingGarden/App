@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
 import '../utils/SharedPreferences.dart';
+import '../utils/SocialLogin.dart';
 import '../utils/Widgets.dart';
 import '../core/provider/AuthServiceProvider.dart';
 
@@ -153,10 +154,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         child:
                             SvgPicture.asset('assets/images/google_logo.svg'),
                       ),
-                      CircleAvatar(
-                        backgroundColor: const Color(0xffFFEF5E),
-                        radius: 27.5.r,
-                        child: SvgPicture.asset('assets/images/kakao_logo.svg'),
+                      GestureDetector(
+                        onTap: () {
+                          SocialLogin.kakaoLogin();
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: const Color(0xffFFEF5E),
+                          radius: 27.5.r,
+                          child:
+                              SvgPicture.asset('assets/images/kakao_logo.svg'),
+                        ),
                       )
                     ],
                   ),

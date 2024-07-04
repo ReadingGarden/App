@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'core/provider/TokenProvider.dart';
 import 'utils/Functions.dart';
@@ -11,7 +12,10 @@ import 'utils/Router.dart';
 void main() {
   // 플러그인 초기화
   WidgetsFlutterBinding.ensureInitialized();
-
+  // runApp() 호출 전 Flutter SDK 초기화
+  KakaoSdk.init(
+    nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda',
+  );
   // 위젯이 providers를 읽을 수 있게 하려면 전체 애플리케이션을 "ProviderScope" 위젯으로 감싸야 합니다.
   // 여기에 providers의 상태가 저장됩니다.
   runApp(const ProviderScope(child: MyApp()));
