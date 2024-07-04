@@ -4,12 +4,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 //Switch 상태를 관리하는 ...
 final switchProvider = StateProvider<bool>((ref) => false);
+
+//선택된 시간을 관리하는 ...
+final timeProvider = StateProvider<DateTime>((ref) => DateTime.now());
 
 class AlertSettingPage extends ConsumerStatefulWidget {
   @override
@@ -21,6 +26,8 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
   Widget build(BuildContext context) {
     // Switch 상태를 구독
     final switchState = ref.watch(switchProvider);
+    // 선택된 시간을 구독
+    final selectedTime = ref.watch(timeProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '알림 설정'),
@@ -57,9 +64,16 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                                 height: 230.h,
                                 child: CupertinoDatePicker(
                                   mode: CupertinoDatePickerMode.time,
-                                  onDateTimeChanged: (value) {},
+                                  initialDateTime: selectedTime,
+                                  onDateTimeChanged: (newTime) {
+                                    //선택된 시간 상태 업데이트
+                                    ref.read(timeProvider.notifier).state =
+                                        newTime;
+                                  },
                                 )),
-                            Widgets.button('확인', true, () {})
+                            Widgets.button('확인', true, () {
+                              context.pop();
+                            })
                           ],
                         ),
                       );
@@ -68,7 +82,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
               widget: Row(
                 children: [
                   Text(
-                    '@13:00',
+                    Functions.formatDateTime(selectedTime).toString(),
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
