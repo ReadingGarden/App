@@ -58,4 +58,12 @@ class AuthServiceProvider {
     final accessToken = await loadAccess();
     return authService.getProfile(accessToken);
   });
+
+  // PUT(Profile) 요청을 처리하는 ...
+  static final putProfileProvider =
+      FutureProvider.family<Response?, Map>((ref, data) async {
+    final authService = ref.watch(AuthServiceProvider.authServiceProvider);
+    final accessToken = await loadAccess();
+    return authService.putProfile(accessToken, data);
+  });
 }

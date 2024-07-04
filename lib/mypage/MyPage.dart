@@ -1,9 +1,9 @@
-import 'package:book_flutter/core/provider/ResponseProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/model/User.dart';
 import '../core/provider/AuthServiceProvider.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
@@ -25,15 +25,15 @@ class _MyPageState extends ConsumerState<MyPage> {
     final response =
         await ref.read(AuthServiceProvider.getProfileProvider.future);
     if (response?.statusCode == 200) {
-      ref.read(userResponseProvider.notifier).state = response?.data['data'];
-
-      print('성공');
+      // ref.read(userResponseProvider.notifier).state = response?.data['data'];
+      final user = User.fromJson(response?.data['data']);
+      ref.read(userProvider.notifier).updateUser(user);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final userResponse = ref.watch(userResponseProvider);
+    final user = ref.watch(userProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +67,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                               margin: EdgeInsets.only(bottom: 2.h),
                               height: 24.h,
                               child: Text(
-                                userResponse['user_nick'] ?? '',
+                                user?.user_nick ?? '',
                                 style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold),
@@ -75,7 +75,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                             ),
                             SizedBox(
                                 height: 20.h,
-                                child: Text(userResponse['user_email'] ?? '',
+                                child: Text(user?.user_email ?? '',
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColors.grey_8D))),
@@ -121,7 +121,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    userResponse['garden_count'].toString(),
+                                    user?.garden_count.toString() ?? '0',
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -145,7 +145,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    userResponse['read_book_count'].toString(),
+                                    user?.read_book_count.toString() ?? '0',
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -169,7 +169,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    userResponse['like_book_count'].toString(),
+                                    user?.like_book_count.toString() ?? '0',
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -205,9 +205,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                   ),
                   _subTitleList('지원'),
                   Widgets.titleList('이용 가이드', () {
-                    ref.read(userResponseProvider.notifier).state['user_nick'] =
-                        '변경';
-
                     print('이용가이드 페이지로');
                   }),
                   Widgets.titleList('1:1 문의하기', () {
