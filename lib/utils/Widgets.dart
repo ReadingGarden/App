@@ -12,6 +12,7 @@ class Widgets {
       // 스크롤 -> 반투명 없애기
       scrolledUnderElevation: 0,
       backgroundColor: Colors.white,
+      toolbarHeight: 60.h,
       title: Text(
         title ?? '',
         style: TextStyle(fontSize: 16.sp),

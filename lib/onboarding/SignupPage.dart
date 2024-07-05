@@ -27,7 +27,7 @@ class SignupPage extends ConsumerWidget {
     final data = {
       "user_email": _emailController.text,
       "user_password": _pwdController.text,
-      "use_fcm": "",
+      "user_fcm": "",
       "user_social_id": "",
       "user_social_type": ""
     };

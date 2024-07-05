@@ -9,14 +9,14 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            '독서가든',
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: false,
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   title: Text(
+        //     '독서가든',
+        //     style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        //   ),
+        //   centerTitle: false,
+        // ),
         body: Container(
             margin: EdgeInsets.only(left: 29.w, bottom: 61.h),
             child: Column(

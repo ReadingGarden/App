@@ -11,7 +11,7 @@ class Functions {
   }
 
   //DateTime -> String 변환(HH:mm)
-  static String formatDateTime(DateTime dateTime) {
+  static String formatTime(DateTime dateTime) {
     return DateFormat('HH:mm').format(dateTime);
   }
 
@@ -19,6 +19,11 @@ class Functions {
   static DateTime formatString(String timeString) {
     DateFormat dateFormat = DateFormat('HH:mm');
     return dateFormat.parse(timeString);
+  }
+
+  //DateTime -> String 변환(yyyy년 MM월 dd일)
+  static String formatDate(DateTime dateTime) {
+    return DateFormat('yyyy년 MM월 dd일').format(dateTime);
   }
 
   //AccessToken 불러오기

@@ -1,3 +1,4 @@
+import 'package:book_flutter/memo/MemoWrite.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -79,10 +80,16 @@ final GoRouter router = GoRouter(
           builder: (context, state) => MemoPage(),
           routes: [
             GoRoute(
-              path: 'memo-book',
-              name: 'memo-book',
-              builder: (context, state) => MemoBookPage(),
-            ),
+                path: 'memo-book',
+                name: 'memo-book',
+                builder: (context, state) => MemoBookPage(),
+                routes: [
+                  GoRoute(
+                    path: 'memo-write',
+                    name: 'memo-write',
+                    builder: (context, state) => MemoWritePage(),
+                  ),
+                ]),
           ]),
       GoRoute(
           path: '/bottom-navi/mypage',

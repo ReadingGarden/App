@@ -82,7 +82,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
               widget: Row(
                 children: [
                   Text(
-                    Functions.formatDateTime(selectedTime).toString(),
+                    Functions.formatTime(selectedTime).toString(),
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
