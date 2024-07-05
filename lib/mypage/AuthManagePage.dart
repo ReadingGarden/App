@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
+import '../core/model/User.dart';
+import '../core/provider/AuthServiceProvider.dart';
 import '../utils/AppColors.dart';
+import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
 
 class AuthManagePage extends ConsumerStatefulWidget {
@@ -12,8 +16,31 @@ class AuthManagePage extends ConsumerStatefulWidget {
 }
 
 class _AuthManagePageState extends ConsumerState<AuthManagePage> {
+  void postLogout() async {
+    final response =
+        await ref.read(AuthServiceProvider.postLogoutProvider.future);
+    if (response?.statusCode == 200) {
+      context.pop();
+      removeLoginInfo();
+      context.goNamed('start');
+    } else if (response?.statusCode == 400) {}
+  }
+
+  void deleteUser() async {
+    //TODO - api 확인
+    // final response =
+    //     await ref.read(AuthServiceProvider.deleteUserProvider.future);
+    // if (response?.statusCode == 200) {
+    //   context.pop();
+    //   removeLocalStorage();
+    //   context.goNamed('start');
+    // } else if (response?.statusCode == 400) {}
+  }
+
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userProvider);
+
     return Scaffold(
       appBar: Widgets.appBar(context, title: '계정 관리'),
       body: Container(
@@ -24,7 +51,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
             Widgets.titleList(
               '비밀번호 변경',
               () {
-                // context.goNamed('profileimage');
+                context.pushNamed('pwd-setting', extra: user?.user_email ?? '');
               },
               widget: Container(
                 alignment: Alignment.center,
@@ -39,8 +66,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
               '로그아웃',
               () => Widgets.baseBottomSheet(context, '로그아웃 하시겠어요?',
                   '이때까지 작성한 책 기록을 보려면 다시 로그인 해주셔야 해요.', '로그아웃', () {
-                //TODO: - 로그아웃 api 연결
-                // postLogout();
+                postLogout();
               }),
             ),
             GestureDetector(
@@ -61,8 +87,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
                         TextSpan(text: '이 삭제되며 다시 복구할 수 없습니다.'),
                       ])),
                   '탈퇴하기', () {
-                //TODO: - 탈퇴 api 연결
-                // postLogout();
+                deleteUser();
               }),
               child: Container(
                 alignment: Alignment.centerLeft,

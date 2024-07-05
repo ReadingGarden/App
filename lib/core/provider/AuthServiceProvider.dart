@@ -24,6 +24,13 @@ class AuthServiceProvider {
     return authService.postLogout(accessToken);
   });
 
+  // DELETE(User) 요청을 처리하는 FutureProvider
+  static final deleteUserProvider = FutureProvider<Response?>((ref) async {
+    final authService = ref.watch(authServiceProvider);
+    final accessToken = await loadAccess();
+    return authService.deleteUser(accessToken);
+  });
+
   // POST(Signup) 요청을 처리하는 FutureProvider
   static final postSignupProvider =
       FutureProvider.family<Response?, Map>((ref, data) async {
