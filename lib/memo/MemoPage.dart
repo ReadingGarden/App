@@ -52,13 +52,14 @@ class _MemoPageState extends ConsumerState<MemoPage> {
         2,
         (index) {
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              context.pushNamed('memo-detail');
+            },
             child: Container(
               margin: EdgeInsets.only(bottom: 10.h),
               padding: EdgeInsets.only(
                   left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
               width: 312.w,
-              // height: 352.h,
               decoration: BoxDecoration(
                   border: Border.all(color: AppColors.grey_F2),
                   borderRadius: BorderRadius.circular(20.r),
@@ -66,30 +67,29 @@ class _MemoPageState extends ConsumerState<MemoPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 44.r,
-                          height: 44.r,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.r),
-                              color: Colors.green),
+                  Row(
+                    children: [
+                      Container(
+                        width: 44.r,
+                        height: 44.r,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.r),
+                            color: Colors.green),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 12.w),
+                        child: Column(
+                          children: [
+                            Text('title'),
+                            Text(
+                              'sub',
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            )
+                          ],
                         ),
-                        Container(
-                          margin: EdgeInsets.only(left: 12.w),
-                          child: Column(
-                            children: [
-                              Text('title'),
-                              Text(
-                                'sub',
-                                style: TextStyle(fontSize: 12.sp),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                   Visibility(
                       visible: (index == 0),
