@@ -53,7 +53,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
         (index) {
           return GestureDetector(
             onTap: () {
-              context.pushNamed('memo-detail');
+              context.pushNamed('memo-detail', extra: {'': ''});
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 10.h),

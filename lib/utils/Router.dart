@@ -73,7 +73,7 @@ final GoRouter router = GoRouter(
       GoRoute(
         path: '/bottom-navi',
         name: 'bottom-navi',
-        builder: (context, state) => BottomNaviPage(),
+        builder: (context, state) => const BottomNaviPage(),
       ),
       GoRoute(
           path: '/bottom-navi/memo',
@@ -81,10 +81,14 @@ final GoRouter router = GoRouter(
           builder: (context, state) => MemoPage(),
           routes: [
             GoRoute(
-              path: 'memo-detail',
-              name: 'memo-detail',
-              builder: (context, state) => MemoDetailPage(),
-            ),
+                path: 'memo-detail',
+                name: 'memo-detail',
+                builder: (context, state) {
+                  final Map memo = state.extra as Map;
+                  return MemoDetailPage(
+                    memo: memo,
+                  );
+                }),
             GoRoute(
                 path: 'memo-book',
                 name: 'memo-book',

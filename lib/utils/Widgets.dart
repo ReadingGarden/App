@@ -93,7 +93,6 @@ class Widgets {
       {Function? validateFunction,
       bool? isPwd}) {
     return Container(
-      // height: (errorText == null) ? 92.h : 112.h,
       padding: (errorText == null)
           ? EdgeInsets.only(top: 6.h, bottom: 12.h)
           : EdgeInsets.only(top: 8.h, bottom: 8.h),

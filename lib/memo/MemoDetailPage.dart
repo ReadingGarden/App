@@ -7,6 +7,10 @@ import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
+  const MemoDetailPage({required this.memo});
+
+  final Map memo;
+
   @override
   _MemoBookPageState createState() => _MemoBookPageState();
 }
@@ -50,6 +54,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
+                          // widget.memo['']
                           'title',
                           style: TextStyle(fontSize: 16.sp),
                         ),

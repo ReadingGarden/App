@@ -44,8 +44,9 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
         (index) {
           return GestureDetector(
             onTap: () => context.pushNamed('memo-write'),
-            child: SizedBox(
+            child: Container(
               height: 88.h,
+              color: Colors.transparent,
               child: Row(
                 children: [
                   Container(
