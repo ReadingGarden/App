@@ -15,9 +15,10 @@ final pwdCheckErrorProvider = StateProvider<String?>((ref) => null);
 final isValidProvider = StateProvider<bool>((ref) => false);
 
 class PwdSettingPage extends ConsumerStatefulWidget {
-  const PwdSettingPage({required this.user_email});
+  const PwdSettingPage({required this.user_email, required this.isLoginPage});
 
   final String user_email;
+  final bool isLoginPage;
 
   @override
   _PwdSettingPageState createState() => _PwdSettingPageState();
@@ -54,7 +55,7 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
       final response = await authService.putPwdUpdate(data);
       if (response?.statusCode == 200) {
         fToast.showToast(child: Widgets.toast('새로운 비밀번호가 생성되었습니다'));
-        context.goNamed('login');
+        widget.isLoginPage ? context.goNamed('login') : context.pop();
       }
     }
 
