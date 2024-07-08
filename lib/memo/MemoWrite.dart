@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
@@ -19,15 +20,26 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   final FocusNode _focusNode = FocusNode();
 
   @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(() {
+      ref.read(okButtonProvider.notifier).state = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final okButtonBool = ref.watch(okButtonProvider);
 
     return Scaffold(
-      appBar: Widgets.appBar(
-        context,
-        title: '메모 작성하기',
-        actions: [
-          Container(
+      appBar: Widgets.appBar(context, title: '메모 작성하기', actions: [
+        GestureDetector(
+          onTap: () {
+            if (okButtonBool) {
+            } else {}
+          },
+          child: Container(
             margin: EdgeInsets.only(right: 24.w),
             height: 24.h,
             child: Text(
@@ -38,9 +50,16 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                       ? AppColors.primaryColor
                       : AppColors.grey_8D),
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ], backFunction: () {
+        Widgets.baseBottomSheet(context, '메모가 저장되지 않았어요!',
+            '작성하던 메모를 삭제하고 이전 페이지로 돌아가시겠어요?', '삭제하고 나가기', () {
+          context.pop();
+          context.pop();
+          context.pop();
+        });
+      }),
       body: GestureDetector(
         onTap: () {
           // 키보드 내리기

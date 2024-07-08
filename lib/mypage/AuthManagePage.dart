@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/model/User.dart';
-import '../core/provider/AuthServiceProvider.dart';
+import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
@@ -17,8 +17,7 @@ class AuthManagePage extends ConsumerStatefulWidget {
 
 class _AuthManagePageState extends ConsumerState<AuthManagePage> {
   void postLogout() async {
-    final response =
-        await ref.read(AuthServiceProvider.postLogoutProvider.future);
+    final response = await authService.postLogout();
     if (response?.statusCode == 200) {
       context.pop();
       removeLoginInfo();

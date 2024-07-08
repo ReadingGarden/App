@@ -28,6 +28,6 @@ class Functions {
 
   //AccessToken 불러오기
   static void getAccess(WidgetRef ref) async {
-    ref.read(TokenProvider.accessProvider.notifier).state = await loadAccess();
+    ref.read(tokenProvider.accessProvider.notifier).state = await loadAccess();
   }
 }

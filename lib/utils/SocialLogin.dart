@@ -11,6 +11,7 @@ class SocialLogin {
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
         print('카카오톡으로 로그인 성공 ${token.accessToken}');
+
         _getKakaoUser();
       } catch (error) {
         print('카카오톡으로 로그인 실패 $error');

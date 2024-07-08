@@ -3,11 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
-// import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
-import '../core/provider/AuthServiceProvider.dart';
 
 // 이메일 에러 메시지 상태를 관리하는 프로바이더
 final emailErrorProvider = StateProvider<String?>((ref) => null);
@@ -32,8 +31,7 @@ class SignupPage extends ConsumerWidget {
       "user_social_type": ""
     };
 
-    final response =
-        await ref.read(AuthServiceProvider.postSignupProvider(data).future);
+    final response = await authService.postSignup(data);
     if (response?.statusCode == 201) {
       // 회원가입 완료 페이지로
       context.goNamed('signup-end');

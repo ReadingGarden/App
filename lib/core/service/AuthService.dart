@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';
+import '../../utils/SharedPreferences.dart';
 
 class AuthService {
   final Dio _dio = Dio();
@@ -26,7 +27,8 @@ class AuthService {
   }
 
   // 로그아웃
-  Future<Response?> postLogout(String? accessToken) async {
+  Future<Response?> postLogout() async {
+    final accessToken = await loadAccess();
     try {
       final response = await _dio.post('${Constant.URL}auth/logout',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
@@ -47,7 +49,8 @@ class AuthService {
   }
 
   // 회원 탈퇴
-  Future<Response?> deleteUser(String? accessToken) async {
+  Future<Response?> deleteUser() async {
+    final accessToken = await loadAccess();
     try {
       final response = await _dio.delete('${Constant.URL}auth/',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
@@ -151,7 +154,8 @@ class AuthService {
   }
 
   // 유저 정보 조회
-  Future<Response?> getProfile(String? accessToken) async {
+  Future<Response?> getProfile() async {
+    final accessToken = await loadAccess();
     try {
       final response = await _dio.get('${Constant.URL}auth/',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
@@ -172,7 +176,8 @@ class AuthService {
   }
 
   // 프로필 변경
-  Future<Response?> putProfile(String? accessToken, Map data) async {
+  Future<Response?> putProfile(Map data) async {
+    final accessToken = await loadAccess();
     try {
       final response = await _dio.put('${Constant.URL}auth/',
           data: data,
@@ -193,3 +198,5 @@ class AuthService {
     }
   }
 }
+
+final authService = AuthService();

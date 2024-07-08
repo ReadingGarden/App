@@ -68,12 +68,13 @@ class SplashPage extends ConsumerWidget {
     //1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () {
       //Access 저장 되어있으면 자동 로그인
-      if (ref.watch(TokenProvider.accessProvider) == null) {
-        context.go('/start');
-      } else {
-        context.go('/bottom-navi');
-      }
-      print('SPLASH ${ref.watch(TokenProvider.accessProvider)}');
+      //TODO - 토큰 만료시 처리
+      // if (ref.watch(TokenProvider.accessProvider) == null) {
+      context.go('/start');
+      // } else {
+      // context.go('/bottom-navi');
+      // }
+      print('SPLASH ${ref.watch(tokenProvider.accessProvider)}');
     });
 
     return const Scaffold(

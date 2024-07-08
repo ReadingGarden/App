@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
+
+final memoListProvider = StateProvider<List>((ref) => []);
 
 class MemoPage extends ConsumerStatefulWidget {
   @override
@@ -14,7 +17,25 @@ class MemoPage extends ConsumerStatefulWidget {
 
 class _MemoPageState extends ConsumerState<MemoPage> {
   @override
+  void initState() {
+    super.initState();
+    getMemoLsit();
+  }
+
+  //메모 리스트 조회 api
+  void getMemoLsit() async {
+    final response = await memoService.getMemoList();
+    if (response?.statusCode == 200) {
+      ref.read(memoListProvider.notifier).state = response?.data['data'];
+    } else if (response?.statusCode == 400) {
+      print('토큰에러');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final memoList = ref.watch(memoListProvider);
+
     return Scaffold(
         appBar: AppBar(
           // backgroundColor: Colors.red,
@@ -41,7 +62,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
             )
           ],
         ),
-        body: (true) ? _memoList() : _emptyMemo());
+        body: (memoList.isNotEmpty) ? _memoList() : _emptyMemoList());
   }
 
   Widget _memoList() {
@@ -49,10 +70,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       children: List.generate(
-        2,
+        ref.read(memoListProvider).length,
         (index) {
           return GestureDetector(
             onTap: () {
+              getMemoLsit();
+              print(ref.watch(memoListProvider));
               context.pushNamed('memo-detail', extra: {'': ''});
             },
             child: Container(
@@ -102,7 +125,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                       margin: EdgeInsets.only(top: 10.h),
                       child: Text(
                         '바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기 바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기를 보게된다면',
-                        maxLines: 3,
+                        maxLines: 5,
                         style: TextStyle(
                             fontSize: 12.sp, overflow: TextOverflow.ellipsis),
                       )),
@@ -139,7 +162,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
     );
   }
 
-  Widget _emptyMemo() {
+  Widget _emptyMemoList() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

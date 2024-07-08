@@ -109,24 +109,24 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
           height: 198.h,
           child: Column(
             children: [
-              Stack(
-                alignment: Alignment.centerRight,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    height: 60.h,
-                    child: Text(
-                      '더보기',
-                      style: TextStyle(fontSize: 16.sp),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 18.w),
-                    child: SvgPicture.asset('assets/images/multiply.svg',
-                        width: 24.r, height: 24.r),
-                  )
-                ],
+              // Stack(
+              //   alignment: Alignment.centerRight,
+              //   children: [
+              Container(
+                alignment: Alignment.center,
+                height: 60.h,
+                child: Text(
+                  '더보기',
+                  style: TextStyle(fontSize: 16.sp),
+                ),
               ),
+              // Container(
+              //   margin: EdgeInsets.only(right: 18.w),
+              //   child: SvgPicture.asset('assets/images/multiply.svg',
+              //       width: 24.r, height: 24.r),
+              // )
+              //   ],
+              // ),
               Container(
                 margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 20.h),
                 alignment: Alignment.centerLeft,

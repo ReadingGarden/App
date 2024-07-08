@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/model/User.dart';
-import '../core/provider/AuthServiceProvider.dart';
+import '../core/provider/ResponseProvider.dart';
+import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
@@ -22,18 +22,16 @@ class _MyPageState extends ConsumerState<MyPage> {
 
   //프로필 조회 api
   void getProfile() async {
-    final response =
-        await ref.read(AuthServiceProvider.getProfileProvider.future);
+    final response = await authService.getProfile();
     if (response?.statusCode == 200) {
-      // ref.read(userResponseProvider.notifier).state = response?.data['data'];
-      final user = User.fromJson(response?.data['data']);
-      ref.read(userProvider.notifier).updateUser(user);
+      ref.read(responseProvider.userMapProvider.notifier).state =
+          response?.data['data'];
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(responseProvider.userMapProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +65,8 @@ class _MyPageState extends ConsumerState<MyPage> {
                               margin: EdgeInsets.only(bottom: 2.h),
                               height: 24.h,
                               child: Text(
-                                user?.user_nick ?? '',
+                                user?['user_nick'] ?? '',
+                                // user?.user_nick ?? '',
                                 style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold),
@@ -75,7 +74,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                             ),
                             SizedBox(
                                 height: 20.h,
-                                child: Text(user?.user_email ?? '',
+                                child: Text(user?['user_email'] ?? '',
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColors.grey_8D))),
@@ -121,7 +120,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    user?.garden_count.toString() ?? '0',
+                                    user?['garden_count'].toString() ?? '0',
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -145,7 +144,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    user?.read_book_count.toString() ?? '0',
+                                    user?['read_book_count'].toString() ?? '0',
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -169,7 +168,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    user?.like_book_count.toString() ?? '0',
+                                    user?['like_book_count'].toString() ?? '0',
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,

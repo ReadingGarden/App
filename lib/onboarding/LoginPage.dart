@@ -5,11 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/SharedPreferences.dart';
 import '../utils/SocialLogin.dart';
 import '../utils/Widgets.dart';
-import '../core/provider/AuthServiceProvider.dart';
 
 // 이메일, 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final loginErrorProvider = StateProvider<String?>((ref) => null);
@@ -33,18 +33,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   //로그인 api
-  void postLogin() async {
-    final data = {
-      "user_email": _emailController.text,
-      "user_password": _pwdController.text,
-      //TODO: 고치기
-      "use_fcm": "",
-      "user_social_id": "",
-      "user_social_type": ""
-    };
-
-    final response =
-        await ref.read(AuthServiceProvider.postLoginProvider(data).future);
+  void postLogin(Map data) async {
+    final response = await authService.postLogin(data);
     if (response?.statusCode == 200) {
       // access,refresh 저장하고 가든 페이지로
       saveAccess(response?.data['data']['access_token']);
@@ -105,7 +95,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Widgets.textfield(ref, _pwdController, '비밀번호',
                         '비밀번호를 입력해주세요', errorText, loginErrorProvider,
                         isPwd: true)),
-                Widgets.button('이메일로 로그인', true, () => postLogin()),
+                Widgets.button('이메일로 로그인', true, () {
+                  final data = {
+                    "user_email": _emailController.text,
+                    "user_password": _pwdController.text,
+                    "user_fcm": "",
+                    "user_social_id": "",
+                    "user_social_type": ""
+                  };
+                  postLogin(data);
+                }),
                 Container(
                   margin: EdgeInsets.only(top: 24.h, bottom: 50.h),
                   child: Row(

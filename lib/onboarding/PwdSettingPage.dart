@@ -4,9 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../utils/Functions.dart';
+import '../core/service/AuthService.dart';
 import '../utils/Widgets.dart';
-import '../core/provider/AuthServiceProvider.dart';
 
 // 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final pwdErrorProvider = StateProvider<String?>((ref) => null);
@@ -35,6 +34,8 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+
+    print(widget.user_email);
   }
 
   @override
@@ -50,8 +51,7 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
         "user_password": _pwdController.text
       };
 
-      final response =
-          await ref.read(AuthServiceProvider.putPwdUpdateProvider(data).future);
+      final response = await authService.putPwdUpdate(data);
       if (response?.statusCode == 200) {
         fToast.showToast(child: Widgets.toast('새로운 비밀번호가 생성되었습니다'));
         context.goNamed('login');

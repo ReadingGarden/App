@@ -20,7 +20,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Text(ref.watch(TokenProvider.accessProvider) ?? 'null')),
+          child: Text(ref.watch(tokenProvider.accessProvider) ?? 'null')),
     );
   }
 }

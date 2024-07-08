@@ -7,7 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../utils/AppColors.dart';
 
 class Widgets {
-  static appBar(BuildContext context, {String? title, List<Widget>? actions}) {
+  static appBar(BuildContext context,
+      {String? title, List<Widget>? actions, Function? backFunction}) {
     return AppBar(
       // 스크롤 -> 반투명 없애기
       scrolledUnderElevation: 0,
@@ -19,7 +20,11 @@ class Widgets {
       ),
       leading: GestureDetector(
         onTap: () {
-          context.pop();
+          if (backFunction != null) {
+            backFunction();
+          } else {
+            context.pop();
+          }
         },
         child: Container(
           alignment: Alignment.center,

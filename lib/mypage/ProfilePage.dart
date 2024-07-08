@@ -4,8 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/model/User.dart';
-import '../core/provider/AuthServiceProvider.dart';
+import '../core/provider/ResponseProvider.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
@@ -15,18 +14,9 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
-  //로그아웃 api
-  void postLogout() async {
-    final response =
-        await ref.read(AuthServiceProvider.postLogoutProvider.future);
-    if (response?.statusCode == 200) {
-      context.goNamed('start');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
+    final user = ref.watch(responseProvider.userMapProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '프로필'),
@@ -64,7 +54,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               widget: Row(
                 children: [
                   Text(
-                    user?.user_nick ?? '',
+                    user?['user_nick'] ?? '',
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
@@ -83,7 +73,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               '이메일',
               () {},
               widget: Text(
-                user?.user_email ?? '',
+                user?['user_email'] ?? '',
                 style: const TextStyle(color: AppColors.grey_8D),
               ),
             ),
