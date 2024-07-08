@@ -21,6 +21,7 @@ class TimerNotifier extends StateNotifier<int> {
         ref.read(authErrorProvider.notifier).state =
             '인증 시간이 만료되었어요. 다시 인증해주세요.';
         ref.read(authButtonProvider.notifier).state = true;
+        ref.read(authSendTextProvider.notifier).state = '인증번호 재전송';
       }
     });
   }

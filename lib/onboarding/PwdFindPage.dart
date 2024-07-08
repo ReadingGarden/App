@@ -20,6 +20,8 @@ final authButtonProvider = StateProvider<bool>((ref) => false);
 final authSendProvider = StateProvider<bool>((ref) => false);
 // 인증번호 입력 상태를 관리하는 프로바이더
 final authCheckProvider = StateProvider<bool>((ref) => false);
+// 인증번호 전송 (재전송) 텍스트 상태를 관리하는 ...
+final authSendTextProvider = StateProvider<String>((ref) => '인증번호 전송');
 
 class PwdFindPage extends ConsumerStatefulWidget {
   @override
@@ -48,6 +50,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       ref.read(authButtonProvider.notifier).state = false;
       ref.read(authSendProvider.notifier).state = false;
       ref.read(authCheckProvider.notifier).state = false;
+      ref.read(authSendTextProvider.notifier).state = '인증번호 전송';
       ref.read(timerProvider.notifier).resetTimer();
     });
   }
@@ -194,7 +197,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
             : Container(
                 margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
                 child: Widgets.button(
-                  '인증번호 전송',
+                  ref.watch(authSendTextProvider),
                   authButtonBool,
                   () => postPwdFind(),
                 )));
