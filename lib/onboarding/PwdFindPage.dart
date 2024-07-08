@@ -95,7 +95,8 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
 
       final response = await authService.postPwdFindCheck(data);
       if (response?.statusCode == 200) {
-        context.goNamed('pwd-setting', extra: _emailController.text);
+        context.goNamed('pwd-setting',
+            extra: {'user_email': _emailController.text, 'isLogin': true});
       } else if (response?.statusCode == 400) {
         ref.read(authErrorProvider.notifier).state = '인증번호가 일치하지 않아요';
       }

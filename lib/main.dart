@@ -1,3 +1,4 @@
+import 'package:book_flutter/BottomNaviPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,11 +70,11 @@ class SplashPage extends ConsumerWidget {
     Future.delayed(const Duration(seconds: 2), () {
       //Access 저장 되어있으면 자동 로그인
       //TODO - 토큰 만료시 처리
-      // if (ref.watch(TokenProvider.accessProvider) == null) {
-      context.go('/start');
-      // } else {
-      // context.go('/bottom-navi');
-      // }
+      if (ref.watch(tokenProvider.accessProvider) == null) {
+        context.go('/start');
+      } else {
+        context.go('/bottom-navi');
+      }
       print('SPLASH ${ref.watch(tokenProvider.accessProvider)}');
     });
 

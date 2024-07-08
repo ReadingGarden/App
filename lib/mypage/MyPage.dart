@@ -26,6 +26,8 @@ class _MyPageState extends ConsumerState<MyPage> {
     if (response?.statusCode == 200) {
       ref.read(responseProvider.userMapProvider.notifier).state =
           response?.data['data'];
+    } else if (response?.statusCode == 401) {
+      context.pushNamed('start');
     }
   }
 

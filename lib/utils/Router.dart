@@ -62,10 +62,13 @@ final GoRouter router = GoRouter(
                             path: 'pwd-setting',
                             name: 'pwd-setting',
                             builder: (context, state) {
-                              final String user_email = state.extra as String;
+                              final String user_email = (state.extra
+                                  as Map<String, dynamic>)['user_email'];
+                              final bool isLoginPage = (state.extra
+                                  as Map<String, dynamic>)['isLoginPage'];
                               return PwdSettingPage(
-                                user_email: user_email,
-                              );
+                                  user_email: user_email,
+                                  isLoginPage: isLoginPage);
                             })
                       ])
                 ]),

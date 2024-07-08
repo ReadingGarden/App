@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/model/User.dart';
+import '../core/provider/ResponseProvider.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/SharedPreferences.dart';
@@ -38,8 +38,6 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
-
     return Scaffold(
       appBar: Widgets.appBar(context, title: '계정 관리'),
       body: Container(
@@ -50,7 +48,12 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
             Widgets.titleList(
               '비밀번호 변경',
               () {
-                context.pushNamed('pwd-setting', extra: user?.user_email ?? '');
+                context.pushNamed('pwd-setting', extra: {
+                  'user_email': ref.watch(
+                          responseProvider.userMapProvider)?['user_email'] ??
+                      '',
+                  'isLoginPage': false
+                });
               },
               widget: Container(
                 alignment: Alignment.center,
