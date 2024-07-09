@@ -1,3 +1,4 @@
+import 'package:book_flutter/book/BookshelfPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,12 +22,7 @@ class BottomNaviPage extends ConsumerWidget {
     return Scaffold(
       body: IndexedStack(
         index: currentIndex,
-        children: [
-          GardenPage(),
-          Center(child: Text('Search Screen')),
-          MemoPage(),
-          MyPage()
-        ],
+        children: [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
@@ -68,7 +64,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           _buildTabItem(
             index: 1,
             icon: Icons.book,
-            label: 'Search',
+            label: 'Bookshelf',
           ),
           GestureDetector(
               onTap: () => print('dd'),

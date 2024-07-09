@@ -1,3 +1,4 @@
+import 'package:book_flutter/book/BookshelfPage.dart';
 import 'package:book_flutter/memo/MemoDetailPage.dart';
 import 'package:book_flutter/memo/MemoWrite.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,10 @@ final GoRouter router = GoRouter(
         name: 'bottom-navi',
         builder: (context, state) => const BottomNaviPage(),
       ),
+      GoRoute(
+          path: '/bottom-navi/bookshelf',
+          name: 'bookshelf',
+          builder: (context, state) => BookShelfPage()),
       GoRoute(
           path: '/bottom-navi/memo',
           name: 'memo',
