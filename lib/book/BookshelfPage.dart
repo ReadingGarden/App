@@ -29,10 +29,10 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
+            padding: EdgeInsets.symmetric(horizontal: 25.w),
             height: 36.h,
             decoration: BoxDecoration(
-              color: Colors.amber,
+              // color: Colors.amber,
               border: Border(
                   bottom: BorderSide(
                 width: 1.w,
@@ -49,28 +49,17 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
           ),
           Expanded(
             child: Container(
+                margin: EdgeInsets.only(top: 20.h),
                 child: PageView.builder(
-              itemCount: 3,
-              controller: _pageController,
-              onPageChanged: (int page) {
-                ref.read(pageViewIndexProvider.notifier).state = page;
-              },
-              itemBuilder: (context, index) {
-                return Container(
-                  color: index == 0
-                      ? Colors.red
-                      : index == 1
-                          ? Colors.green
-                          : Colors.blue,
-                  child: Center(
-                    child: Text(
-                      'Page ${index + 1}',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
-                    ),
-                  ),
-                );
-              },
-            )),
+                  itemCount: 3,
+                  controller: _pageController,
+                  onPageChanged: (int page) {
+                    ref.read(pageViewIndexProvider.notifier).state = page;
+                  },
+                  itemBuilder: (context, index) {
+                    return _bookselfList();
+                  },
+                )),
           ),
         ],
       ),
@@ -80,7 +69,6 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
   Widget _titleButton(String title, int index) {
     return GestureDetector(
       onTap: () {
-        print('클릭하면 해당 인덱스 페이지 이동');
         _pageController.animateToPage(index,
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut);
@@ -90,17 +78,65 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
           width: 98.w,
           height: 36.h,
           decoration: BoxDecoration(
-              color: ref.watch(pageViewIndexProvider) == index
-                  ? Colors.red
-                  : Colors.orange,
+              color: Colors.transparent,
+              // color: ref.watch(pageViewIndexProvider) == index
+              //     ? Colors.red
+              //     : Colors.orange,
               border: Border(
                   bottom: BorderSide(
                 color: ref.watch(pageViewIndexProvider) == index
-                    ? Colors.black
+                    ? AppColors.primaryColor
                     : Colors.transparent,
-                width: 1.w,
+                width: 2.w,
               ))),
-          child: Text(title)),
+          child: Text(
+            title,
+            style: TextStyle(color: AppColors.primaryColor),
+          )),
+    );
+  }
+
+  Widget _bookselfList() {
+    return Center(
+        child: ref.watch(pageViewIndexProvider) == 1
+            ? _bookshelfEmpty()
+            : GridView(
+                padding: EdgeInsets.only(left: 24.w, right: 24.w),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.57,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 12.w,
+                    mainAxisSpacing: 20.h),
+                children: List.generate(
+                  9,
+                  (index) {
+                    return Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(bottom: 8.h),
+                          width: 96.w,
+                          height: 142.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              color: Colors.blue),
+                        ),
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            height: 20.h,
+                            child: Text(
+                              'texttexttexttexttext',
+                              overflow: TextOverflow.ellipsis,
+                            ))
+                      ],
+                    );
+                  },
+                ),
+              ));
+  }
+
+  Widget _bookshelfEmpty() {
+    return Container(
+      color: Colors.red,
     );
   }
 }

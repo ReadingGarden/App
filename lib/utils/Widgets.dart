@@ -122,6 +122,7 @@ class Widgets {
                 validateFunction();
               }
             },
+            style: TextStyle(fontSize: 16.sp),
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
               fillColor: AppColors.grey_FA,

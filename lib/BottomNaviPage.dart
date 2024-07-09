@@ -1,7 +1,9 @@
+import 'package:book_flutter/book/BookAddPage.dart';
 import 'package:book_flutter/book/BookshelfPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import 'garden/GardenPage.dart';
 import 'memo/MemoPage.dart';
@@ -22,7 +24,7 @@ class BottomNaviPage extends ConsumerWidget {
     return Scaffold(
       body: IndexedStack(
         index: currentIndex,
-        children: [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
+        children: [GardenPage(), BookAddPage(), MemoPage(), MyPage()],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
@@ -67,7 +69,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             label: 'Bookshelf',
           ),
           GestureDetector(
-              onTap: () => print('dd'),
+              onTap: () => context.pushNamed('book-serach'),
               child: Container(
                 width: 49.r,
                 height: 49.r,

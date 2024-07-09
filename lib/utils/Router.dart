@@ -1,3 +1,6 @@
+import 'package:book_flutter/book/BookAddGardenPage.dart';
+import 'package:book_flutter/book/BookAddPage.dart';
+import 'package:book_flutter/book/BookSerachPage.dart';
 import 'package:book_flutter/book/BookshelfPage.dart';
 import 'package:book_flutter/memo/MemoDetailPage.dart';
 import 'package:book_flutter/memo/MemoWrite.dart';
@@ -80,9 +83,19 @@ final GoRouter router = GoRouter(
         builder: (context, state) => const BottomNaviPage(),
       ),
       GoRoute(
+          path: '/bottom-navi/book-serach',
+          name: 'book-serach',
+          builder: (context, state) => BookSerachPage(),
+          routes: [
+            GoRoute(
+                path: 'book-add-garden',
+                name: 'book-add-garden',
+                builder: (context, state) => BookAddGardenPage()),
+          ]),
+      GoRoute(
           path: '/bottom-navi/bookshelf',
           name: 'bookshelf',
-          builder: (context, state) => BookShelfPage()),
+          builder: (context, state) => BookAddPage()),
       GoRoute(
           path: '/bottom-navi/memo',
           name: 'memo',
