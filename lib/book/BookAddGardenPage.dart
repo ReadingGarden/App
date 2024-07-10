@@ -3,16 +3,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
 final buttonCheckProvider = StateProvider<bool>((ref) => false);
+final detailIsbnProvider = StateProvider<Map>((ref) => {});
 
 class BookAddGardenPage extends ConsumerStatefulWidget {
   _BookAddGardenPageState createState() => _BookAddGardenPageState();
 }
 
 class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
+  @override
+  void initState() {
+    super.initState();
+    getDetailBook_ISBN('9788932916194');
+  }
+
+  //책 상세조회 isbn api
+  void getDetailBook_ISBN(String isbn) async {
+    final response = await bookService.getDetailBook_ISBN(isbn);
+    if (response?.statusCode == 200) {
+      ref.read(detailIsbnProvider.notifier).state = response?.data['data'];
+    } else if (response?.statusCode == 400) {
+      print('토큰에러');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,38 +46,34 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                   height: 307.h,
                   child: Column(
                     children: [
-                      Container(
-                        width: 122.w,
-                        height: 180.h,
-                        decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                  offset: const Offset(0, 4),
-                                  blurRadius: 8.r,
-                                  color: Colors.black.withOpacity(0.1)),
-                            ],
-                            borderRadius: BorderRadius.circular(8.r),
-                            color: Colors.green),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Image.network(
+                          width: 122.w,
+                          height: 180.h,
+                          fit: BoxFit.cover,
+                          ref.watch(detailIsbnProvider)['cover'],
+                        ),
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 29.h, bottom: 6.h),
                         child: Text(
-                          '@어쩌구 저쩌구',
+                          ref.watch(detailIsbnProvider)['title'],
                           style: TextStyle(fontSize: 18.sp),
                         ),
                       ),
                       Text(
-                        '@어쩌구 (지은이)',
+                        ref.watch(detailIsbnProvider)['author'],
                         style: TextStyle(
                             fontSize: 14.sp, color: AppColors.grey_8D),
                       ),
                       Text(
-                        '@출판사',
+                        ref.watch(detailIsbnProvider)['publisher'],
                         style: TextStyle(
                             fontSize: 14.sp, color: AppColors.grey_8D),
                       ),
                       Text(
-                        '@144p',
+                        '${ref.watch(detailIsbnProvider)['itemPage']}p',
                         style: TextStyle(
                             fontSize: 14.sp, color: AppColors.grey_8D),
                       ),
@@ -159,7 +173,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                         ),
                       ),
                       Text(
-                        '바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 아름다운 무지개 물고기의 비늘을 질투했지만 그래도 무지개바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 어케된거임바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 아름다운 무지개 물고기의 비늘을 질투했지만 그래도 무지개바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 어케된거임바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. ',
+                        ref.watch(detailIsbnProvider)['description'],
                         style: TextStyle(fontSize: 12.sp),
                       ),
                     ],
