@@ -24,7 +24,7 @@ class BottomNaviPage extends ConsumerWidget {
     return Scaffold(
       body: IndexedStack(
         index: currentIndex,
-        children: [GardenPage(), BookAddPage(), MemoPage(), MyPage()],
+        children: [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,

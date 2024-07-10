@@ -27,15 +27,13 @@ class _MemoPageState extends ConsumerState<MemoPage> {
     final response = await memoService.getMemoList();
     if (response?.statusCode == 200) {
       ref.read(memoListProvider.notifier).state = response?.data['data'];
-    } else if (response?.statusCode == 400) {
+    } else if (response?.statusCode == 401) {
       print('토큰에러');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final memoList = ref.watch(memoListProvider);
-
     return Scaffold(
         appBar: AppBar(
           // backgroundColor: Colors.red,
@@ -49,7 +47,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
           ),
           actions: [
             GestureDetector(
-              onTap: () => context.pushNamed('memo-book'),
+              onTap: () async {
+                final result = await context.pushNamed('memo-book');
+                if (result != null) {
+                  getMemoLsit();
+                }
+              },
               child: Container(
                 margin: EdgeInsets.only(right: 14.w),
                 color: Colors.transparent,
@@ -62,11 +65,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
             )
           ],
         ),
-        body: (memoList.isNotEmpty) ? _memoList() : _emptyMemoList());
+        body: (ref.watch(memoListProvider).isNotEmpty)
+            ? _memoList()
+            : _emptyMemoList());
   }
 
   Widget _memoList() {
-    DateTime now = DateTime.now();
     return ListView(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       children: List.generate(
@@ -75,7 +79,6 @@ class _MemoPageState extends ConsumerState<MemoPage> {
           return GestureDetector(
             onTap: () {
               getMemoLsit();
-              print(ref.watch(memoListProvider));
               context.pushNamed('memo-detail', extra: {'': ''});
             },
             child: Container(
@@ -103,9 +106,11 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                         margin: EdgeInsets.only(left: 12.w),
                         child: Column(
                           children: [
-                            Text('title'),
                             Text(
-                              'sub',
+                              ref.watch(memoListProvider)[index]['book_title'],
+                            ),
+                            Text(
+                              ref.watch(memoListProvider)[index]['book_author'],
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             )
@@ -115,7 +120,9 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                     ],
                   ),
                   Visibility(
-                      visible: (index == 0),
+                      visible: (ref.watch(memoListProvider)[index]
+                              ['image_url'] !=
+                          null),
                       child: Container(
                         margin: EdgeInsets.only(top: 10.h),
                         height: 140.h,
@@ -124,7 +131,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                   Container(
                       margin: EdgeInsets.only(top: 10.h),
                       child: Text(
-                        '바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기 바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기를 보게된다면',
+                        ref.watch(memoListProvider)[index]['memo_content'],
                         maxLines: 5,
                         style: TextStyle(
                             fontSize: 12.sp, overflow: TextOverflow.ellipsis),
@@ -135,7 +142,9 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            Functions.formatDate(now),
+                            Functions.formatDate(
+                                ref.watch(memoListProvider)[index]
+                                    ['memo_created_at']),
                             style: TextStyle(
                                 fontSize: 12.sp, color: AppColors.grey_8D),
                           ),
@@ -144,7 +153,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                               print('즐찾');
                             },
                             child: SvgPicture.asset(
-                              (true)
+                              (ref.watch(memoListProvider)[index]['memo_like'])
                                   ? 'assets/images/star.svg'
                                   : 'assets/images/star-dis.svg',
                               width: 20.r,

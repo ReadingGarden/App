@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 
 final pageViewIndexProvider = StateProvider<int>((ref) => 0);
+final bookStatusListProvider = StateProvider<List>((ref) => []);
 
 class BookShelfPage extends ConsumerStatefulWidget {
   @override
@@ -13,6 +15,23 @@ class BookShelfPage extends ConsumerStatefulWidget {
 
 class _BookShelfPageState extends ConsumerState<BookShelfPage> {
   final PageController _pageController = PageController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(bookStatusListProvider.notifier).state = [];
+      getBookStatusList(0);
+    });
+  }
+
+  void getBookStatusList(int status) async {
+    final response = await bookService.getBookStatusList(status);
+    if (response?.statusCode == 200) {
+      ref.read(bookStatusListProvider.notifier).state = response?.data['data'];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +54,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
               // color: Colors.amber,
               border: Border(
                   bottom: BorderSide(
+                color: AppColors.grey_F2,
                 width: 1.w,
               )),
             ),
@@ -55,6 +75,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                   controller: _pageController,
                   onPageChanged: (int page) {
                     ref.read(pageViewIndexProvider.notifier).state = page;
+                    getBookStatusList(page);
                   },
                   itemBuilder: (context, index) {
                     return _bookselfList();
@@ -70,8 +91,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
     return GestureDetector(
       onTap: () {
         _pageController.animateToPage(index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut);
+            duration: const Duration(milliseconds: 400), curve: Curves.ease);
+        getBookStatusList(index);
       },
       child: Container(
           alignment: Alignment.center,
@@ -98,7 +119,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
 
   Widget _bookselfList() {
     return Center(
-        child: ref.watch(pageViewIndexProvider) == 1
+        child: ref.watch(bookStatusListProvider).isEmpty
             ? _bookshelfEmpty()
             : GridView(
                 padding: EdgeInsets.only(left: 24.w, right: 24.w),
@@ -108,7 +129,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                     crossAxisSpacing: 12.w,
                     mainAxisSpacing: 20.h),
                 children: List.generate(
-                  9,
+                  ref.watch(bookStatusListProvider).length,
                   (index) {
                     return Column(
                       children: [
@@ -124,7 +145,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                             alignment: Alignment.centerLeft,
                             height: 20.h,
                             child: Text(
-                              'texttexttexttexttext',
+                              ref.watch(bookStatusListProvider)[index]
+                                  ['book_title'],
                               overflow: TextOverflow.ellipsis,
                             ))
                       ],
@@ -136,7 +158,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
 
   Widget _bookshelfEmpty() {
     return Container(
-      color: Colors.red,
+      color: Colors.white,
     );
   }
 }

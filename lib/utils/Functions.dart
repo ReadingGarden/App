@@ -21,9 +21,13 @@ class Functions {
     return dateFormat.parse(timeString);
   }
 
-  //DateTime -> String 변환(yyyy년 MM월 dd일)
-  static String formatDate(DateTime dateTime) {
-    return DateFormat('yyyy년 MM월 dd일').format(dateTime);
+  //String(DateTime) -> String 변환(yyyy년 MM월 dd일)
+  static String formatDate(String dateTimeString) {
+    // String -> DateTime
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    // DateTime -> String
+    String formattedDate = DateFormat('yyyy년 MM월 dd일').format(dateTime);
+    return formattedDate;
   }
 
   //AccessToken 불러오기

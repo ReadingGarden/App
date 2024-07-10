@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
@@ -11,6 +12,10 @@ import '../utils/Widgets.dart';
 final okButtonProvider = StateProvider<bool>((ref) => false);
 
 class MemoWritePage extends ConsumerStatefulWidget {
+  const MemoWritePage({required this.book});
+
+  final Map book;
+
   @override
   _MemoBookPageState createState() => _MemoBookPageState();
 }
@@ -22,10 +27,23 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   @override
   void initState() {
     super.initState();
-
     Future.microtask(() {
       ref.read(okButtonProvider.notifier).state = false;
     });
+  }
+
+  void postMemo() async {
+    Map data = {
+      "book_no": widget.book['book_no'],
+      "memo_content": _memoController.text,
+      "memo_quote": "" //인용
+    };
+    //TODO - 이미지 추가
+    final response = await memoService.postMemo(data);
+    if (response?.statusCode == 201) {
+      context.pop();
+      context.pop('MemoPage_getMemoList');
+    }
   }
 
   @override
@@ -37,7 +55,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
         GestureDetector(
           onTap: () {
             if (okButtonBool) {
-            } else {}
+              postMemo();
+            }
           },
           child: Container(
             margin: EdgeInsets.only(right: 24.w),
@@ -89,11 +108,11 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                       children: [
                         Text(
                           // widget.memo['']
-                          'title',
+                          widget.book['book_title'],
                           style: TextStyle(fontSize: 16.sp),
                         ),
                         Text(
-                          'sub',
+                          widget.book['book_author'],
                           style: TextStyle(
                               fontSize: 14.sp, color: AppColors.grey_8D),
                         )

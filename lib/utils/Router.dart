@@ -1,6 +1,7 @@
 import 'package:book_flutter/book/BookAddGardenPage.dart';
 import 'package:book_flutter/book/BookAddPage.dart';
 import 'package:book_flutter/book/BookSerachPage.dart';
+import 'package:book_flutter/book/BookUserWritePage.dart';
 import 'package:book_flutter/book/BookshelfPage.dart';
 import 'package:book_flutter/memo/MemoDetailPage.dart';
 import 'package:book_flutter/memo/MemoWrite.dart';
@@ -91,6 +92,10 @@ final GoRouter router = GoRouter(
                 path: 'book-add-garden',
                 name: 'book-add-garden',
                 builder: (context, state) => BookAddGardenPage()),
+            GoRoute(
+                path: 'book-user-write',
+                name: 'book-user-write',
+                builder: (context, state) => BookUserWritePage()),
           ]),
       GoRoute(
           path: '/bottom-navi/bookshelf',
@@ -118,7 +123,10 @@ final GoRouter router = GoRouter(
                   GoRoute(
                     path: 'memo-write',
                     name: 'memo-write',
-                    builder: (context, state) => MemoWritePage(),
+                    builder: (context, state) {
+                      final Map book = state.extra as Map;
+                      return MemoWritePage(book: book);
+                    },
                   ),
                 ]),
           ]),
