@@ -4,8 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
+
+final bookStatusListAllProvider = StateProvider<List>((ref) => []);
 
 class MemoBookPage extends ConsumerStatefulWidget {
   @override
@@ -13,6 +16,22 @@ class MemoBookPage extends ConsumerStatefulWidget {
 }
 
 class _MemoBookPageState extends ConsumerState<MemoBookPage> {
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(bookStatusListAllProvider.notifier).state = [];
+      getBookStatusList(0);
+    });
+  }
+
+  void getBookStatusList(int status) async {
+    final response = await bookService.getBookStatusList(status);
+    if (response?.statusCode == 200) {
+      ref.read(bookStatusListAllProvider.notifier).state =
+          response?.data['data'];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,10 +59,16 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
     return ListView(
       padding: EdgeInsets.only(top: 10.h),
       children: List.generate(
-        3,
+        ref.watch(bookStatusListAllProvider).length,
         (index) {
           return GestureDetector(
-            onTap: () => context.pushNamed('memo-write'),
+            onTap: () => context.pushNamed('memo-write', extra: {
+              'book_no': ref.watch(bookStatusListAllProvider)[index]['book_no'],
+              'book_title': ref.watch(bookStatusListAllProvider)[index]
+                  ['book_title'],
+              'book_author': ref.watch(bookStatusListAllProvider)[index]
+                  ['book_author'],
+            }),
             child: Container(
               height: 88.h,
               color: Colors.transparent,
@@ -66,11 +91,13 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'title',
+                          ref.watch(bookStatusListAllProvider)[index]
+                              ['book_title'],
                           style: TextStyle(fontSize: 16.sp),
                         ),
                         Text(
-                          'subtitle',
+                          ref.watch(bookStatusListAllProvider)[index]
+                              ['book_author'],
                           style: TextStyle(
                               fontSize: 14.sp, color: AppColors.grey_8D),
                         ),
