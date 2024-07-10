@@ -106,7 +106,7 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                     : Column(
                         children: [
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () => context.pushNamed('book-user-write'),
                             child: Container(
                                 alignment: Alignment.center,
                                 height: 72.h,
