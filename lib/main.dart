@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
                 //앱바
                 titleLarge: const TextStyle(color: Colors.black),
                 //내부 텍스트 필드
-                titleMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
+                titleMedium: TextStyle(fontSize: 16.sp, color: Colors.black),
                 //기본 body 텍스트
                 bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
                 //텍스트 필드 에러 메세지

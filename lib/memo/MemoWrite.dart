@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
@@ -10,6 +13,8 @@ import '../utils/Widgets.dart';
 
 //완료 버튼 상태를 관리하는 ...
 final okButtonProvider = StateProvider<bool>((ref) => false);
+//이미지 상태를 관리하는 ...
+final memoImageProvider = StateProvider<XFile?>((ref) => null);
 
 class MemoWritePage extends ConsumerStatefulWidget {
   const MemoWritePage({required this.book});
@@ -24,11 +29,14 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   final TextEditingController _memoController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
+  final ImagePicker _imagePicker = ImagePicker();
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
       ref.read(okButtonProvider.notifier).state = false;
+      ref.read(memoImageProvider.notifier).state = null;
     });
   }
 
@@ -36,7 +44,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     Map data = {
       "book_no": widget.book['book_no'],
       "memo_content": _memoController.text,
-      "memo_quote": "" //인용
+      // "memo_quote": "" //인용
     };
     //TODO - 이미지 추가
     final response = await memoService.postMemo(data);
@@ -44,6 +52,12 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       context.pop();
       context.pop('MemoPage_getMemoList');
     }
+  }
+
+  Future<void> _pickImage() async {
+    final XFile? image =
+        await _imagePicker.pickImage(source: ImageSource.gallery);
+    ref.read(memoImageProvider.notifier).state = image;
   }
 
   @override
@@ -131,7 +145,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
               child: Column(
                 children: [
                   Visibility(
-                    visible: true,
+                    visible: ref.watch(memoImageProvider) != null,
                     child: Stack(
                       alignment: Alignment.bottomRight,
                       children: [
@@ -139,9 +153,15 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           margin: EdgeInsets.only(top: 20.h),
                           height: 165.h,
                           color: Colors.green,
+                          child: Image.file(
+                              width: 320.w,
+                              fit: BoxFit.scaleDown,
+                              File(ref.watch(memoImageProvider)?.path ?? '')),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            ref.read(memoImageProvider.notifier).state = null;
+                          },
                           child: Container(
                             margin: EdgeInsets.only(right: 10.w, bottom: 10.h),
                             child: SvgPicture.asset(
@@ -188,7 +208,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
           children: [
             Row(
               children: [
-                (!true)
+                (ref.watch(memoImageProvider.notifier).state == null)
                     ? GestureDetector(
                         onTap: () {
                           print('사진');
@@ -205,10 +225,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                         width: 30.r,
                         height: 30.r,
                       ),
-                (!true)
+                (ref.watch(memoImageProvider.notifier).state == null)
                     ? GestureDetector(
                         onTap: () {
-                          print('갤');
+                          _pickImage();
                         },
                         child: Container(
                           margin: EdgeInsets.only(left: 10.w),

@@ -20,7 +20,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
     super.initState();
     Future.microtask(() {
       ref.read(bookStatusListAllProvider.notifier).state = [];
-      getBookStatusList(0);
+      getBookStatusList(3);
     });
   }
 
