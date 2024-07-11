@@ -50,6 +50,31 @@ class MemoService {
       }
     }
   }
+
+  //메모 이미지 업로드
+  Future<Response?> postMemoImage(int id, String imagePath) async {
+    final accessToken = await loadAccess();
+    final formData = FormData.fromMap(
+        {'id': id, 'file': await MultipartFile.fromFile(imagePath)});
+    try {
+      final response = await _dio.post('${Constant.URL}memo/image',
+          data: formData,
+          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+      print(response.data.toString());
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        // 서버가 응답한 경우 (상태 코드와 함께)
+        print('Error: ${e.response?.data}');
+        print('Status code: ${e.response?.statusCode}');
+        return e.response;
+      } else {
+        // 서버가 응답하지 않은 경우
+        print('Error sending request: ${e.message}');
+        return null;
+      }
+    }
+  }
 }
 
 final memoService = MemoService();

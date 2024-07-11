@@ -22,7 +22,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final response = await gardenService.getGardenList();
     if (response?.statusCode == 200) {
       ref.read(gardenListProvider.notifier).state = response?.data['data'];
-    } else if (response?.statusCode == 400) {
+    } else if (response?.statusCode == 401) {
       print('토큰에러');
     }
   }

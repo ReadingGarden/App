@@ -40,6 +40,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     });
   }
 
+  //메모 작성하기 api
   void postMemo() async {
     Map data = {
       "book_no": widget.book['book_no'],
@@ -49,11 +50,23 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     //TODO - 이미지 추가
     final response = await memoService.postMemo(data);
     if (response?.statusCode == 201) {
+      if (ref.watch(memoImageProvider) != null) {
+        postMemoImage(response?.data['data']['id']);
+      }
+    }
+  }
+
+  //메모 이미지 업로드 api
+  void postMemoImage(int id) async {
+    final response =
+        await memoService.postMemoImage(id, ref.watch(memoImageProvider)!.path);
+    if (response?.statusCode == 201) {
       context.pop();
       context.pop('MemoPage_getMemoList');
     }
   }
 
+  //갤러리 열기
   Future<void> _pickImage() async {
     final XFile? image =
         await _imagePicker.pickImage(source: ImageSource.gallery);
@@ -151,15 +164,16 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                       children: [
                         Container(
                           margin: EdgeInsets.only(top: 20.h),
-                          height: 165.h,
-                          color: Colors.green,
                           child: Image.file(
                               width: 320.w,
-                              fit: BoxFit.scaleDown,
+                              height: 165.h,
+                              //TODO - 나중에 설정
+                              fit: BoxFit.fitWidth,
                               File(ref.watch(memoImageProvider)?.path ?? '')),
                         ),
                         GestureDetector(
                           onTap: () {
+                            print(ref.watch(memoImageProvider)?.name);
                             ref.read(memoImageProvider.notifier).state = null;
                           },
                           child: Container(
