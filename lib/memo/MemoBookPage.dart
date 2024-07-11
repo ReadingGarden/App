@@ -99,7 +99,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                           ref.watch(bookStatusListAllProvider)[index]
                               ['book_author'],
                           style: TextStyle(
-                              fontSize: 14.sp, color: AppColors.grey_8D),
+                              fontSize: 12.sp, color: AppColors.grey_8D),
                         ),
                       ],
                     ),

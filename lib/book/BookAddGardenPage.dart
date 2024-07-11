@@ -65,17 +65,17 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                       Text(
                         ref.watch(detailIsbnProvider)['author'],
                         style: TextStyle(
-                            fontSize: 14.sp, color: AppColors.grey_8D),
+                            fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
                       Text(
                         ref.watch(detailIsbnProvider)['publisher'],
                         style: TextStyle(
-                            fontSize: 14.sp, color: AppColors.grey_8D),
+                            fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
                       Text(
                         '${ref.watch(detailIsbnProvider)['itemPage']}p',
                         style: TextStyle(
-                            fontSize: 14.sp, color: AppColors.grey_8D),
+                            fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
                     ],
                   ),

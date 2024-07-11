@@ -113,12 +113,14 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                                 child: Container(
                                   alignment: Alignment.centerLeft,
                                   padding:
-                                      EdgeInsets.only(left: 12.w, right: 14.w),
+                                      EdgeInsets.only(left: 24.w, right: 22.w),
                                   width: 312.w,
-                                  height: 48.h,
+                                  height: 64.h,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      color: const Color(0xffF3FCF8)),
+                                      border:
+                                          Border.all(color: AppColors.grey_F2),
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      color: Colors.transparent),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -151,12 +153,14 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                                 child: Container(
                                   alignment: Alignment.centerLeft,
                                   padding:
-                                      EdgeInsets.only(left: 12.w, right: 14.w),
+                                      EdgeInsets.only(left: 24.w, right: 22.w),
                                   width: 312.w,
-                                  height: 48.h,
+                                  height: 64.h,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      color: const Color(0xffF3FCF8)),
+                                      border:
+                                          Border.all(color: AppColors.grey_F2),
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      color: Colors.transparent),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -246,7 +250,8 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                                 ),
                                 Text(
                                   '${ref.watch(bookSerachListProvider)[index]['author']}',
-                                  style: const TextStyle(
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
                                       color: AppColors.grey_8D,
                                       overflow: TextOverflow.ellipsis),
                                 )

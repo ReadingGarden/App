@@ -46,6 +46,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
             margin: REdgeInsets.only(bottom: 20.h),
             child: Column(children: [
               Container(
+                margin: EdgeInsets.only(bottom: 8.h),
                 padding: EdgeInsets.only(
                     left: 24.w, right: 24.w, bottom: 12.h, top: 6.h),
                 alignment: Alignment.center,
@@ -60,6 +61,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
                     )),
               ),
               Container(
+                margin: EdgeInsets.only(bottom: 8.h),
                 padding: EdgeInsets.only(
                     left: 24.w, right: 24.w, bottom: 12.h, top: 6.h),
                 alignment: Alignment.center,
@@ -74,6 +76,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
                     )),
               ),
               Container(
+                margin: EdgeInsets.only(bottom: 8.h),
                 padding: EdgeInsets.only(
                     left: 24.w, right: 24.w, bottom: 12.h, top: 6.h),
                 alignment: Alignment.center,
