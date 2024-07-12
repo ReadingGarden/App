@@ -132,7 +132,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                         child: Image.network(
                             width: 320.w,
                             height: 140.h,
-                            fit: BoxFit.none,
+                            fit: BoxFit.fitWidth,
                             '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index]['image_url']}'),
                       )),
                   Container(

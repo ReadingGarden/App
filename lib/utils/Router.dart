@@ -109,6 +109,16 @@ final GoRouter router = GoRouter(
             GoRoute(
                 path: 'memo-detail',
                 name: 'memo-detail',
+                routes: [
+                  GoRoute(
+                    path: 'memo-update',
+                    name: 'memo-update',
+                    builder: (context, state) {
+                      final Map book = state.extra as Map;
+                      return MemoWritePage(book: book);
+                    },
+                  ),
+                ],
                 builder: (context, state) {
                   final Map memo = state.extra as Map;
                   return MemoDetailPage(
@@ -125,6 +135,7 @@ final GoRouter router = GoRouter(
                     name: 'memo-write',
                     builder: (context, state) {
                       final Map book = state.extra as Map;
+                      // final Map? memo = state.extra as Map;
                       return MemoWritePage(book: book);
                     },
                   ),

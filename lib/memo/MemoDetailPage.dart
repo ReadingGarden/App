@@ -95,7 +95,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                       child: Image.network(
                           width: 320.w,
                           height: 165.h,
-                          fit: BoxFit.none,
+                          fit: BoxFit.fitWidth,
                           '${Constant.IMAGE_URL}${widget.memo['image_url']}'),
                     ),
                   ),
@@ -150,7 +150,9 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        context.pushNamed('memo-write', extra: widget.memo);
+                      },
                       child: Container(
                         width: 312.w,
                         color: Colors.transparent,
