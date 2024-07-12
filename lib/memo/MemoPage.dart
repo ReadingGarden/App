@@ -78,10 +78,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
         ref.read(memoListProvider).length,
         (index) {
           return GestureDetector(
-            onTap: () {
-              getMemoLsit();
-              context.pushNamed('memo-detail',
+            onTap: () async {
+              final result = await context.pushNamed('memo-detail',
                   extra: ref.read(memoListProvider)[index]);
+              if (result != null) {
+                getMemoLsit();
+              }
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 10.h),

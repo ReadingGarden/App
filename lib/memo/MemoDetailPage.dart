@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
+import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
@@ -17,6 +19,15 @@ class MemoDetailPage extends ConsumerStatefulWidget {
 }
 
 class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
+  //메모 삭제 api
+  void deleteMemo() async {
+    final response = await memoService.deleteMemo(widget.memo['id']);
+    if (response?.statusCode == 200) {
+      context.pop();
+      context.pop('MemoPage_getMemoList');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +89,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
               child: Column(
                 children: [
                   Visibility(
-                    visible: true,
+                    visible: widget.memo['image_url'] != null,
                     child: Container(
                       margin: EdgeInsets.only(top: 20.h),
                       child: Image.network(
@@ -139,9 +150,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {
-                        print(widget.memo['id']);
-                      },
+                      onTap: () {},
                       child: Container(
                         width: 312.w,
                         color: Colors.transparent,
@@ -152,7 +161,9 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        deleteMemo();
+                      },
                       child: Container(
                         width: 312.w,
                         color: Colors.transparent,
