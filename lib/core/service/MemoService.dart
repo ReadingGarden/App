@@ -54,10 +54,10 @@ class MemoService {
   //메모 이미지 업로드
   Future<Response?> postMemoImage(int id, String imagePath) async {
     final accessToken = await loadAccess();
-    final formData = FormData.fromMap(
-        {'id': id, 'file': await MultipartFile.fromFile(imagePath)});
+    final formData =
+        FormData.fromMap({'file': await MultipartFile.fromFile(imagePath)});
     try {
-      final response = await _dio.post('${Constant.URL}memo/image',
+      final response = await _dio.post('${Constant.URL}memo/image?id=$id',
           data: formData,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());

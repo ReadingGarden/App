@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 
 final memoListProvider = StateProvider<List>((ref) => []);
@@ -79,7 +80,8 @@ class _MemoPageState extends ConsumerState<MemoPage> {
           return GestureDetector(
             onTap: () {
               getMemoLsit();
-              context.pushNamed('memo-detail', extra: {'': ''});
+              context.pushNamed('memo-detail',
+                  extra: ref.read(memoListProvider)[index]);
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 10.h),
@@ -125,8 +127,11 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                           null),
                       child: Container(
                         margin: EdgeInsets.only(top: 10.h),
-                        height: 140.h,
-                        color: Colors.green,
+                        child: Image.network(
+                            width: 320.w,
+                            height: 140.h,
+                            fit: BoxFit.none,
+                            '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index]['image_url']}'),
                       )),
                   Container(
                       margin: EdgeInsets.only(top: 10.h),

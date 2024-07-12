@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -47,7 +48,6 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       "memo_content": _memoController.text,
       // "memo_quote": "" //인용
     };
-    //TODO - 이미지 추가
     final response = await memoService.postMemo(data);
     if (response?.statusCode == 201) {
       if (ref.watch(memoImageProvider) != null) {
@@ -168,7 +168,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                               width: 320.w,
                               height: 165.h,
                               //TODO - 나중에 설정
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.none,
+                              // fit: BoxFit.fitWidth,
                               File(ref.watch(memoImageProvider)?.path ?? '')),
                         ),
                         GestureDetector(

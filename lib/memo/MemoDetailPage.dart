@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
@@ -54,14 +55,13 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          // widget.memo['']
-                          'title',
+                          widget.memo['book_title'],
                           style: TextStyle(fontSize: 16.sp),
                         ),
                         Text(
-                          'sub',
+                          widget.memo['book_author'],
                           style: TextStyle(
-                              fontSize: 14.sp, color: AppColors.grey_8D),
+                              fontSize: 12.sp, color: AppColors.grey_8D),
                         )
                       ],
                     ),
@@ -81,15 +81,19 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                     visible: true,
                     child: Container(
                       margin: EdgeInsets.only(top: 20.h),
-                      height: 165.h,
-                      color: Colors.green,
+                      child: Image.network(
+                          width: 320.w,
+                          height: 165.h,
+                          fit: BoxFit.none,
+                          '${Constant.IMAGE_URL}${widget.memo['image_url']}'),
                     ),
                   ),
                   Container(
+                    alignment: Alignment.topLeft,
                     margin: EdgeInsets.only(top: 20.h),
-                    child: const Text(
-                      '''바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 아름다운 무지개 물고기의 비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받아들였다.\n다른 물고기들은 아름다운 무지개 물고기의 비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 아름다비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받아들였다. 바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들물고기의 비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받아들였다. 다른 물고기들은 아름다운 무지개 물고기의 비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 아름다비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받아들였다. 바다 속 다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들물고기의 비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받아들였다. 다른 물고기들은 아름다운 무지개 물고기의 비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받다른 물고기들과 달리 반짝반짝 빛나는 은빛 비늘을 가지고 있는 무지개 물고기. 다른 물고기들은 아름다비늘을 질투했지만 그래도 무지개 물고기는 편견 없이 그들을 받아들였다. 
-                  ''',
+                    child: Text(
+                      widget.memo['memo_content'],
+                      textAlign: TextAlign.start,
                     ),
                   )
                 ],
@@ -135,7 +139,9 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        print(widget.memo['id']);
+                      },
                       child: Container(
                         width: 312.w,
                         color: Colors.transparent,
