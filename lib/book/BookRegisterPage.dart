@@ -8,9 +8,12 @@ import '../garden/GardenPage.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
-import 'BookAddGardenPage.dart';
 
 class BookRegisterPage extends ConsumerStatefulWidget {
+  const BookRegisterPage({required this.book});
+
+  final Map book;
+
   _BookRegisterPageState createState() => _BookRegisterPageState();
 }
 
@@ -29,31 +32,41 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                   height: 88.h,
                   margin: EdgeInsets.only(left: 24.w, right: 24.w),
                   child: Row(children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8.r),
-                      child: Image.network(
-                        width: 48.w,
-                        height: 64.h,
-                        fit: BoxFit.cover,
-                        ref.watch(detailIsbnProvider)['cover'],
-                      ),
-                    ),
+                    (widget.book['cover'] != null && widget.book['cover'] != '')
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: Image.network(
+                              width: 48.w,
+                              height: 64.h,
+                              fit: BoxFit.cover,
+                              widget.book['cover'],
+                            ),
+                          )
+                        : Container(
+                            width: 48.w,
+                            height: 64.h,
+                            decoration: BoxDecoration(
+                                color: AppColors.grey_F2,
+                                borderRadius: BorderRadius.circular(8.r)),
+                          ),
                     Container(
                       margin: EdgeInsets.only(left: 12.w),
                       width: 252.w,
-                      height: 48.h,
+                      // height: 48.h,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            ref.watch(detailIsbnProvider)['title'],
+                            widget.book['title'],
+                            maxLines: 2,
                             style: TextStyle(
                               fontSize: 16.sp,
                             ),
                           ),
                           Text(
-                            ref.watch(detailIsbnProvider)['author'],
+                            widget.book['author'],
                             style: TextStyle(
                                 fontSize: 12.sp, color: AppColors.grey_8D),
                           ),

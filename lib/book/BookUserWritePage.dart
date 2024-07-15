@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/Widgets.dart';
@@ -134,9 +135,13 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
               _publisherController.text.isNotEmpty &&
               _pageController.text.isNotEmpty &&
               ref.watch(bookPageErrorProvider) == null) {
-            print('다음');
+            context.pushNamed('book-register', extra: {
+              'title': _titleController.text,
+              'author': _authorController.text,
+              'cover': ''
+            });
           } else {
-            print('no');
+            // context.pushNamed('book-register', extra: {});
           }
           // postBook();
         }),

@@ -204,7 +204,8 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
             margin: EdgeInsets.only(
                 left: 24.w, right: 24.w, bottom: 30.h, top: 10.h),
             child: Widgets.button('내 가든에 심기', true, () {
-              context.pushNamed('book-register');
+              context.pushNamed('book-register',
+                  extra: ref.watch(detailIsbnProvider));
             })));
   }
 }

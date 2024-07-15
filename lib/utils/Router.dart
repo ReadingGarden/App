@@ -103,7 +103,8 @@ final GoRouter router = GoRouter(
                       path: 'book-register',
                       name: 'book-register',
                       builder: (context, state) {
-                        return BookRegisterPage();
+                        final book = state.extra as Map;
+                        return BookRegisterPage(book: book);
                       },
                       routes: [
                         GoRoute(
