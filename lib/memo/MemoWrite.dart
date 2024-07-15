@@ -182,12 +182,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                     height: 50.h,
                     margin: EdgeInsets.only(left: 12.w),
                     child: Column(
-                      //TODO: - 간격 수정
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          // widget.memo['']
                           widget.book['book_title'],
                           style: TextStyle(fontSize: 16.sp),
                         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
@@ -11,6 +12,10 @@ final buttonCheckProvider = StateProvider<bool>((ref) => false);
 final detailIsbnProvider = StateProvider<Map>((ref) => {});
 
 class BookAddGardenPage extends ConsumerStatefulWidget {
+  const BookAddGardenPage({required this.isbn13});
+
+  final String isbn13;
+
   _BookAddGardenPageState createState() => _BookAddGardenPageState();
 }
 
@@ -18,7 +23,10 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
   @override
   void initState() {
     super.initState();
-    getDetailBook_ISBN('9788932916194');
+    Future.microtask(() {
+      ref.read(detailIsbnProvider.notifier).state = {};
+    });
+    getDetailBook_ISBN(widget.isbn13);
   }
 
   //책 상세조회 isbn api
@@ -42,38 +50,47 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
               children: [
                 Container(
                   alignment: Alignment.center,
-                  width: 312.w,
-                  height: 307.h,
+                  width: 264.w,
+                  // height: 307.h,
                   child: Column(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: Image.network(
-                          width: 122.w,
-                          height: 180.h,
-                          fit: BoxFit.cover,
-                          ref.watch(detailIsbnProvider)['cover'],
-                        ),
-                      ),
+                          borderRadius: BorderRadius.circular(8.r),
+                          child:
+                              (ref.watch(detailIsbnProvider)['cover'] != null)
+                                  ? Image.network(
+                                      width: 122.w,
+                                      height: 180.h,
+                                      fit: BoxFit.cover,
+                                      ref.watch(detailIsbnProvider)['cover'],
+                                    )
+                                  : SizedBox(
+                                      width: 122.w,
+                                      height: 180.h,
+                                    )),
                       Container(
                         margin: EdgeInsets.only(top: 29.h, bottom: 6.h),
                         child: Text(
-                          ref.watch(detailIsbnProvider)['title'],
-                          style: TextStyle(fontSize: 18.sp),
+                          ref.watch(detailIsbnProvider)['title'] ?? '',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                          ),
                         ),
                       ),
                       Text(
-                        ref.watch(detailIsbnProvider)['author'],
+                        ref.watch(detailIsbnProvider)['author'] ?? '',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
                       Text(
-                        ref.watch(detailIsbnProvider)['publisher'],
+                        ref.watch(detailIsbnProvider)['publisher'] ?? '',
                         style: TextStyle(
                             fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
                       Text(
-                        '${ref.watch(detailIsbnProvider)['itemPage']}p',
+                        '${ref.watch(detailIsbnProvider)['itemPage'] ?? ''}p',
                         style: TextStyle(
                             fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
@@ -173,7 +190,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                         ),
                       ),
                       Text(
-                        ref.watch(detailIsbnProvider)['description'],
+                        ref.watch(detailIsbnProvider)['description'] ?? '',
                         style: TextStyle(fontSize: 12.sp),
                       ),
                     ],
@@ -186,6 +203,8 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
         bottomNavigationBar: Container(
             margin: EdgeInsets.only(
                 left: 24.w, right: 24.w, bottom: 30.h, top: 10.h),
-            child: Widgets.button('내 가든에 심기', true, () {})));
+            child: Widgets.button('내 가든에 심기', true, () {
+              context.pushNamed('book-register');
+            })));
   }
 }

@@ -157,7 +157,7 @@ class SignupPage extends ConsumerWidget {
   }
 }
 
-class SignupEndPage extends StatelessWidget {
+class SignupDonePage extends StatelessWidget {
   // 회원가입 완료 -> 가든 페이지로
   void singupEnd(BuildContext context) {
     context.goNamed('garden');

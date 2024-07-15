@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../core/service/BookService.dart';
 import '../utils/Widgets.dart';
 
-// final bookTitleErrorProvider = StateProvider<String?>((ref) => null);
+//총 페이지 입력 에러 상태 ...
+final bookPageErrorProvider = StateProvider<String?>((ref) => null);
 
 class BookUserWritePage extends ConsumerStatefulWidget {
   @override
@@ -17,6 +18,14 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
   final TextEditingController _authorController = TextEditingController();
   final TextEditingController _publisherController = TextEditingController();
   final TextEditingController _pageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref.read(bookPageErrorProvider.notifier).state = null;
+    });
+  }
 
   void postBook() async {
     final data = {
@@ -33,6 +42,15 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
     final response = await bookService.postBook(data);
     if (response?.statusCode == 201) {
     } else if (response?.statusCode == 401) {}
+  }
+
+  //총 페이지 입력 에러
+  void _pageErrorValid() {
+    if (int.tryParse(_pageController.text) == null) {
+      ref.read(bookPageErrorProvider.notifier).state = '숫자를 입력해주세요';
+    } else {
+      ref.read(bookPageErrorProvider.notifier).state = null;
+    }
   }
 
   @override
@@ -99,10 +117,9 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
                     _pageController,
                     '총 페이지',
                     '총 페이지 수를 입력해주세요',
-                    null,
-                    StateProvider(
-                      (ref) => null,
-                    )),
+                    ref.watch(bookPageErrorProvider),
+                    bookPageErrorProvider,
+                    validateFunction: _pageErrorValid),
               )
             ]),
           ),
@@ -111,7 +128,18 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
       bottomNavigationBar: Container(
         margin:
             EdgeInsets.only(bottom: 30.h, left: 20.w, right: 20.w, top: 10.h),
-        child: Widgets.button('내 가든에 심기', true, () => postBook()),
+        child: Widgets.button('내 가든에 심기', true, () {
+          if (_titleController.text.isNotEmpty &&
+              _authorController.text.isNotEmpty &&
+              _publisherController.text.isNotEmpty &&
+              _pageController.text.isNotEmpty &&
+              ref.watch(bookPageErrorProvider) == null) {
+            print('다음');
+          } else {
+            print('no');
+          }
+          // postBook();
+        }),
       ),
     );
   }

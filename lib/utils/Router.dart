@@ -1,5 +1,6 @@
 import 'package:book_flutter/book/BookAddGardenPage.dart';
 import 'package:book_flutter/book/BookAddPage.dart';
+import 'package:book_flutter/book/BookRegisterPage.dart';
 import 'package:book_flutter/book/BookSerachPage.dart';
 import 'package:book_flutter/book/BookUserWritePage.dart';
 import 'package:book_flutter/book/BookshelfPage.dart';
@@ -55,7 +56,7 @@ final GoRouter router = GoRouter(
                         GoRoute(
                           path: 'signup-end',
                           name: 'signup-end',
-                          builder: (context, state) => SignupEndPage(),
+                          builder: (context, state) => SignupDonePage(),
                         )
                       ]),
                   GoRoute(
@@ -91,7 +92,26 @@ final GoRouter router = GoRouter(
             GoRoute(
                 path: 'book-add-garden',
                 name: 'book-add-garden',
-                builder: (context, state) => BookAddGardenPage()),
+                builder: (context, state) {
+                  final String isbn13 = state.extra as String;
+                  return BookAddGardenPage(
+                    isbn13: isbn13,
+                  );
+                },
+                routes: [
+                  GoRoute(
+                      path: 'book-register',
+                      name: 'book-register',
+                      builder: (context, state) {
+                        return BookRegisterPage();
+                      },
+                      routes: [
+                        GoRoute(
+                            path: 'book-register-done',
+                            name: 'book-register-done',
+                            builder: (context, state) => BookRegisterDonePage())
+                      ]),
+                ]),
             GoRoute(
                 path: 'book-user-write',
                 name: 'book-user-write',

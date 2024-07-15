@@ -217,7 +217,9 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                 ref.watch(bookSerachListProvider).length,
                 (index) {
                   return GestureDetector(
-                    onTap: () => context.pushNamed('book-add-garden'),
+                    onTap: () => context.pushNamed('book-add-garden',
+                        extra: ref.watch(bookSerachListProvider)[index]
+                            ['isbn13']),
                     child: Container(
                       padding: EdgeInsets.only(left: 24.w, right: 24.w),
                       height: 88.h,
