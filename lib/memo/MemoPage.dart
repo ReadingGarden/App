@@ -10,6 +10,7 @@ import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 
 final memoListProvider = StateProvider<List>((ref) => []);
+final memoSelectIndexListProvider = StateProvider<List>((ref) => []);
 
 class MemoPage extends ConsumerStatefulWidget {
   @override
@@ -20,6 +21,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      ref.read(memoListProvider.notifier).state = [];
+      ref.read(memoSelectIndexListProvider.notifier).state = [];
+    });
     getMemoLsit();
   }
 
@@ -28,6 +33,26 @@ class _MemoPageState extends ConsumerState<MemoPage> {
     final response = await memoService.getMemoList();
     if (response?.statusCode == 200) {
       ref.read(memoListProvider.notifier).state = response?.data['data'];
+      for (var i in ref.watch(memoListProvider)) {
+        ref
+            .read(memoSelectIndexListProvider.notifier)
+            .state
+            .add(i['memo_like']);
+      }
+    } else if (response?.statusCode == 401) {
+      print('토큰에러');
+    }
+  }
+
+  //메모 즐겨찾기 api
+  void putMemoLike(int index, int id) async {
+    final response = await memoService.putMemoLike(id);
+    if (response?.statusCode == 200) {
+      ref.read(memoSelectIndexListProvider.notifier).update((state) {
+        List<bool> newState = List.from(state);
+        newState[index] = !newState[index];
+        return newState;
+      });
     } else if (response?.statusCode == 401) {
       print('토큰에러');
     }
@@ -156,11 +181,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                                 fontSize: 12.sp, color: AppColors.grey_8D),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              print('즐찾');
-                            },
+                            onTap: () => putMemoLike(index,
+                                ref.watch(memoListProvider)[index]['id']),
                             child: SvgPicture.asset(
-                              (ref.watch(memoListProvider)[index]['memo_like'])
+                              ref.watch(memoSelectIndexListProvider)[index]
                                   ? 'assets/images/star.svg'
                                   : 'assets/images/star-dis.svg',
                               width: 20.r,
