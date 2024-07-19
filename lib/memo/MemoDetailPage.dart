@@ -121,64 +121,51 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
       builder: (context) {
         return Container(
           alignment: Alignment.center,
-          height: 198.h,
-          child: Column(
-            children: [
-              // Stack(
-              //   alignment: Alignment.centerRight,
-              //   children: [
-              Container(
-                alignment: Alignment.center,
-                height: 60.h,
-                child: Text(
-                  '더보기',
-                  style: TextStyle(fontSize: 16.sp),
-                ),
-              ),
-              // Container(
-              //   margin: EdgeInsets.only(right: 18.w),
-              //   child: SvgPicture.asset('assets/images/multiply.svg',
-              //       width: 24.r, height: 24.r),
-              // )
-              //   ],
-              // ),
-              Container(
-                margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 20.h),
-                alignment: Alignment.centerLeft,
-                height: 78.h,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        context.pushNamed('memo-write', extra: widget.memo);
-                      },
-                      child: Container(
-                        width: 312.w,
-                        color: Colors.transparent,
-                        child: Text(
-                          '메모 편집',
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                      ),
+          height: 157.h,
+          child: Container(
+            margin: EdgeInsets.only(top: 32.h, bottom: 32.h),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    context.pushNamed('memo-write', extra: widget.memo);
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 312.w,
+                    height: 26.h,
+                    color: Colors.transparent,
+                    child: Text(
+                      '메모 편집',
+                      style: TextStyle(fontSize: 16.sp),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        deleteMemo();
-                      },
-                      child: Container(
-                        width: 312.w,
-                        color: Colors.transparent,
-                        child: Text(
-                          '메모 삭제',
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20.h),
+                  height: 1.h,
+                  color: AppColors.grey_F2,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    deleteMemo();
+                  },
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 312.w,
+                    height: 26.h,
+                    color: Colors.transparent,
+                    child: Text(
+                      '메모 삭제',
+                      style: TextStyle(
+                          fontSize: 16.sp, color: AppColors.errorRedColor),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },
