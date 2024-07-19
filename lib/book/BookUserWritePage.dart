@@ -28,23 +28,6 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
     });
   }
 
-  void postBook() async {
-    final data = {
-      //TODO - 다음 페이지에서 해라
-      "garden_no": 19,
-      "book_title": _titleController.text,
-      "book_author": _authorController.text,
-      "book_publisher": _publisherController.text,
-      "book_tree": "",
-      // "book_image_url": null,
-      "book_status": 0,
-      "book_page": _pageController.text
-    };
-    final response = await bookService.postBook(data);
-    if (response?.statusCode == 201) {
-    } else if (response?.statusCode == 401) {}
-  }
-
   //총 페이지 입력 에러
   void _pageErrorValid() {
     if (int.tryParse(_pageController.text) == null) {
@@ -138,7 +121,10 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
             context.pushNamed('book-register', extra: {
               'title': _titleController.text,
               'author': _authorController.text,
-              'cover': ''
+              'publisher': _publisherController.text,
+              'page': _pageController.text
+              //TODO
+              // 'cover': ''
             });
           } else {
             // context.pushNamed('book-register', extra: {});

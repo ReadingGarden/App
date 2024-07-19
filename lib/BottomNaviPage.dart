@@ -22,6 +22,7 @@ class BottomNaviPage extends ConsumerWidget {
     final currentIndex = ref.watch(currentIndexProvider);
 
     return Scaffold(
+      backgroundColor: Colors.green,
       body: IndexedStack(
         index: currentIndex,
         children: [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
@@ -47,46 +48,47 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // alignment: Alignment.center,
+      padding: EdgeInsets.only(left: 10.w, right: 10.w),
       height: 82.h,
       decoration: BoxDecoration(
-          color: Colors.transparent,
-          border: Border.all(color: const Color(0xffF1F1F1)),
-          //TODOL - 수정
+          color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30.r), topRight: Radius.circular(30.r))),
+              topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _buildTabItem(
             index: 0,
             icon: Icons.home,
-            label: 'Home',
+            label: '가든',
           ),
           _buildTabItem(
             index: 1,
             icon: Icons.book,
-            label: 'Bookshelf',
+            label: '책장',
           ),
           GestureDetector(
               onTap: () => context.pushNamed('book-serach'),
-              child: Container(
-                width: 49.r,
-                height: 49.r,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.primaryColor,
+              child: SizedBox(
+                width: 72.w,
+                child: Container(
+                  width: 50.r,
+                  height: 50.r,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.black_4A,
+                  ),
                 ),
               )),
           _buildTabItem(
             index: 2,
             icon: Icons.memory,
-            label: 'Memo',
+            label: '메모',
           ),
           _buildTabItem(
             index: 3,
             icon: Icons.person,
-            label: 'MyPage',
+            label: '설정',
           )
         ],
       ),
@@ -97,20 +99,25 @@ class CustomBottomNavigationBar extends StatelessWidget {
       {required int index, required IconData icon, required String label}) {
     return GestureDetector(
       onTap: () => onTabSelected(index),
-      child: Padding(
-        padding: const EdgeInsets.all(0.0),
+      child: Container(
+        width: 52.w,
+        color: Colors.transparent,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: currentIndex == index ? Colors.blue : Colors.grey,
+              color: currentIndex == index
+                  ? AppColors.black_4A
+                  : AppColors.grey_CA,
             ),
             Text(
               label,
               style: TextStyle(
-                  color: currentIndex == index ? Colors.blue : Colors.grey),
+                  fontSize: 10.sp,
+                  color: currentIndex == index
+                      ? AppColors.black_4A
+                      : AppColors.grey_8D),
             ),
           ],
         ),
