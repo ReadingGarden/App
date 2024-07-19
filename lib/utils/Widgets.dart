@@ -113,6 +113,7 @@ class Widgets {
           ),
           TextField(
             controller: controller,
+            maxLength: (label == '가든 소개') ? 30 : null,
             onChanged: (value) {
               // errorText 초기화
               ref.read(errorProvider.notifier).state = null;
@@ -125,6 +126,7 @@ class Widgets {
             style: TextStyle(fontSize: 16.sp),
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
+              counter: Container(),
               fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,

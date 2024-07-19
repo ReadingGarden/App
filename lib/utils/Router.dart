@@ -1,19 +1,20 @@
-import 'package:book_flutter/book/BookAddGardenPage.dart';
-import 'package:book_flutter/book/BookAddPage.dart';
-import 'package:book_flutter/book/BookRegisterPage.dart';
-import 'package:book_flutter/book/BookSerachPage.dart';
-import 'package:book_flutter/book/BookUserWritePage.dart';
-import 'package:book_flutter/book/BookshelfPage.dart';
-import 'package:book_flutter/memo/MemoDetailPage.dart';
-import 'package:book_flutter/memo/MemoWrite.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../book/BookAddGardenPage.dart';
+import '../book/BookAddPage.dart';
+import '../book/BookRegisterPage.dart';
+import '../book/BookSerachPage.dart';
+import '../book/BookUserWritePage.dart';
+import '../garden/GardenAddPage.dart';
+import '../garden/GardenMemberPage.dart';
 import '../main.dart';
 import '../ErrorPage.dart';
 import '../garden/GardenPage.dart';
+import '../memo/MemoDetailPage.dart';
 import '../memo/MemoPage.dart';
 import '../memo/MemoBookPage.dart';
+import '../memo/MemoWrite.dart';
 import '../mypage/MyPage.dart';
 import '../mypage/AlertSettingPage.dart';
 import '../mypage/AuthManagePage.dart';
@@ -54,8 +55,8 @@ final GoRouter router = GoRouter(
                           SignupPage(),
                       routes: [
                         GoRoute(
-                          path: 'signup-end',
-                          name: 'signup-end',
+                          path: 'signup-done',
+                          name: 'signup-done',
                           builder: (context, state) => SignupDonePage(),
                         )
                       ]),
@@ -156,7 +157,6 @@ final GoRouter router = GoRouter(
                     name: 'memo-write',
                     builder: (context, state) {
                       final Map book = state.extra as Map;
-                      // final Map? memo = state.extra as Map;
                       return MemoWritePage(book: book);
                     },
                   ),
@@ -195,7 +195,28 @@ final GoRouter router = GoRouter(
             )
           ]),
       GoRoute(
-          path: '/garden',
+          path: '/bottom-navi/garden',
           name: 'garden',
-          builder: (context, state) => GardenPage()),
+          builder: (context, state) {
+            return GardenPage();
+          },
+          routes: [
+            GoRoute(
+                path: 'garden-member',
+                name: 'garden-member',
+                builder: (context, state) {
+                  final int garden_no = state.extra as int;
+                  return GardenMemberPage(garden_no: garden_no);
+                }),
+            GoRoute(
+                path: 'garden-add',
+                name: 'garden-add',
+                builder: (context, state) => GardenAddPage(),
+                routes: [
+                  GoRoute(
+                      path: 'garden-add-done',
+                      name: 'garden-add-done',
+                      builder: (context, state) => GardenAddDonePage())
+                ])
+          ]),
     ]);
