@@ -1,3 +1,5 @@
+import 'package:book_flutter/garden/GardenBookListPage.dart';
+import 'package:book_flutter/garden/GardenLeaderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -202,12 +204,26 @@ final GoRouter router = GoRouter(
           },
           routes: [
             GoRoute(
+                path: 'garden-book',
+                name: 'garden-book',
+                builder: (context, state) {
+                  final Map garden = state.extra as Map;
+                  return GardenBookListPage(garden: garden);
+                }),
+            GoRoute(
                 path: 'garden-member',
                 name: 'garden-member',
                 builder: (context, state) {
                   final int garden_no = state.extra as int;
                   return GardenMemberPage(garden_no: garden_no);
-                }),
+                },
+                routes: [
+                  GoRoute(
+                    path: 'garden-leader',
+                    name: 'garden-leader',
+                    builder: (context, state) => GardenLeaderPage(),
+                  )
+                ]),
             GoRoute(
                 path: 'garden-add',
                 name: 'garden-add',

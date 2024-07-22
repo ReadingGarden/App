@@ -1,8 +1,11 @@
+import 'package:book_flutter/X/model/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
+import '../core/provider/ResponseProvider.dart';
 import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
@@ -41,6 +44,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
   @override
   Widget build(BuildContext context) {
     final gardenMemberList = ref.watch(gardenMemberListProvider);
+    final user = ref.watch(responseProvider.userMapProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '멤버'),
@@ -48,45 +52,52 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
         child: Column(
           children: [
             Visibility(
-              visible: gardenMemberList.length > 1,
-              child: Container(
-                margin: EdgeInsets.only(top: 10.h),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 24.w),
-                      height: 46.h,
-                      color: Colors.transparent,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/users-alt.svg',
-                                width: 18.r,
-                                height: 18.r,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 9.w),
-                                child: Text('대표 변경하기'),
-                              ),
-                            ],
-                          ),
-                          SvgPicture.asset(
-                            'assets/images/member-angle-right-b.svg',
-                            width: 20.r,
-                            height: 20.r,
-                          )
-                        ],
+              visible: gardenMemberList.length > 1 &&
+                  (gardenMemberList[0]['user_no'] == user?['user_no']),
+              child: GestureDetector(
+                onTap: () {
+                  context.pushNamed('garden-leader');
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 10.h),
+                  color: Colors.transparent,
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 24.w),
+                        height: 46.h,
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/users-alt.svg',
+                                  width: 18.r,
+                                  height: 18.r,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 9.w),
+                                  child: Text('대표 변경하기'),
+                                ),
+                              ],
+                            ),
+                            SvgPicture.asset(
+                              'assets/images/member-angle-right-b.svg',
+                              width: 20.r,
+                              height: 20.r,
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.h),
-                      height: 1.h,
-                      color: AppColors.grey_F2,
-                    ),
-                  ],
+                      Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        height: 1.h,
+                        color: AppColors.grey_F2,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -104,13 +115,14 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   ListView(
-                    padding: EdgeInsets.only(top: 19.h, bottom: 24.h),
+                    padding: EdgeInsets.only(top: 19.h),
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: List.generate(
                       gardenMemberList.length,
                       (index) {
                         return Container(
+                          margin: EdgeInsets.only(bottom: 24.h),
                           height: 48.h,
                           child: Row(
                             children: [
@@ -124,12 +136,16 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                         shape: BoxShape.circle,
                                         color: Colors.grey),
                                   ),
-                                  Container(
-                                    width: 18.r,
-                                    height: 18.r,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.black),
+                                  Visibility(
+                                    visible: gardenMemberList[index]
+                                        ['garden_leader'],
+                                    child: Container(
+                                      width: 18.r,
+                                      height: 18.r,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.black),
+                                    ),
                                   ),
                                 ],
                               ),
