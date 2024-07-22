@@ -6,11 +6,14 @@ import 'package:go_router/go_router.dart';
 
 import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 
 //가든 리스트 상태를 관리하는 ...
 final gardenListProvider = StateProvider<List>((ref) => []);
 //메인에 보여질 가든 상태를 관리하는 ...
 final gardenMainProvider = StateProvider<Map>((ref) => {});
+//메인에 보여질 가든의 책 리스트 상태를 관리하는 ...
+final gardenMainBookListProvider = StateProvider<List>((ref) => []);
 
 class GardenPage extends ConsumerStatefulWidget {
   @override
@@ -21,6 +24,11 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      ref.read(gardenListProvider.notifier).state = [];
+      ref.read(gardenMainProvider.notifier).state = {};
+      ref.read(gardenMainBookListProvider.notifier).state = [];
+    });
     getGardenLsit();
   }
 
@@ -40,6 +48,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final response = await gardenService.getGardenDetail(garden_no);
     if (response?.statusCode == 200) {
       ref.read(gardenMainProvider.notifier).state = response?.data['data'];
+      ref.read(gardenMainBookListProvider.notifier).state =
+          response?.data['data']['book_list'];
     } else if (response?.statusCode == 401) {
       print('토큰에러');
     }
@@ -47,7 +57,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
 
   @override
   Widget build(BuildContext context) {
-    final gardenList = ref.watch(gardenListProvider);
     final gardenMain = ref.watch(gardenMainProvider);
 
     return Scaffold(
@@ -128,8 +137,9 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   Future _gardenMenuBottomSheet() {
-    final gardenList = ref.watch(gardenListProvider);
     final gardenMain = ref.watch(gardenMainProvider);
+    final gardenMainBookList = ref.watch(gardenMainBookListProvider);
+    print(gardenMainBookList);
 
     return showModalBottomSheet(
       context: context,
@@ -150,16 +160,45 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      padding:
-                          EdgeInsets.only(top: 56.h, left: 20.w, right: 20.w),
-                      height: 170.h,
+                      padding: EdgeInsets.only(
+                          top: 56.h, left: 20.w, right: 20.w, bottom: 20.h),
+                      height: 180.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
                           color: Colors.white),
-                      child: Text(
-                        gardenMain['garden_info'],
-                        style: TextStyle(
-                            fontSize: 18.sp, fontWeight: FontWeight.bold),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            gardenMain['garden_info'],
+                            style: TextStyle(
+                                fontSize: 18.sp, fontWeight: FontWeight.bold),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 12.h),
+                              width: 272.w,
+                              // height: 34.h,
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text('가든을 다 채웠어요!'),
+                                      Text(
+                                        '${gardenMainBookList.length}/30',
+                                        style: TextStyle(fontSize: 12.sp),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 6.h),
+                                    height: 8.h,
+                                    color: Colors.black,
+                                  )
+                                ],
+                              ))
+                        ],
                       ),
                     ),
                     Container(
@@ -280,31 +319,95 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   )
                 ],
               ),
-              Container(
-                margin: EdgeInsets.only(top: 30.h),
-                height: 24.h,
-                color: Colors.transparent,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '가든에 있는 책 보기',
-                      style: TextStyle(
-                          fontSize: 16.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SvgPicture.asset(
-                      'assets/images/garden-angle-right-b.svg',
-                      width: 20.r,
-                      height: 20.r,
-                    )
-                  ],
+              GestureDetector(
+                onTap: () {
+                  context.pushNamed('garden-book', extra: gardenMain);
+                },
+                child: Container(
+                  margin: EdgeInsets.only(top: 30.h),
+                  height: 24.h,
+                  color: Colors.transparent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '가든에 있는 책 보기',
+                        style: TextStyle(
+                            fontSize: 16.sp, fontWeight: FontWeight.bold),
+                      ),
+                      SvgPicture.asset(
+                        'assets/images/garden-angle-right-b.svg',
+                        width: 20.r,
+                        height: 20.r,
+                      )
+                    ],
+                  ),
                 ),
               ),
-              _bookEmpty()
+              (gardenMainBookList.isEmpty) ? _bookEmpty() : _bookList()
             ],
           ),
         );
       },
+    );
+  }
+
+  Widget _bookList() {
+    final gardenMainBookList = ref.watch(gardenMainBookListProvider);
+
+    return ListView(
+      padding: EdgeInsets.only(top: 12.h),
+      shrinkWrap: true,
+      children: List.generate(
+        gardenMainBookList.length,
+        (index) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 8.h),
+            padding: EdgeInsets.only(left: 14.w, right: 16.w),
+            height: 68.h,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.r), color: Colors.white),
+            child: Row(
+              children: [
+                Container(
+                  width: 44.r,
+                  height: 44.r,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.r),
+                    color: Colors.green,
+                  ),
+                  child: (gardenMainBookList[index]['image_url'] != null)
+                      ? Image.network(
+                          width: 320.w,
+                          height: 140.h,
+                          fit: BoxFit.fitWidth,
+                          '${Constant.IMAGE_URL}${gardenMainBookList[index]['image_url']}')
+                      : Container(),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 12.w),
+                  width: 226.w,
+                  height: 42.h,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        gardenMainBookList[index]['book_title'],
+                      ),
+                      Text(
+                        gardenMainBookList[index]['book_title'],
+                        style: TextStyle(
+                            fontSize: 12.sp, color: AppColors.grey_8D),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -345,12 +448,16 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       child: Column(
                         children: [
                           Container(
+                            alignment: Alignment.center,
                             width: 52.r,
                             height: 52.r,
                             decoration: const BoxDecoration(
                                 shape: BoxShape.circle, color: Colors.white),
                             child: SvgPicture.asset(
-                                'assets/images/garden-color.svg'),
+                              'assets/images/garden-color.svg',
+                              width: 20.w,
+                              height: 30.h,
+                            ),
                           ),
                           Container(
                             alignment: Alignment.center,

@@ -218,7 +218,7 @@ class Widgets {
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-            height: 302.h,
+            height: 256.h,
             margin: EdgeInsets.only(
               top: 30.h,
               left: 24.w,
@@ -230,15 +230,15 @@ class Widgets {
                 Text(
                   title,
                   style:
-                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 24.h, bottom: 30.h),
-                  height: 48.h,
+                  margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
+                  height: 22.h,
                   child: Text(
                     content,
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 14.sp,
                     ),
                   ),
                 ),
@@ -281,7 +281,7 @@ class Widgets {
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-            height: 302.h,
+            height: 280.h,
             margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -289,11 +289,11 @@ class Widgets {
                 Text(
                   title,
                   style:
-                      TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                 ),
                 Container(
-                    margin: EdgeInsets.only(top: 24.h, bottom: 30.h),
-                    height: 48.h,
+                    margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
+                    height: 46.h,
                     child: content),
                 Column(
                   children: [

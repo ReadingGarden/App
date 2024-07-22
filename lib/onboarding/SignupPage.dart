@@ -34,10 +34,8 @@ class SignupPage extends ConsumerWidget {
     final response = await authService.postSignup(data);
     if (response?.statusCode == 201) {
       // 회원가입 완료 페이지로
-      context.goNamed('signup-end');
-    } else if (response?.statusCode == 400) {
-      print('e400');
-    }
+      context.goNamed('signup-done');
+    } else if (response?.statusCode == 400) {}
   }
 
   @override
