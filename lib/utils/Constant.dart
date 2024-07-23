@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 class Constant {
   static const LOCAL_URL = 'http://localhost:8000/api/v1/';
   static const URL =
@@ -16,5 +18,16 @@ class Constant {
     'blue',
     'purple',
     'black'
+  ];
+
+  static const GARDEN_COLOR_SET_LIST = [
+    Color(0xffEE5757),
+    Color(0xffFA8BB3),
+    Color(0xffFFC038),
+    Color(0xff79D94C),
+    Color(0xff00AA96),
+    Color(0xff476EFF),
+    Color(0xff9570FF),
+    Color(0xff2F2F2F),
   ];
 }

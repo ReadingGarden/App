@@ -35,8 +35,6 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
-
-    print(widget.user_email);
   }
 
   @override

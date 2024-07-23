@@ -64,7 +64,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                         color:
                                             (bookList[index]['percent'] == 100)
                                                 ? AppColors.black_4A
-                                                : Colors.red,
+                                                : AppColors.grey_F2,
                                       ),
                                       child: Text(
                                         '${bookList[index]['percent']}%',

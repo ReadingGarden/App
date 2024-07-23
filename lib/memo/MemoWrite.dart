@@ -147,10 +147,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
           //메모 정보가 없으면 (작성시)
           if (widget.book['id'] == null) {
             context.pop();
-            context.pushNamed('bottom-navi');
-            // context.pop();
-            // context.pop();
-            // context.pop();
+            context.pop();
+            context.pop();
 
             //수정시
           } else {

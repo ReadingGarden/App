@@ -103,14 +103,15 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
                                             gardenColorSelectIndexProvider) ==
                                         index)
                                     ? Border.all(
-                                        color: Colors.red,
+                                        color: Constant
+                                            .GARDEN_COLOR_SET_LIST[index],
                                         width: 2.w,
                                       )
                                     : null),
                             child: Container(
                                 decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.amber,
+                              color: Constant.GARDEN_COLOR_SET_LIST[index],
                             )),
                           ),
                         );

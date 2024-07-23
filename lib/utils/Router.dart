@@ -1,4 +1,5 @@
 import 'package:book_flutter/garden/GardenBookListPage.dart';
+import 'package:book_flutter/garden/GardenEditPage.dart';
 import 'package:book_flutter/garden/GardenLeaderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -203,6 +204,13 @@ final GoRouter router = GoRouter(
             return GardenPage();
           },
           routes: [
+            GoRoute(
+                path: 'garden-edit',
+                name: 'garden-edit',
+                builder: (context, state) {
+                  // final Map garden = state.extra as Map;
+                  return GardenEditPage();
+                }),
             GoRoute(
                 path: 'garden-book',
                 name: 'garden-book',

@@ -55,6 +55,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     }
   }
 
+  //가든 컬러
+  Color _gardenColor(String color) {
+    int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
+    return Constant.GARDEN_COLOR_SET_LIST[colorIndex];
+  }
+
   @override
   Widget build(BuildContext context) {
     final gardenMain = ref.watch(gardenMainProvider);
@@ -122,6 +128,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           height: 30.h,
                           child: SvgPicture.asset(
                             'assets/images/garden-color.svg',
+                            color: _gardenColor(gardenMain['garden_color']),
                             width: 20.w,
                             height: 30.h,
                           ),
@@ -139,7 +146,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   Future _gardenMenuBottomSheet() {
     final gardenMain = ref.watch(gardenMainProvider);
     final gardenMainBookList = ref.watch(gardenMainBookListProvider);
-    print(gardenMainBookList);
 
     return showModalBottomSheet(
       context: context,
@@ -168,6 +174,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           color: Colors.white),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             gardenMain['garden_info'],
@@ -242,10 +249,15 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                         style: TextStyle(
                             fontSize: 14.sp, fontWeight: FontWeight.bold),
                       ),
-                      SvgPicture.asset(
-                        'assets/images/garden-angle-right-b.svg',
-                        width: 20.r,
-                        height: 20.r,
+                      Row(
+                        children: [
+                          _memberProfile(),
+                          SvgPicture.asset(
+                            'assets/images/garden-angle-right-b.svg',
+                            width: 20.r,
+                            height: 20.r,
+                          ),
+                        ],
                       )
                     ],
                   ),
@@ -275,26 +287,31 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       )
                     ],
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 8.h),
-                        height: 18.h,
-                        child: Text(
-                          '수정하기',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                          ),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed('garden-edit');
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 64.r,
+                          height: 64.r,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
                         ),
-                      )
-                    ],
+                        Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 8.h),
+                          height: 18.h,
+                          child: Text(
+                            '수정하기',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   Column(
                     children: [
@@ -359,7 +376,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
       padding: EdgeInsets.only(top: 12.h),
       shrinkWrap: true,
       children: List.generate(
-        gardenMainBookList.length,
+        gardenMainBookList.length > 3 ? 3 : gardenMainBookList.length,
         (index) {
           return Container(
             margin: EdgeInsets.only(bottom: 8.h),
@@ -411,6 +428,63 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     );
   }
 
+  //가든 멤버 보기
+  Widget _memberProfile() {
+    final gardenMain = ref.watch(gardenMainProvider);
+    final memberCount = gardenMain['garden_members'].length;
+
+    return Container(
+      margin: EdgeInsets.only(right: 4.w),
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: [
+          Container(
+            width: 32.r,
+            height: 32.r,
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle, color: Colors.green),
+          ),
+          Visibility(
+            visible: memberCount >= 2,
+            child: SizedBox(
+              width: 32.r * 2,
+              child: Container(
+                width: 32.r,
+                height: 32.r,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.red),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: false,
+            child: SizedBox(
+              width: 100.w,
+              child: Container(
+                width: 32.r,
+                height: 32.r,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.black),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: false,
+            child: SizedBox(
+              width: 140.w,
+              child: Container(
+                width: 32.r,
+                height: 32.r,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.amber),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _bookEmpty() {
     return Container(
         alignment: Alignment.center,
@@ -437,8 +511,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             return (index != gardenList.length)
                 ? GestureDetector(
                     onTap: () {
-                      print(gardenList[index]);
-                      print(gardenMain);
                       getGardenDetail(gardenList[index]['garden_no']);
                       context.pop();
                     },
@@ -455,6 +527,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                 shape: BoxShape.circle, color: Colors.white),
                             child: SvgPicture.asset(
                               'assets/images/garden-color.svg',
+                              color: _gardenColor(
+                                  gardenList[index]['garden_color']),
                               width: 20.w,
                               height: 30.h,
                             ),
