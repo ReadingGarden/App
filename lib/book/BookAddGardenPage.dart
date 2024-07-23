@@ -10,6 +10,7 @@ import '../utils/Widgets.dart';
 
 final buttonCheckProvider = StateProvider<bool>((ref) => false);
 final detailIsbnProvider = StateProvider<Map>((ref) => {});
+final bookNoProvider = StateProvider<int?>((ref) => null);
 
 class BookAddGardenPage extends ConsumerStatefulWidget {
   const BookAddGardenPage({required this.isbn13});
@@ -24,9 +25,37 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
+      ref.read(buttonCheckProvider.notifier).state = false;
       ref.read(detailIsbnProvider.notifier).state = {};
+      ref.read(bookNoProvider.notifier).state = null;
     });
     getDetailBook_ISBN(widget.isbn13);
+  }
+
+  //책 읽고싶어요 등록
+  void postBookStatus() async {
+    final detailIsbn = ref.watch(detailIsbnProvider);
+
+    final data = {
+      "book_title": detailIsbn['title'],
+      "book_author": detailIsbn['author'],
+      "book_publisher": detailIsbn['publisher'],
+      "book_status": 2,
+      "book_page": detailIsbn['itemPage'],
+      "book_image_url": detailIsbn['cover']
+    };
+    final response = await bookService.postBook(data);
+    if (response?.statusCode == 201) {
+      ref.read(bookNoProvider.notifier).state =
+          response?.data['data']['book_no'];
+    } else if (response?.statusCode == 401) {}
+  }
+
+  //책 읽고싶어요 취소 (책 삭제)
+  void deleteBookStatus() async {
+    final response = await bookService.deleteBook(ref.watch(bookNoProvider)!);
+    if (response?.statusCode == 200) {
+    } else if (response?.statusCode == 401) {}
   }
 
   //책 상세조회 isbn api
@@ -34,9 +63,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
     final response = await bookService.getDetailBook_ISBN(isbn);
     if (response?.statusCode == 200) {
       ref.read(detailIsbnProvider.notifier).state = response?.data['data'];
-    } else if (response?.statusCode == 400) {
-      print('토큰에러');
-    }
+    } else if (response?.statusCode == 401) {}
   }
 
   @override
@@ -101,6 +128,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                     ? GestureDetector(
                         onTap: () {
                           ref.read(buttonCheckProvider.notifier).state = true;
+                          postBookStatus();
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -138,6 +166,9 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                     : GestureDetector(
                         onTap: () {
                           ref.read(buttonCheckProvider.notifier).state = false;
+                          if (ref.watch(bookNoProvider) != null) {
+                            deleteBookStatus();
+                          }
                         },
                         child: Container(
                           alignment: Alignment.center,

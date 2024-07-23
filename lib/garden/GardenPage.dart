@@ -413,9 +413,13 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     children: [
                       Text(
                         gardenMainBookList[index]['book_title'],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        gardenMainBookList[index]['book_title'],
+                        gardenMainBookList[index]['book_author'],
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
