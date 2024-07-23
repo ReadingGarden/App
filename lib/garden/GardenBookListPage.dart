@@ -47,10 +47,29 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                 Stack(
                                   alignment: Alignment.bottomRight,
                                   children: [
-                                    Container(
-                                      height: 142.h,
-                                      color: Colors.grey,
-                                    ),
+                                    ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
+                                        child: (bookList[index]
+                                                    ['book_image_url'] !=
+                                                null)
+                                            ? Image.network(
+                                                width: 96.w,
+                                                height: 142.h,
+                                                fit: BoxFit.cover,
+                                                bookList[index]
+                                                    ['book_image_url'],
+                                              )
+                                            : Container(
+                                                width: 96.w,
+                                                height: 142.h,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.r),
+                                                  color: AppColors.grey_F2,
+                                                ),
+                                              )),
                                     Container(
                                       alignment: Alignment.center,
                                       margin: EdgeInsets.only(bottom: 10.h),

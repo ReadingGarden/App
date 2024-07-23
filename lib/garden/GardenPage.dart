@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
+import '../utils/Functions.dart';
 
 //가든 리스트 상태를 관리하는 ...
 final gardenListProvider = StateProvider<List>((ref) => []);
@@ -53,12 +54,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     } else if (response?.statusCode == 401) {
       print('토큰에러');
     }
-  }
-
-  //가든 컬러
-  Color _gardenColor(String color) {
-    int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
-    return Constant.GARDEN_COLOR_SET_LIST[colorIndex];
   }
 
   @override
@@ -128,7 +123,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           height: 30.h,
                           child: SvgPicture.asset(
                             'assets/images/garden-color.svg',
-                            color: _gardenColor(gardenMain['garden_color']),
+                            color: Functions.gardenColor(
+                                gardenMain['garden_color']),
                             width: 20.w,
                             height: 30.h,
                           ),
@@ -153,145 +149,122 @@ class _GardenPageState extends ConsumerState<GardenPage> {
       useSafeArea: true,
       backgroundColor: AppColors.grey_F2,
       builder: (context) {
-        return Container(
-          margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 38.h),
-          height: 814.h,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _gardenList(),
-              Container(
-                margin: EdgeInsets.only(top: 16.h, bottom: 8.h),
-                child: Stack(
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding: EdgeInsets.only(
-                          top: 56.h, left: 20.w, right: 20.w, bottom: 20.h),
-                      height: 180.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: Colors.white),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            gardenMain['garden_info'],
-                            style: TextStyle(
-                                fontSize: 18.sp, fontWeight: FontWeight.bold),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(top: 12.h),
-                              width: 272.w,
-                              // height: 34.h,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text('가든을 다 채웠어요!'),
-                                      Text(
-                                        '${gardenMainBookList.length}/30',
-                                        style: TextStyle(fontSize: 12.sp),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 6.h),
-                                    height: 8.h,
-                                    color: Colors.black,
-                                  )
-                                ],
-                              ))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.centerLeft,
-                      padding: EdgeInsets.only(left: 20.w),
-                      height: 36.h,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20.r),
-                              topRight: Radius.circular(20.r)),
-                          color: AppColors.primaryColor),
-                      child: Text(
-                        gardenMain['garden_title'],
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  context.pop();
-                  context.pushNamed('garden-member',
-                      extra: gardenMain['garden_no']);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 16.h),
-                  padding: EdgeInsets.only(left: 20.w, right: 16.w),
-                  height: 56.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.r),
-                      color: Colors.white),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '가든 멤버 보기',
-                        style: TextStyle(
-                            fontSize: 14.sp, fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children: [
-                          _memberProfile(),
-                          SvgPicture.asset(
-                            'assets/images/garden-angle-right-b.svg',
-                            width: 20.r,
-                            height: 20.r,
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Column(
+        return SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(
+                left: 24.w, right: 24.w, top: 38.h, bottom: 54.h),
+            // height: 814.h,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _gardenList(),
+                Container(
+                  margin: EdgeInsets.only(top: 16.h, bottom: 8.h),
+                  child: Stack(
                     children: [
                       Container(
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 8.h),
-                        height: 18.h,
-                        child: Text(
-                          '사진찍기',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                          ),
+                        alignment: Alignment.topLeft,
+                        padding: EdgeInsets.only(
+                            top: 56.h, left: 20.w, right: 20.w, bottom: 20.h),
+                        height: 180.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: Colors.white),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              gardenMain['garden_info'],
+                              style: TextStyle(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(top: 12.h),
+                                width: 272.w,
+                                // height: 34.h,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('가든을 다 채웠어요!'),
+                                        Text(
+                                          '${gardenMainBookList.length}/30',
+                                          style: TextStyle(fontSize: 12.sp),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(top: 6.h),
+                                      height: 8.h,
+                                      color: Colors.black,
+                                    )
+                                  ],
+                                ))
+                          ],
                         ),
-                      )
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: 20.w),
+                        height: 36.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20.r),
+                                topRight: Radius.circular(20.r)),
+                            color: AppColors.primaryColor),
+                        child: Text(
+                          gardenMain['garden_title'],
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      context.pushNamed('garden-edit');
-                    },
-                    child: Column(
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.pop();
+                    context.pushNamed('garden-member',
+                        extra: gardenMain['garden_no']);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 16.h),
+                    padding: EdgeInsets.only(left: 20.w, right: 16.w),
+                    height: 56.h,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        color: Colors.white),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '가든 멤버 보기',
+                          style: TextStyle(
+                              fontSize: 14.sp, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            _memberProfile(),
+                            SvgPicture.asset(
+                              'assets/images/garden-angle-right-b.svg',
+                              width: 20.r,
+                              height: 20.r,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
                       children: [
                         Container(
                           width: 64.r,
@@ -304,7 +277,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           margin: EdgeInsets.only(top: 8.h),
                           height: 18.h,
                           child: Text(
-                            '수정하기',
+                            '사진찍기',
                             style: TextStyle(
                               fontSize: 12.sp,
                             ),
@@ -312,57 +285,83 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                         )
                       ],
                     ),
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 8.h),
-                        height: 18.h,
-                        child: Text(
-                          '공유하기',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                    GestureDetector(
+                      onTap: () {
+                        context.pushNamed('garden-edit');
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 64.r,
+                            height: 64.r,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.white),
                           ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
-              ),
-              GestureDetector(
-                onTap: () {
-                  context.pushNamed('garden-book', extra: gardenMain);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(top: 30.h),
-                  height: 24.h,
-                  color: Colors.transparent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '가든에 있는 책 보기',
-                        style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 8.h),
+                            height: 18.h,
+                            child: Text(
+                              '수정하기',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                      SvgPicture.asset(
-                        'assets/images/garden-angle-right-b.svg',
-                        width: 20.r,
-                        height: 20.r,
-                      )
-                    ],
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          width: 64.r,
+                          height: 64.r,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle, color: Colors.white),
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 8.h),
+                          height: 18.h,
+                          child: Text(
+                            '공유하기',
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.pushNamed('garden-book', extra: gardenMain);
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(top: 30.h),
+                    height: 24.h,
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '가든에 있는 책 보기',
+                          style: TextStyle(
+                              fontSize: 16.sp, fontWeight: FontWeight.bold),
+                        ),
+                        SvgPicture.asset(
+                          'assets/images/garden-angle-right-b.svg',
+                          width: 20.r,
+                          height: 20.r,
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              (gardenMainBookList.isEmpty) ? _bookEmpty() : _bookList()
-            ],
+                (gardenMainBookList.isEmpty) ? _bookEmpty() : _bookList()
+              ],
+            ),
           ),
         );
       },
@@ -375,6 +374,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     return ListView(
       padding: EdgeInsets.only(top: 12.h),
       shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       children: List.generate(
         gardenMainBookList.length > 3 ? 3 : gardenMainBookList.length,
         (index) {
@@ -386,21 +386,23 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 borderRadius: BorderRadius.circular(20.r), color: Colors.white),
             child: Row(
               children: [
-                Container(
-                  width: 44.r,
-                  height: 44.r,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8.r),
-                    color: Colors.green,
-                  ),
-                  child: (gardenMainBookList[index]['image_url'] != null)
-                      ? Image.network(
-                          width: 320.w,
-                          height: 140.h,
-                          fit: BoxFit.fitWidth,
-                          '${Constant.IMAGE_URL}${gardenMainBookList[index]['image_url']}')
-                      : Container(),
-                ),
+                (gardenMainBookList[index]['book_image_url'] != null)
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8.r),
+                        child: Image.network(
+                            width: 44.r,
+                            height: 44.r,
+                            fit: BoxFit.fitWidth,
+                            gardenMainBookList[index]['book_image_url']),
+                      )
+                    : Container(
+                        width: 44.r,
+                        height: 44.r,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          color: AppColors.grey_F2,
+                        ),
+                      ),
                 Container(
                   margin: EdgeInsets.only(left: 12.w),
                   width: 226.w,
@@ -527,7 +529,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                 shape: BoxShape.circle, color: Colors.white),
                             child: SvgPicture.asset(
                               'assets/images/garden-color.svg',
-                              color: _gardenColor(
+                              color: Functions.gardenColor(
                                   gardenList[index]['garden_color']),
                               width: 20.w,
                               height: 30.h,

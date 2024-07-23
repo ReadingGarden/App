@@ -68,19 +68,17 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
             ),
           ),
           Expanded(
-            child: Container(
-                margin: EdgeInsets.only(top: 20.h),
-                child: PageView.builder(
-                  itemCount: 3,
-                  controller: _pageController,
-                  onPageChanged: (int page) {
-                    ref.read(pageViewIndexProvider.notifier).state = page;
-                    getBookStatusList(page);
-                  },
-                  itemBuilder: (context, index) {
-                    return _bookselfList();
-                  },
-                )),
+            child: PageView.builder(
+              itemCount: 3,
+              controller: _pageController,
+              onPageChanged: (int page) {
+                ref.read(pageViewIndexProvider.notifier).state = page;
+                getBookStatusList(page);
+              },
+              itemBuilder: (context, index) {
+                return _bookselfList();
+              },
+            ),
           ),
         ],
       ),
@@ -100,54 +98,104 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
           height: 36.h,
           decoration: BoxDecoration(
               color: Colors.transparent,
-              // color: ref.watch(pageViewIndexProvider) == index
-              //     ? Colors.red
-              //     : Colors.orange,
               border: Border(
                   bottom: BorderSide(
                 color: ref.watch(pageViewIndexProvider) == index
-                    ? AppColors.primaryColor
+                    ? AppColors.black_4A
                     : Colors.transparent,
                 width: 2.w,
               ))),
           child: Text(
             title,
-            style: TextStyle(color: AppColors.primaryColor),
+            style: (ref.watch(pageViewIndexProvider) == index)
+                ? const TextStyle(
+                    color: AppColors.black_4A, fontWeight: FontWeight.bold)
+                : const TextStyle(color: AppColors.grey_8D),
           )),
     );
   }
 
   Widget _bookselfList() {
+    final pageViewIndex = ref.watch(pageViewIndexProvider);
+    final bookStatusList = ref.watch(bookStatusListProvider);
+
     return Center(
-        child: ref.watch(bookStatusListProvider).isEmpty
+        child: bookStatusList.isEmpty
             ? _bookshelfEmpty()
             : GridView(
-                padding: EdgeInsets.only(left: 24.w, right: 24.w),
+                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.57,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 12.w,
-                    mainAxisSpacing: 20.h),
+                  childAspectRatio: 0.5,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 12.w,
+                ),
                 children: List.generate(
-                  ref.watch(bookStatusListProvider).length,
+                  bookStatusList.length,
                   (index) {
                     return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          margin: EdgeInsets.only(bottom: 8.h),
-                          width: 96.w,
-                          height: 142.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.r),
-                              color: Colors.blue),
+                        Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: (bookStatusList[index]
+                                            ['book_image_url'] !=
+                                        null)
+                                    ? Image.network(
+                                        width: 96.w,
+                                        height: 142.h,
+                                        fit: BoxFit.cover,
+                                        bookStatusList[index]['book_image_url'],
+                                      )
+                                    : Container(
+                                        width: 96.w,
+                                        height: 142.h,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
+                                          color: AppColors.grey_F2,
+                                        ),
+                                      )),
+                            Visibility(
+                              visible: (pageViewIndex != 2),
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(bottom: 10.h),
+                                width: 50.w,
+                                height: 28.h,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20.r),
+                                    bottomLeft: Radius.circular(20.r),
+                                  ),
+                                  color: (pageViewIndex == 1)
+                                      ? AppColors.black_4A
+                                      : AppColors.grey_F2,
+                                ),
+                                child: Text(
+                                  '%',
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: (pageViewIndex == 1)
+                                          ? Colors.white
+                                          : AppColors.black_4A),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Container(
+                            margin: EdgeInsets.only(top: 8.h),
                             alignment: Alignment.centerLeft,
                             height: 20.h,
                             child: Text(
-                              ref.watch(bookStatusListProvider)[index]
-                                  ['book_title'],
+                              bookStatusList[index]['book_title'],
                               overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
                             ))
                       ],
                     );
@@ -157,8 +205,35 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
   }
 
   Widget _bookshelfEmpty() {
+    final pageViewIndex = ref.watch(pageViewIndexProvider);
+
     return Container(
-      color: Colors.white,
+      margin: EdgeInsets.only(top: 84.h),
+      child: Column(
+        children: [
+          Container(
+            width: 200.r,
+            height: 200.r,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
+            child: Text(
+              '저장된 책이 없어요',
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Text(
+            (pageViewIndex == 0)
+                ? '지금 읽고 있는 책이 있다면 추가해주세요'
+                : (pageViewIndex == 1)
+                    ? '책을 끝까지 다 읽은 후 찾아와주세요!'
+                    : '나중에 읽고 싶은 책이 있다면\n책 추가하기에서 ‘읽고싶어요’를 눌러주세요',
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: AppColors.grey_8D),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,7 +1,11 @@
+import 'dart:ui';
+
 import 'package:book_flutter/core/provider/TokenProvider.dart';
 import 'package:book_flutter/utils/SharedPreferences.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
+import 'Constant.dart';
 
 class Functions {
   //이메일 유효성 검사
@@ -33,5 +37,11 @@ class Functions {
   //AccessToken 불러오기
   static void getAccess(WidgetRef ref) async {
     ref.read(tokenProvider.accessProvider.notifier).state = await loadAccess();
+  }
+
+  //가든 컬러
+  static Color gardenColor(String color) {
+    int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
+    return Constant.GARDEN_COLOR_SET_LIST[colorIndex];
   }
 }

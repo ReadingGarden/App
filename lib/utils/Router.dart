@@ -114,7 +114,12 @@ final GoRouter router = GoRouter(
                         GoRoute(
                             path: 'book-register-done',
                             name: 'book-register-done',
-                            builder: (context, state) => BookRegisterDonePage())
+                            builder: (context, state) {
+                              String gardenName = state.extra as String;
+                              return BookRegisterDonePage(
+                                gardenName: gardenName,
+                              );
+                            })
                       ]),
                 ]),
             GoRoute(

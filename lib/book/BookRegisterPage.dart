@@ -8,6 +8,7 @@ import '../core/service/BookService.dart';
 import '../garden/GardenPage.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 //가든 선택 인덱스 상태 관리 ...
@@ -56,7 +57,10 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       data['book_image_url'] = widget.book['cover'];
     }
 
-    context.pushNamed('book-register-done');
+    context.pushNamed('book-register-done',
+        extra:
+            ref.watch(gardenListProvider)[ref.watch(gardenSelectIndexProvider)]
+                ['garden_title']);
     final response = await bookService.postBook(data);
     if (response?.statusCode == 201) {
     } else if (response?.statusCode == 401) {}
@@ -197,7 +201,6 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     return Container(
       margin: EdgeInsets.only(top: 16.h),
       height: (68.h + 10.h) * ref.watch(gardenListProvider).length,
-      // height: (68.h + 10.h) * 2,
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
         children: List.generate(
@@ -216,11 +219,13 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                     padding: EdgeInsets.symmetric(horizontal: 24.w),
                     height: 68.h,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.r),
-                        border: (index == ref.watch(gardenSelectIndexProvider))
-                            ? Border.all(color: AppColors.black_4A)
-                            : null,
-                        color: AppColors.grey_FA),
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(
+                            color:
+                                (index == ref.watch(gardenSelectIndexProvider))
+                                    ? AppColors.black_4A
+                                    : AppColors.grey_F2),
+                        color: Colors.white),
                     child: SizedBox(
                       height: 44.h,
                       child: Column(
@@ -234,7 +239,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                           ),
                           //TODO: - 심은 꽃
                           Text(
-                            '@심은 꽃 23/30',
+                            '@심은 꽃 /30',
                             style: TextStyle(
                                 fontSize: 12.sp, color: AppColors.grey_8D),
                           )
@@ -245,9 +250,10 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                   Container(
                     margin: EdgeInsets.only(right: 20.w),
                     child: SvgPicture.asset(
-                      'assets/images/garden-color_icon.svg',
+                      'assets/images/garden-color.svg',
                       width: 20.w,
-                      // color: ref.watch(gardenListProvider)[index]['garden_color'],
+                      color: Functions.gardenColor(
+                          ref.watch(gardenListProvider)[index]['garden_color']),
                     ),
                   ),
                 ],
@@ -305,6 +311,10 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
 }
 
 class BookRegisterDonePage extends StatelessWidget {
+  BookRegisterDonePage({super.key, required this.gardenName});
+
+  String gardenName;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -318,9 +328,10 @@ class BookRegisterDonePage extends StatelessWidget {
                         TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
                     TextSpan(children: [
                       TextSpan(
-                          text: '@행복한 쿼카의 가든',
-                          style: TextStyle(color: AppColors.primaryColor)),
-                      TextSpan(text: '에')
+                          text: gardenName,
+                          style:
+                              const TextStyle(color: AppColors.primaryColor)),
+                      const TextSpan(text: '에')
                     ])),
                 Text(
                   '새로운 책을 심었어요',

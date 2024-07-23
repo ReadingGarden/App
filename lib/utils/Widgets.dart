@@ -114,6 +114,7 @@ class Widgets {
           TextField(
             controller: controller,
             maxLength: (label == '가든 소개') ? 30 : null,
+            maxLines: (label == '가든 소개') ? 2 : 1,
             onChanged: (value) {
               // errorText 초기화
               ref.read(errorProvider.notifier).state = null;
@@ -212,13 +213,16 @@ class Widgets {
   }
 
   static Future baseBottomSheet(BuildContext context, String title,
-      String content, String btnTitle, Function btnFunction) {
+      String content, String btnTitle, Function btnFunction,
+      {String? cancelTitle,
+      Widget? contentWidget,
+      Function? cancelBtnFunction}) {
     return showModalBottomSheet(
         context: context,
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-            height: 256.h,
+            height: 278.h,
             margin: EdgeInsets.only(
               top: 30.h,
               left: 24.w,
@@ -234,13 +238,15 @@ class Widgets {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
-                  height: 22.h,
-                  child: Text(
-                    content,
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                    ),
-                  ),
+                  height: 44.h,
+                  child: (content != '' && contentWidget == null)
+                      ? Text(
+                          content,
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                          ),
+                        )
+                      : contentWidget!,
                 ),
                 Column(
                   children: [
@@ -248,7 +254,9 @@ class Widgets {
                       btnFunction();
                     }),
                     GestureDetector(
-                      onTap: () => context.pop(),
+                      onTap: () => (cancelBtnFunction != null)
+                          ? cancelBtnFunction()
+                          : context.pop(),
                       child: Container(
                         margin: EdgeInsets.only(top: 12.h),
                         height: 60.h,
@@ -257,7 +265,7 @@ class Widgets {
                             color: AppColors.grey_F2),
                         child: Center(
                             child: Text(
-                          '취소',
+                          cancelTitle ?? '취소',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -281,7 +289,7 @@ class Widgets {
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-            height: 280.h,
+            height: 282.h,
             margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
