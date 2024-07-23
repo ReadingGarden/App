@@ -175,7 +175,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                       : AppColors.grey_F2,
                                 ),
                                 child: Text(
-                                  '%',
+                                  '${bookStatusList[index]['percent']}%',
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       color: (pageViewIndex == 1)
