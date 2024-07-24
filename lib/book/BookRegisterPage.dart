@@ -1,20 +1,20 @@
-import 'package:book_flutter/utils/AutoInputFormatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/api/GardenAPI.dart';
 import '../core/service/BookService.dart';
-import '../garden/GardenPage.dart';
 import '../utils/AppColors.dart';
+import '../utils/AutoInputFormatter.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
-//가든 선택 인덱스 상태 관리 ...
+//가든 선택 인덱스 ...
 final gardenSelectIndexProvider = StateProvider<int>((ref) => 0);
-//꽃 선택 인덱스 상태 관리 ...
+//꽃 선택 인덱스 ...
 final flowerSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class BookRegisterPage extends ConsumerStatefulWidget {
@@ -37,12 +37,13 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     });
   }
 
-  //책 등록하기 api
+  //책 등록 api
   void postBook() async {
+    final gardenAPI = GardenAPI(ref);
+
     final data = {
-      "garden_no":
-          ref.watch(gardenListProvider)[ref.watch(gardenSelectIndexProvider)]
-              ['garden_no'],
+      "garden_no": gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
+          ['garden_no'],
       "book_title": widget.book['title'],
       "book_author": widget.book['author'],
       "book_publisher": widget.book['publisher'],
@@ -70,6 +71,8 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
 
   //독서 기록 api
   void postBookRead(int book_no) async {
+    final gardenAPI = GardenAPI(ref);
+
     DateTime book_start_date =
         DateTime.parse(_dateController.text.replaceAll('.', ''));
 
@@ -83,8 +86,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     final response = await bookService.postBookRead(data);
     if (response?.statusCode == 201) {
       context.pushNamed('book-register-done',
-          extra: ref.watch(
-                  gardenListProvider)[ref.watch(gardenSelectIndexProvider)]
+          extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
               ['garden_title']);
     } else if (response?.statusCode == 401) {}
   }
@@ -229,15 +231,15 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   }
 
   Widget _gardenList() {
-    final gardenList = ref.watch(gardenListProvider);
+    final gardenAPI = GardenAPI(ref);
 
     return Container(
       margin: EdgeInsets.only(top: 16.h),
-      height: (68.h + 10.h) * gardenList.length,
+      height: (68.h + 10.h) * gardenAPI.gardenList().length,
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
         children: List.generate(
-          ref.watch(gardenListProvider).length,
+          gardenAPI.gardenList().length,
           (index) {
             return GestureDetector(
               onTap: () {
@@ -266,11 +268,11 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            gardenList[index]['garden_title'],
+                            gardenAPI.gardenList()[index]['garden_title'],
                             style: TextStyle(fontSize: 14.sp),
                           ),
                           Text(
-                            '심은 꽃 ${gardenList[index]['book_count']}/30',
+                            '심은 꽃 ${gardenAPI.gardenList()[index]['book_count']}/30',
                             style: TextStyle(
                                 fontSize: 12.sp, color: AppColors.grey_8D),
                           )
@@ -284,7 +286,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                       'assets/images/garden-color.svg',
                       width: 20.w,
                       color: Functions.gardenColor(
-                          ref.watch(gardenListProvider)[index]['garden_color']),
+                          gardenAPI.gardenList()[index]['garden_color']),
                     ),
                   ),
                 ],

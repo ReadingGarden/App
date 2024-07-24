@@ -28,7 +28,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
             children: [
               Text('책 ${widget.garden['book_list'].length}권',
                   style: const TextStyle(color: AppColors.grey_8D)),
-              (widget.garden['book_list'] != [])
+              (widget.garden['book_list'].length > 0)
                   ? Container(
                       margin: EdgeInsets.only(top: 18.h),
                       child: GridView(
@@ -124,6 +124,29 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
   }
 
   Widget _bookEmpty() {
-    return Container();
+    return Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(top: 78.h),
+        child: Column(
+          children: [
+            Container(
+              width: 200.r,
+              height: 200.r,
+              color: Colors.green,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
+              child: Text(
+                '저장된 책이 없어요',
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Text(
+              '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: AppColors.grey_8D),
+            ),
+          ],
+        ));
   }
 }
