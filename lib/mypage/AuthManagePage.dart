@@ -76,7 +76,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
                   context,
                   '정말 탈퇴하시겠어요?',
                   Text.rich(TextSpan(
-                      style: TextStyle(fontSize: 16.sp),
+                      style: TextStyle(fontSize: 14.sp),
                       children: const [
                         TextSpan(text: '게정 삭제 시 '),
                         TextSpan(

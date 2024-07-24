@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/GardenApi.dart';
+import '../core/api/GardenAPI.dart';
 import '../core/provider/ResponseProvider.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';

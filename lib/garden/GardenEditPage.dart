@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/api/GardenAPI.dart';
 import '../core/provider/ResponseProvider.dart';
 import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
-import 'GardenPage.dart';
 
-//가든 수정하기 버튼 상태를 관리하는 ...
+//가든 선택 인덱스 ...
+final gardenEditSelectIndexProvider = StateProvider<int>((ref) => 0);
+//가든 수정하기 버튼 ...
 final gardenEditButtonProvider = StateProvider<bool>((ref) => true);
-//가든 수정 색상 선택 인덱스 상태를 관리하는 ...
+//가든 수정 색상 선택 인덱스 ...
 final gardenEditColorSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class GardenEditPage extends ConsumerStatefulWidget {
@@ -32,18 +36,23 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     fToast = FToast();
     fToast.init(context);
 
+    final gardenAPI = GardenAPI(ref);
+
     Future.microtask(() {
       ref.read(gardenEditButtonProvider.notifier).state = true;
       ref.read(gardenEditColorSelectIndexProvider.notifier).state = 0;
-      _titleController.text = ref.watch(gardenMainProvider)['garden_title'];
-      _infoController.text = ref.watch(gardenMainProvider)['garden_info'];
+      ref.read(gardenEditSelectIndexProvider.notifier).state = 0;
+      _titleController.text = gardenAPI.gardenMain()['garden_title'];
+      _infoController.text = gardenAPI.gardenMain()['garden_info'];
     });
   }
 
   //가든 삭제 api
   void deleteGarden() async {
-    final response = await gardenService
-        .deleteGarden(ref.watch(gardenMainProvider)['garden_no']);
+    final gardenAPI = GardenAPI(ref);
+
+    final response =
+        await gardenService.deleteGarden(gardenAPI.gardenMain()['garden_no']);
     if (response?.statusCode == 200) {
       context.pop();
       context.pushNamed('bottom-navi');
@@ -52,8 +61,25 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     }
   }
 
+  //가든 이전 api
+  void moveToGarden(int to_garden_no) async {
+    final gardenAPI = GardenAPI(ref);
+
+    final response = await gardenService.moveToGarden(
+        gardenAPI.gardenMain()['garden_no'], to_garden_no);
+    if (response?.statusCode == 200) {
+      context.pop();
+      fToast.showToast(child: Widgets.toast('👌 남아있는 책을 모두 옮겼어요!'));
+      gardenAPI.getGardenLsit();
+    } else if (response?.statusCode == 403) {
+      fToast.showToast(child: Widgets.toast('😢 꽉 찼어요! 다른 가든을 선택해주세요'));
+    }
+  }
+
   //가든 수정 api
   void putGarden() async {
+    final gardenAPI = GardenAPI(ref);
+
     final data = {
       "garden_title": _titleController.text,
       "garden_info": _infoController.text,
@@ -61,18 +87,22 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
           .GARDEN_COLOR_LIST[ref.watch(gardenEditColorSelectIndexProvider)]
     };
     final response = await gardenService.putGarden(
-        ref.watch(gardenMainProvider)['garden_no'], data);
+        gardenAPI.gardenMain()['garden_no'], data);
     if (response?.statusCode == 200) {
       context.pop();
       context.pushNamed('bottom-navi');
     } else if (response?.statusCode == 401) {}
   }
 
-  //가든 나가기 api
+  //가든 탈퇴 api
   void byeGarden() async {
-    final response = await gardenService
-        .byeGarden(ref.watch(gardenMainProvider)['garden_no']);
+    final gardenAPI = GardenAPI(ref);
+
+    final response =
+        await gardenService.byeGarden(gardenAPI.gardenMain()['garden_no']);
     if (response?.statusCode == 200) {
+      context.pop();
+      context.pushNamed('bottom-navi');
     } else if (response?.statusCode == 401) {}
   }
 
@@ -85,12 +115,14 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     }
   }
 
+  //가든 리더 확인
   bool _gardenLeaderBool() {
+    final gardenAPI = GardenAPI(ref);
     final user = ref.watch(responseProvider.userMapProvider);
-    final garden = ref.watch(gardenMainProvider);
 
     bool leaderBool = false;
-    for (var member in garden['garden_members']) {
+
+    for (var member in gardenAPI.gardenMain()['garden_members']) {
       if (member['user_no'] == user?['user_no']) {
         leaderBool = member['garden_leader'];
       }
@@ -100,7 +132,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final garden = ref.watch(gardenMainProvider);
+    final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '가든 수정하기'),
@@ -204,11 +236,12 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                 height: 1.h,
                 color: AppColors.grey_F2,
               ),
-              garden['garden_members'].length <= 1
+              gardenAPI.gardenMain()['garden_members'].length <= 1
                   ? GestureDetector(
-                      onTap: () => (garden['book_list'].length > 0)
-                          ? _gardenDeleteBottomSheet()
-                          : _gardenRealDeleteBottomSheet(),
+                      onTap: () =>
+                          (gardenAPI.gardenMain()['book_list'].length > 0)
+                              ? _gardenDeleteBottomSheet()
+                              : _gardenRealDeleteBottomSheet(),
                       child: Container(
                           margin: EdgeInsets.only(left: 24.w),
                           height: 46.h,
@@ -255,7 +288,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     return Widgets.deleteBottomSheet(
         context,
         '가든에서 나가시겠어요?',
-        Text.rich(TextSpan(style: TextStyle(fontSize: 16.sp), children: const [
+        Text.rich(TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
           TextSpan(text: '가든에서 나가면 '),
           TextSpan(
               text: '내가 기록한 모든 책의 기록',
@@ -269,25 +302,42 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   //가든 이전하기 바텀시트 (개인)
   Future _gardenDeleteBottomSheet() {
     return Widgets.baseBottomSheet(
-        context, '가든에 남아있는 책이 있어요!', '', '전체 이전하기', () => byeGarden(),
+        context,
+        '가든에 남아있는 책이 있어요!',
+        '',
+        '전체 이전하기',
+        () {
+          context.pop();
+          showModalBottomSheet(
+              backgroundColor: Colors.white,
+              isScrollControlled: true,
+              context: context,
+              builder: (context) => GardenEditBottomSheet(
+                    function: (int to_garden_no) {
+                      moveToGarden(to_garden_no);
+                    },
+                  ));
+        },
         cancelTitle: '건너뛰기',
         contentWidget: Text.rich(
-            TextSpan(style: TextStyle(fontSize: 16.sp), children: const [
+            TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
           TextSpan(text: '독서기록과 메모를 유지하고 싶다면'),
           TextSpan(
               text: '전체 이전하기', style: TextStyle(fontWeight: FontWeight.bold)),
           TextSpan(text: '를 해주세요.'),
-        ])), cancelBtnFunction: () {
-      context.pop();
-      _gardenRealDeleteBottomSheet();
-    });
+        ])),
+        cancelBtnFunction: () {
+          context.pop();
+          _gardenRealDeleteBottomSheet();
+        });
   }
 
+  //가든 삭제하기 바텀시트 (개인)
   Future _gardenRealDeleteBottomSheet() {
     return Widgets.deleteBottomSheet(
         context,
         '가든을 삭제하시겠어요?',
-        Text.rich(TextSpan(style: TextStyle(fontSize: 16.sp), children: const [
+        Text.rich(TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
           TextSpan(text: '가든을 삭제하면 저장된 '),
           TextSpan(
               text: '모든 독서 기록', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -295,5 +345,116 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
         ])),
         '삭제하기',
         () => deleteGarden());
+  }
+}
+
+//가든 선택 바텀시트
+class GardenEditBottomSheet extends ConsumerWidget {
+  GardenEditBottomSheet({super.key, required this.function});
+
+  final Function(int) function;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gardenAPI = GardenAPI(ref);
+
+    return Container(
+      margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
+      height: (68.h + 10.h) * gardenAPI.gardenList().length + 90.h,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.only(bottom: 24.h),
+            child: Text(
+              '어느 가든으로 이전할까요?',
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: List.generate(
+              ref.watch(gardenListProvider).length,
+              (index) {
+                return GestureDetector(
+                  onTap: () {
+                    if (gardenAPI.gardenMain()['garden_no'] !=
+                        gardenAPI.gardenList()[index]['garden_no']) {
+                      ref.read(gardenEditSelectIndexProvider.notifier).state =
+                          index;
+
+                      function(gardenAPI.gardenList()[index]['garden_no']);
+                    }
+                  },
+                  child: Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.only(bottom: 10.h),
+                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        height: 68.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(
+                                color: (gardenAPI.gardenMain()['garden_no'] ==
+                                        gardenAPI.gardenList()[index]
+                                            ['garden_no'])
+                                    ? Colors.transparent
+                                    : (index ==
+                                            ref.watch(
+                                                gardenEditSelectIndexProvider))
+                                        ? AppColors.black_4A
+                                        : AppColors.grey_F2),
+                            color: (gardenAPI.gardenMain()['garden_no'] ==
+                                    gardenAPI.gardenList()[index]['garden_no'])
+                                ? AppColors.grey_F2
+                                : Colors.white),
+                        child: SizedBox(
+                          height: 44.h,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                gardenAPI.gardenList()[index]['garden_title'],
+                                style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color:
+                                        (gardenAPI.gardenMain()['garden_no'] ==
+                                                gardenAPI.gardenList()[index]
+                                                    ['garden_no'])
+                                            ? AppColors.grey_8D
+                                            : Colors.black),
+                              ),
+                              Text(
+                                '심은 꽃 ${gardenAPI.gardenList()[index]['book_count']}/30',
+                                style: TextStyle(
+                                    fontSize: 12.sp, color: AppColors.grey_8D),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(right: 20.w),
+                        child: SvgPicture.asset(
+                          'assets/images/garden-color.svg',
+                          width: 20.w,
+                          color: Functions.gardenColor(
+                              ref.watch(gardenListProvider)[index]
+                                  ['garden_color']),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

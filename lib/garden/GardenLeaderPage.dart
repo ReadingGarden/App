@@ -4,14 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/api/GardenAPI.dart';
 import '../core/service/GardenService.dart';
-import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
-import 'GardenMemberPage.dart';
-import 'GardenPage.dart';
 
 final gardenLeaderSelectIndexProvider = StateProvider<int>(
-    (ref) => ref.watch(gardenMemberListProvider)[0]['user_no']);
+    (ref) => ref.watch(gardenMainMemberListProvider)[0]['user_no']);
 
 class GardenLeaderPage extends ConsumerStatefulWidget {
   _GardenLeaderPageState createState() => _GardenLeaderPageState();
@@ -23,13 +21,14 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
     super.initState();
     Future.microtask(() {
       ref.read(gardenLeaderSelectIndexProvider.notifier).state =
-          ref.watch(gardenMemberListProvider)[0]['user_no'];
+          ref.watch(gardenMainMemberListProvider)[0]['user_no'];
     });
   }
 
   //가든 대표 변경 api
   void putGardenLeader() async {
-    final garden_no = ref.watch(gardenMainProvider)['garden_no'];
+    final gardenAPI = GardenAPI(ref);
+    final garden_no = gardenAPI.gardenMain()['garden_no'];
     final user_no = ref.watch(gardenLeaderSelectIndexProvider);
 
     final response = await gardenService.putGardenLeader(garden_no, user_no);
@@ -41,7 +40,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
 
   @override
   Widget build(BuildContext context) {
-    final gardenMemberList = ref.watch(gardenMemberListProvider);
+    final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
       appBar: Widgets.appBar(context),
@@ -54,13 +53,14 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 children: List.generate(
-                  gardenMemberList.length,
+                  gardenAPI.gardenMainMemberList().length,
                   (index) {
                     return GestureDetector(
                       onTap: () {
                         ref
-                            .read(gardenLeaderSelectIndexProvider.notifier)
-                            .state = gardenMemberList[index]['user_no'];
+                                .read(gardenLeaderSelectIndexProvider.notifier)
+                                .state =
+                            gardenAPI.gardenMainMemberList()[index]['user_no'];
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 24.h),
@@ -81,7 +81,8 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 12.w),
                                   child: Text(
-                                    gardenMemberList[index]['user_nick'],
+                                    gardenAPI.gardenMainMemberList()[index]
+                                        ['user_nick'],
                                     style: TextStyle(fontSize: 16.sp),
                                   ),
                                 ),
@@ -89,7 +90,8 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                             ),
                             SvgPicture.asset(
                               (ref.watch(gardenLeaderSelectIndexProvider) ==
-                                      gardenMemberList[index]['user_no'])
+                                      gardenAPI.gardenMainMemberList()[index]
+                                          ['user_no'])
                                   ? 'assets/images/garden-check-circle.svg'
                                   : 'assets/images/garden-check-circle-dis.svg',
                               width: 24.r,
