@@ -375,7 +375,7 @@ class GardenEditBottomSheet extends ConsumerWidget {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             children: List.generate(
-              ref.watch(gardenListProvider).length,
+              gardenAPI.gardenList().length,
               (index) {
                 return GestureDetector(
                   onTap: () {
@@ -443,8 +443,7 @@ class GardenEditBottomSheet extends ConsumerWidget {
                           'assets/images/garden-color.svg',
                           width: 20.w,
                           color: Functions.gardenColor(
-                              ref.watch(gardenListProvider)[index]
-                                  ['garden_color']),
+                              gardenAPI.gardenList()[index]['garden_color']),
                         ),
                       ),
                     ],
