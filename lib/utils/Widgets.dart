@@ -336,4 +336,120 @@ class Widgets {
           );
         });
   }
+
+  static Future shareBottomSheet(context, String title) {
+    return showModalBottomSheet(
+      backgroundColor: Colors.white,
+      context: context,
+      builder: (context) {
+        return Container(
+          alignment: Alignment.topLeft,
+          margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
+          height: 206.h,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 24.h),
+                child: Text(
+                  title,
+                  style:
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        width: 64.r,
+                        height: 64.r,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: AppColors.grey_F2),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 8.h),
+                        height: 20.h,
+                        child: Text(
+                          '카카오톡',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        width: 64.r,
+                        height: 64.r,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: AppColors.grey_F2),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 8.h),
+                        height: 20.h,
+                        child: Text(
+                          '문자',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        width: 64.r,
+                        height: 64.r,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: AppColors.grey_F2),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 8.h),
+                        height: 20.h,
+                        child: Text(
+                          '링크복사',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        width: 64.r,
+                        height: 64.r,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: AppColors.grey_F2),
+                      ),
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 8.h),
+                        height: 20.h,
+                        child: Text(
+                          '더보기',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

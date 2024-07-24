@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
+import '../utils/Widgets.dart';
 
 class GardenPage extends ConsumerStatefulWidget {
   @override
@@ -279,26 +280,32 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                         ],
                       ),
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          width: 64.r,
-                          height: 64.r,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.white),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: 8.h),
-                          height: 18.h,
-                          child: Text(
-                            '공유하기',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                            ),
+                    GestureDetector(
+                      onTap: () {
+                        context.pop();
+                        Widgets.shareBottomSheet(context, '가든 공유하기');
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 64.r,
+                            height: 64.r,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.white),
                           ),
-                        )
-                      ],
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 8.h),
+                            height: 18.h,
+                            child: Text(
+                              '공유하기',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
