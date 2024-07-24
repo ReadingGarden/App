@@ -1,16 +1,13 @@
-import 'package:book_flutter/X/model/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/api/GardenApi.dart';
 import '../core/provider/ResponseProvider.dart';
-import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
-
-final gardenMemberListProvider = StateProvider<List>((ref) => []);
 
 class GardenMemberPage extends ConsumerStatefulWidget {
   const GardenMemberPage({required this.garden_no});
@@ -24,26 +21,18 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      ref.read(gardenMemberListProvider.notifier).state = [];
-    });
-    getGardenDetail(widget.garden_no);
-  }
 
-  //가든 상세 조회 api
-  void getGardenDetail(int garden_no) async {
-    final response = await gardenService.getGardenDetail(garden_no);
-    if (response?.statusCode == 200) {
-      ref.read(gardenMemberListProvider.notifier).state =
-          response?.data['data']['garden_members'];
-    } else if (response?.statusCode == 401) {
-      print('토큰에러');
-    }
+    final gardenAPI = GardenAPI(ref);
+
+    Future.microtask(() {
+      gardenAPI.resetGardenMainMember();
+      gardenAPI.getGardenDetail(widget.garden_no);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final gardenMemberList = ref.watch(gardenMemberListProvider);
+    final gardenAPI = GardenAPI(ref);
     final user = ref.watch(responseProvider.userMapProvider);
 
     return Scaffold(
@@ -52,8 +41,9 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
         child: Column(
           children: [
             Visibility(
-              visible: gardenMemberList.length > 1 &&
-                  (gardenMemberList[0]['user_no'] == user?['user_no']),
+              visible: gardenAPI.gardenMainMemberList().length > 1 &&
+                  (gardenAPI.gardenMainMemberList()[0]['user_no'] ==
+                      user?['user_no']),
               child: GestureDetector(
                 onTap: () {
                   context.pushNamed('garden-leader');
@@ -79,7 +69,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(left: 9.w),
-                                  child: Text('대표 변경하기'),
+                                  child: const Text('대표 변경하기'),
                                 ),
                               ],
                             ),
@@ -111,7 +101,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '멤버 ${gardenMemberList.length}명',
+                    '멤버 ${gardenAPI.gardenMainMemberList().length}명',
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   ListView(
@@ -119,7 +109,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: List.generate(
-                      gardenMemberList.length,
+                      gardenAPI.gardenMainMemberList().length,
                       (index) {
                         return Container(
                           margin: EdgeInsets.only(bottom: 24.h),
@@ -137,8 +127,9 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                         color: Colors.grey),
                                   ),
                                   Visibility(
-                                    visible: gardenMemberList[index]
-                                        ['garden_leader'],
+                                    visible:
+                                        gardenAPI.gardenMainMemberList()[index]
+                                            ['garden_leader'],
                                     child: Container(
                                       width: 18.r,
                                       height: 18.r,
@@ -157,11 +148,13 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      gardenMemberList[index]['user_nick'],
+                                      gardenAPI.gardenMainMemberList()[index]
+                                          ['user_nick'],
                                       style: TextStyle(fontSize: 16.sp),
                                     ),
                                     Text(
-                                      (gardenMemberList[index]['garden_leader'])
+                                      (gardenAPI.gardenMainMemberList()[index]
+                                              ['garden_leader'])
                                           ? '대표 가드너'
                                           : '가드너',
                                       style: TextStyle(
