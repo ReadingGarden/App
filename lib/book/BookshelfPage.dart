@@ -25,6 +25,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
     });
   }
 
+  //책 목록(상태) 리스트 조회
   void getBookStatusList(int status) async {
     final response = await bookService.getBookStatusList(status);
     if (response?.statusCode == 200) {

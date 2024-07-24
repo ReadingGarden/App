@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/BookService.dart';
 import '../utils/Widgets.dart';
 
 //총 페이지 입력 에러 상태 ...
