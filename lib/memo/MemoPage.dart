@@ -91,9 +91,9 @@ class _MemoPageState extends ConsumerState<MemoPage> {
             )
           ],
         ),
-        body: (ref.watch(memoListProvider).isNotEmpty)
+        body: (!ref.watch(memoListProvider).isNotEmpty)
             ? _memoList()
-            : _emptyMemoList());
+            : _memoEmpty());
   }
 
   Widget _memoList() {
@@ -202,16 +202,23 @@ class _MemoPageState extends ConsumerState<MemoPage> {
     );
   }
 
-  Widget _emptyMemoList() {
-    return Center(
+  Widget _memoEmpty() {
+    return Container(
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(top: 120.h),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 20.h),
-            width: 120.w,
-            height: 130.h,
-            color: Colors.red,
+            width: 200.r,
+            height: 200.r,
+            color: Colors.green,
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
+            child: Text(
+              '메모를 작성해보세요',
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            ),
           ),
           SizedBox(
             height: 44.h,

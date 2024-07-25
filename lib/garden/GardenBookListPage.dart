@@ -141,10 +141,10 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
             ),
-            Text(
+            const Text(
               '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.grey_8D),
+              style: TextStyle(color: AppColors.grey_8D),
             ),
           ],
         ));
