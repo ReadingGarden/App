@@ -40,7 +40,18 @@ class Constant {
     Color(0xff2F2F2F),
   ];
 
-  static const GARDEN_BACK_COLOR_SET_LIST = [
+  static const GARDEN_TEXT_COLOR_SET_LIST = [
+    Color(0xffEE5757),
+    Color(0xffDA2A69),
+    Color(0xffBC7016),
+    Color(0xff49A71D),
+    Color(0xff00AA96),
+    Color(0xff476EFF),
+    Color(0xff9570FF),
+    Color(0xff2F2F2F),
+  ];
+
+  static const GARDEN_CHIP_COLOR_SET_LIST = [
     Color(0xffFEEFEF),
     Color(0xffFFF4F8),
     Color(0xffFFF2D7),

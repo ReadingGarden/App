@@ -150,33 +150,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               style: TextStyle(
                                   fontSize: 18.sp, fontWeight: FontWeight.bold),
                             ),
-                            Visibility(
-                              visible:
-                                  gardenAPI.gardenMainBookList().isNotEmpty,
-                              child: Container(
-                                  margin: EdgeInsets.only(top: 12.h),
-                                  width: 272.w,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('가든을 다 채웠어요!'),
-                                          Text(
-                                            '${gardenAPI.gardenMainBookList().length}/30',
-                                            style: TextStyle(fontSize: 12.sp),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 6.h),
-                                        height: 8.h,
-                                        color: Colors.black,
-                                      )
-                                    ],
-                                  )),
-                            )
+                            _gardenProgress()
                           ],
                         ),
                       ),
@@ -577,5 +551,77 @@ class _GardenPageState extends ConsumerState<GardenPage> {
         ),
       ),
     );
+  }
+
+  Widget _gardenProgress() {
+    final gardenAPI = GardenAPI(ref);
+    int bookCount = gardenAPI.gardenMainBookList().length;
+
+    double progress = bookCount / 30;
+
+    return (bookCount < 30)
+        ? Container(
+            margin: EdgeInsets.only(top: 12.h),
+            width: 272.w,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('가든을 다 채울때까지 앞으로 ${30 - bookCount}권'),
+                    Text(
+                      '$bookCount/30',
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
+                  ],
+                ),
+                Stack(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 6.h),
+                      height: 8.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(500.r),
+                        color: AppColors.grey_F2,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 6.h),
+                      width: progress * 272.w,
+                      height: 8.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(500.r),
+                        color: Colors.black,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ))
+        : Container(
+            margin: EdgeInsets.only(top: 12.h),
+            width: 272.w,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('가든을 다 채웠어요!'),
+                    Text(
+                      '30/30',
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 6.h),
+                  height: 8.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(500.r),
+                    color: Colors.black,
+                  ),
+                )
+              ],
+            ));
   }
 }
