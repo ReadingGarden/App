@@ -32,7 +32,9 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: (gardenAPI.gardenMain().isEmpty)
+          ? Colors.white
+          : Functions.gardenBackColor(gardenAPI.gardenMain()['garden_color']),
       body: Column(
         children: [
           GestureDetector(
@@ -148,30 +150,33 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               style: TextStyle(
                                   fontSize: 18.sp, fontWeight: FontWeight.bold),
                             ),
-                            Container(
-                                margin: EdgeInsets.only(top: 12.h),
-                                width: 272.w,
-                                // height: 34.h,
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text('가든을 다 채웠어요!'),
-                                        Text(
-                                          '${gardenAPI.gardenMainBookList().length}/30',
-                                          style: TextStyle(fontSize: 12.sp),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 6.h),
-                                      height: 8.h,
-                                      color: Colors.black,
-                                    )
-                                  ],
-                                ))
+                            Visibility(
+                              visible:
+                                  gardenAPI.gardenMainBookList().isNotEmpty,
+                              child: Container(
+                                  margin: EdgeInsets.only(top: 12.h),
+                                  width: 272.w,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('가든을 다 채웠어요!'),
+                                          Text(
+                                            '${gardenAPI.gardenMainBookList().length}/30',
+                                            style: TextStyle(fontSize: 12.sp),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 6.h),
+                                        height: 8.h,
+                                        color: Colors.black,
+                                      )
+                                    ],
+                                  )),
+                            )
                           ],
                         ),
                       ),
@@ -183,7 +188,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                             borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(20.r),
                                 topRight: Radius.circular(20.r)),
-                            color: AppColors.primaryColor),
+                            color: Functions.gardenColor(
+                                gardenAPI.gardenMain()['garden_color'])),
                         child: Text(
                           gardenAPI.gardenMain()['garden_title'],
                           style: TextStyle(

@@ -23,24 +23,11 @@ class _MyPageState extends ConsumerState<MyPage> {
       authAPI.resetUser();
       authAPI.getUser();
     });
-    // getUser();
   }
-
-  // //프로필 조회 api
-  // void getUser() async {
-  //   final response = await authService.getUser();
-  //   if (response?.statusCode == 200) {
-  //     ref.read(responseProvider.userMapProvider.notifier).state =
-  //         response?.data['data'];
-  //   } else if (response?.statusCode == 401) {
-  //     context.pushNamed('start');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     final authAPI = AuthAPI(ref);
-    // final user = ref.watch(responseProvider.userMapProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +36,6 @@ class _MyPageState extends ConsumerState<MyPage> {
         scrolledUnderElevation: 0,
       ),
       body: SingleChildScrollView(
-        // padding: EdgeInsets.only(bottom: 24.h),
         child: Container(
           margin: EdgeInsets.only(bottom: 24.h),
           child: Column(

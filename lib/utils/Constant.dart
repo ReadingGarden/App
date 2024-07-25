@@ -9,6 +9,15 @@ class Constant {
 
   static const FLOWER_LIST = ['데이지', '튤립', '물망초', '선인장', '민들레', '해바라기'];
 
+  static const FLOWER_INFO_LIST = [
+    '데이지는 해가 뜨면 고개를 들고 해가 지면\n다시 고개를 내린다고 해서 태양의 눈이라고도 불려요',
+    '데이지는 해가 뜨면 고개를 들고 해가 지면\n다시 고개를 내린다고 해서 태양의 눈이라고도 불려요',
+    '데이지는 해가 뜨면 고개를 들고 해가 지면\n다시 고개를 내린다고 해서 태양의 눈이라고도 불려요',
+    '데이지는 해가 뜨면 고개를 들고 해가 지면\n다시 고개를 내린다고 해서 태양의 눈이라고도 불려요',
+    '데이지는 해가 뜨면 고개를 들고 해가 지면\n다시 고개를 내린다고 해서 태양의 눈이라고도 불려요',
+    '데이지는 해가 뜨면 고개를 들고 해가 지면\n다시 고개를 내린다고 해서 태양의 눈이라고도 불려요',
+  ];
+
   static const GARDEN_COLOR_LIST = [
     'red',
     'pink',
@@ -29,5 +38,16 @@ class Constant {
     Color(0xff476EFF),
     Color(0xff9570FF),
     Color(0xff2F2F2F),
+  ];
+
+  static const GARDEN_BACK_COLOR_SET_LIST = [
+    Color(0xffFEEFEF),
+    Color(0xffFFF4F8),
+    Color(0xffFFF2D7),
+    Color(0xffE4F7DB),
+    Color(0xffE4F7DB),
+    Color(0xffEDF1FF),
+    Color(0xffEDF1FF),
+    Color(0xffEFEFEF),
   ];
 }

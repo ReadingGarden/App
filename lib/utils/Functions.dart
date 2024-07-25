@@ -44,4 +44,10 @@ class Functions {
     int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
     return Constant.GARDEN_COLOR_SET_LIST[colorIndex];
   }
+
+  //가든 배경 컬러
+  static Color gardenBackColor(String color) {
+    int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
+    return Constant.GARDEN_BACK_COLOR_SET_LIST[colorIndex];
+  }
 }

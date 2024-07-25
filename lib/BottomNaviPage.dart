@@ -1,14 +1,15 @@
-import 'package:book_flutter/book/BookAddPage.dart';
-import 'package:book_flutter/book/BookshelfPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'book/BookshelfPage.dart';
+import 'core/api/GardenAPI.dart';
 import 'garden/GardenPage.dart';
 import 'memo/MemoPage.dart';
 import 'mypage/MyPage.dart';
 import 'utils/AppColors.dart';
+import 'utils/Functions.dart';
 
 //현재 선택된 인덱스를 관리하는 ...
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -18,11 +19,15 @@ class BottomNaviPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final gardenAPI = GardenAPI(ref);
+
     //현재 선택된 인덱스를 watch
     final currentIndex = ref.watch(currentIndexProvider);
 
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: (gardenAPI.gardenMain().isEmpty)
+          ? Colors.white
+          : Functions.gardenBackColor(gardenAPI.gardenMain()['garden_color']),
       body: IndexedStack(
         index: currentIndex,
         children: [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
