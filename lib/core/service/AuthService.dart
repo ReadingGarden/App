@@ -176,7 +176,7 @@ class AuthService {
   }
 
   // 프로필 변경
-  Future<Response?> putProfile(Map data) async {
+  Future<Response?> putUser(Map data) async {
     final accessToken = await loadAccess();
     try {
       final response = await _dio.put('${Constant.URL}auth/',

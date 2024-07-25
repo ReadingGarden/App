@@ -20,7 +20,6 @@ class _MyPageState extends ConsumerState<MyPage> {
     final authAPI = AuthAPI(ref);
 
     Future.microtask(() {
-      authAPI.resetUser();
       authAPI.getUser();
     });
   }
@@ -60,7 +59,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                               margin: EdgeInsets.only(bottom: 2.h),
                               height: 24.h,
                               child: Text(
-                                authAPI.user()['user_nick'],
+                                authAPI.user()['user_nick'] ?? '',
                                 style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold),
@@ -68,7 +67,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                             ),
                             SizedBox(
                                 height: 20.h,
-                                child: Text(authAPI.user()['user_email'],
+                                child: Text(authAPI.user()['user_email'] ?? '',
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColors.grey_8D))),

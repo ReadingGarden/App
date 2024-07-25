@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/api/AuthAPI.dart';
 import '../core/api/GardenAPI.dart';
-import '../core/provider/ResponseProvider.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
@@ -32,8 +32,8 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
 
   @override
   Widget build(BuildContext context) {
+    final authAPI = AuthAPI(ref);
     final gardenAPI = GardenAPI(ref);
-    final user = ref.watch(responseProvider.userMapProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '멤버'),
@@ -43,7 +43,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
             Visibility(
               visible: gardenAPI.gardenMainMemberList().length > 1 &&
                   (gardenAPI.gardenMainMemberList()[0]['user_no'] ==
-                      user?['user_no']),
+                      authAPI.user()['user_no']),
               child: GestureDetector(
                 onTap: () {
                   context.pushNamed('garden-leader');

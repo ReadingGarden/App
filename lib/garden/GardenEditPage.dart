@@ -5,8 +5,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/api/AuthAPI.dart';
 import '../core/api/GardenAPI.dart';
-import '../core/provider/ResponseProvider.dart';
 import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
@@ -119,13 +119,13 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
 
   //가든 리더 확인
   bool _gardenLeaderBool() {
+    final authAPI = AuthAPI(ref);
     final gardenAPI = GardenAPI(ref);
-    final user = ref.watch(responseProvider.userMapProvider);
 
     bool leaderBool = false;
 
     for (var member in gardenAPI.gardenMain()['garden_members']) {
-      if (member['user_no'] == user?['user_no']) {
+      if (member['user_no'] == authAPI.user()['user_no']) {
         leaderBool = member['garden_leader'];
       }
     }

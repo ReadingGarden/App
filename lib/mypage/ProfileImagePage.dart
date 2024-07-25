@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
 
-//리스트 클릭 상태를 관리하는 프로바이더
-final listClickProvider = StateProvider<int>((ref) => 0);
+//프로필 이미지 선택 인덱스 ...
+final profileSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class ProfileImagePage extends ConsumerStatefulWidget {
   @override
@@ -17,8 +18,27 @@ class ProfileImagePage extends ConsumerStatefulWidget {
 
 class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
   @override
+  void initState() {
+    super.initState();
+
+    // final authAPI = AuthAPI(ref);
+
+    Future.microtask(() {
+      ref.read(profileSelectIndexProvider.notifier).state =
+          userProfileImageIndex();
+    });
+  }
+
+  //유저 프로필 이미지 인덱스
+  int userProfileImageIndex() {
+    final authAPI = AuthAPI(ref);
+    return Constant.FLOWER_LIST.indexOf(authAPI.user()['user_image']);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final listIndex = ref.watch(listClickProvider);
+    final authAPI = AuthAPI(ref);
+    final listIndex = ref.watch(profileSelectIndexProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '대표 프로필 변경'),
@@ -45,8 +65,7 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                           fontSize: 18.sp, fontWeight: FontWeight.bold),
                     )),
                 Text(
-                  //TODO: - 설명 적용
-                  '@데이지는 해가 뜨면 고개를 들고 해가 지면\n다시 고개를 내린다고 해서 태양의 눈이라고도 불려요',
+                  Constant.FLOWER_INFO_LIST[listIndex],
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12.sp,
@@ -88,8 +107,15 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                           return (index <= 2)
                               ? GestureDetector(
                                   onTap: () {
-                                    ref.read(listClickProvider.notifier).state =
-                                        index;
+                                    ref
+                                        .read(
+                                            profileSelectIndexProvider.notifier)
+                                        .state = index;
+                                    final data = {
+                                      "user_image": Constant.FLOWER_LIST[
+                                          ref.watch(profileSelectIndexProvider)]
+                                    };
+                                    authAPI.putUser(context, data);
                                   },
                                   child: SizedBox(
                                     child: Column(

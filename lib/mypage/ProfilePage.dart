@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/provider/ResponseProvider.dart';
+import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
@@ -16,7 +16,7 @@ class ProfilePage extends ConsumerStatefulWidget {
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(responseProvider.userMapProvider);
+    final authAPI = AuthAPI(ref);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '프로필'),
@@ -54,7 +54,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               widget: Row(
                 children: [
                   Text(
-                    user?['user_nick'] ?? '',
+                    authAPI.user()['user_nick'],
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
@@ -73,7 +73,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               '이메일',
               () {},
               widget: Text(
-                user?['user_email'] ?? '',
+                authAPI.user()['user_email'],
                 style: const TextStyle(color: AppColors.grey_8D),
               ),
             ),

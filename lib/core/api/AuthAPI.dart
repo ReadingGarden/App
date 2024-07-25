@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../service/AuthService.dart';
 
@@ -29,5 +31,14 @@ class AuthAPI {
     if (response?.statusCode == 200) {
       updateUser(response?.data['data']);
     } else if (response?.statusCode == 401) {}
+  }
+
+  //프로필 변경 api
+  void putUser(BuildContext context, Map data) async {
+    final response = await authService.putUser(data);
+    if (response?.statusCode == 200) {
+      getUser();
+      context.pop();
+    }
   }
 }
