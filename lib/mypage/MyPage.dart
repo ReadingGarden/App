@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/provider/ResponseProvider.dart';
-import '../core/service/AuthService.dart';
+import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
@@ -17,23 +16,31 @@ class _MyPageState extends ConsumerState<MyPage> {
   @override
   void initState() {
     super.initState();
-    getProfile();
+
+    final authAPI = AuthAPI(ref);
+
+    Future.microtask(() {
+      authAPI.resetUser();
+      authAPI.getUser();
+    });
+    // getUser();
   }
 
-  //프로필 조회 api
-  void getProfile() async {
-    final response = await authService.getProfile();
-    if (response?.statusCode == 200) {
-      ref.read(responseProvider.userMapProvider.notifier).state =
-          response?.data['data'];
-    } else if (response?.statusCode == 401) {
-      context.pushNamed('start');
-    }
-  }
+  // //프로필 조회 api
+  // void getUser() async {
+  //   final response = await authService.getUser();
+  //   if (response?.statusCode == 200) {
+  //     ref.read(responseProvider.userMapProvider.notifier).state =
+  //         response?.data['data'];
+  //   } else if (response?.statusCode == 401) {
+  //     context.pushNamed('start');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(responseProvider.userMapProvider);
+    final authAPI = AuthAPI(ref);
+    // final user = ref.watch(responseProvider.userMapProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -67,8 +74,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                               margin: EdgeInsets.only(bottom: 2.h),
                               height: 24.h,
                               child: Text(
-                                user?['user_nick'] ?? '',
-                                // user?.user_nick ?? '',
+                                authAPI.user()['user_nick'],
                                 style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold),
@@ -76,7 +82,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                             ),
                             SizedBox(
                                 height: 20.h,
-                                child: Text(user?['user_email'] ?? '',
+                                child: Text(authAPI.user()['user_email'],
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColors.grey_8D))),
@@ -122,7 +128,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    user?['garden_count'].toString() ?? '0',
+                                    authAPI.user()['garden_count'].toString(),
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -146,7 +152,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    user?['read_book_count'].toString() ?? '0',
+                                    authAPI
+                                        .user()['read_book_count']
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -170,7 +178,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   height: 24.h,
                                   child: Text(
-                                    user?['like_book_count'].toString() ?? '0',
+                                    authAPI
+                                        .user()['like_book_count']
+                                        .toString(),
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,

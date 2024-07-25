@@ -154,7 +154,7 @@ class AuthService {
   }
 
   // 유저 정보 조회
-  Future<Response?> getProfile() async {
+  Future<Response?> getUser() async {
     final accessToken = await loadAccess();
     try {
       final response = await _dio.get('${Constant.URL}auth/',
