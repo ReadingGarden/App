@@ -50,20 +50,29 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
               margin: EdgeInsets.only(left: 24.w, right: 24.w),
               child: Row(
                 children: [
+                  (widget.memo['book_image_url'] == null)
+                      ? Container(
+                          width: 48.w,
+                          height: 64.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              color: AppColors.grey_F2),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(8.r),
+                          child: Image.network(
+                            width: 48.w,
+                            height: 64.h,
+                            fit: BoxFit.cover,
+                            widget.memo['book_image_url'],
+                          ),
+                        ),
                   Container(
-                    width: 48.w,
-                    height: 64.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: Colors.green),
-                  ),
-                  Container(
-                    height: 50.h,
+                    width: 252.w,
                     margin: EdgeInsets.only(left: 12.w),
                     child: Column(
-                      //TODO: - 간격 수정
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           widget.memo['book_title'],

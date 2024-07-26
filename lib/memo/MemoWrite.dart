@@ -202,7 +202,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           width: 48.w,
                           height: 64.h,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12.r),
+                              borderRadius: BorderRadius.circular(8.r),
                               color: AppColors.grey_F2),
                         )
                       : ClipRRect(

@@ -124,22 +124,40 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                 children: [
                   Row(
                     children: [
+                      (ref.watch(memoListProvider)[index]['book_image_url'] ==
+                              null)
+                          ? Container(
+                              width: 44.r,
+                              height: 44.r,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  color: AppColors.grey_F2),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Image.network(
+                                width: 44.r,
+                                height: 44.r,
+                                fit: BoxFit.cover,
+                                ref.watch(memoListProvider)[index]
+                                    ['book_image_url'],
+                              ),
+                            ),
                       Container(
-                        width: 44.r,
-                        height: 44.r,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.r),
-                            color: Colors.green),
-                      ),
-                      Container(
+                        width: 212.w,
                         margin: EdgeInsets.only(left: 12.w),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               ref.watch(memoListProvider)[index]['book_title'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               ref.watch(memoListProvider)[index]['book_author'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             )
