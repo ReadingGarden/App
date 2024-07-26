@@ -56,7 +56,7 @@ class Constant {
     Color(0xffFFF4F8),
     Color(0xffFFF2D7),
     Color(0xffE4F7DB),
-    Color(0xffE4F7DB),
+    Color(0xffE6F7F5),
     Color(0xffEDF1FF),
     Color(0xffEDF1FF),
     Color(0xffEFEFEF),

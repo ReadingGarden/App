@@ -91,7 +91,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
             )
           ],
         ),
-        body: (!ref.watch(memoListProvider).isNotEmpty)
+        body: (ref.watch(memoListProvider).isNotEmpty)
             ? _memoList()
             : _memoEmpty());
   }

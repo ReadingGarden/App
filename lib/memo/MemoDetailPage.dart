@@ -130,6 +130,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    context.pop();
                     context.pushNamed('memo-write', extra: widget.memo);
                   },
                   child: Container(

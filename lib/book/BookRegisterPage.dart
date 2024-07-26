@@ -128,11 +128,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                       Container(
                         margin: EdgeInsets.only(left: 12.w),
                         width: 252.w,
-                        // height: 48.h,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
                               widget.book['title'],
@@ -143,6 +141,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                             ),
                             Text(
                               widget.book['author'],
+                              maxLines: 1,
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             ),

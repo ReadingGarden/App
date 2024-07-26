@@ -8,6 +8,7 @@ import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
+//책 목록 리스트 ...
 final bookStatusListAllProvider = StateProvider<List>((ref) => []);
 
 class MemoBookPage extends ConsumerStatefulWidget {
@@ -56,32 +57,43 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
   }
 
   Widget _bookList() {
+    final bookList = ref.watch(bookStatusListAllProvider);
+
     return ListView(
       padding: EdgeInsets.only(top: 10.h),
       children: List.generate(
-        ref.watch(bookStatusListAllProvider).length,
+        bookList.length,
         (index) {
           return GestureDetector(
             onTap: () => context.pushNamed('memo-write', extra: {
-              'book_no': ref.watch(bookStatusListAllProvider)[index]['book_no'],
-              'book_title': ref.watch(bookStatusListAllProvider)[index]
-                  ['book_title'],
-              'book_author': ref.watch(bookStatusListAllProvider)[index]
-                  ['book_author'],
+              'book_no': bookList[index]['book_no'],
+              'book_title': bookList[index]['book_title'],
+              'book_author': bookList[index]['book_author'],
+              'book_image_url': bookList[index]['book_image_url']
             }),
             child: Container(
               height: 88.h,
               color: Colors.transparent,
               child: Row(
                 children: [
-                  Container(
-                    width: 48.w,
-                    height: 64.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.r),
-                      color: Colors.green,
-                    ),
-                  ),
+                  (bookList[index]['book_image_url'] == null)
+                      ? Container(
+                          width: 48.w,
+                          height: 64.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.r),
+                            color: AppColors.grey_F2,
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(8.r),
+                          child: Image.network(
+                            width: 48.w,
+                            height: 64.h,
+                            fit: BoxFit.cover,
+                            bookList[index]['book_image_url'],
+                          ),
+                        ),
                   Container(
                     margin: EdgeInsets.only(left: 12.w),
                     width: 222.w,
@@ -91,13 +103,15 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          ref.watch(bookStatusListAllProvider)[index]
-                              ['book_title'],
+                          bookList[index]['book_title'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 16.sp),
                         ),
                         Text(
-                          ref.watch(bookStatusListAllProvider)[index]
-                              ['book_author'],
+                          bookList[index]['book_author'],
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 12.sp, color: AppColors.grey_8D),
                         ),

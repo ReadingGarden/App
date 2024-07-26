@@ -81,14 +81,41 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     };
     final response = await memoService.putMemo(widget.book['id'], data);
     if (response?.statusCode == 200) {
-      if (ref.watch(memoImageFileProvider) != null) {
-        if (widget.book['image_url'] != null) {
-          //삭제 후 postimage
+      //기존에 이미지 있는 경우
+      if (widget.book['image_url'] != null) {
+        //이미지가 선택되어 있으면 (이미지 변경)3
+        if (ref.watch(memoImageNameProvider) != null) {
+          postMemoImage(widget.book['id']);
+          print('이미지를 변경');
         } else {
-          //기존 이미지 없는 경우
-          postMemoImage(response?.data['data']['id']);
+          //기존 이미지를 삭제한 경우
+          //TODO: - 이미지 삭제 api
+          print('이미지 삭제하고 추가해라');
+          context.pop();
+          context.pop('MemoPage_getMemoList');
+        }
+        //기존에 이미지 없는 경우
+      } else {
+        //이미지를 추가함
+        if (ref.watch(memoImageNameProvider) != null) {
+          print('이미지를 추가함');
+          postMemoImage(widget.book['id']);
+        } else {
+          //텍스트만 수정함
+          print('텍스트만 수정함');
+          context.pop();
+          context.pop('MemoPage_getMemoList');
         }
       }
+
+      // if (ref.watch(memoImageFileProvider) != null) {
+      //   if (widget.book['image_url'] != null) {
+      //     //삭제 후 postimage
+      //   } else {
+      //     //기존 이미지 없는 경우
+      //     postMemoImage(response?.data['data']['id']);
+      //   }
+      // }
     }
   }
 
@@ -159,6 +186,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       }),
       body: GestureDetector(
         onTap: () {
+          print(widget.book);
           // 키보드 내리기
           FocusScope.of(context).unfocus();
         },
@@ -169,27 +197,40 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
               margin: EdgeInsets.only(left: 24.w, right: 24.w),
               child: Row(
                 children: [
+                  (widget.book['book_image_url'] == null)
+                      ? Container(
+                          width: 48.w,
+                          height: 64.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.r),
+                              color: AppColors.grey_F2),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(8.r),
+                          child: Image.network(
+                            width: 48.w,
+                            height: 64.h,
+                            fit: BoxFit.cover,
+                            widget.book['book_image_url'],
+                          ),
+                        ),
                   Container(
-                    width: 48.w,
-                    height: 64.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        color: Colors.green),
-                  ),
-                  Container(
-                    height: 50.h,
+                    width: 252.w,
                     margin: EdgeInsets.only(left: 12.w),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           widget.book['book_title'],
+                          maxLines: 2,
                           style: TextStyle(fontSize: 16.sp),
                         ),
                         Text(
                           widget.book['book_author'],
+                          maxLines: 1,
                           style: TextStyle(
-                              fontSize: 14.sp, color: AppColors.grey_8D),
+                              fontSize: 12.sp, color: AppColors.grey_8D),
                         )
                       ],
                     ),
