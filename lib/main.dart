@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,12 +7,17 @@ import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'core/provider/TokenProvider.dart';
+import 'firebase_options.dart';
 import 'utils/Functions.dart';
 import 'utils/Router.dart';
 
-void main() {
+void main() async {
   // 플러그인 초기화
   WidgetsFlutterBinding.ensureInitialized();
+  // Firebase 초기화
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   // runApp() 호출 전 Flutter SDK 초기화
   KakaoSdk.init(
     nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda',
@@ -75,6 +81,7 @@ class SplashPage extends ConsumerWidget {
         context.go('/bottom-navi');
       }
       print('SPLASH ${ref.watch(tokenProvider.accessProvider)}');
+      context.go('/start');
     });
 
     return const Scaffold(

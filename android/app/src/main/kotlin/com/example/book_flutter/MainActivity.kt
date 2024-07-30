@@ -1,4 +1,4 @@
-package com.example.book_flutter
+package com.dokseogarden
 
 import io.flutter.embedding.android.FlutterActivity
 

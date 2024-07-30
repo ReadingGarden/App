@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "494928162578",
+    "project_id": "dokseogarden-68c26",
+    "storage_bucket": "dokseogarden-68c26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494928162578:android:a4fa02834dca284507cdcb",
+        "android_client_info": {
+          "package_name": "com.dokseogarden"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjL8YI1zyMx4Vb4BQh9w_XbGd7vHb3Dsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
