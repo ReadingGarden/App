@@ -75,48 +75,51 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
               height: 88.h,
               color: Colors.transparent,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  (bookList[index]['book_image_url'] == null)
-                      ? Container(
-                          width: 48.w,
-                          height: 64.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.r),
-                            color: AppColors.grey_F2,
-                          ),
-                        )
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(8.r),
-                          child: Image.network(
-                            width: 48.w,
-                            height: 64.h,
-                            fit: BoxFit.cover,
-                            bookList[index]['book_image_url'],
-                          ),
+                  Row(
+                    children: [
+                      (bookList[index]['book_image_url'] == null)
+                          ? Container(
+                              width: 48.w,
+                              height: 64.h,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.r),
+                                color: AppColors.grey_F2,
+                              ),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Image.network(
+                                width: 48.w,
+                                height: 64.h,
+                                fit: BoxFit.cover,
+                                bookList[index]['book_image_url'],
+                              ),
+                            ),
+                      Container(
+                        margin: EdgeInsets.only(left: 12.w),
+                        width: 220.w,
+                        height: 50.h,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              bookList[index]['book_title'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 16.sp),
+                            ),
+                            Text(
+                              bookList[index]['book_author'],
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            ),
+                          ],
                         ),
-                  Container(
-                    margin: EdgeInsets.only(left: 12.w),
-                    width: 222.w,
-                    height: 50.h,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          bookList[index]['book_title'],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 16.sp),
-                        ),
-                        Text(
-                          bookList[index]['book_author'],
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 12.sp, color: AppColors.grey_8D),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   SvgPicture.asset('assets/images/angle-right-b.svg',
                       width: 20.r, height: 20.r)

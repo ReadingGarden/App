@@ -134,7 +134,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                           children: [
                             Text(
                               widget.book['title'],
-                              maxLines: 2,
+                              maxLines: 3,
                               style: TextStyle(
                                 fontSize: 16.sp,
                               ),

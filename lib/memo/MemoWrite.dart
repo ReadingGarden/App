@@ -83,16 +83,22 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     if (response?.statusCode == 200) {
       //기존에 이미지 있는 경우
       if (widget.book['image_url'] != null) {
-        //이미지가 선택되어 있으면 (이미지 변경)3
+        //이미지가 선택되어 있으면
         if (ref.watch(memoImageNameProvider) != null) {
-          postMemoImage(widget.book['id']);
-          print('이미지를 변경');
+          //기존 이미지와 수정된 이미지가 다른 경우
+          if (ref.watch(memoImageNameProvider) != widget.book['image_url']) {
+            postMemoImage(widget.book['id']);
+            print('이미지를 변경');
+          } else {
+            //텍스트만 수정함
+            print('텍스트만 수정함');
+            context.pop();
+            context.pop('MemoPage_getMemoList');
+          }
         } else {
           //기존 이미지를 삭제한 경우
-          //TODO: - 이미지 삭제 api
+          deleteMemoImage(widget.book['id']);
           print('이미지 삭제하고 추가해라');
-          context.pop();
-          context.pop('MemoPage_getMemoList');
         }
         //기존에 이미지 없는 경우
       } else {
@@ -107,15 +113,6 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
           context.pop('MemoPage_getMemoList');
         }
       }
-
-      // if (ref.watch(memoImageFileProvider) != null) {
-      //   if (widget.book['image_url'] != null) {
-      //     //삭제 후 postimage
-      //   } else {
-      //     //기존 이미지 없는 경우
-      //     postMemoImage(response?.data['data']['id']);
-      //   }
-      // }
     }
   }
 
@@ -123,6 +120,15 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   void postMemoImage(int id) async {
     final response = await memoService.postMemoImage(
         id, ref.watch(memoImageFileProvider)!.path);
+    if (response?.statusCode == 201) {
+      context.pop();
+      context.pop('MemoPage_getMemoList');
+    }
+  }
+
+  //메모 이미지 삭제 api
+  void deleteMemoImage(int id) async {
+    final response = await memoService.deleteMemoImage(id);
     if (response?.statusCode == 201) {
       context.pop();
       context.pop('MemoPage_getMemoList');
@@ -224,6 +230,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                         Text(
                           widget.book['book_title'],
                           maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontSize: 16.sp),
                         ),
                         Text(
