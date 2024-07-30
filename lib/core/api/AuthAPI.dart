@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../utils/SharedPreferences.dart';
 import '../service/AuthService.dart';
 
 final userProvider = StateProvider<Map>((ref) => {});
@@ -25,6 +26,29 @@ class AuthAPI {
   }
 
   //MARK: - API
+  //소셜 로그인 api
+  void postSocialLogin(BuildContext context, Map data) async {
+    final response = await authService.postLogin(data);
+    if (response?.statusCode == 200) {
+      //access,refresh 저장하고 가든 페이지로
+      saveAccess(response?.data['data']['access_token']);
+      saveRefresh(response?.data['data']['refresh_token']);
+      context.goNamed('bottom-navi');
+    } else if (response?.statusCode == 400) {
+      postSocialSignup(context, data);
+    }
+  }
+
+  //소셜 회원가입 api
+  void postSocialSignup(BuildContext context, Map data) async {
+    final response = await authService.postSignup(data);
+    if (response?.statusCode == 201) {
+      print(data);
+      // 회원가입 완료 페이지로
+      context.goNamed('signup-done');
+    } else if (response?.statusCode == 400) {}
+  }
+
   //프로필 조회 api
   void getUser() async {
     final response = await authService.getUser();

@@ -164,31 +164,51 @@ class SignupDonePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Widgets.appBar(context),
-        body: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.amberAccent,
-                ),
-                Text('새로운 가드너 탄생'),
-                Text('나의 첫번째 가든을 확인해보세요!'),
-                Center(
-                  child: Container(
-                    width: 300,
-                    height: 300,
+        body: Container(
+          margin: EdgeInsets.only(top: 140.h),
+          child: Column(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 26.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 14.h),
+                          child: Text.rich(TextSpan(
+                              style: TextStyle(
+                                  fontSize: 24.sp, fontWeight: FontWeight.w600),
+                              children: const [
+                                TextSpan(text: '반가워요, '),
+                                TextSpan(
+                                    text: '@',
+                                    style: TextStyle(
+                                        color: AppColors.primaryColor)),
+                                TextSpan(text: '님👋️')
+                              ])),
+                        ),
+                        const Text(
+                          '독서가든의 가드너가 되신걸 환영합니다!\n시작하기를 눌러 나의 첫번째 가든을 확인해보세요.',
+                          style: TextStyle(color: AppColors.grey_8D),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 52.h),
+                    width: 360.w,
+                    height: 380.h,
                     color: Colors.amber,
                   ),
-                ),
-              ],
-            ),
-            // Expanded(
-            //     child: Widgets.button('시작하기', true, () => singupEnd(context)))
-          ],
+                ],
+              ),
+              // Expanded(
+              //     child: Widgets.button('시작하기', true, () => singupEnd(context)))
+            ],
+          ),
         ),
         bottomNavigationBar: Container(
           margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),

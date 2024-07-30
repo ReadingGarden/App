@@ -33,7 +33,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   //로그인 api
-  void postLogin(Map data) async {
+  void postEmailLogin(Map data) async {
     final response = await authService.postLogin(data);
     if (response?.statusCode == 200) {
       // access,refresh 저장하고 가든 페이지로
@@ -103,7 +103,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     "user_social_id": "",
                     "user_social_type": ""
                   };
-                  postLogin(data);
+                  postEmailLogin(data);
                 }),
                 Container(
                   margin: EdgeInsets.only(top: 24.h, bottom: 50.h),
@@ -155,7 +155,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          SocialLogin.kakaoLogin();
+                          SocialLogin.kakaoLogin(ref, context);
                         },
                         child: CircleAvatar(
                           backgroundColor: const Color(0xffFFEF5E),
