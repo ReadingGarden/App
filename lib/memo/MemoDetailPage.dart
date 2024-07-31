@@ -148,7 +148,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                     height: 26.h,
                     color: Colors.transparent,
                     child: Text(
-                      '메모 편집',
+                      '메모 수정하기',
                       style: TextStyle(fontSize: 16.sp),
                     ),
                   ),
@@ -168,7 +168,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                     height: 26.h,
                     color: Colors.transparent,
                     child: Text(
-                      '메모 삭제',
+                      '메모 삭제하기',
                       style: TextStyle(
                           fontSize: 16.sp, color: AppColors.errorRedColor),
                     ),

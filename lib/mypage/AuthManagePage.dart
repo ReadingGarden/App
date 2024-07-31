@@ -22,18 +22,16 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
       context.pop();
       removeLoginInfo();
       context.goNamed('start');
-    } else if (response?.statusCode == 400) {}
+    } else if (response?.statusCode == 401) {}
   }
 
   void deleteUser() async {
-    //TODO - api 확인
-    // final response =
-    //     await ref.read(AuthServiceProvider.deleteUserProvider.future);
-    // if (response?.statusCode == 200) {
-    //   context.pop();
-    //   removeLocalStorage();
-    //   context.goNamed('start');
-    // } else if (response?.statusCode == 400) {}
+    final response = await authService.deleteUser();
+    if (response?.statusCode == 200) {
+      context.pop();
+      removeLocalStorage();
+      context.goNamed('start');
+    } else if (response?.statusCode == 401) {}
   }
 
   @override
