@@ -1,11 +1,55 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import '../core/api/AuthAPI.dart';
 
 class SocialLogin {
+  //MARK: - GOOGLE
+  static Future<void> googleLogin(WidgetRef ref, BuildContext context) async {
+    final authAPI = AuthAPI(ref);
+    try {
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Retrieve the User details
+      final user = userCredential.user;
+      if (user != null) {
+        // User is successfully signed in
+        print('User UID: ${user.uid}');
+        print('User Email: ${user.email}');
+
+        final data = {
+          "user_email": user.email,
+          "user_password": "",
+          //TODO - FCM
+          "user_fcm": "string",
+          "user_social_id": user.uid,
+          "user_social_type": "google"
+        };
+        authAPI.postSocialLogin(context, data);
+      }
+    } catch (e) {
+      print('Error during Google Sign-In: $e');
+    }
+  }
+
   //MARK: - KAKAO
   //카카오 로그인
   static Future<void> kakaoLogin(WidgetRef ref, BuildContext context) async {
@@ -49,7 +93,7 @@ class SocialLogin {
     final authAPI = AuthAPI(ref);
 
     try {
-      User user = await UserApi.instance.me();
+      final user = await UserApi.instance.me();
 
       print('사용자 정보 요청 성공'
           '\n회원번호: ${user.id}'

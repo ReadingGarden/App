@@ -43,8 +43,10 @@ class AuthAPI {
   void postSocialSignup(BuildContext context, Map data) async {
     final response = await authService.postSignup(data);
     if (response?.statusCode == 201) {
-      print(data);
-      // 회원가입 완료 페이지로
+      //access,refresh 저장하고 회원가입 완료 페이지로
+      //TODO: - 회원가입 토큰 저장
+      // saveAccess(response?.data['data']['access_token']);
+      // saveRefresh(response?.data['data']['refresh_token']);
       context.goNamed('signup-done');
     } else if (response?.statusCode == 400) {}
   }

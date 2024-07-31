@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
+import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
 
 // 이메일 에러 메시지 상태를 관리하는 프로바이더
@@ -33,7 +34,9 @@ class SignupPage extends ConsumerWidget {
 
     final response = await authService.postSignup(data);
     if (response?.statusCode == 201) {
-      // 회원가입 완료 페이지로
+      //access,refresh 저장하고 회원가입 완료 페이지로
+      saveAccess(response?.data['data']['access_token']);
+      saveRefresh(response?.data['data']['refresh_token']);
       context.goNamed('signup-done');
     } else if (response?.statusCode == 400) {}
   }

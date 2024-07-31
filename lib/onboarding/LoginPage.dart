@@ -137,34 +137,36 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   thickness: 1,
                   color: AppColors.grey_F2,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: AppColors.black_4A,
-                        radius: 27.5.r,
-                        child: SvgPicture.asset('assets/images/apple_logo.svg'),
-                      ),
-                      CircleAvatar(
-                        backgroundColor: AppColors.grey_F2,
-                        radius: 27.5.r,
-                        child:
-                            SvgPicture.asset('assets/images/google_logo.svg'),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          SocialLogin.kakaoLogin(ref, context);
-                        },
-                        child: CircleAvatar(
-                          backgroundColor: const Color(0xffFFEF5E),
+                GestureDetector(
+                  onTap: () => SocialLogin.googleLogin(ref, context),
+                  child: Container(
+                    margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: AppColors.black_4A,
                           radius: 27.5.r,
                           child:
-                              SvgPicture.asset('assets/images/kakao_logo.svg'),
+                              SvgPicture.asset('assets/images/apple_logo.svg'),
                         ),
-                      )
-                    ],
+                        CircleAvatar(
+                          backgroundColor: AppColors.grey_F2,
+                          radius: 27.5.r,
+                          child:
+                              SvgPicture.asset('assets/images/google_logo.svg'),
+                        ),
+                        GestureDetector(
+                          onTap: () => SocialLogin.kakaoLogin(ref, context),
+                          child: CircleAvatar(
+                            backgroundColor: const Color(0xffFFEF5E),
+                            radius: 27.5.r,
+                            child: SvgPicture.asset(
+                                'assets/images/kakao_logo.svg'),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ],
