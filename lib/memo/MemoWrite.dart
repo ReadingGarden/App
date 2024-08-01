@@ -143,6 +143,17 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     ref.read(memoImageNameProvider.notifier).state = image?.name;
   }
 
+  //카메라
+  Future<void> _takePhoto() async {
+    final XFile? photo =
+        await _imagePicker.pickImage(source: ImageSource.camera);
+
+    if (photo != null) {
+      ref.read(memoImageFileProvider.notifier).state = photo;
+      ref.read(memoImageNameProvider.notifier).state = photo.name;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final okButtonBool = ref.watch(okButtonProvider);
@@ -177,17 +188,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
           ], backFunction: () {
         Widgets.baseBottomSheet(context, '메모가 저장되지 않았어요!',
             '작성하던 메모를 삭제하고 이전 페이지로 돌아가시겠어요?', '삭제하고 나가기', () {
-          //메모 정보가 없으면 (작성시)
-          if (widget.book['id'] == null) {
-            context.pop();
-            context.pop();
-            context.pop();
-
-            //수정시
-          } else {
-            context.pop();
-            context.pushNamed('bottom-navi');
-          }
+          context.pop();
+          context.pop();
+          context.pop();
         });
       }),
       body: GestureDetector(
@@ -318,9 +321,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
               children: [
                 (ref.watch(memoImageNameProvider.notifier).state == null)
                     ? GestureDetector(
-                        onTap: () {
-                          print('사진');
-                        },
+                        onTap: () => _takePhoto(),
                         child: SvgPicture.asset(
                           'assets/images/camera.svg',
                           width: 30.r,
@@ -335,9 +336,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                       ),
                 (ref.watch(memoImageNameProvider.notifier).state == null)
                     ? GestureDetector(
-                        onTap: () {
-                          _pickImage();
-                        },
+                        onTap: () => _pickImage(),
                         child: Container(
                           margin: EdgeInsets.only(left: 10.w),
                           color: Colors.transparent,
