@@ -1,15 +1,17 @@
-import 'package:book_flutter/garden/GardenBookListPage.dart';
-import 'package:book_flutter/garden/GardenEditPage.dart';
-import 'package:book_flutter/garden/GardenLeaderPage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../book/BookAddGardenPage.dart';
 import '../book/BookAddPage.dart';
+import '../book/BookBarcodePage.dart';
+import '../book/BookDetailPage.dart';
 import '../book/BookRegisterPage.dart';
 import '../book/BookSerachPage.dart';
 import '../book/BookUserWritePage.dart';
 import '../garden/GardenAddPage.dart';
+import '../garden/GardenBookListPage.dart';
+import '../garden/GardenEditPage.dart';
+import '../garden/GardenLeaderPage.dart';
 import '../garden/GardenMemberPage.dart';
 import '../main.dart';
 import '../ErrorPage.dart';
@@ -93,6 +95,10 @@ final GoRouter router = GoRouter(
           name: 'book-serach',
           builder: (context, state) => BookSerachPage(),
           routes: [
+            GoRoute(
+                path: 'book-barcode',
+                name: 'book-barcode',
+                builder: (context, state) => BookBarcodePage()),
             GoRoute(
                 path: 'book-add-garden',
                 name: 'book-add-garden',
@@ -209,6 +215,11 @@ final GoRouter router = GoRouter(
             return GardenPage();
           },
           routes: [
+            GoRoute(
+              path: 'book-detail',
+              name: 'book-detail',
+              builder: (context, state) => BookDetailPage(),
+            ),
             GoRoute(
                 path: 'garden-edit',
                 name: 'garden-edit',

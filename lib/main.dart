@@ -14,6 +14,8 @@ import 'utils/Router.dart';
 void main() async {
   // 플러그인 초기화
   WidgetsFlutterBinding.ensureInitialized();
+  //권한 요청
+  await Functions.requestPermissions();
   // Firebase 초기화
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

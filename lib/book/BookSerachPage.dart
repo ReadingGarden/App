@@ -144,9 +144,7 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                                 )),
                           ),
                           GestureDetector(
-                            onTap: () {
-                              print('바코드 카메라 열어라');
-                            },
+                            onTap: () => context.pushNamed('book-barcode'),
                             child: Container(
                                 alignment: Alignment.center,
                                 height: 72.h,
