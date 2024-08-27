@@ -1,11 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
@@ -15,6 +19,18 @@ class GardenPage extends ConsumerStatefulWidget {
 }
 
 class _GardenPageState extends ConsumerState<GardenPage> {
+  //배경 이미지 초기 오프셋
+  Offset _backgroundOffset = Offset.zero;
+  //텍스트 위치 리스트
+  // List<Offset> _textPositions = [];
+  late Future<int> _countFuture;
+
+  final Random _random = Random();
+  Offset _position = Offset.zero;
+  final double widgetWidth = 150.0;
+  final double widgetHeight = 200.0;
+  late List<Offset> _textPositions;
+
   @override
   void initState() {
     super.initState();
@@ -24,7 +40,139 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     Future.microtask(() {
       gardenAPI.resetGardenMain();
       gardenAPI.getGardenLsit();
+      //화면에 텍스트 위치 6개를 랜덤하게 배치
+      // _generateRandomPositions(3);
+      Future.delayed(Duration(seconds: 1), () {
+        _textPositions = _generateGridPositions();
+        // _textPositions = _generateUniquePositions();
+      });
     });
+  }
+
+  // //텍스트의 랜덤 위치를 생성
+  // void _generateRandomPositions(int count) {
+  //   //화면 크기 가져오기
+  //   final screenSize = MediaQuery.of(context).size;
+
+  //   setState(() {
+  //     _textPositions = List.generate(count, (index) {
+  //       return Offset(
+  //         //x,y좌표 랜덤 생성
+  //         //일반적으로 무작위 좌표가 화면의 가장자리와 겹치지 않도록 하는 오프셋 또는 여백
+  //         _random.nextDouble() * (screenSize.width - 100),
+  //         _random.nextDouble() * (screenSize.height - 200),
+  //       );
+  //     });
+  //   });
+  // }
+
+  List<Offset> _generateGridPositions() {
+    // final gardenAPI = GardenAPI();
+    final count = 6; // 생성할 위젯의 수
+    final screenSize = MediaQuery.of(context).size;
+
+    // final int columns = (screenSize.width / (widgetWidth * 1.1)).floor();
+    final int columns = 3;
+    final int rows = 2;
+    // final int rows = (count / columns).ceil();
+
+    final double horizontalSpacing =
+        (screenSize.width - (columns * widgetWidth)) / (columns + 1);
+    final double verticalSpacing =
+        (screenSize.height - (rows * widgetHeight)) / (rows + 1);
+
+    List<Offset> positions = [];
+
+    for (int i = 0; i < count; i++) {
+      int row = i ~/ columns;
+      int column = i % columns;
+      double x = horizontalSpacing + (widgetWidth + horizontalSpacing) * column;
+      double y = verticalSpacing + (widgetHeight + verticalSpacing) * row;
+      positions.add(Offset(x, y));
+    }
+
+    return positions;
+  }
+
+  // List<Offset> _generateUniquePositions() {
+  //   final gardenAPI = GardenAPI(ref);
+  //   print(gardenAPI.gardenMain());
+
+  //   final count = gardenAPI.gardenMainBookList().length; // 생성할 위젯의 수
+
+  //   final screenSize = MediaQuery.of(context).size;
+
+  //   final List<Offset> positions = [];
+
+  //   final double widgetWidth = 150.0;
+  //   final double widgetHeight = 200.0;
+
+  //   double widgetWidth2 = 0;
+  //   double widgetHeight2 = 0;
+
+  //   for (int i = 0; i < count; i++) {
+  //     Offset newOffset;
+  //     bool isColliding;
+
+  //     do {
+  //       isColliding = false;
+  //       newOffset = Offset(
+  //         // _random.nextDouble() * (screenSize.width - widgetWidth),
+  //         // _random.nextDouble() * (screenSize.height - widgetHeight),
+  //         widgetWidth2 * (screenSize.width - widgetWidth),
+  //         widgetHeight2 * (screenSize.height - widgetHeight),
+  //       );
+
+  //       // 충돌 감지
+  //       for (var pos in positions) {
+  //         if ((newOffset.dx < pos.dx + widgetWidth &&
+  //             newOffset.dx + widgetWidth > pos.dx &&
+  //             newOffset.dy < pos.dy + widgetHeight &&
+  //             newOffset.dy + widgetHeight > pos.dy)) {
+  //           isColliding = true;
+  //           break;
+  //         }
+  //       }
+  //     } while (isColliding);
+
+  //     positions.add(newOffset);
+  //   }
+
+  //   widgetWidth2 += 0.1;
+  //   widgetHeight2 += 0.1;
+
+  //   return positions;
+  // }
+
+  //드래그 업데이트
+  void _onPanUpdate(DragUpdateDetails details) {
+    //화면 크기 가져오기
+    final screenSize = MediaQuery.of(context).size;
+
+    setState(() {
+      // 새로운 오프셋 계산
+      Offset newOffset = _backgroundOffset + details.delta;
+      // print(MediaQuery.of(context).size.width);
+
+      // 드래그 제한
+      double minX = -screenSize.width; // 최솟값 (왼쪽으로 이동 제한)
+      double maxX = screenSize.width; // 최댓값 (오른쪽으로 이동 제한)
+      double minY = -screenSize.height; // 최솟값 (위쪽으로 이동 제한)
+      double maxY = screenSize.height; // 최댓값 (아래쪽으로 이동 제한)
+
+      _backgroundOffset = Offset(
+        newOffset.dx.clamp(minX, maxX),
+        newOffset.dy.clamp(minY, maxY),
+      );
+      _position = details.globalPosition;
+    });
+
+    // setState(() {
+    //   //배경 오프셋을 드래그한 만큼 이동
+    //   _backgroundOffset += details.delta;
+
+    //   _position = details.globalPosition;
+    // });
   }
 
   @override
@@ -32,82 +180,143 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
-      backgroundColor: (gardenAPI.gardenMain().isEmpty)
-          ? Colors.white
-          : Functions.gardenBackColor(gardenAPI.gardenMain()['garden_color']),
-      body: Column(
-        children: [
-          GestureDetector(
-            onTap: () async {
-              _gardenMenuBottomSheet();
-            },
-            child: (gardenAPI.gardenMain().isNotEmpty)
-                ? Container(
-                    margin: EdgeInsets.only(top: 80.h, left: 24.w, right: 24.w),
-                    color: Colors.transparent,
-                    child: Stack(
-                      alignment: Alignment.topRight,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 14.h),
-                          width: 312.w,
-                          height: 76.h,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20.r)),
-                          child: SizedBox(
-                            height: 48.h,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: GestureDetector(
+        //드래그 이벤트 처리
+        onPanUpdate: _onPanUpdate,
+        onTap: () => context.pushNamed('book-detail'),
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            Container(
+              // width: 300,
+              // height: 300,
+              width: MediaQuery.of(context).size.width * 2,
+              height: MediaQuery.of(context).size.height * 2,
+              color: Constant.GARDEN_CHIP_COLOR_SET_LIST[3],
+              child: Stack(
+                children: [
+                  OverflowBox(
+                    maxWidth: MediaQuery.of(context).size.width + 100,
+                    maxHeight: MediaQuery.of(context).size.height + 200,
+                    child: Transform.translate(
+                      //배경을 이동시킬 오프셋
+                      offset: _backgroundOffset,
+                      child: Stack(
+                          // children: _textPositions.map((position) {
+                          //   return Positioned(
+                          //     left: position.dx,
+                          //     top: position.dy,
+                          //     child: Column(
+                          //       children: [
+                          //         SvgPicture.asset(
+                          //           'assets/images/star.svg',
+                          //           width: 112.w,
+                          //           height: 160.h,
+                          //         ),
+                          //         Container(
+                          //           padding: EdgeInsets.symmetric(
+                          //               vertical: 4, horizontal: 8),
+                          //           decoration: BoxDecoration(
+                          //             color: Colors.pink.shade100,
+                          //             borderRadius: BorderRadius.circular(10),
+                          //           ),
+                          //           child: Text(
+                          //             '이름을 입력해주세요',
+                          //             style: TextStyle(color: Colors.black),
+                          //           ),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   );
+                          // }).toList(),
+                          ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      _gardenMenuBottomSheet();
+                    },
+                    child: (gardenAPI.gardenMain().isNotEmpty)
+                        ? Container(
+                            margin: EdgeInsets.only(
+                                top: 80.h, left: 24.w, right: 24.w),
+                            color: Colors.transparent,
+                            child: Stack(
+                              alignment: Alignment.topRight,
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      gardenAPI.gardenMain()['garden_title'],
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 20.w, vertical: 14.h),
+                                  width: 312.w,
+                                  height: 76.h,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.circular(20.r)),
+                                  child: SizedBox(
+                                    height: 48.h,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              gardenAPI
+                                                  .gardenMain()['garden_title'],
+                                              style: TextStyle(
+                                                fontSize: 16.sp,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SvgPicture.asset(
+                                              'assets/images/garden-angle-right-b.svg',
+                                              width: 20.r,
+                                              height: 20.r,
+                                            )
+                                          ],
+                                        ),
+                                        Text(
+                                          gardenAPI.gardenMain()['garden_info'],
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: AppColors.grey_8D,
+                                              overflow: TextOverflow.ellipsis),
+                                        )
+                                      ],
                                     ),
-                                    SvgPicture.asset(
-                                      'assets/images/garden-angle-right-b.svg',
-                                      width: 20.r,
-                                      height: 20.r,
-                                    )
-                                  ],
+                                  ),
                                 ),
-                                Text(
-                                  gardenAPI.gardenMain()['garden_info'],
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.grey_8D,
-                                      overflow: TextOverflow.ellipsis),
-                                )
+                                Container(
+                                  margin: EdgeInsets.only(right: 20.w),
+                                  width: 20.w,
+                                  height: 30.h,
+                                  child: SvgPicture.asset(
+                                    'assets/images/garden-color.svg',
+                                    color: Functions.gardenColor(
+                                        gardenAPI.gardenMain()['garden_color']),
+                                    width: 20.w,
+                                    height: 30.h,
+                                  ),
+                                ),
                               ],
                             ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 20.w),
-                          width: 20.w,
-                          height: 30.h,
-                          child: SvgPicture.asset(
-                            'assets/images/garden-color.svg',
-                            color: Functions.gardenColor(
-                                gardenAPI.gardenMain()['garden_color']),
-                            width: 20.w,
-                            height: 30.h,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(),
-          ),
-        ],
+                          )
+                        : Container(),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              '터치 좌표\nX: ${_position.dx.toStringAsFixed(2)}\nY: ${_position.dy.toStringAsFixed(2)}',
+              style: TextStyle(fontSize: 24, color: Colors.black),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

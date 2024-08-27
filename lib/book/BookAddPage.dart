@@ -1,4 +1,8 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BookAddPage extends ConsumerStatefulWidget {
@@ -6,117 +10,179 @@ class BookAddPage extends ConsumerStatefulWidget {
 }
 
 class _BookAddPageState extends ConsumerState<BookAddPage> {
-  final double _minY = 50.0; // 최소 y 값
-  final double _maxY = 300.0; // 최대 y 값
-  final double _baseHeight = 100.0; // 기본 높이
-  final double _maxHeight = 200.0; // 최대 높이
+  ui.Image? image;
+  ui.Image? overlayImage;
+  double dragPosition = 0.0; // From 0.0 to 1.0
 
-  //현재 위치 저장
-  // double _xOffset = 0;
-  double _yOffset = 0;
-
-  //드래그 만큼 위치 업데이트
-  void _updatePosition(DragUpdateDetails details) {
-    setState(() {
-      // _xOffset += details.delta.dx;
-      _yOffset += details.delta.dy;
-      print(_yOffset);
-
-      // y 포지션 제한
-      if (_yOffset < _minY) {
-        _yOffset = _minY;
-      } else if (_yOffset > _maxY) {
-        _yOffset = _maxY;
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    dragPosition = 0.0;
+    _loadImage();
   }
 
-  double _calculateHeight() {
-    // y 위치에 따라 height 계산 (하단 고정)
-    double heightRange = _maxHeight - _baseHeight;
-    double yRange = _maxY - _minY;
-    double heightFactor = (_maxY - _yOffset) / yRange;
-    return _baseHeight + heightRange * heightFactor;
-    // // y 위치에 따라 height 계산
-    // double heightRange = _maxHeight - _baseHeight;
-    // double yRange = _maxY - _minY;
-    // double heightFactor = (_maxY - _yOffset) / yRange;
-    // return _baseHeight + heightRange * heightFactor;
+  Future<void> _loadImage() async {
+    // Load main image
+    final ByteData data = await rootBundle.load(
+      'assets/images/Intersect.png',
+    );
+    final ui.Codec codec =
+        await ui.instantiateImageCodec(data.buffer.asUint8List());
+    final ui.FrameInfo frameInfo = await codec.getNextFrame();
+    final ui.Image mainImage = frameInfo.image;
+
+    // Load overlay image
+    final ByteData overlayData =
+        await rootBundle.load('assets/images/Intersect.png');
+    final ui.Codec overlayCodec =
+        await ui.instantiateImageCodec(overlayData.buffer.asUint8List());
+    final ui.FrameInfo overlayFrameInfo = await overlayCodec.getNextFrame();
+    final ui.Image overlayImage = overlayFrameInfo.image;
+
+    setState(() {
+      image = mainImage;
+      this.overlayImage = overlayImage;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Stack(
-        alignment: Alignment.center,
+    return Scaffold(
+      body: Stack(
         children: [
-          Container(
-            width: 300,
-            height: 500,
-            color: Colors.black,
+          Center(
+              child: Image.asset(
+            'assets/images/Intersect.png',
+          )),
+          CustomPaint(
+            size: Size(image!.width.toDouble(), image!.height.toDouble()),
+            painter: LinePainter(dragPosition, image!),
           ),
-          // Positioned.fill(
-          //   child: CustomPaint(
-          //     painter: BackgroundPainter(yOffset: _yOffset),
-          //   ),
-          // ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            // left: _xOffset,
-            // top: _yOffset,
+          Center(
             child: GestureDetector(
-              onPanUpdate: _updatePosition,
-              child: Container(
-                width: 300,
-                height: _calculateHeight(),
-                color: Colors.blue,
-                child: Center(
-                  child: Text(
-                    'Drag me',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-            // GestureDetector(
-            //   onVerticalDragUpdate: (details) {
-            //     print('update $details');
-            //   },
-            //   onVerticalDragStart: (details) {
-            //     print('start $details');
-            //   },
-            //   child: Container(
-            //     width: 400,
-            //     height: 100,
-            //     color: Colors.red,
-            //   ),
-            // ),
-          )
+                onVerticalDragUpdate: (details) {
+                  setState(() {
+                    dragPosition -=
+                        details.primaryDelta! / context.size!.height;
+                    dragPosition = dragPosition.clamp(0.0, 1.0);
+                  });
+                },
+                child: image == null || overlayImage == null
+                    ? CircularProgressIndicator()
+                    : CustomPaint(
+                        size: Size(
+                            image!.width.toDouble(), image!.height.toDouble()),
+                        painter:
+                            RevealPainter(dragPosition, image!, overlayImage!),
+                      )),
+          ),
         ],
       ),
     );
   }
 }
 
-class BackgroundPainter extends CustomPainter {
-  final double yOffset;
+class RevealPainter extends CustomPainter {
+  final double dragPosition;
+  final ui.Image image;
+  final ui.Image overlayImage;
 
-  BackgroundPainter({required this.yOffset});
+  RevealPainter(this.dragPosition, this.image, this.overlayImage);
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.red
-      ..style = PaintingStyle.fill;
+      ..colorFilter = ColorFilter.mode(
+        Colors.red,
+        BlendMode.srcIn,
+      );
+    final revealHeight = size.height * dragPosition;
 
-    canvas.drawRect(
-        Rect.fromLTWH(0, size.height - yOffset, size.width, yOffset), paint);
+    // Draw the revealed part of the main image
+
+    // The source rectangle to be drawn from the image
+    final srcRect = Rect.fromLTRB(0, image.height * (1 - dragPosition),
+        image.width.toDouble(), image.height.toDouble());
+    // The destination rectangle where the image portion will be drawn
+    final dstRect =
+        Rect.fromLTWH(0, size.height - revealHeight, size.width, revealHeight);
+    // Draw the revealed part of the image
+    canvas.drawImageRect(image, srcRect, dstRect, paint);
+
+    // Draw dotted border around the revealed area
+    final borderPaint = Paint()
+      ..color = Colors.blue
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+
+    final borderPath = Path()
+      ..moveTo(0, size.height - revealHeight)
+      ..lineTo(size.width, size.height - revealHeight)
+      ..close();
+
+    // // print(revealHeight);
+
+    _drawDottedPath(canvas, borderPath, borderPaint);
+  }
+
+  void _drawDottedPath(Canvas canvas, Path path, Paint paint) {
+    const double dashWidth = 5.0;
+    const double dashSpace = 5.0;
+
+    final metrics = path.computeMetrics();
+    for (final metric in metrics) {
+      double distance = 0;
+      while (distance < metric.length) {
+        final start = distance;
+        final end = (distance + dashWidth).clamp(0.0, metric.length);
+        final length = end - start;
+        final tangent = metric.getTangentForOffset(start);
+
+        if (tangent != null) {
+          final offset = tangent.position;
+          final dx = tangent.vector.dx;
+          final dy = tangent.vector.dy;
+
+          final dashPath = Path()
+            ..moveTo(offset.dx, offset.dy)
+            ..lineTo(
+              offset.dx + length * dx,
+              offset.dy + length * dy,
+            );
+          canvas.drawPath(dashPath, paint);
+        }
+
+        distance += dashWidth + dashSpace;
+      }
+    }
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class LinePainter extends CustomPainter {
+  final double dragPosition;
+  final ui.Image image;
+
+  LinePainter(this.dragPosition, this.image);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..colorFilter = ColorFilter.mode(
+        Colors.blue,
+        BlendMode.srcIn,
+      );
+    final revealHeight = size.height * dragPosition;
+
+    canvas.drawImage(image, Offset(0, size.height - revealHeight), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
 }
