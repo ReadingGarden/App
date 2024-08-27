@@ -5,6 +5,7 @@ import '../book/BookAddGardenPage.dart';
 import '../book/BookAddPage.dart';
 import '../book/BookBarcodePage.dart';
 import '../book/BookDetailPage.dart';
+import '../book/BookEditPage.dart';
 import '../book/BookRegisterPage.dart';
 import '../book/BookSerachPage.dart';
 import '../book/BookUserWritePage.dart';
@@ -216,10 +217,19 @@ final GoRouter router = GoRouter(
           },
           routes: [
             GoRoute(
-              path: 'book-detail',
-              name: 'book-detail',
-              builder: (context, state) => BookDetailPage(),
-            ),
+                path: 'book-detail',
+                name: 'book-detail',
+                builder: (context, state) => BookDetailPage(),
+                routes: [
+                  GoRoute(
+                    path: 'book-edit',
+                    name: 'book-edit',
+                    builder: (context, state) {
+                      final book = state.extra as Map;
+                      return BookEditPage(book: book);
+                    },
+                  )
+                ]),
             GoRoute(
                 path: 'garden-edit',
                 name: 'garden-edit',

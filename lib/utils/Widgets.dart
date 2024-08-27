@@ -105,8 +105,8 @@ class Widgets {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 4.h),
-            height: 20.h,
+            margin: EdgeInsets.only(bottom: 6.h),
+            height: 22.h,
             child: Text(
               label,
             ),
