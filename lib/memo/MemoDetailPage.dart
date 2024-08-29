@@ -160,7 +160,11 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    deleteMemo();
+                    context.pop();
+                    Widgets.deleteBottomSheet(context, '이 메모를 삭제할까요?',
+                        const Text('한번 삭제된 메모는 다시 되돌릴 수없어요.'), '삭제하기', () {
+                      deleteMemo();
+                    });
                   },
                   child: Container(
                     alignment: Alignment.center,
