@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
@@ -9,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../core/service/BookService.dart';
+import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
 final barcodeImageFileProvider = StateProvider<File?>((ref) => null);
@@ -41,7 +44,7 @@ class _BookBarcodePageState extends ConsumerState<BookBarcodePage> {
   void getDetailBook_ISBN(String isbn) async {
     final response = await bookService.getDetailBook_ISBN(isbn);
     if (response?.statusCode == 200) {
-      context.pushNamed('book-add-garden', extra: '9780099552444');
+      context.pushNamed('book-add-garden', extra: isbn);
     } else if (response?.statusCode == 401) {
       //500에러
     } else {
@@ -63,7 +66,7 @@ class _BookBarcodePageState extends ConsumerState<BookBarcodePage> {
       final String pictureDirectory = '${appDirectory.path}/Pictures';
       await Directory(pictureDirectory).create(recursive: true);
       final String filePath =
-          '${pictureDirectory}/${DateTime.now().millisecondsSinceEpoch}.png';
+          '$pictureDirectory/${DateTime.now().millisecondsSinceEpoch}.png';
 
       // 이미지 파일 저장
       final File imageFile = File(picture.path);
@@ -84,10 +87,13 @@ class _BookBarcodePageState extends ConsumerState<BookBarcodePage> {
           ? barcodes.first.displayValue ?? ''
           : 'No barcode detected';
 
+      print(
+          '--------------------------------------------------------------------------------');
+      print(barcodes.first.displayValue);
+
       if (ref.watch(barcodeValueProvider).isNotEmpty &&
           ref.watch(barcodeValueProvider) != 'No barcode detected') {
-        getDetailBook_ISBN('9780099552440');
-        // getDetailBook_ISBN(ref.watch(barcodeValueProvider));
+        getDetailBook_ISBN(ref.watch(barcodeValueProvider));
       } else {
         fToast.showToast(child: Widgets.toast('🔎 바코드가 인식되지 않았어요'));
       }
@@ -102,20 +108,38 @@ class _BookBarcodePageState extends ConsumerState<BookBarcodePage> {
     final barcodeValue = ref.watch(barcodeValueProvider);
 
     return Scaffold(
-      appBar: Widgets.appBar(context),
-      body: Column(
-        children: <Widget>[
-          barcodeImageFile != null
-              ? Image.file(barcodeImageFile)
-              : Text('No image selected.'),
-          SizedBox(height: 20),
-          Text('Barcode Value: $barcodeValue'),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _takePictureAndScanBarcode,
-            child: Text('Take Picture and Scan Barcode'),
-          ),
-        ],
+      appBar: Widgets.appBar(context, title: '바코드로 검색하기'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Image.file(barcodeImageFile!),
+            // barcodeImageFile != null
+            //     ? Image.file(barcodeImageFile)
+            //     : Text('No image selected.'),
+            SvgPicture.asset(
+              'assets/images/barcode.svg',
+              width: 160.r,
+              height: 160.r,
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 36.h, bottom: 6.h),
+              child: Text(
+                '바코드로 책 추가하기',
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Text(
+              '바코드를 찍으면 자동으로 책이 등록되어요\ntip. 바코드는 주로 책 뒷면에 있어요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.grey_8D),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
+        child: Widgets.button('촬영하기', true, _takePictureAndScanBarcode),
       ),
     );
   }
