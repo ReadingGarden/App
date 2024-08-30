@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/provider/Memo.dart';
+import '../core/model/Memo.dart';
+import '../core/provider/MemoListNotifier.dart';
 import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';

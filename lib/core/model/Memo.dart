@@ -1,6 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-//Memo 모델
 class Memo {
   final int id;
   final int book_no;
@@ -34,20 +31,5 @@ class Memo {
         memo_like: json['memo_like'],
         image_url: json['image_url'],
         memo_created_at: json['memo_created_at']);
-  }
-}
-
-//TODO: - 프로바이더 분리
-// Memo 리스트를 관리하는 StateNotifierProvider
-final memoListProvider =
-    StateNotifierProvider<MemoListNotifier, List<Memo>>((ref) {
-  return MemoListNotifier();
-});
-
-class MemoListNotifier extends StateNotifier<List<Memo>> {
-  MemoListNotifier() : super([]);
-
-  void addMemoList(List<Memo> newMemoList) {
-    state = [...state, ...newMemoList];
   }
 }
