@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/provider/Memo.dart';
 import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 
-final memoListProvider = StateProvider<List>((ref) => []);
 final memoSelectIndexListProvider = StateProvider<List>((ref) => []);
 
 class MemoPage extends ConsumerStatefulWidget {
@@ -18,27 +18,73 @@ class MemoPage extends ConsumerStatefulWidget {
 }
 
 class _MemoPageState extends ConsumerState<MemoPage> {
+  final ScrollController _scrollController = ScrollController();
+  int _currentPage = 1;
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(memoListProvider.notifier).state = [];
       ref.read(memoSelectIndexListProvider.notifier).state = [];
     });
-    getMemoLsit();
+    _scrollController.addListener(() {
+      // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        getMemoList();
+      }
+    });
+    getMemoList();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   //메모 리스트 조회 api
-  void getMemoLsit() async {
-    final response = await memoService.getMemoList();
+  void getMemoList() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final response = await memoService.getMemoList(_currentPage);
     if (response?.statusCode == 200) {
-      ref.read(memoListProvider.notifier).state = response?.data['data'];
-      for (var i in ref.watch(memoListProvider)) {
+      final List<dynamic> memoList = response?.data['data']['list'];
+      final List<Memo> newMemoList = memoList
+          .map((json) => Memo(
+              id: json['id'],
+              book_no: json['book_no'],
+              book_title: json['book_title'],
+              book_author: json['book_author'],
+              book_image_url: json['book_image_url'],
+              memo_content: json['memo_content'],
+              memo_like: json['memo_like'],
+              image_url: json['image_url'],
+              memo_created_at: json['memo_created_at']))
+          .toList();
+
+      if (newMemoList.isNotEmpty) {
+        ref.read(memoListProvider.notifier).addMemoList(newMemoList);
+        setState(() {
+          _currentPage++;
+        });
+      }
+
+      for (var memo in newMemoList) {
         ref
             .read(memoSelectIndexListProvider.notifier)
             .state
-            .add(i['memo_like']);
+            .add(memo.memo_like);
       }
+
+      setState(() {
+        _isLoading = false;
+      });
     } else if (response?.statusCode == 401) {
       print('토큰에러');
     }
@@ -62,7 +108,6 @@ class _MemoPageState extends ConsumerState<MemoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          // backgroundColor: Colors.red,
           toolbarHeight: 60.h,
           backgroundColor: Colors.white,
           scrolledUnderElevation: 0,
@@ -76,7 +121,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
               onTap: () async {
                 final result = await context.pushNamed('memo-book');
                 if (result != null) {
-                  getMemoLsit();
+                  getMemoList();
                 }
               },
               child: Container(
@@ -98,6 +143,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
 
   Widget _memoList() {
     return ListView(
+      controller: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       children: List.generate(
         ref.read(memoListProvider).length,
@@ -107,7 +153,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
               final result = await context.pushNamed('memo-detail',
                   extra: ref.read(memoListProvider)[index]);
               if (result != null) {
-                getMemoLsit();
+                getMemoList();
               }
             },
             child: Container(
@@ -124,7 +170,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                 children: [
                   Row(
                     children: [
-                      (ref.watch(memoListProvider)[index]['book_image_url'] ==
+                      (ref.watch(memoListProvider)[index].book_image_url ==
                               null)
                           ? Container(
                               width: 44.r,
@@ -139,8 +185,9 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                                 width: 44.r,
                                 height: 44.r,
                                 fit: BoxFit.cover,
-                                ref.watch(memoListProvider)[index]
-                                    ['book_image_url'],
+                                ref
+                                    .watch(memoListProvider)[index]
+                                    .book_image_url!,
                               ),
                             ),
                       Container(
@@ -150,12 +197,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              ref.watch(memoListProvider)[index]['book_title'],
+                              ref.watch(memoListProvider)[index].book_title,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              ref.watch(memoListProvider)[index]['book_author'],
+                              ref.watch(memoListProvider)[index].book_author,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -167,8 +214,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                     ],
                   ),
                   Visibility(
-                      visible: (ref.watch(memoListProvider)[index]
-                              ['image_url'] !=
+                      visible: (ref.watch(memoListProvider)[index].image_url !=
                           null),
                       child: Container(
                         margin: EdgeInsets.only(top: 10.h),
@@ -176,12 +222,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                             width: 320.w,
                             height: 140.h,
                             fit: BoxFit.fitWidth,
-                            '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index]['image_url']}'),
+                            '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index].image_url}'),
                       )),
                   Container(
                       margin: EdgeInsets.only(top: 10.h),
                       child: Text(
-                        ref.watch(memoListProvider)[index]['memo_content'],
+                        ref.watch(memoListProvider)[index].memo_content,
                         maxLines: 5,
                         style: TextStyle(
                             fontSize: 12.sp, overflow: TextOverflow.ellipsis),
@@ -192,15 +238,15 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            Functions.formatDate(
-                                ref.watch(memoListProvider)[index]
-                                    ['memo_created_at']),
+                            Functions.formatDate(ref
+                                .watch(memoListProvider)[index]
+                                .memo_created_at),
                             style: TextStyle(
                                 fontSize: 12.sp, color: AppColors.grey_8D),
                           ),
                           GestureDetector(
-                            onTap: () => putMemoLike(index,
-                                ref.watch(memoListProvider)[index]['id']),
+                            onTap: () => putMemoLike(
+                                index, ref.watch(memoListProvider)[index].id),
                             child: SvgPicture.asset(
                               ref.watch(memoSelectIndexListProvider)[index]
                                   ? 'assets/images/star.svg'

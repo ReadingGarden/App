@@ -7,10 +7,11 @@ class MemoService {
   final Dio _dio = Dio();
 
   //메모 리스트 조회
-  Future<Response?> getMemoList() async {
+  Future<Response?> getMemoList(int page) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.get('${Constant.URL}memo/',
+      final response = await _dio.get(
+          '${Constant.URL}memo/?page=$page&page_size=10',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;
