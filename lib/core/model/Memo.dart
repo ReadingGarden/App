@@ -32,4 +32,18 @@ class Memo {
         image_url: json['image_url'],
         memo_created_at: json['memo_created_at']);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'book_no': book_no,
+      'book_title': book_title,
+      'book_author': book_author,
+      'book_image_url': book_image_url,
+      'memo_content': memo_content,
+      'memo_like': memo_like,
+      'image_url': image_url,
+      'memo_created_at': memo_created_at,
+    };
+  }
 }
