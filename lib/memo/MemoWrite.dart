@@ -68,6 +68,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     if (response?.statusCode == 201) {
       if (ref.watch(memoImageFileProvider) != null) {
         postMemoImage(response?.data['data']['id']);
+      } else {
+        context.pop();
+        context.pop('MemoPage_getMemoList');
       }
     }
   }
@@ -239,6 +242,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                         Text(
                           widget.book['book_author'],
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 12.sp, color: AppColors.grey_8D),
                         )

@@ -65,6 +65,10 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     if (response?.statusCode == 201) {
       if (_dateController.text.isNotEmpty) {
         postBookRead(response?.data['data']['book_no']);
+      } else {
+        context.pushNamed('book-register-done',
+            extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
+                ['garden_title']);
       }
     }
   }
@@ -384,6 +388,7 @@ class BookRegisterDonePage extends StatelessWidget {
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
           child: Widgets.button('가든으로 가기', true, () {
             context.pushNamed('bottom-navi');
+            //TODO: - 자동으로 해당 가든 변경?
           }),
         ));
   }

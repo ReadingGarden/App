@@ -154,6 +154,8 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                             ),
                             Text(
                               bookList[index].book_author,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             ),

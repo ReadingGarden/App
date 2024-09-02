@@ -323,6 +323,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
 
   Future _gardenMenuBottomSheet() {
     final gardenAPI = GardenAPI(ref);
+    gardenAPI.getGardenLsit();
 
     return showModalBottomSheet(
       context: context,
