@@ -1,14 +1,15 @@
+import 'package:book_flutter/core/provider/BookSearchListNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/model/BookSearch.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
-final bookSerachListProvider = StateProvider<List>((ref) => []);
 final bookTotalCountProvider = StateProvider<int>((ref) => 0);
 
 class BookSerachPage extends ConsumerStatefulWidget {
@@ -17,25 +18,65 @@ class BookSerachPage extends ConsumerStatefulWidget {
 
 class _BookSerachPageState extends ConsumerState<BookSerachPage> {
   final TextEditingController _textEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  String _query = '';
+  int _currentPage = 1;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(bookSerachListProvider.notifier).state = [];
+      ref.read(bookSearchListProvider.notifier).reset();
       ref.read(bookTotalCountProvider.notifier).state = 0;
+    });
+    _scrollController.addListener(() {
+      // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print('------------------------------------------------------------');
+        getSearchBook(_query);
+      }
     });
   }
 
   //책 검색 api
   void getSearchBook(String query) async {
-    final response = await bookService.getSerachBook(query);
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final response = await bookService.getSerachBook(query, _currentPage);
     if (response?.statusCode == 200) {
-      ref.read(bookSerachListProvider.notifier).state =
-          response?.data['data']['item'];
+      final List bookSearchList = response?.data['data']['item'];
+      final List<BookSearch> newBookSearchList = bookSearchList
+          .map((json) => BookSearch(
+              title: json['title'],
+              author: json['author'],
+              description: json['description'],
+              isbn13: json['isbn13'],
+              cover: json['cover'],
+              publisher: json['publisher']))
+          .toList();
+
       ref.read(bookTotalCountProvider.notifier).state =
           response?.data['data']['totalResults'];
-    } else if (response?.statusCode == 400) {
+
+      if (newBookSearchList.isNotEmpty) {
+        ref
+            .read(bookSearchListProvider.notifier)
+            .addBookSearchList(newBookSearchList);
+        setState(() {
+          _currentPage++;
+        });
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else if (response?.statusCode == 401) {
       print('토큰에러');
     }
   }
@@ -47,6 +88,7 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Container(
             margin: EdgeInsets.only(top: 20.h, bottom: 120.h),
             child: Column(
@@ -70,6 +112,9 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                       child: TextField(
                         controller: _textEditingController,
                         onSubmitted: (value) {
+                          _query = value;
+                          ref.read(bookSearchListProvider.notifier).reset();
+                          ref.read(bookTotalCountProvider.notifier).state = 0;
                           getSearchBook(value);
                         },
                         style: TextStyle(fontSize: 16.sp),
@@ -101,7 +146,7 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                                 fontSize: 16.sp, color: AppColors.grey_8D)),
                       )),
                 ),
-                (ref.watch(bookSerachListProvider).isNotEmpty)
+                (ref.watch(bookSearchListProvider).isNotEmpty || _isLoading)
                     ? _serachList(_textEditingController.text)
                     : Column(
                         children: [
@@ -192,8 +237,11 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
   }
 
   Widget _serachList(String value) {
+    final bookSearchList = ref.watch(bookSearchListProvider);
+
     return SizedBox(
-      height: (24 * 88.h) + 42.h, //(itemcount * listcontainer) + titleContainer
+      height: (bookSearchList.length * 88.h) +
+          42.h, //(itemcount * listcontainer) + titleContainer
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -212,12 +260,11 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
             child: ListView(
               physics: const NeverScrollableScrollPhysics(),
               children: List.generate(
-                ref.watch(bookSerachListProvider).length,
+                bookSearchList.length,
                 (index) {
                   return GestureDetector(
                     onTap: () => context.pushNamed('book-add-garden',
-                        extra: ref.watch(bookSerachListProvider)[index]
-                            ['isbn13']),
+                        extra: bookSearchList[index].isbn13),
                     child: Container(
                       padding: EdgeInsets.only(left: 24.w, right: 24.w),
                       height: 88.h,
@@ -231,7 +278,7 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                               width: 48.w,
                               height: 64.h,
                               fit: BoxFit.cover,
-                              ref.watch(bookSerachListProvider)[index]['cover'],
+                              bookSearchList[index].cover,
                             ),
                           ),
                           SizedBox(
@@ -242,14 +289,13 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  ref.watch(bookSerachListProvider)[index]
-                                      ['title'],
+                                  bookSearchList[index].title,
                                   style: TextStyle(
                                       fontSize: 16.sp,
                                       overflow: TextOverflow.ellipsis),
                                 ),
                                 Text(
-                                  '${ref.watch(bookSerachListProvider)[index]['author']}',
+                                  bookSearchList[index].author,
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       color: AppColors.grey_8D,

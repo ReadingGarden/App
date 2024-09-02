@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/model/Book.dart';
-import '../core/provider/BookStatusListNotifier copy.dart';
+import '../core/provider/BookStatusAllListNotifier.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
@@ -20,6 +20,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
   int _currentPage = 1;
   bool _isLoading = false;
 
+  @override
   void initState() {
     super.initState();
     _scrollController.addListener(() {
@@ -34,7 +35,13 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
 
   //책 목록(상태) 리스트 조회 api
   void getBookStatusList(int status) async {
-    final response = await bookService.getBookStatusList(status, 1);
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final response = await bookService.getBookStatusList(status, _currentPage);
     if (response?.statusCode == 200) {
       final List<dynamic> bookStatusAllList = response?.data['data']['list'];
       final List<Book> newBookStatusAllList = bookStatusAllList
@@ -95,6 +102,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
     final bookList = ref.watch(bookStatusAllListProvider);
 
     return ListView(
+      controller: _scrollController,
       padding: EdgeInsets.only(top: 10.h),
       children: List.generate(
         bookList.length,

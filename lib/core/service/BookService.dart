@@ -7,10 +7,11 @@ class BookService {
   final Dio _dio = Dio();
 
   //책 검색
-  Future<Response?> getSerachBook(String query) async {
+  Future<Response?> getSerachBook(String query, int page) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.get('${Constant.URL}book/search?query=$query',
+      final response = await _dio.get(
+          '${Constant.URL}book/search?query=$query&start=$page&maxResults=30',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;

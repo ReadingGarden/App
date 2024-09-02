@@ -6,6 +6,7 @@ final bookStatusAllListProvider =
     StateNotifierProvider<BookStatusAllListNotifier, List<Book>>(
         (ref) => BookStatusAllListNotifier());
 
+//책 상태(목록) 모든 리스트 조회 Notifier
 class BookStatusAllListNotifier extends StateNotifier<List<Book>> {
   BookStatusAllListNotifier() : super([]);
 
