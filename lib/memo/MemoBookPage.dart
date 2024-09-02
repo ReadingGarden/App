@@ -4,12 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/model/Book.dart';
+import '../core/provider/BookStatusListNotifier copy.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
-
-//책 목록 리스트 ...
-final bookStatusListAllProvider = StateProvider<List>((ref) => []);
 
 class MemoBookPage extends ConsumerStatefulWidget {
   @override
@@ -17,19 +16,55 @@ class MemoBookPage extends ConsumerStatefulWidget {
 }
 
 class _MemoBookPageState extends ConsumerState<MemoBookPage> {
+  final ScrollController _scrollController = ScrollController();
+  int _currentPage = 1;
+  bool _isLoading = false;
+
   void initState() {
     super.initState();
-    Future.microtask(() {
-      ref.read(bookStatusListAllProvider.notifier).state = [];
-      getBookStatusList(3);
+    _scrollController.addListener(() {
+      // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        getBookStatusList(3);
+      }
     });
+    getBookStatusList(3);
   }
 
+  //책 목록(상태) 리스트 조회 api
   void getBookStatusList(int status) async {
-    final response = await bookService.getBookStatusList(status);
+    final response = await bookService.getBookStatusList(status, 1);
     if (response?.statusCode == 200) {
-      ref.read(bookStatusListAllProvider.notifier).state =
-          response?.data['data'];
+      final List<dynamic> bookStatusAllList = response?.data['data']['list'];
+      final List<Book> newBookStatusAllList = bookStatusAllList
+          .map((json) => Book(
+              book_no: json['book_no'],
+              book_title: json['book_title'],
+              book_author: json['book_author'],
+              book_publisher: json['book_publisher'],
+              book_image_url: json['book_image_url'],
+              book_tree: json['book_tree'],
+              book_status: json['book_status'],
+              percent: json['percent'],
+              book_page: json['book_page'],
+              garden_no: json['garden_no']))
+          .toList();
+
+      if (newBookStatusAllList.isNotEmpty) {
+        ref
+            .read(bookStatusAllListProvider.notifier)
+            .addBookStatusAllList(newBookStatusAllList);
+        setState(() {
+          _currentPage++;
+        });
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else if (response?.statusCode == 401) {
+      print('토큰에러');
     }
   }
 
@@ -57,7 +92,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
   }
 
   Widget _bookList() {
-    final bookList = ref.watch(bookStatusListAllProvider);
+    final bookList = ref.watch(bookStatusAllListProvider);
 
     return ListView(
       padding: EdgeInsets.only(top: 10.h),
@@ -66,10 +101,10 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
         (index) {
           return GestureDetector(
             onTap: () => context.pushNamed('memo-write', extra: {
-              'book_no': bookList[index]['book_no'],
-              'book_title': bookList[index]['book_title'],
-              'book_author': bookList[index]['book_author'],
-              'book_image_url': bookList[index]['book_image_url']
+              'book_no': bookList[index].book_no,
+              'book_title': bookList[index].book_title,
+              'book_author': bookList[index].book_author,
+              'book_image_url': bookList[index].book_image_url
             }),
             child: Container(
               height: 88.h,
@@ -79,7 +114,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                 children: [
                   Row(
                     children: [
-                      (bookList[index]['book_image_url'] == null)
+                      (bookList[index].book_image_url == null)
                           ? Container(
                               width: 48.w,
                               height: 64.h,
@@ -94,7 +129,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                                 width: 48.w,
                                 height: 64.h,
                                 fit: BoxFit.cover,
-                                bookList[index]['book_image_url'],
+                                bookList[index].book_image_url!,
                               ),
                             ),
                       Container(
@@ -106,13 +141,13 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              bookList[index]['book_title'],
+                              bookList[index].book_title,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(fontSize: 16.sp),
                             ),
                             Text(
-                              bookList[index]['book_author'],
+                              bookList[index].book_author,
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             ),
