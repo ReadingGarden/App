@@ -13,4 +13,8 @@ class BookStatusAllListNotifier extends StateNotifier<List<Book>> {
   void addBookStatusAllList(List<Book> newBookStatusAllList) {
     state = [...state, ...newBookStatusAllList];
   }
+
+  void reset() {
+    state = [];
+  }
 }

@@ -23,6 +23,9 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      ref.read(bookStatusAllListProvider.notifier).reset();
+    });
     _scrollController.addListener(() {
       // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
