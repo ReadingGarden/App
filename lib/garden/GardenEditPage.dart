@@ -93,7 +93,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     if (response?.statusCode == 200) {
       context.pop();
       context.pushNamed('bottom-navi');
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   //가든 탈퇴 api
@@ -105,7 +105,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     if (response?.statusCode == 200) {
       context.pop();
       context.pushNamed('bottom-navi');
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   //추가하기 버튼 유효성

@@ -66,7 +66,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       if (_dateController.text.isNotEmpty) {
         postBookRead(response?.data['data']['book_no']);
       }
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   //독서 기록 api
@@ -88,7 +88,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       context.pushNamed('book-register-done',
           extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
               ['garden_title']);
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   @override

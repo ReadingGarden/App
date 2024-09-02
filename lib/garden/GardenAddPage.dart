@@ -41,7 +41,7 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
     final response = await gardenService.postGarden(data);
     if (response?.statusCode == 201) {
       context.pushNamed('garden-add-done');
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   //추가하기 버튼 유효성

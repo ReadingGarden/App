@@ -35,8 +35,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
 
     final response = await bookService.putBook(
         ref.watch(bookDetailProvider)['book_no'], data);
-    if (response?.statusCode == 200) {
-    } else if (response?.statusCode == 401) {}
+    if (response?.statusCode == 200) {}
   }
 
   @override

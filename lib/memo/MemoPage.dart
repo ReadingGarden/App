@@ -86,8 +86,6 @@ class _MemoPageState extends ConsumerState<MemoPage> {
       setState(() {
         _isLoading = false;
       });
-    } else if (response?.statusCode == 401) {
-      print('토큰에러');
     }
   }
 
@@ -100,8 +98,6 @@ class _MemoPageState extends ConsumerState<MemoPage> {
         newState[index] = !newState[index];
         return newState;
       });
-    } else if (response?.statusCode == 401) {
-      print('토큰에러');
     }
   }
 

@@ -76,8 +76,6 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
       setState(() {
         _isLoading = false;
       });
-    } else if (response?.statusCode == 401) {
-      print('토큰에러');
     }
   }
 

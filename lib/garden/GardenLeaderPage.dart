@@ -35,7 +35,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
     if (response?.statusCode == 200) {
       context.pop();
       context.pop();
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   @override

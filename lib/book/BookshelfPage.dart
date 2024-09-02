@@ -77,8 +77,6 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
       setState(() {
         _isLoading = false;
       });
-    } else if (response?.statusCode == 401) {
-      print('토큰에러');
     }
   }
 

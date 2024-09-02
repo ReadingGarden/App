@@ -48,14 +48,13 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
     if (response?.statusCode == 201) {
       ref.read(bookNoProvider.notifier).state =
           response?.data['data']['book_no'];
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   //책 읽고싶어요 취소 (책 삭제)
   void deleteBookStatus() async {
     final response = await bookService.deleteBook(ref.watch(bookNoProvider)!);
-    if (response?.statusCode == 200) {
-    } else if (response?.statusCode == 401) {}
+    if (response?.statusCode == 200) {}
   }
 
   //책 상세조회 isbn api
@@ -63,7 +62,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
     final response = await bookService.getDetailBook_ISBN(isbn);
     if (response?.statusCode == 200) {
       ref.read(detailIsbnProvider.notifier).state = response?.data['data'];
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   @override

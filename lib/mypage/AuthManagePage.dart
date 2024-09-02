@@ -22,7 +22,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
       context.pop();
       removeLoginInfo();
       context.goNamed('start');
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   void deleteUser() async {
@@ -31,7 +31,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
       context.pop();
       removeLocalStorage();
       context.goNamed('start');
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   @override
