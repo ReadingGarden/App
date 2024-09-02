@@ -14,10 +14,10 @@ class Memo {
       required this.book_no,
       required this.book_title,
       required this.book_author,
-      this.book_image_url,
+      required this.book_image_url,
       required this.memo_content,
       required this.memo_like,
-      this.image_url,
+      required this.image_url,
       required this.memo_created_at});
 
   factory Memo.fromJson(Map<String, dynamic> json) {

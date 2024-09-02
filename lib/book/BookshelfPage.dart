@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../core/model/Book.dart';
+import '../core/provider/BookStatusListNotifier.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 
 final pageViewIndexProvider = StateProvider<int>((ref) => 0);
-final bookStatusListProvider = StateProvider<List>((ref) => []);
 
 class BookShelfPage extends ConsumerStatefulWidget {
   @override
@@ -14,22 +15,70 @@ class BookShelfPage extends ConsumerStatefulWidget {
 }
 
 class _BookShelfPageState extends ConsumerState<BookShelfPage> {
+  final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
+  int _currentPage = 1;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      ref.read(bookStatusListProvider.notifier).state = [];
-      getBookStatusList(0);
+    _scrollController.addListener(() {
+      // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        getBookStatusList(ref.watch(pageViewIndexProvider));
+      }
     });
+    getBookStatusList(0);
   }
 
-  //책 목록(상태) 리스트 조회
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  //책 목록(상태) 리스트 조회 api
   void getBookStatusList(int status) async {
-    final response = await bookService.getBookStatusList(status);
+    print('-----------------------------------------------$status');
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final response = await bookService.getBookStatusList(status, _currentPage);
     if (response?.statusCode == 200) {
-      ref.read(bookStatusListProvider.notifier).state = response?.data['data'];
+      final List<dynamic> bookStatusList = response?.data['data']['list'];
+      final List<Book> newBookStatusList = bookStatusList
+          .map((json) => Book(
+              book_no: json['book_no'],
+              book_title: json['book_title'],
+              book_author: json['book_author'],
+              book_publisher: json['book_publisher'],
+              book_image_url: json['book_image_url'],
+              book_tree: json['book_tree'],
+              book_status: json['book_status'],
+              percent: json['percent'],
+              book_page: json['book_page'],
+              garden_no: json['garden_no']))
+          .toList();
+
+      if (newBookStatusList.isNotEmpty) {
+        ref
+            .read(bookStatusListProvider.notifier)
+            .addBookStatusList(newBookStatusList);
+        setState(() {
+          _currentPage++;
+        });
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else if (response?.statusCode == 401) {
+      print('토큰에러');
     }
   }
 
@@ -73,8 +122,11 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
               itemCount: 3,
               controller: _pageController,
               onPageChanged: (int page) {
-                ref.read(pageViewIndexProvider.notifier).state = page;
+                ref.read(bookStatusListProvider.notifier).reset();
+                _currentPage = 1;
                 getBookStatusList(page);
+
+                ref.read(pageViewIndexProvider.notifier).state = page;
               },
               itemBuilder: (context, index) {
                 return _bookselfList();
@@ -89,9 +141,12 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
   Widget _titleButton(String title, int index) {
     return GestureDetector(
       onTap: () {
+        ref.read(bookStatusListProvider.notifier).reset();
+        _currentPage = 1;
+        getBookStatusList(index);
+
         _pageController.animateToPage(index,
             duration: const Duration(milliseconds: 400), curve: Curves.ease);
-        getBookStatusList(index);
       },
       child: Container(
           alignment: Alignment.center,
@@ -124,6 +179,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
         child: bookStatusList.isEmpty
             ? _bookshelfEmpty()
             : GridView(
+                controller: _scrollController,
                 padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 0.5,
@@ -141,14 +197,13 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                           children: [
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(8.r),
-                                child: (bookStatusList[index]
-                                            ['book_image_url'] !=
+                                child: (bookStatusList[index].book_image_url !=
                                         null)
                                     ? Image.network(
                                         width: 96.w,
                                         height: 142.h,
                                         fit: BoxFit.cover,
-                                        bookStatusList[index]['book_image_url'],
+                                        bookStatusList[index].book_image_url!,
                                       )
                                     : Container(
                                         width: 96.w,
@@ -176,7 +231,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                       : AppColors.grey_F2,
                                 ),
                                 child: Text(
-                                  '${bookStatusList[index]['percent']}%',
+                                  '${bookStatusList[index].percent.floor()}%',
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       color: (pageViewIndex == 1)
@@ -192,7 +247,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                             alignment: Alignment.centerLeft,
                             height: 20.h,
                             child: Text(
-                              bookStatusList[index]['book_title'],
+                              bookStatusList[index].book_title,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: 12.sp,
