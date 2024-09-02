@@ -2,15 +2,16 @@ import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';
 import '../../utils/SharedPreferences.dart';
+import '../DioClient.dart';
 
 class MemoService {
-  final Dio _dio = Dio();
+  final _authenticatedDio = dioclent.authenticatedDio;
 
   //메모 리스트 조회
   Future<Response?> getMemoList(int page) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.get(
+      final response = await _authenticatedDio.get(
           '${Constant.URL}memo/?page=$page&page_size=10',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -33,7 +34,7 @@ class MemoService {
   Future<Response?> postMemo(Map data) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.post('${Constant.URL}memo/',
+      final response = await _authenticatedDio.post('${Constant.URL}memo/',
           data: data,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -56,7 +57,8 @@ class MemoService {
   Future<Response?> putMemo(int id, Map data) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.put('${Constant.URL}memo/?id=$id',
+      final response = await _authenticatedDio.put(
+          '${Constant.URL}memo/?id=$id',
           data: data,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -81,7 +83,8 @@ class MemoService {
     final formData =
         FormData.fromMap({'file': await MultipartFile.fromFile(imagePath)});
     try {
-      final response = await _dio.post('${Constant.URL}memo/image?id=$id',
+      final response = await _authenticatedDio.post(
+          '${Constant.URL}memo/image?id=$id',
           data: formData,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -104,7 +107,8 @@ class MemoService {
   Future<Response?> deleteMemoImage(int id) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.delete('${Constant.URL}memo/image?id=$id',
+      final response = await _authenticatedDio.delete(
+          '${Constant.URL}memo/image?id=$id',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;
@@ -126,7 +130,8 @@ class MemoService {
   Future<Response?> deleteMemo(int id) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.delete('${Constant.URL}memo/?id=$id',
+      final response = await _authenticatedDio.delete(
+          '${Constant.URL}memo/?id=$id',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;
@@ -148,7 +153,8 @@ class MemoService {
   Future<Response?> putMemoLike(int id) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.put('${Constant.URL}memo/like?id=$id',
+      final response = await _authenticatedDio.put(
+          '${Constant.URL}memo/like?id=$id',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;

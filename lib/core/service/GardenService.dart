@@ -2,15 +2,16 @@ import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';
 import '../../utils/SharedPreferences.dart';
+import '../DioClient.dart';
 
 class GardenService {
-  final Dio _dio = Dio();
+  final _authenticatedDio = dioclent.authenticatedDio;
 
   //가든 리스트 조회
   Future<Response?> getGardenList() async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.get('${Constant.URL}garden/list',
+      final response = await _authenticatedDio.get('${Constant.URL}garden/list',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;
@@ -32,7 +33,7 @@ class GardenService {
   Future<Response?> getGardenDetail(int garden_no) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.get(
+      final response = await _authenticatedDio.get(
           '${Constant.URL}garden/detail?garden_no=$garden_no',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -55,7 +56,7 @@ class GardenService {
   Future<Response?> postGarden(Map data) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.post('${Constant.URL}garden/',
+      final response = await _authenticatedDio.post('${Constant.URL}garden/',
           data: data,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -78,7 +79,7 @@ class GardenService {
   Future<Response?> putGarden(int garden_no, Map data) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.put(
+      final response = await _authenticatedDio.put(
           '${Constant.URL}garden/?garden_no=$garden_no',
           data: data,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
@@ -102,7 +103,7 @@ class GardenService {
   Future<Response?> deleteGarden(int garden_no) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.delete(
+      final response = await _authenticatedDio.delete(
           '${Constant.URL}garden/?garden_no=$garden_no',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -125,7 +126,7 @@ class GardenService {
   Future<Response?> moveToGarden(int garden_no, int to_garden_no) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.put(
+      final response = await _authenticatedDio.put(
           '${Constant.URL}garden/to?garden_no=$garden_no&to_garden_no=$to_garden_no',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -148,7 +149,7 @@ class GardenService {
   Future<Response?> putGardenLeader(int garden_no, int user_no) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.put(
+      final response = await _authenticatedDio.put(
           '${Constant.URL}garden/member?garden_no=$garden_no&user_no=$user_no',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -171,7 +172,7 @@ class GardenService {
   Future<Response?> putGardenMain(int garden_no) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.put(
+      final response = await _authenticatedDio.put(
           '${Constant.URL}garden/main?garden_no=$garden_no',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
@@ -194,7 +195,7 @@ class GardenService {
   Future<Response?> byeGarden(int garden_no) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.delete(
+      final response = await _authenticatedDio.delete(
           '${Constant.URL}garden/member?garden_no=$garden_no',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());

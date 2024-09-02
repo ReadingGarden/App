@@ -1,13 +1,19 @@
+import 'dart:core';
+
+import 'package:book_flutter/core/DioClient.dart';
 import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';
 import '../../utils/SharedPreferences.dart';
 
 class AuthService {
-  final Dio _dio = Dio();
+  final _dio = dioclent.dio;
+  final _authenticatedDio = dioclent.authenticatedDio;
 
   // 로그인
   Future<Response?> postLogin(Map data) async {
+    final Dio _dio = Dio();
+
     try {
       final response = await _dio.post('${Constant.URL}auth/login', data: data);
       print(response.data.toString());
@@ -30,7 +36,8 @@ class AuthService {
   Future<Response?> postLogout() async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.post('${Constant.URL}auth/logout',
+      final response = await _authenticatedDio.post(
+          '${Constant.URL}auth/logout',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;
@@ -52,7 +59,7 @@ class AuthService {
   Future<Response?> deleteUser() async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.delete('${Constant.URL}auth/',
+      final response = await _authenticatedDio.delete('${Constant.URL}auth/',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;
@@ -157,7 +164,7 @@ class AuthService {
   Future<Response?> getUser() async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.get('${Constant.URL}auth/',
+      final response = await _authenticatedDio.get('${Constant.URL}auth/',
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
       return response;
@@ -179,7 +186,7 @@ class AuthService {
   Future<Response?> putUser(Map data) async {
     final accessToken = await loadAccess();
     try {
-      final response = await _dio.put('${Constant.URL}auth/',
+      final response = await _authenticatedDio.put('${Constant.URL}auth/',
           data: data,
           options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
       print(response.data.toString());
