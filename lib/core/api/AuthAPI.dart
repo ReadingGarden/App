@@ -56,7 +56,7 @@ class AuthAPI {
     final response = await authService.getUser();
     if (response?.statusCode == 200) {
       updateUser(response?.data['data']);
-    } else if (response?.statusCode == 401) {}
+    }
   }
 
   //프로필 변경 api

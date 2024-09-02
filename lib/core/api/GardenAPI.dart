@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../service/GardenService.dart';
 
@@ -72,8 +73,6 @@ class GardenAPI {
       updateGardenList(response?.data['data']);
       // //가든의 리스트의 첫번째를 상세 조회 (메인 가든 조회)
       getGardenDetail(ref.watch(gardenListProvider)[0]['garden_no']);
-    } else if (response?.statusCode == 401) {
-      print('토큰에러');
     }
   }
 
@@ -84,8 +83,6 @@ class GardenAPI {
       updateGardenMain(response?.data['data']);
       updateGardenMainBookList(response?.data['data']['book_list']);
       updateGardenMainMemberList(response?.data['data']['garden_members']);
-    } else if (response?.statusCode == 401) {
-      print('토큰에러');
     }
   }
 
@@ -94,6 +91,6 @@ class GardenAPI {
     final response = await gardenService.putGardenMain(garden_no);
     if (response?.statusCode == 200) {
       getGardenLsit();
-    } else if (response?.statusCode == 401) {}
+    }
   }
 }

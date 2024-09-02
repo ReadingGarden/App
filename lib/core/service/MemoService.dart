@@ -9,11 +9,10 @@ class MemoService {
 
   //메모 리스트 조회
   Future<Response?> getMemoList(int page) async {
-    final accessToken = await loadAccess();
     try {
       final response = await _authenticatedDio.get(
-          '${Constant.URL}memo/?page=$page&page_size=10',
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+        '${Constant.URL}memo/?page=$page&page_size=10',
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -32,11 +31,11 @@ class MemoService {
 
   //메모 작성
   Future<Response?> postMemo(Map data) async {
-    final accessToken = await loadAccess();
     try {
-      final response = await _authenticatedDio.post('${Constant.URL}memo/',
-          data: data,
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+      final response = await _authenticatedDio.post(
+        '${Constant.URL}memo/',
+        data: data,
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -55,12 +54,11 @@ class MemoService {
 
   //메모 수정
   Future<Response?> putMemo(int id, Map data) async {
-    final accessToken = await loadAccess();
     try {
       final response = await _authenticatedDio.put(
-          '${Constant.URL}memo/?id=$id',
-          data: data,
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+        '${Constant.URL}memo/?id=$id',
+        data: data,
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -79,14 +77,13 @@ class MemoService {
 
   //메모 이미지 업로드
   Future<Response?> postMemoImage(int id, String imagePath) async {
-    final accessToken = await loadAccess();
     final formData =
         FormData.fromMap({'file': await MultipartFile.fromFile(imagePath)});
     try {
       final response = await _authenticatedDio.post(
-          '${Constant.URL}memo/image?id=$id',
-          data: formData,
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+        '${Constant.URL}memo/image?id=$id',
+        data: formData,
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -105,11 +102,10 @@ class MemoService {
 
   //메모 이미지 삭제
   Future<Response?> deleteMemoImage(int id) async {
-    final accessToken = await loadAccess();
     try {
       final response = await _authenticatedDio.delete(
-          '${Constant.URL}memo/image?id=$id',
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+        '${Constant.URL}memo/image?id=$id',
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -128,11 +124,10 @@ class MemoService {
 
   //메모 삭제
   Future<Response?> deleteMemo(int id) async {
-    final accessToken = await loadAccess();
     try {
       final response = await _authenticatedDio.delete(
-          '${Constant.URL}memo/?id=$id',
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+        '${Constant.URL}memo/?id=$id',
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -151,11 +146,10 @@ class MemoService {
 
   //메모 즐겨찾기
   Future<Response?> putMemoLike(int id) async {
-    final accessToken = await loadAccess();
     try {
       final response = await _authenticatedDio.put(
-          '${Constant.URL}memo/like?id=$id',
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+        '${Constant.URL}memo/like?id=$id',
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {

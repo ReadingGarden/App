@@ -4,7 +4,6 @@ import 'package:book_flutter/core/DioClient.dart';
 import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';
-import '../../utils/SharedPreferences.dart';
 
 class AuthService {
   final _dio = dioclent.dio;
@@ -12,8 +11,6 @@ class AuthService {
 
   // 로그인
   Future<Response?> postLogin(Map data) async {
-    final Dio _dio = Dio();
-
     try {
       final response = await _dio.post('${Constant.URL}auth/login', data: data);
       print(response.data.toString());
@@ -34,11 +31,10 @@ class AuthService {
 
   // 로그아웃
   Future<Response?> postLogout() async {
-    final accessToken = await loadAccess();
     try {
       final response = await _authenticatedDio.post(
-          '${Constant.URL}auth/logout',
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+        '${Constant.URL}auth/logout',
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -57,10 +53,10 @@ class AuthService {
 
   // 회원 탈퇴
   Future<Response?> deleteUser() async {
-    final accessToken = await loadAccess();
     try {
-      final response = await _authenticatedDio.delete('${Constant.URL}auth/',
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+      final response = await _authenticatedDio.delete(
+        '${Constant.URL}auth/',
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -162,10 +158,10 @@ class AuthService {
 
   // 유저 정보 조회
   Future<Response?> getUser() async {
-    final accessToken = await loadAccess();
     try {
-      final response = await _authenticatedDio.get('${Constant.URL}auth/',
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+      final response = await _authenticatedDio.get(
+        '${Constant.URL}auth/',
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
@@ -184,11 +180,11 @@ class AuthService {
 
   // 프로필 변경
   Future<Response?> putUser(Map data) async {
-    final accessToken = await loadAccess();
     try {
-      final response = await _authenticatedDio.put('${Constant.URL}auth/',
-          data: data,
-          options: Options(headers: {'Authorization': 'Bearer $accessToken'}));
+      final response = await _authenticatedDio.put(
+        '${Constant.URL}auth/',
+        data: data,
+      );
       print(response.data.toString());
       return response;
     } on DioException catch (e) {
