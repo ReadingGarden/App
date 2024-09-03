@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/model/Book.dart';
 import '../core/provider/BookStatusListNotifier.dart';
@@ -187,71 +188,78 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                 children: List.generate(
                   bookStatusList.length,
                   (index) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(8.r),
-                                child: (bookStatusList[index].book_image_url !=
-                                        null)
-                                    ? Image.network(
-                                        width: 96.w,
-                                        height: 142.h,
-                                        fit: BoxFit.cover,
-                                        bookStatusList[index].book_image_url!,
-                                      )
-                                    : Container(
-                                        width: 96.w,
-                                        height: 142.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
-                                          color: AppColors.grey_F2,
-                                        ),
-                                      )),
-                            Visibility(
-                              visible: (pageViewIndex != 2),
-                              child: Container(
-                                alignment: Alignment.center,
-                                margin: EdgeInsets.only(bottom: 10.h),
-                                width: 50.w,
-                                height: 28.h,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20.r),
-                                    bottomLeft: Radius.circular(20.r),
+                    return GestureDetector(
+                      onTap: () {
+                        context.pushNamed('book-edit',
+                            extra: bookStatusList[index].toJson());
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: (bookStatusList[index]
+                                              .book_image_url !=
+                                          null)
+                                      ? Image.network(
+                                          width: 96.w,
+                                          height: 142.h,
+                                          fit: BoxFit.cover,
+                                          bookStatusList[index].book_image_url!,
+                                        )
+                                      : Container(
+                                          width: 96.w,
+                                          height: 142.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.r),
+                                            color: AppColors.grey_F2,
+                                          ),
+                                        )),
+                              Visibility(
+                                visible: (pageViewIndex != 2),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(bottom: 10.h),
+                                  width: 50.w,
+                                  height: 28.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20.r),
+                                      bottomLeft: Radius.circular(20.r),
+                                    ),
+                                    color: (pageViewIndex == 1)
+                                        ? AppColors.black_4A
+                                        : AppColors.grey_F2,
                                   ),
-                                  color: (pageViewIndex == 1)
-                                      ? AppColors.black_4A
-                                      : AppColors.grey_F2,
-                                ),
-                                child: Text(
-                                  '${bookStatusList[index].percent.floor()}%',
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: (pageViewIndex == 1)
-                                          ? Colors.white
-                                          : AppColors.black_4A),
+                                  child: Text(
+                                    '${bookStatusList[index].percent.floor()}%',
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: (pageViewIndex == 1)
+                                            ? Colors.white
+                                            : AppColors.black_4A),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(top: 8.h),
-                            alignment: Alignment.centerLeft,
-                            height: 20.h,
-                            child: Text(
-                              bookStatusList[index].book_title,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                              ),
-                            ))
-                      ],
+                            ],
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 8.h),
+                              alignment: Alignment.centerLeft,
+                              height: 20.h,
+                              child: Text(
+                                bookStatusList[index].book_title,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                ),
+                              ))
+                        ],
+                      ),
                     );
                   },
                 ),

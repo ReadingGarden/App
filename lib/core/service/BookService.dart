@@ -144,10 +144,10 @@ class BookService {
   }
 
   //독서 기록 조회
-  Future<Response?> getBookRead() async {
+  Future<Response?> getBookRead(int book_no) async {
     try {
       final response = await _authenticatedDio.get(
-        '${Constant.URL}book/read',
+        '${Constant.URL}book/read?book_no=$book_no',
       );
       print(response.data.toString());
       return response;

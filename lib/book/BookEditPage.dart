@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
+import '../utils/AutoInputFormatter.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
+
+final bookReadListProvider = StateProvider<List>((ref) => []);
 
 class BookEditPage extends ConsumerStatefulWidget {
   BookEditPage({super.key, required this.book});
@@ -20,8 +25,33 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
   @override
   void initState() {
     super.initState();
-    _startController.text = '2024.03.01';
+    getBookRead();
   }
+
+  //독서 기록 조회 api
+  void getBookRead() async {
+    final response = await bookService.getBookRead(widget.book['book_no']);
+    if (response?.statusCode == 200) {
+      ref.read(bookReadListProvider.notifier).state =
+          response?.data['data']['book_read_list'];
+
+      if (ref.watch(bookReadListProvider).isNotEmpty) {
+        //읽기 시작한 날
+        _startController.text = Functions.formatBookReadDate(
+            ref.watch(bookReadListProvider)[
+                ref.watch(bookReadListProvider).length - 1]['book_start_date']);
+
+        //다 읽은 날
+        if (ref.watch(bookReadListProvider)[0]['book_end_date'] != null) {
+          _startController.text = Functions.formatBookReadDate(
+              ref.watch(bookReadListProvider)[0]['book_end_date']);
+        }
+      }
+    }
+  }
+
+  //독서 기록 수정 api
+  void putBookRead() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +113,9 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
             margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 20.h),
             child: Column(
               children: [
-                Widgets.textfield(ref, _startController, '읽기 시작한 날',
-                    _startController.text, null, StateProvider((ref) => null)),
-                Widgets.textfield(ref, _endController, '다 읽은 날',
-                    '완독한 날짜를 입력해주세요', null, StateProvider((ref) => null))
+                _dateTextField(
+                    _startController, '읽기 시작한 날', '읽기 시작한 날짜를 알려주세요'),
+                _dateTextField(_endController, '다 읽은 날', '완독한 날짜를 입력해주세요')
               ],
             ),
           )
@@ -95,6 +124,57 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
       bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
           child: Widgets.button('수정하기', true, () => () {})),
+    );
+  }
+
+  Widget _dateTextField(
+      TextEditingController controller, String label, String hint) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: 6.h, bottom: 12.h),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: 6.h),
+                height: 22.h,
+                child: Text(
+                  label,
+                ),
+              ),
+              TextField(
+                controller: controller,
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+                inputFormatters: [AutoInputFormatter()],
+                style: TextStyle(fontSize: 16.sp),
+                decoration: InputDecoration(
+                  counter: Container(),
+                  fillColor: AppColors.grey_FA,
+                  filled: true,
+                  hintText: hint,
+                  hintStyle:
+                      TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 1.w)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 1.w)),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide:
+                          BorderSide(color: Colors.transparent, width: 1.w)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

@@ -34,6 +34,15 @@ class Functions {
     return formattedDate;
   }
 
+  //String(DateTime) -> String 변환(yyyy.MM.dd)
+  static String formatBookReadDate(String dateTimeString) {
+    // String -> DateTime
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    // DateTime -> String
+    String formattedDate = DateFormat('yyyy.MM.dd').format(dateTime);
+    return formattedDate;
+  }
+
   //AccessToken 불러오기
   static void getAccess(WidgetRef ref) async {
     ref.read(tokenProvider.accessProvider.notifier).state = await loadAccess();
