@@ -4,11 +4,10 @@ import 'package:go_router/go_router.dart';
 import '../book/BookAddGardenPage.dart';
 import '../book/BookAddPage.dart';
 import '../book/BookshelfPage.dart';
-import '../book/BookBarcodePage.dart';
 import '../book/BookDetailPage.dart';
 import '../book/BookEditPage.dart';
 import '../book/BookRegisterPage.dart';
-import '../book/BookSerachPage.dart';
+import '../book/BookSearchPage.dart';
 import '../book/BookUserWritePage.dart';
 import '../garden/GardenAddPage.dart';
 import '../garden/GardenBookListPage.dart';
@@ -95,12 +94,8 @@ final GoRouter router = GoRouter(
       GoRoute(
           path: '/bottom-navi/book-serach',
           name: 'book-serach',
-          builder: (context, state) => BookSerachPage(),
+          builder: (context, state) => BookSearchPage(),
           routes: [
-            GoRoute(
-                path: 'book-barcode',
-                name: 'book-barcode',
-                builder: (context, state) => BookBarcodePage()),
             GoRoute(
                 path: 'book-add-garden',
                 name: 'book-add-garden',

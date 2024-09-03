@@ -1,8 +1,10 @@
 import 'package:book_flutter/core/provider/BookSearchListNotifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/model/BookSearch.dart';
@@ -11,14 +13,17 @@ import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
 final bookTotalCountProvider = StateProvider<int>((ref) => 0);
+final barcodeValueProvider = StateProvider<String>((ref) => '');
 
-class BookSerachPage extends ConsumerStatefulWidget {
-  _BookSerachPageState createState() => _BookSerachPageState();
+class BookSearchPage extends ConsumerStatefulWidget {
+  _BookSearchPageState createState() => _BookSearchPageState();
 }
 
-class _BookSerachPageState extends ConsumerState<BookSerachPage> {
+class _BookSearchPageState extends ConsumerState<BookSearchPage> {
   final TextEditingController _textEditingController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  late FToast fToast;
+
   String _query = '';
   int _currentPage = 1;
   bool _isLoading = false;
@@ -34,10 +39,11 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
       // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print('------------------------------------------------------------');
         getSearchBook(_query);
       }
     });
+    fToast = FToast();
+    fToast.init(context);
   }
 
   //책 검색 api
@@ -76,6 +82,45 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
       setState(() {
         _isLoading = false;
       });
+    }
+  }
+
+  //책 상세조회 isbn api
+  void getDetailBook_ISBN(String isbn) async {
+    final response = await bookService.getDetailBook_ISBN(isbn);
+    if (response?.statusCode == 200) {
+      context.pushNamed('book-add-garden', extra: isbn);
+    } else if (response?.statusCode == 401) {
+      //500에러
+    } else {
+      fToast.showToast(child: Widgets.toast('📚 바코드가 등록되지 않은 책이에요'));
+    }
+  }
+
+  Future<void> _scanBarcode() async {
+    ref.read(barcodeValueProvider.notifier).state = '';
+
+    try {
+      // 바코드 스캔
+      final barcode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', // 스캔 후 배경색
+        'Cancel', // 취소 버튼 텍스트
+        true, // 사용 카메라
+        ScanMode.BARCODE, // 스캔 모드: 바코드, QR코드 등
+      );
+
+      // 바코드 결과 처리
+      ref.read(barcodeValueProvider.notifier).state =
+          barcode != '-1' ? barcode : 'No barcode detected';
+
+      if (ref.watch(barcodeValueProvider).isNotEmpty &&
+          ref.watch(barcodeValueProvider) != 'No barcode detected') {
+        getDetailBook_ISBN(ref.watch(barcodeValueProvider));
+      } else {
+        fToast.showToast(child: Widgets.toast('🔎 바코드가 인식되지 않았어요'));
+      }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 
@@ -187,7 +232,8 @@ class _BookSerachPageState extends ConsumerState<BookSerachPage> {
                                 )),
                           ),
                           GestureDetector(
-                            onTap: () => context.pushNamed('book-barcode'),
+                            onTap: _scanBarcode,
+                            // onTap: () => context.pushNamed('book-barcode'),
                             child: Container(
                                 alignment: Alignment.center,
                                 height: 72.h,
