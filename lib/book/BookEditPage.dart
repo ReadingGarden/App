@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
@@ -43,7 +44,7 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
 
         //다 읽은 날
         if (ref.watch(bookReadListProvider)[0]['book_end_date'] != null) {
-          _startController.text = Functions.formatBookReadDate(
+          _endController.text = Functions.formatBookReadDate(
               ref.watch(bookReadListProvider)[0]['book_end_date']);
         }
       }
@@ -51,7 +52,49 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
   }
 
   //독서 기록 수정 api
-  void putBookRead() async {}
+  Future<bool> putBookRead(int id, Map data) async {
+    final response = await bookService.putBookRead(id, data);
+    if (response?.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //수정하기 버튼
+  void _bookReadEdit() async {
+    final bookReadList = ref.watch(bookReadListProvider);
+
+    //첫 번째 요청: 시작 날짜 업데이트
+    if (_startController.text !=
+            Functions.formatBookReadDate(ref.watch(bookReadListProvider)[
+                    ref.watch(bookReadListProvider).length - 1]
+                ['book_start_date']) &&
+        _startController.text.isNotEmpty) {
+      int startId = bookReadList[bookReadList.length - 1]['id'];
+      Map data = {
+        "book_start_date":
+            Functions.formatBookReadString(_startController.text).toString(),
+      };
+      await putBookRead(startId, data);
+    }
+
+    //두 번째 요청: 종료 날짜 업데이트
+    if (_endController.text !=
+            Functions.formatBookReadDate(
+                ref.watch(bookReadListProvider)[0]['book_end_date']) &&
+        (_endController.text.isNotEmpty)) {
+      int endId = bookReadList[0]['id'];
+      Map data = {
+        "book_end_date":
+            Functions.formatBookReadString(_endController.text).toString()
+      };
+
+      await putBookRead(endId, data);
+    }
+
+    context.pop();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,58 +166,57 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
       ),
       bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-          child: Widgets.button('수정하기', true, () => () {})),
+          child: Widgets.button('수정하기', true, _bookReadEdit)),
     );
   }
+}
 
-  Widget _dateTextField(
-      TextEditingController controller, String label, String hint) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: 6.h, bottom: 12.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 6.h),
-                height: 22.h,
-                child: Text(
-                  label,
-                ),
+Widget _dateTextField(
+    TextEditingController controller, String label, String hint) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        padding: EdgeInsets.only(top: 6.h, bottom: 12.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 6.h),
+              height: 22.h,
+              child: Text(
+                label,
               ),
-              TextField(
-                controller: controller,
-                keyboardType: TextInputType.number,
-                maxLength: 10,
-                inputFormatters: [AutoInputFormatter()],
-                style: TextStyle(fontSize: 16.sp),
-                decoration: InputDecoration(
-                  counter: Container(),
-                  fillColor: AppColors.grey_FA,
-                  filled: true,
-                  hintText: hint,
-                  hintStyle:
-                      TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide:
-                          BorderSide(color: Colors.transparent, width: 1.w)),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide:
-                          BorderSide(color: Colors.transparent, width: 1.w)),
-                  focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                      borderSide:
-                          BorderSide(color: Colors.transparent, width: 1.w)),
-                ),
+            ),
+            TextField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              maxLength: 10,
+              inputFormatters: [AutoInputFormatter()],
+              style: TextStyle(fontSize: 16.sp),
+              decoration: InputDecoration(
+                counter: Container(),
+                fillColor: AppColors.grey_FA,
+                filled: true,
+                hintText: hint,
+                hintStyle: TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide:
+                        BorderSide(color: Colors.transparent, width: 1.w)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide:
+                        BorderSide(color: Colors.transparent, width: 1.w)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide:
+                        BorderSide(color: Colors.transparent, width: 1.w)),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }

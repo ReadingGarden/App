@@ -34,6 +34,12 @@ class Functions {
     return formattedDate;
   }
 
+  //String(yyyy.MM.dd) -> DateTime 변환
+  static DateTime formatBookReadString(String timeString) {
+    DateFormat dateFormat = DateFormat('yyyy.MM.dd');
+    return dateFormat.parse(timeString);
+  }
+
   //String(DateTime) -> String 변환(yyyy.MM.dd)
   static String formatBookReadDate(String dateTimeString) {
     // String -> DateTime
