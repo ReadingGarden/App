@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -23,7 +23,6 @@ class BookBarcodePage extends ConsumerStatefulWidget {
 
 class _BookBarcodePageState extends ConsumerState<BookBarcodePage> {
   final ImagePicker _picker = ImagePicker();
-  final BarcodeScanner _barcodeScanner = BarcodeScanner();
 
   late FToast fToast;
 
@@ -75,21 +74,17 @@ class _BookBarcodePageState extends ConsumerState<BookBarcodePage> {
       // UI에 이미지 표시
       ref.read(barcodeImageFileProvider.notifier).state = imageFile;
 
-      // 이미지를 InputImage로 변환
-      final InputImage inputImage = InputImage.fromFile(imageFile);
-
       // 바코드 스캔
-      final List<Barcode> barcodes =
-          await _barcodeScanner.processImage(inputImage);
+      final barcode = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', // 스캔 후 배경색
+        'Cancel', // 취소 버튼 텍스트
+        true, // 사용 카메라
+        ScanMode.BARCODE, // 스캔 모드: 바코드, QR코드 등
+      );
 
       // 바코드 결과 처리
-      ref.read(barcodeValueProvider.notifier).state = barcodes.isNotEmpty
-          ? barcodes.first.displayValue ?? ''
-          : 'No barcode detected';
-
-      print(
-          '--------------------------------------------------------------------------------');
-      print(barcodes.first.displayValue);
+      ref.read(barcodeValueProvider.notifier).state =
+          barcode != '-1' ? barcode : 'No barcode detected';
 
       if (ref.watch(barcodeValueProvider).isNotEmpty &&
           ref.watch(barcodeValueProvider) != 'No barcode detected') {
@@ -104,8 +99,8 @@ class _BookBarcodePageState extends ConsumerState<BookBarcodePage> {
 
   @override
   Widget build(BuildContext context) {
-    final barcodeImageFile = ref.watch(barcodeImageFileProvider);
-    final barcodeValue = ref.watch(barcodeValueProvider);
+    // final barcodeImageFile = ref.watch(barcodeImageFileProvider);
+    // final barcodeValue = ref.watch(barcodeValueProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '바코드로 검색하기'),
