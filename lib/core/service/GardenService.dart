@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';
-import '../../utils/SharedPreferences.dart';
 import '../DioClient.dart';
 
 class GardenService {
