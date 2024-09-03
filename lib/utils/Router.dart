@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../book/BookAddGardenPage.dart';
 import '../book/BookAddPage.dart';
+import '../book/BookshelfPage.dart';
 import '../book/BookBarcodePage.dart';
 import '../book/BookDetailPage.dart';
 import '../book/BookEditPage.dart';
@@ -137,7 +138,17 @@ final GoRouter router = GoRouter(
       GoRoute(
           path: '/bottom-navi/bookshelf',
           name: 'bookshelf',
-          builder: (context, state) => BookAddPage()),
+          builder: (context, state) => BookShelfPage(),
+          routes: [
+            GoRoute(
+              path: 'book-edit',
+              name: 'book-edit',
+              builder: (context, state) {
+                final book = state.extra as Map;
+                return BookEditPage(book: book);
+              },
+            )
+          ]),
       GoRoute(
           path: '/bottom-navi/memo',
           name: 'memo',
@@ -221,14 +232,14 @@ final GoRouter router = GoRouter(
                 name: 'book-detail',
                 builder: (context, state) => BookDetailPage(),
                 routes: [
-                  GoRoute(
-                    path: 'book-edit',
-                    name: 'book-edit',
-                    builder: (context, state) {
-                      final book = state.extra as Map;
-                      return BookEditPage(book: book);
-                    },
-                  )
+                  // GoRoute(
+                  //   path: 'book-edit',
+                  //   name: 'book-edit',
+                  //   builder: (context, state) {
+                  //     final book = state.extra as Map;
+                  //     return BookEditPage(book: book);
+                  //   },
+                  // )
                 ]),
             GoRoute(
                 path: 'garden-edit',

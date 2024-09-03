@@ -35,4 +35,19 @@ class Book {
         book_page: json['book_page'],
         garden_no: json['garden_no']);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'book_no': book_no,
+      'book_title': book_title,
+      'book_author': book_author,
+      'book_publisher': book_publisher,
+      'book_image_url': book_image_url,
+      'book_tree': book_tree,
+      'book_status': book_status,
+      'percent': percent,
+      'book_page': book_page,
+      'garden_no': garden_no
+    };
+  }
 }
