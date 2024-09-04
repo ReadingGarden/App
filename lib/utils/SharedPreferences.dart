@@ -10,7 +10,6 @@ Future<void> saveAccess(String access) async {
 Future<String?> loadAccess() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final access = prefs.getString('access');
-  print('ACCESS Token: $access');
   return access;
 }
 

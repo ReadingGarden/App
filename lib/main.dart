@@ -7,10 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import 'core/provider/TokenProvider.dart';
+import 'core/provider/FcmTokenProvider.dart';
 import 'firebase_options.dart';
 import 'utils/Functions.dart';
 import 'utils/Router.dart';
+import 'utils/SharedPreferences.dart';
 
 void main() async {
   // 플러그인 초기화
@@ -83,17 +84,18 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     //FCM 토큰을 비동기로 가져옵니다.
     ref.read(fcmTokenProvider);
 
-    Functions.getAccess(ref);
-
     //1초 후에 로그인 페이지로 이동
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () async {
+      //저장된 Access 불러오기
+      final accessToken = await loadAccess();
       //Access 저장 되어있으면 자동 로그인
-      if (ref.watch(tokenProvider.accessProvider) == null) {
+      if (accessToken == null) {
         context.go('/start');
       } else {
         context.go('/bottom-navi');
       }
-      // context.go('/start');
+
+      print('ACCESS Token: $accessToken');
     });
   }
 

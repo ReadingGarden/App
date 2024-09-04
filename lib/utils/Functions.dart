@@ -1,8 +1,5 @@
 import 'dart:ui';
 import 'package:intl/intl.dart';
-import 'package:book_flutter/core/provider/TokenProvider.dart';
-import 'package:book_flutter/utils/SharedPreferences.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'Constant.dart';
@@ -47,17 +44,6 @@ class Functions {
     // DateTime -> String
     String formattedDate = DateFormat('yyyy.MM.dd').format(dateTime);
     return formattedDate;
-  }
-
-  //AccessToken 불러오기
-  static void getAccess(WidgetRef ref) async {
-    ref.read(tokenProvider.accessProvider.notifier).state = await loadAccess();
-  }
-
-  //RefreshToken 불러오기
-  static void getRefresh(WidgetRef ref) async {
-    ref.read(tokenProvider.refreshProvider.notifier).state =
-        await loadRefresh();
   }
 
   //가든 컬러

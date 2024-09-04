@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/provider/FcmTokenProvider.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/SharedPreferences.dart';
@@ -24,6 +25,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _pwdController = TextEditingController();
 
   late FToast fToast;
+  String? test;
 
   @override
   void initState() {
@@ -95,11 +97,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     child: Widgets.textfield(ref, _pwdController, '비밀번호',
                         '비밀번호를 입력해주세요', errorText, loginErrorProvider,
                         isPwd: true)),
-                Widgets.button('이메일로 로그인', true, () {
+                Widgets.button('이메일로 로그인', true, () async {
+                  // FCM 토큰을 비동기적으로 가져오기
+                  final fcmToken = await ref.read(fcmTokenProvider.future);
+
                   final data = {
                     "user_email": _emailController.text,
                     "user_password": _pwdController.text,
-                    "user_fcm": "",
+                    "user_fcm": fcmToken ?? '',
                     "user_social_id": "",
                     "user_social_type": ""
                   };

@@ -42,7 +42,6 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
 
   //책 목록(상태) 리스트 조회 api
   void getBookStatusList(int status) async {
-    print('-----------------------------------------------$status');
     if (_isLoading) return;
 
     setState(() {

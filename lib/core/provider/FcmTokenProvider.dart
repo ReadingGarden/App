@@ -35,23 +35,14 @@ final fcmTokenProvider = FutureProvider<String?>((ref) async {
 
   final fcmToken = await messaging.getToken();
 
-  FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
-    // TODO: If necessary send token to application server.
+  // messaging.onTokenRefresh.listen((fcmToken) {
+  //   // TODO: If necessary send token to application server.
 
-    // Note: This callback is fired at each app startup and whenever a new
-    // token is generated.
-    print('----------------$fcmToken');
-  }).onError((err) {
-    // Error getting token.
-    print('----------------Error getting token $err');
-  });
+  //   print('----------------$fcmToken');
+  // }).onError((err) {
+  //   // Error getting token.
+  //   print('----------------Error getting token $err');
+  // });
 
   return fcmToken;
 });
-
-class TokenProvider {
-  final accessProvider = StateProvider<String?>((ref) => null);
-  final refreshProvider = StateProvider<String?>((ref) => null);
-}
-
-final tokenProvider = TokenProvider();

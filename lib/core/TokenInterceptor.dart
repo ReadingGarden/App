@@ -24,7 +24,7 @@ class TokenInterceptor extends Interceptor {
       print('-------------------------$err');
       try {
         //토큰 갱신
-        final newToken = await _refreshToken();
+        final newToken = await _getRefreshToken();
 
         //요청에 새 토큰을 추가하고 다시 시도
         final options = err.requestOptions;
@@ -41,7 +41,7 @@ class TokenInterceptor extends Interceptor {
     }
   }
 
-  Future<String> _refreshToken() async {
+  Future<String> _getRefreshToken() async {
     final refreshToken = await loadRefresh();
     final response = await _dio.post('${Constant.URL}auth/refresh',
         data: {'refresh_token': refreshToken});

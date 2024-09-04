@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import '../core/api/AuthAPI.dart';
+import '../core/provider/FcmTokenProvider.dart';
 
 class SocialLogin {
   //MARK: - GOOGLE
@@ -35,11 +36,13 @@ class SocialLogin {
         print('User UID: ${user.uid}');
         print('User Email: ${user.email}');
 
+        // FCM 토큰을 비동기적으로 가져오기
+        final fcmToken = await ref.read(fcmTokenProvider.future);
+
         final data = {
           "user_email": user.email,
           "user_password": "",
-          //TODO - FCM
-          "user_fcm": "string",
+          "user_fcm": fcmToken ?? '',
           "user_social_id": user.uid,
           "user_social_type": "google"
         };
@@ -100,11 +103,13 @@ class SocialLogin {
           '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
           '\n이메일: ${user.kakaoAccount?.email}');
 
+      // FCM 토큰을 비동기적으로 가져오기
+      final fcmToken = await ref.read(fcmTokenProvider.future);
+
       final data = {
         "user_email": user.kakaoAccount?.email,
         "user_password": "",
-        //TODO - FCM
-        "user_fcm": "string",
+        "user_fcm": fcmToken ?? '',
         "user_social_id": user.id.toString(),
         "user_social_type": "kakao"
       };
