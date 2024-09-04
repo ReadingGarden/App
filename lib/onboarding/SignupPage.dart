@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../core/provider/FcmTokenProvider.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
@@ -24,10 +25,13 @@ class SignupPage extends ConsumerWidget {
   bool isValid = false;
 
   void postSignup(BuildContext context, WidgetRef ref) async {
+    // FCM 토큰을 비동기적으로 가져오기
+    final fcmToken = await ref.read(fcmTokenProvider.future);
+
     final data = {
       "user_email": _emailController.text,
       "user_password": _pwdController.text,
-      "user_fcm": "",
+      "user_fcm": fcmToken ?? '',
       "user_social_id": "",
       "user_social_type": ""
     };
