@@ -51,6 +51,7 @@ final fcmTokenProvider = FutureProvider<String?>((ref) async {
 
 class TokenProvider {
   final accessProvider = StateProvider<String?>((ref) => null);
+  final refreshProvider = StateProvider<String?>((ref) => null);
 }
 
 final tokenProvider = TokenProvider();

@@ -84,6 +84,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     ref.read(fcmTokenProvider);
 
     Functions.getAccess(ref);
+
     //1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () {
       //Access 저장 되어있으면 자동 로그인
@@ -92,8 +93,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       } else {
         context.go('/bottom-navi');
       }
-      print('SPLASH ${ref.watch(tokenProvider.accessProvider)}');
-      context.go('/start');
+      // context.go('/start');
     });
   }
 

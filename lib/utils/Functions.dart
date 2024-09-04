@@ -54,6 +54,12 @@ class Functions {
     ref.read(tokenProvider.accessProvider.notifier).state = await loadAccess();
   }
 
+  //RefreshToken 불러오기
+  static void getRefresh(WidgetRef ref) async {
+    ref.read(tokenProvider.refreshProvider.notifier).state =
+        await loadRefresh();
+  }
+
   //가든 컬러
   static Color gardenColor(String color) {
     int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
@@ -71,13 +77,13 @@ class Functions {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.camera,
       Permission.storage,
-      Permission.microphone
+      // Permission.microphone
     ].request();
 
     // 상태 확인
     print('Camera permission status: ${statuses[Permission.camera]}');
     print('Storage permission status: ${statuses[Permission.storage]}');
-    print('Microphone permission status: ${statuses[Permission.microphone]}');
+    // print('Microphone permission status: ${statuses[Permission.microphone]}');
   }
 
   //권한 확인 및 요청
@@ -85,14 +91,15 @@ class Functions {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.camera,
       Permission.storage,
-      Permission.microphone
+      // Permission.microphone
     ].request();
 
     print(statuses);
 
     if (statuses[Permission.camera]!.isGranted &&
-        statuses[Permission.storage]!.isGranted &&
-        statuses[Permission.microphone]!.isGranted) {
+            statuses[Permission.storage]!.isGranted
+        // && statuses[Permission.microphone]!.isGranted
+        ) {
       // 권한이 이미 부여됨
       function();
     } else {
@@ -100,29 +107,32 @@ class Functions {
       statuses = await [
         Permission.camera,
         Permission.storage,
-        Permission.microphone
+        // Permission.microphone
       ].request();
 
       if (statuses[Permission.camera]!.isGranted &&
-          statuses[Permission.storage]!.isGranted &&
-          statuses[Permission.microphone]!.isGranted) {
+              statuses[Permission.storage]!.isGranted
+          // && statuses[Permission.microphone]!.isGranted
+          ) {
         // 권한이 부여됨
         function();
       } else if (statuses[Permission.camera]!.isPermanentlyDenied ||
-          statuses[Permission.storage]!.isPermanentlyDenied ||
-          statuses[Permission.microphone]!.isPermanentlyDenied) {
+              statuses[Permission.storage]!.isPermanentlyDenied
+          // || statuses[Permission.microphone]!.isPermanentlyDenied
+          ) {
         // 권한이 영구적으로 거부됨, 설정으로 이동
         await openAppSettings();
         // 상태를 다시 확인
         Map<Permission, PermissionStatus> newStatuses = await [
           Permission.camera,
           Permission.storage,
-          Permission.microphone
+          // Permission.microphone
         ].request();
 
         if (newStatuses[Permission.camera]!.isGranted &&
-            newStatuses[Permission.storage]!.isGranted &&
-            newStatuses[Permission.microphone]!.isGranted) {
+                newStatuses[Permission.storage]!.isGranted
+            // &&newStatuses[Permission.microphone]!.isGranted
+            ) {
           function();
         } else {
           print('권한이 여전히 부여되지 않았습니다.');
@@ -136,8 +146,9 @@ class Functions {
         ].request();
 
         if (statuses[Permission.camera]!.isGranted &&
-            statuses[Permission.storage]!.isGranted &&
-            statuses[Permission.microphone]!.isGranted) {
+                statuses[Permission.storage]!.isGranted
+            // && statuses[Permission.microphone]!.isGranted
+            ) {
           // 권한이 부여됨
           function();
         } else {

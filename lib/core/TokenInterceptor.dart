@@ -21,6 +21,7 @@ class TokenInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     //401 Unauthorized 응답 처리
     if (err.response?.statusCode == 401) {
+      print('-------------------------$err');
       try {
         //토큰 갱신
         final newToken = await _refreshToken();

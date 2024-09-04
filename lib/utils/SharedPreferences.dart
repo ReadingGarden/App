@@ -10,6 +10,7 @@ Future<void> saveAccess(String access) async {
 Future<String?> loadAccess() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final access = prefs.getString('access');
+  print('ACCESS Token: $access');
   return access;
 }
 
@@ -23,6 +24,7 @@ Future<void> saveRefresh(String refresh) async {
 Future<String?> loadRefresh() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final refresh = prefs.getString('refresh');
+  print('REFRESH Token: $refresh');
   return refresh;
 }
 
