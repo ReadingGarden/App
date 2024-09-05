@@ -344,7 +344,7 @@ class Widgets {
       builder: (context) {
         return Container(
           alignment: Alignment.topLeft,
-          margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
+          margin: EdgeInsets.only(top: 30.h, left: 42.w, right: 42.w),
           height: 206.h,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -381,27 +381,7 @@ class Widgets {
                       )
                     ],
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.grey_F2),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 8.h),
-                        height: 20.h,
-                        child: Text(
-                          '문자',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                  //TODO:  - 클립보드에 복사
                   Column(
                     children: [
                       Container(
@@ -431,6 +411,7 @@ class Widgets {
                         decoration: const BoxDecoration(
                             shape: BoxShape.circle, color: AppColors.grey_F2),
                       ),
+                      //TODO:  -시스템공유
                       Container(
                         alignment: Alignment.center,
                         margin: EdgeInsets.only(top: 8.h),

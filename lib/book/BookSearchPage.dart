@@ -103,7 +103,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
     try {
       // 바코드 스캔
       final barcode = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', // 스캔 후 배경색
+        '#00AA96', // 스캔 후 배경색
         'Cancel', // 취소 버튼 텍스트
         true, // 플래시 여부
         ScanMode.BARCODE, // 스캔 모드: 바코드, QR코드 등
