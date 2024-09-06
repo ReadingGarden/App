@@ -189,8 +189,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                   (index) {
                     return GestureDetector(
                       onTap: () {
-                        context.pushNamed('book-edit',
-                            extra: bookStatusList[index].toJson());
+                        context.pushNamed('book-detail',
+                            extra: bookStatusList[index].book_no);
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

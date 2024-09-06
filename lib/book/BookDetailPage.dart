@@ -5,23 +5,69 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
+import '../core/service/GardenService.dart';
+import '../core/provider/BookDetailNotifier.dart';
 import '../garden/GardenEditPage.dart';
 import '../utils/AppColors.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
-final bookDetailProvider = StateProvider<Map>((ref) => {});
+// final bookDetailProvider = StateProvider<Map>((ref) => {});
 
 class BookDetailPage extends ConsumerStatefulWidget {
+  BookDetailPage({super.key, required this.book_no});
+
   _BookDetailPageState createState() => _BookDetailPageState();
+
+  final int book_no;
 }
 
 class _BookDetailPageState extends ConsumerState<BookDetailPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      ref.read(bookDetailProvider.notifier).state = {};
-    });
+    // Future.microtask(() {
+    //   ref.read(bookDetailProvider.notifier).state = {};
+    // });
+    getBookRead();
+  }
+
+  //독서 기록 조회 api
+  void getBookRead() async {
+    final response = await bookService.getBookRead(widget.book_no);
+    if (response?.statusCode == 200) {
+      ref
+          .read(bookDetailProvider.notifier)
+          .updateBookDetail(response?.data['data']);
+      getGardenDetial(response?.data['data']['garden_no']);
+      // ref.read(bookDetailProvider.notifier).state = response?.data['data'];
+
+      // ref.read(bookReadListProvider.notifier).state =
+      //     response?.data['data']['book_read_list'];
+
+      // if (ref.watch(bookReadListProvider).isNotEmpty) {
+      //   //읽기 시작한 날
+      //   _startController.text = Functions.formatBookReadDate(
+      //       ref.watch(bookReadListProvider)[
+      //           ref.watch(bookReadListProvider).length - 1]['book_start_date']);
+
+      //   //다 읽은 날
+      //   if (ref.watch(bookReadListProvider)[0]['book_end_date'] != null) {
+      //     _endController.text = Functions.formatBookReadDate(
+      //         ref.watch(bookReadListProvider)[0]['book_end_date']);
+      //   }
+    }
+  }
+
+  //가든 상세 조회 api
+  void getGardenDetial(int garden_no) async {
+    final response = await gardenService.getGardenDetail(garden_no);
+    if (response?.statusCode == 200) {
+      Map gardenDetail = {};
+      gardenDetail['garden_title'] = response?.data['data']['garden_title'];
+      gardenDetail['garden_color'] = response?.data['data']['garden_color'];
+      ref.read(bookDetailProvider.notifier).updateGardenDetail(gardenDetail);
+    }
   }
 
   //책 수정 (가든 옮기기) api
@@ -40,19 +86,241 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bookDetail = ref.watch(bookDetailProvider);
+
     return Scaffold(
-      appBar: Widgets.appBar(context, actions: [
-        GestureDetector(
-          onTap: _moreBottomSheet,
-          child: Container(
-            margin: EdgeInsets.only(right: 14.w),
-            child: SvgPicture.asset('assets/images/angle-left-detail.svg',
-                width: 32.r, height: 32.r),
+      backgroundColor: (bookDetail['garden_color'] != null)
+          ? Functions.gardenBackColor(bookDetail['garden_color'])
+          : Colors.white,
+      appBar: Widgets.appBar(
+        context,
+        actions: [
+          GestureDetector(
+            onTap: _moreBottomSheet,
+            child: Container(
+              margin: EdgeInsets.only(right: 14.w),
+              child: SvgPicture.asset('assets/images/angle-left-detail.svg',
+                  width: 32.r, height: 32.r),
+            ),
+          )
+        ],
+        color: (bookDetail['garden_color'] != null)
+            ? Functions.gardenBackColor(bookDetail['garden_color'])
+            : Colors.white,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          color: (bookDetail['garden_color'] != null)
+              ? Functions.gardenBackColor(bookDetail['garden_color'])
+              : Colors.white,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    left: 24.w, right: 24.w, bottom: 20.h, top: 15.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bookDetail['book_title'] ?? '',
+                      style: TextStyle(
+                          fontSize: 24.sp, fontWeight: FontWeight.w600),
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.w),
+                          child: _borderContainer(
+                              bookDetail['garden_title'] ?? ''),
+                        ),
+                        _borderContainer(Functions.bookStatusString(
+                            bookDetail['book_status'] ?? 0)),
+                      ],
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 15.h, bottom: 85.h),
+                    ),
+                    Container(
+                      width: 312.w,
+                      height: 340.h,
+                      color: Colors.amber,
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          offset: const Offset(0, -4),
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 16.r)
+                    ],
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r))),
+                child: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 24.h, left: 40.w),
+                      alignment: Alignment.topLeft,
+                      height: 56.h,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '읽은 페이지',
+                            style: TextStyle(
+                                fontSize: 12.sp, color: AppColors.grey_8D),
+                          ),
+                          Text.rich(TextSpan(
+                              style: TextStyle(
+                                  fontSize: 24.sp, fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                    text:
+                                        '${bookDetail['book_current_page']}p '),
+                                TextSpan(
+                                    text: '/ ${bookDetail['book_page'] ?? 0}p',
+                                    style: const TextStyle(
+                                        color: AppColors.grey_8D))
+                              ]))
+                        ],
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(top: 20.h, right: 30.w),
+                      width: 64.r,
+                      height: 64.r,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: AppColors.black_4A),
+                      child: Text(
+                        '물주기',
+                        style: TextStyle(
+                            fontSize: 12.sp, color: AppColors.grey_FA),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: 24.w, right: 24.w, top: 136.w, bottom: 51.h),
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          (bookDetail['book_image_url'] == null)
+                              ? Container(
+                                  width: 122.w,
+                                  height: 180.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      color: AppColors.grey_F2),
+                                )
+                              : ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: Image.network(
+                                      width: 122.w,
+                                      height: 180.h,
+                                      fit: BoxFit.cover,
+                                      bookDetail['book_image_url'] ?? ''),
+                                ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 30.h, bottom: 8.h),
+                            child: Text(
+                              bookDetail['book_title'] ?? '',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 18.sp),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20.h,
+                            child: Text(
+                              bookDetail['book_author'] ?? '',
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 2.h, bottom: 40.h),
+                            height: 20.h,
+                            child: Text(
+                              bookDetail['book_publisher'] ?? '',
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                                left: 24.w,
+                                right: 38.w,
+                                top: 20.h,
+                                bottom: 2.h),
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: const Offset(0, 4),
+                                      blurRadius: 8.r,
+                                      color: const Color(0xff97CD8D)
+                                          .withOpacity(0.05))
+                                ],
+                                border: Border.all(color: AppColors.grey_F2),
+                                borderRadius: BorderRadius.circular(20.r),
+                                color: Colors.transparent),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      '히스토리',
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColors.black_4A),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: (46.h + 18.h) *
+                                      bookDetail['book_read_list'].length,
+                                  child: ListView(
+                                    padding: EdgeInsets.only(top: 18.h),
+                                    children: List.generate(
+                                      bookDetail['book_read_list'].length,
+                                      (index) {
+                                        return Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 18.h),
+                                            height: 50.h,
+                                            child: _bookReadListWidget(index));
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Row(
+                              children: [
+                                Text(
+                                  '메모',
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
-        )
-      ]),
-      body: Container(
-        child: Text(''),
+        ),
       ),
     );
   }
@@ -172,5 +440,95 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
         ])),
         '삭제하기',
         () => ());
+  }
+
+  Widget _borderContainer(String title) {
+    return Container(
+      margin: EdgeInsets.only(top: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+      height: 28.h,
+      decoration: BoxDecoration(
+          border: Border.all(color: AppColors.black_4A),
+          borderRadius: BorderRadius.circular(20.r),
+          color: Colors.transparent),
+      child: Text(
+        title,
+        style: TextStyle(
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black_4A),
+      ),
+    );
+  }
+
+  //독서 기록 리스트 index별 형식
+  Widget _bookReadListWidget(int index) {
+    final bookDetail = ref.watch(bookDetailProvider);
+
+    //맨 위(독서 끝)
+    return (index == 0)
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text.rich(TextSpan(children: [
+                TextSpan(
+                    text: bookDetail['book_tree'] ?? '',
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                const TextSpan(text: '가 다컸어요')
+              ])),
+              Padding(
+                padding: EdgeInsets.only(top: 4.h),
+                child: Text(
+                  Functions.formatDate(bookDetail['book_read_list'][index]
+                          ['book_end_date'] ??
+                      DateTime.now().toString()),
+                  style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                ),
+              )
+            ],
+          )
+        //맨 아래(독서 시작)
+        : (index == bookDetail['book_read_list'].length - 1)
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text.rich(TextSpan(children: [
+                    const TextSpan(text: '새로운 꽃 '),
+                    TextSpan(
+                        text: bookDetail['book_tree'] ?? '',
+                        style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: '를 심었어요')
+                  ])),
+                  Padding(
+                    padding: EdgeInsets.only(top: 4.h),
+                    child: Text(
+                      Functions.formatDate(bookDetail['book_read_list'][index]
+                              ['book_start_date'] ??
+                          DateTime.now().toString()),
+                      style:
+                          TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                    ),
+                  )
+                ],
+              )
+            //중간 기록
+            : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text.rich(TextSpan(children: [
+                  TextSpan(
+                      text:
+                          '${bookDetail['book_read_list'][index]['book_current_page'] ?? '0'}p',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const TextSpan(text: '만큼 물을 주었어요')
+                ])),
+                Padding(
+                  padding: EdgeInsets.only(top: 4.h),
+                  child: Text(
+                    Functions.formatDate(bookDetail['book_read_list'][index]
+                            ['book_end_date'] ??
+                        DateTime.now().toString()),
+                    style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                  ),
+                )
+              ]);
   }
 }

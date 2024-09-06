@@ -58,6 +58,20 @@ class Functions {
     return Constant.GARDEN_CHIP_COLOR_SET_LIST[colorIndex];
   }
 
+  //책 상태
+  static String bookStatusString(int status) {
+    String statusString = '읽고있어요';
+    switch (status) {
+      case 0:
+        break;
+      case 1:
+        statusString = '다읽었어요';
+      case 2:
+        statusString = '읽고싶어요';
+    }
+    return statusString;
+  }
+
   //권한 요청
   static Future<void> requestPermissions() async {
     Map<Permission, PermissionStatus> statuses = await [
