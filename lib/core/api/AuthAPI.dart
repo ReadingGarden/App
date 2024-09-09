@@ -52,10 +52,12 @@ class AuthAPI {
   }
 
   //프로필 조회 api
-  void getUser() async {
+  void getUser(BuildContext context) async {
     final response = await authService.getUser();
     if (response?.statusCode == 200) {
       updateUser(response?.data['data']);
+    } else if (response?.statusCode == 401) {
+      context.go('/start');
     }
   }
 
@@ -63,7 +65,7 @@ class AuthAPI {
   void putUser(BuildContext context, Map data) async {
     final response = await authService.putUser(data);
     if (response?.statusCode == 200) {
-      getUser();
+      getUser(context);
       context.pop();
     }
   }

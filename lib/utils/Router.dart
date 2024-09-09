@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../book/BookAddGardenPage.dart';
-import '../book/BookAddPage.dart';
 import '../book/BookshelfPage.dart';
 import '../book/BookDetailPage.dart';
 import '../book/BookEditPage.dart';
@@ -136,13 +135,22 @@ final GoRouter router = GoRouter(
           builder: (context, state) => BookShelfPage(),
           routes: [
             GoRoute(
-              path: 'book-edit',
-              name: 'book-edit',
-              builder: (context, state) {
-                final book = state.extra as Map;
-                return BookEditPage(book: book);
-              },
-            )
+                path: 'book-detail',
+                name: 'book-detail',
+                builder: (context, state) {
+                  final book_no = state.extra as int;
+                  return BookDetailPage(book_no: book_no);
+                },
+                routes: [
+                  GoRoute(
+                    path: 'book-edit',
+                    name: 'book-edit',
+                    builder: (context, state) {
+                      final book = state.extra as Map;
+                      return BookEditPage(book: book);
+                    },
+                  )
+                ]),
           ]),
       GoRoute(
           path: '/bottom-navi/memo',
@@ -222,20 +230,20 @@ final GoRouter router = GoRouter(
             return GardenPage();
           },
           routes: [
-            GoRoute(
-                path: 'book-detail',
-                name: 'book-detail',
-                builder: (context, state) => BookDetailPage(),
-                routes: [
-                  // GoRoute(
-                  //   path: 'book-edit',
-                  //   name: 'book-edit',
-                  //   builder: (context, state) {
-                  //     final book = state.extra as Map;
-                  //     return BookEditPage(book: book);
-                  //   },
-                  // )
-                ]),
+            // GoRoute(
+            //     path: 'book-detail',
+            //     name: 'book-detail',
+            //     builder: (context, state) => BookDetailPage(),
+            //     routes: [
+            //       GoRoute(
+            //         path: 'book-edit',
+            //         name: 'book-edit',
+            //         builder: (context, state) {
+            //           final book = state.extra as Map;
+            //           return BookEditPage(book: book);
+            //         },
+            //       )
+            //     ]),
             GoRoute(
                 path: 'garden-edit',
                 name: 'garden-edit',

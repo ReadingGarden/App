@@ -58,7 +58,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   }
 
   //메모 작성하기 api
-  void postMemo() async {
+  void postMemo({bool? isBookDetail}) async {
     Map data = {
       "book_no": widget.book['book_no'],
       "memo_content": _memoController.text,
@@ -69,8 +69,12 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       if (ref.watch(memoImageFileProvider) != null) {
         postMemoImage(response?.data['data']['id']);
       } else {
-        context.pop();
-        context.pop('MemoPage_getMemoList');
+        if (widget.book['garden_no'] == null) {
+          context.pop();
+          context.pop('MemoPage_getMemoList');
+        } else {
+          context.pop('BookDetailPage_getBookRead');
+        }
       }
     }
   }
@@ -112,8 +116,12 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
         } else {
           //텍스트만 수정함
           print('텍스트만 수정함');
-          context.pop();
-          context.pop('MemoPage_getMemoList');
+          if (widget.book['garden_no'] == null) {
+            context.pop();
+            context.pop('MemoPage_getMemoList');
+          } else {
+            context.pop('BookDetailPage_getBookRead');
+          }
         }
       }
     }
@@ -124,8 +132,12 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     final response = await memoService.postMemoImage(
         id, ref.watch(memoImageFileProvider)!.path);
     if (response?.statusCode == 201) {
-      context.pop();
-      context.pop('MemoPage_getMemoList');
+      if (widget.book['garden_no'] == null) {
+        context.pop();
+        context.pop('MemoPage_getMemoList');
+      } else {
+        context.pop('BookDetailPage_getBookRead');
+      }
     }
   }
 
@@ -133,8 +145,12 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   void deleteMemoImage(int id) async {
     final response = await memoService.deleteMemoImage(id);
     if (response?.statusCode == 201) {
-      context.pop();
-      context.pop('MemoPage_getMemoList');
+      if (widget.book['garden_no'] == null) {
+        context.pop();
+        context.pop('MemoPage_getMemoList');
+      } else {
+        context.pop('BookDetailPage_getBookRead');
+      }
     }
   }
 

@@ -7,12 +7,15 @@ import 'package:go_router/go_router.dart';
 import '../core/service/BookService.dart';
 import '../core/service/GardenService.dart';
 import '../core/provider/BookDetailNotifier.dart';
+import '../core/service/MemoService.dart';
 import '../garden/GardenEditPage.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
-// final bookDetailProvider = StateProvider<Map>((ref) => {});
+final bookDetailMemoListProvider = StateProvider<List>((ref) => []);
+final bookDetailMemoSelectIndexListProvider = StateProvider<List>((ref) => []);
 
 class BookDetailPage extends ConsumerStatefulWidget {
   BookDetailPage({super.key, required this.book_no});
@@ -26,9 +29,11 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
   @override
   void initState() {
     super.initState();
-    // Future.microtask(() {
-    //   ref.read(bookDetailProvider.notifier).state = {};
-    // });
+    Future.microtask(() {
+      ref.read(bookDetailMemoListProvider.notifier).state = [];
+      ref.read(bookDetailMemoSelectIndexListProvider.notifier).state = [];
+    });
+
     getBookRead();
   }
 
@@ -39,7 +44,18 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
       ref
           .read(bookDetailProvider.notifier)
           .updateBookDetail(response?.data['data']);
+
+      ref.read(bookDetailMemoListProvider.notifier).state =
+          response?.data['data']['memo_list'];
+
+      for (var memo in ref.watch(bookDetailMemoListProvider)) {
+        ref
+            .read(bookDetailMemoSelectIndexListProvider.notifier)
+            .state
+            .add(memo['memo_like']);
+      }
       getGardenDetial(response?.data['data']['garden_no']);
+
       // ref.read(bookDetailProvider.notifier).state = response?.data['data'];
 
       // ref.read(bookReadListProvider.notifier).state =
@@ -82,6 +98,18 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
     final response = await bookService.putBook(
         ref.watch(bookDetailProvider)['book_no'], data);
     if (response?.statusCode == 200) {}
+  }
+
+  //메모 즐겨찾기 api
+  void putMemoLike(int index, int id) async {
+    final response = await memoService.putMemoLike(id);
+    if (response?.statusCode == 200) {
+      ref.read(bookDetailMemoSelectIndexListProvider.notifier).update((state) {
+        List<bool> newState = List.from(state);
+        newState[index] = !newState[index];
+        return newState;
+      });
+    }
   }
 
   @override
@@ -206,7 +234,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                     ),
                     Container(
                       margin: EdgeInsets.only(
-                          left: 24.w, right: 24.w, top: 136.w, bottom: 51.h),
+                          left: 24.w, right: 24.w, top: 136.w, bottom: 53.h),
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
@@ -270,48 +298,79 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                 color: Colors.transparent),
                             child: Column(
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      '히스토리',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColors.black_4A),
-                                    ),
-                                  ],
+                                Padding(
+                                  padding: EdgeInsets.only(bottom: 18.h),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '히스토리',
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: AppColors.black_4A),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(
-                                  height: (46.h + 18.h) *
-                                      bookDetail['book_read_list'].length,
-                                  child: ListView(
-                                    padding: EdgeInsets.only(top: 18.h),
-                                    children: List.generate(
-                                      bookDetail['book_read_list'].length,
-                                      (index) {
-                                        return Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 18.h),
-                                            height: 50.h,
-                                            child: _bookReadListWidget(index));
-                                      },
-                                    ),
-                                  ),
+                                  height: (bookDetail['book_read_list'] != null)
+                                      ? (46.h + 18.h) *
+                                          bookDetail['book_read_list'].length
+                                      : 0,
+                                  child: (bookDetail['book_read_list'] != null)
+                                      ? ListView(
+                                          children: List.generate(
+                                            bookDetail['book_read_list'].length,
+                                            (index) {
+                                              return Container(
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 18.h),
+                                                  child: _bookReadListWidget(
+                                                      index));
+                                            },
+                                          ),
+                                        )
+                                      : Container(),
                                 )
                               ],
                             ),
                           ),
                           Container(
+                            margin: EdgeInsets.only(top: 40.h),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   '메모',
                                   style: TextStyle(
                                       fontSize: 18.sp,
                                       fontWeight: FontWeight.bold),
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    Map data = bookDetail;
+                                    data['book_no'] = widget.book_no;
+                                    final result = await context.pushNamed(
+                                        'memo-write',
+                                        extra: bookDetail);
+
+                                    if (result != null) {
+                                      getBookRead();
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 22.h,
+                                    color: Colors.transparent,
+                                    child: const Text(
+                                      '+ 작성하기',
+                                      style: TextStyle(
+                                          color: AppColors.primaryColor),
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
-                          )
+                          ),
+                          _memoList()
                         ],
                       ),
                     ),
@@ -336,6 +395,12 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
           child: Container(
             margin: EdgeInsets.only(top: 30.h, bottom: 30.h),
             alignment: Alignment.center,
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                  offset: Offset(0, 4),
+                  color: Color(0xff97CDBD).withOpacity(0.05),
+                  blurRadius: 8.r)
+            ]),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -530,5 +595,140 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                   ),
                 )
               ]);
+  }
+
+  //메모 리스트
+  Widget _memoList() {
+    final bookDetail = ref.watch(bookDetailProvider);
+    final memoList = ref.watch(bookDetailMemoListProvider);
+    // if (bookDetail['memo_list'] != null) {
+    //   memoList = bookDetail['memo_list'];
+    // }
+
+    return ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.only(top: 20.h),
+      physics: const NeverScrollableScrollPhysics(),
+      children: List.generate(
+        memoList.length,
+        (index) {
+          return GestureDetector(
+            onTap: () async {
+              Map data = memoList[index];
+              data['book_no'] = widget.book_no;
+              data['book_title'] = bookDetail['book_title'];
+              data['book_author'] = bookDetail['book_author'];
+              data['book_image_url'] = bookDetail['book_image_url'];
+
+              final result =
+                  await context.pushNamed('memo-detail', extra: data);
+              if (result != null) {
+                getBookRead();
+              }
+            },
+            child: Container(
+              margin: EdgeInsets.only(bottom: 10.h),
+              padding: EdgeInsets.only(
+                  left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
+              width: 312.w,
+              decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.grey_F2),
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: Colors.transparent),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      (bookDetail['book_image_url'] == null)
+                          ? Container(
+                              width: 44.r,
+                              height: 44.r,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  color: AppColors.grey_F2),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Image.network(
+                                width: 44.r,
+                                height: 44.r,
+                                fit: BoxFit.cover,
+                                bookDetail['book_image_url'],
+                              ),
+                            ),
+                      Container(
+                        width: 212.w,
+                        margin: EdgeInsets.only(left: 12.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              bookDetail['book_title'] ?? '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              bookDetail['book_author'] ?? '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  Visibility(
+                      visible: (memoList[index]['image_url'] != null),
+                      child: Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        child: Image.network(
+                            width: 320.w,
+                            height: 140.h,
+                            fit: BoxFit.fitWidth,
+                            '${Constant.IMAGE_URL}${memoList[index]['image_url']}'),
+                      )),
+                  Container(
+                      margin: EdgeInsets.only(top: 10.h),
+                      child: Text(
+                        memoList[index]['memo_content'],
+                        maxLines: 5,
+                        style: TextStyle(
+                            fontSize: 12.sp, overflow: TextOverflow.ellipsis),
+                      )),
+                  Container(
+                      margin: EdgeInsets.only(top: 10.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            Functions.formatDate(
+                                memoList[index]['memo_created_at']),
+                            style: TextStyle(
+                                fontSize: 12.sp, color: AppColors.grey_8D),
+                          ),
+                          GestureDetector(
+                            onTap: () =>
+                                putMemoLike(index, memoList[index]['id']),
+                            child: SvgPicture.asset(
+                              ref.watch(bookDetailMemoSelectIndexListProvider)[
+                                      index]
+                                  ? 'assets/images/star.svg'
+                                  : 'assets/images/star-dis.svg',
+                              width: 20.r,
+                              height: 20.r,
+                            ),
+                          )
+                        ],
+                      )),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

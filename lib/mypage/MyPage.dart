@@ -20,7 +20,7 @@ class _MyPageState extends ConsumerState<MyPage> {
     final authAPI = AuthAPI(ref);
 
     Future.microtask(() {
-      authAPI.getUser();
+      authAPI.getUser(context);
     });
   }
 
