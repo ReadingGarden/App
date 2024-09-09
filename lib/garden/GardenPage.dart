@@ -38,12 +38,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final gardenAPI = GardenAPI(ref);
 
     Future.microtask(() {
-      gardenAPI.resetGardenMain();
+      // gardenAPI.resetGardenMain();
       gardenAPI.getGardenLsit();
       //화면에 텍스트 위치 6개를 랜덤하게 배치
       // _generateRandomPositions(3);
       Future.delayed(Duration(seconds: 1), () {
-        _textPositions = _generateGridPositions();
+        // _textPositions = _generateGridPositions();
         // _textPositions = _generateUniquePositions();
       });
     });
@@ -183,7 +183,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
       body: GestureDetector(
         //드래그 이벤트 처리
         onPanUpdate: _onPanUpdate,
-        onTap: () => context.pushNamed('book-detail'),
+        // onTap: () => context.pushNamed('book-detail'),
         child: Stack(
           alignment: Alignment.bottomRight,
           children: [

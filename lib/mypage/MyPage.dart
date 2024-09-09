@@ -33,6 +33,8 @@ class _MyPageState extends ConsumerState<MyPage> {
         toolbarHeight: 30.h,
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
+        leadingWidth: 0,
+        leading: Container(),
       ),
       body: SingleChildScrollView(
         child: Container(

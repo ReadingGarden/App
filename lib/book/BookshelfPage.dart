@@ -24,6 +24,12 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      ref.read(bookStatusListProvider.notifier).reset();
+      ref.read(pageViewIndexProvider.notifier).state = 0;
+      getBookStatusList(0);
+    });
+
     _scrollController.addListener(() {
       // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
@@ -31,7 +37,6 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
         getBookStatusList(ref.watch(pageViewIndexProvider));
       }
     });
-    getBookStatusList(0);
   }
 
   @override
@@ -87,7 +92,10 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
         toolbarHeight: 60.h,
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
+        leadingWidth: 0,
+        leading: Container(),
         centerTitle: false,
+        titleSpacing: 24.w,
         title: Text(
           '책장',
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
@@ -188,9 +196,14 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                   bookStatusList.length,
                   (index) {
                     return GestureDetector(
-                      onTap: () {
-                        context.pushNamed('book-detail',
+                      onTap: () async {
+                        final response = await context.pushNamed('book-detail',
                             extra: bookStatusList[index].book_no);
+                        if (response != null) {
+                          ref.read(bookStatusListProvider.notifier).reset();
+                          _currentPage = 1;
+                          getBookStatusList(index);
+                        }
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

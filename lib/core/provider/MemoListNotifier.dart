@@ -11,4 +11,8 @@ class MemoListNotifier extends StateNotifier<List<Memo>> {
   void addMemoList(List<Memo> newMemoList) {
     state = [...state, ...newMemoList];
   }
+
+  void reset() {
+    state = [];
+  }
 }

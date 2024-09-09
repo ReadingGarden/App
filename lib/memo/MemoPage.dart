@@ -27,8 +27,11 @@ class _MemoPageState extends ConsumerState<MemoPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
+      ref.read(memoListProvider.notifier).reset();
       ref.read(memoSelectIndexListProvider.notifier).state = [];
+      getMemoList();
     });
+
     _scrollController.addListener(() {
       // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
@@ -36,7 +39,6 @@ class _MemoPageState extends ConsumerState<MemoPage> {
         getMemoList();
       }
     });
-    getMemoList();
   }
 
   @override
@@ -108,7 +110,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
           toolbarHeight: 60.h,
           backgroundColor: Colors.white,
           scrolledUnderElevation: 0,
+          leadingWidth: 0,
+          leading: Container(),
           centerTitle: false,
+          titleSpacing: 24.w,
           title: Text(
             '메모',
             style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),

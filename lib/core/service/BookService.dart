@@ -75,7 +75,7 @@ class BookService {
   Future<Response?> putBook(int book_no, Map data) async {
     try {
       final response = await _authenticatedDio
-          .post('${Constant.URL}book/?book_no=$book_no', data: data);
+          .put('${Constant.URL}book/?book_no=$book_no', data: data);
       print(response.data.toString());
       return response;
     } on DioException catch (e) {

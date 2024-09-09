@@ -93,76 +93,82 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
       await putBookRead(endId, data);
     }
 
-    context.pop();
+    context.pop('BookDetailPage_getBookRead');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Widgets.appBar(context, title: '책 수정하기'),
-      body: Column(
-        children: [
-          Container(
-              height: 88.h,
-              margin: EdgeInsets.only(left: 24.w, right: 24.w),
-              child: Row(children: [
-                (widget.book['book_image_url'] != null &&
-                        widget.book['book_image_url'] != '')
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: Image.network(
-                          width: 48.w,
-                          height: 64.h,
-                          fit: BoxFit.cover,
-                          widget.book['book_image_url'],
-                        ),
-                      )
-                    : Container(
-                        width: 48.w,
-                        height: 64.h,
-                        decoration: BoxDecoration(
-                            color: AppColors.grey_F2,
-                            borderRadius: BorderRadius.circular(8.r)),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Container(
+          color: Colors.transparent,
+          child: Column(
+            children: [
+              Container(
+                  height: 88.h,
+                  margin: EdgeInsets.only(left: 24.w, right: 24.w),
+                  child: Row(children: [
+                    (widget.book['book_image_url'] != null &&
+                            widget.book['book_image_url'] != '')
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: Image.network(
+                              width: 48.w,
+                              height: 64.h,
+                              fit: BoxFit.cover,
+                              widget.book['book_image_url'],
+                            ),
+                          )
+                        : Container(
+                            width: 48.w,
+                            height: 64.h,
+                            decoration: BoxDecoration(
+                                color: AppColors.grey_F2,
+                                borderRadius: BorderRadius.circular(8.r)),
+                          ),
+                    Container(
+                      margin: EdgeInsets.only(left: 12.w),
+                      width: 252.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.book['book_title'],
+                            maxLines: 3,
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          Text(
+                            widget.book['book_author'],
+                            maxLines: 1,
+                            style: TextStyle(
+                                fontSize: 12.sp, color: AppColors.grey_8D),
+                          ),
+                        ],
                       ),
-                Container(
-                  margin: EdgeInsets.only(left: 12.w),
-                  width: 252.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        widget.book['book_title'],
-                        maxLines: 3,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                        ),
-                      ),
-                      Text(
-                        widget.book['book_author'],
-                        maxLines: 1,
-                        style: TextStyle(
-                            fontSize: 12.sp, color: AppColors.grey_8D),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ])),
+              Container(
+                height: 1.h,
+                color: AppColors.grey_F2,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 20.h),
+                child: Column(
+                  children: [
+                    _dateTextField(
+                        _startController, '읽기 시작한 날', '읽기 시작한 날짜를 알려주세요'),
+                    _dateTextField(_endController, '다 읽은 날', '완독한 날짜를 입력해주세요')
+                  ],
                 ),
-              ])),
-          Container(
-            height: 1.h,
-            color: AppColors.grey_F2,
+              )
+            ],
           ),
-          Container(
-            margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 20.h),
-            child: Column(
-              children: [
-                _dateTextField(
-                    _startController, '읽기 시작한 날', '읽기 시작한 날짜를 알려주세요'),
-                _dateTextField(_endController, '다 읽은 날', '완독한 날짜를 입력해주세요')
-              ],
-            ),
-          )
-        ],
+        ),
       ),
       bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
