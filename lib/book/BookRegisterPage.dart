@@ -137,14 +137,14 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              widget.book['title'],
+                              widget.book['title'] ?? '',
                               maxLines: 3,
                               style: TextStyle(
                                 fontSize: 16.sp,
                               ),
                             ),
                             Text(
-                              widget.book['author'],
+                              widget.book['author'] ?? '',
                               maxLines: 1,
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),

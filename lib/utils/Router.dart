@@ -99,10 +99,10 @@ final GoRouter router = GoRouter(
                 path: 'book-add-garden',
                 name: 'book-add-garden',
                 builder: (context, state) {
-                  final String isbn13 = state.extra as String;
-                  return BookAddGardenPage(
-                    isbn13: isbn13,
-                  );
+                  final String isbn13 =
+                      (state.extra as Map)['isbn13'] as String;
+                  final Map? book = (state.extra as Map?)?['book'];
+                  return BookAddGardenPage(book, isbn13: isbn13);
                 },
                 routes: [
                   GoRoute(

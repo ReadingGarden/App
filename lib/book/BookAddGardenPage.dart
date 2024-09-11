@@ -13,9 +13,10 @@ final detailIsbnProvider = StateProvider<Map>((ref) => {});
 final bookNoProvider = StateProvider<int?>((ref) => null);
 
 class BookAddGardenPage extends ConsumerStatefulWidget {
-  const BookAddGardenPage({required this.isbn13});
+  const BookAddGardenPage(this.book, {required this.isbn13});
 
   final String isbn13;
+  final Map? book;
 
   _BookAddGardenPageState createState() => _BookAddGardenPageState();
 }
@@ -25,16 +26,25 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(buttonCheckProvider.notifier).state = false;
       ref.read(detailIsbnProvider.notifier).state = {};
       ref.read(bookNoProvider.notifier).state = null;
+      //책 검색에서 온...
+      if (widget.isbn13 != 'null') {
+        ref.read(buttonCheckProvider.notifier).state = false;
+        getDetailBook_ISBN(widget.isbn13);
+      } else {
+        //책장(읽고싶어요)에서 온...
+        ref.read(buttonCheckProvider.notifier).state = true;
+        ref.read(bookNoProvider.notifier).state = widget.book!['book_no'];
+      }
     });
-    getDetailBook_ISBN(widget.isbn13);
   }
 
-  //책 읽고싶어요 등록
+  //책 읽고싶어요 등록 (책등록)
   void postBookStatus() async {
-    final detailIsbn = ref.watch(detailIsbnProvider);
+    final detailIsbn = bookResult();
+
+    //TODO: - 책 소개 DB 수정
 
     final data = {
       "book_title": detailIsbn['title'],
@@ -44,6 +54,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
       "book_page": detailIsbn['itemPage'],
       "book_image_url": detailIsbn['cover']
     };
+
     final response = await bookService.postBook(data);
     if (response?.statusCode == 201) {
       ref.read(bookNoProvider.notifier).state =
@@ -65,6 +76,14 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
     }
   }
 
+  Map bookResult() {
+    Map bookResult = ref.watch(detailIsbnProvider);
+    if (widget.isbn13 == 'null') {
+      bookResult = widget.book!;
+    }
+    return bookResult;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,22 +101,21 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                     children: [
                       ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
-                          child:
-                              (ref.watch(detailIsbnProvider)['cover'] != null)
-                                  ? Image.network(
-                                      width: 122.w,
-                                      height: 180.h,
-                                      fit: BoxFit.cover,
-                                      ref.watch(detailIsbnProvider)['cover'],
-                                    )
-                                  : SizedBox(
-                                      width: 122.w,
-                                      height: 180.h,
-                                    )),
+                          child: (bookResult()['cover'] != null)
+                              ? Image.network(
+                                  width: 122.w,
+                                  height: 180.h,
+                                  fit: BoxFit.cover,
+                                  bookResult()['cover'],
+                                )
+                              : SizedBox(
+                                  width: 122.w,
+                                  height: 180.h,
+                                )),
                       Container(
                         margin: EdgeInsets.only(top: 29.h, bottom: 6.h),
                         child: Text(
-                          ref.watch(detailIsbnProvider)['title'] ?? '',
+                          bookResult()['title'] ?? '',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.sp,
@@ -105,18 +123,18 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                         ),
                       ),
                       Text(
-                        ref.watch(detailIsbnProvider)['author'] ?? '',
+                        bookResult()['author'] ?? '',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
                       Text(
-                        ref.watch(detailIsbnProvider)['publisher'] ?? '',
+                        bookResult()['publisher'] ?? '',
                         style: TextStyle(
                             fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
                       Text(
-                        '${ref.watch(detailIsbnProvider)['itemPage'] ?? ''}p',
+                        '${bookResult()['itemPage'] ?? ''}p',
                         style: TextStyle(
                             fontSize: 12.sp, color: AppColors.grey_8D),
                       ),
@@ -220,7 +238,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                         ),
                       ),
                       Text(
-                        ref.watch(detailIsbnProvider)['description'] ?? '',
+                        bookResult()['description'] ?? '',
                         style: TextStyle(fontSize: 12.sp),
                       ),
                     ],
@@ -234,8 +252,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
             margin: EdgeInsets.only(
                 left: 24.w, right: 24.w, bottom: 30.h, top: 10.h),
             child: Widgets.button('내 가든에 심기', true, () {
-              context.pushNamed('book-register',
-                  extra: ref.watch(detailIsbnProvider));
+              context.pushNamed('book-register', extra: bookResult());
             })));
   }
 }

@@ -86,10 +86,10 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
   }
 
   //책 상세조회 isbn api
-  void getDetailBook_ISBN(String isbn) async {
-    final response = await bookService.getDetailBook_ISBN(isbn);
+  void getDetailBook_ISBN(String isbn13) async {
+    final response = await bookService.getDetailBook_ISBN(isbn13);
     if (response?.statusCode == 200) {
-      context.pushNamed('book-add-garden', extra: isbn);
+      context.pushNamed('book-add-garden', extra: {'isbn13': isbn13});
     } else if (response?.statusCode == 401) {
       //500에러
     } else {
@@ -308,7 +308,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                 (index) {
                   return GestureDetector(
                     onTap: () => context.pushNamed('book-add-garden',
-                        extra: bookSearchList[index].isbn13),
+                        extra: {'isbn13': bookSearchList[index].isbn13}),
                     child: Container(
                       padding: EdgeInsets.only(left: 24.w, right: 24.w),
                       height: 88.h,

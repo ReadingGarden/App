@@ -197,12 +197,37 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                   (index) {
                     return GestureDetector(
                       onTap: () async {
-                        final response = await context.pushNamed('book-detail',
-                            extra: bookStatusList[index].book_no);
-                        if (response != null) {
-                          ref.read(bookStatusListProvider.notifier).reset();
-                          _currentPage = 1;
-                          getBookStatusList(index);
+                        if (pageViewIndex == 2) {
+                          final data = {
+                            'book_no':
+                                bookStatusList[index].toJson()['book_no'],
+                            'title':
+                                bookStatusList[index].toJson()['book_title'],
+                            'author':
+                                bookStatusList[index].toJson()['book_author'],
+                            'publisher': bookStatusList[index]
+                                .toJson()['book_publisher'],
+                            //TODO: - 책 소개 DB 수정
+                            'description': bookStatusList[index]
+                                .toJson()['book_publisher'],
+                            'cover': bookStatusList[index]
+                                .toJson()['book_image_url'],
+                            'itemPage':
+                                bookStatusList[index].toJson()['book_page'],
+                          };
+                          print(
+                              '------------------${bookStatusList[index].toJson()}');
+                          context.pushNamed('book-add-garden',
+                              extra: {'isbn13': 'null', 'book': data});
+                        } else {
+                          final response = await context.pushNamed(
+                              'book-detail',
+                              extra: bookStatusList[index].book_no);
+                          if (response != null) {
+                            ref.read(bookStatusListProvider.notifier).reset();
+                            _currentPage = 1;
+                            getBookStatusList(pageViewIndex);
+                          }
                         }
                       },
                       child: Column(
