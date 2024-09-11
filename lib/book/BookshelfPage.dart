@@ -183,120 +183,129 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
     return Center(
         child: bookStatusList.isEmpty
             ? _bookshelfEmpty()
-            : GridView(
-                controller: _scrollController,
-                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.5,
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 12.w,
-                ),
-                children: List.generate(
-                  bookStatusList.length,
-                  (index) {
-                    return GestureDetector(
-                      onTap: () async {
-                        if (pageViewIndex == 2) {
-                          final data = {
-                            'book_no':
-                                bookStatusList[index].toJson()['book_no'],
-                            'title':
-                                bookStatusList[index].toJson()['book_title'],
-                            'author':
-                                bookStatusList[index].toJson()['book_author'],
-                            'publisher': bookStatusList[index]
-                                .toJson()['book_publisher'],
-                            //TODO: - 책 소개 DB 수정
-                            'description': bookStatusList[index]
-                                .toJson()['book_publisher'],
-                            'cover': bookStatusList[index]
-                                .toJson()['book_image_url'],
-                            'itemPage':
-                                bookStatusList[index].toJson()['book_page'],
-                          };
+            : RefreshIndicator(
+                onRefresh: () async {
+                  ref.read(bookStatusListProvider.notifier).reset();
+                  _currentPage = 1;
+                  getBookStatusList(pageViewIndex);
+                },
+                child: GridView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: _scrollController,
+                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.5,
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 12.w,
+                  ),
+                  children: List.generate(
+                    bookStatusList.length,
+                    (index) {
+                      return GestureDetector(
+                        onTap: () async {
+                          if (pageViewIndex == 2) {
+                            final data = {
+                              'book_no':
+                                  bookStatusList[index].toJson()['book_no'],
+                              'title':
+                                  bookStatusList[index].toJson()['book_title'],
+                              'author':
+                                  bookStatusList[index].toJson()['book_author'],
+                              'publisher': bookStatusList[index]
+                                  .toJson()['book_publisher'],
+                              //TODO: - 책 소개 DB 수정
+                              'description': bookStatusList[index]
+                                  .toJson()['book_publisher'],
+                              'cover': bookStatusList[index]
+                                  .toJson()['book_image_url'],
+                              'itemPage':
+                                  bookStatusList[index].toJson()['book_page'],
+                            };
 
-                          context.pushNamed('book-add-garden',
-                              extra: {'isbn13': 'null', 'book': data});
-                        } else {
-                          final response = await context.pushNamed(
-                              'book-detail',
-                              extra: bookStatusList[index].book_no);
-                          if (response != null) {
-                            ref.read(bookStatusListProvider.notifier).reset();
-                            _currentPage = 1;
-                            getBookStatusList(pageViewIndex);
+                            context.pushNamed('book-add-garden',
+                                extra: {'isbn13': 'null', 'book': data});
+                          } else {
+                            final response = await context.pushNamed(
+                                'book-detail',
+                                extra: bookStatusList[index].book_no);
+                            if (response != null) {
+                              ref.read(bookStatusListProvider.notifier).reset();
+                              _currentPage = 1;
+                              getBookStatusList(pageViewIndex);
+                            }
                           }
-                        }
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Stack(
-                            alignment: Alignment.bottomRight,
-                            children: [
-                              ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  child: (bookStatusList[index]
-                                              .book_image_url !=
-                                          null)
-                                      ? Image.network(
-                                          width: 96.w,
-                                          height: 142.h,
-                                          fit: BoxFit.cover,
-                                          bookStatusList[index].book_image_url!,
-                                        )
-                                      : Container(
-                                          width: 96.w,
-                                          height: 142.h,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
-                                            color: AppColors.grey_F2,
-                                          ),
-                                        )),
-                              Visibility(
-                                visible: (pageViewIndex != 2),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.only(bottom: 10.h),
-                                  width: 50.w,
-                                  height: 28.h,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20.r),
-                                      bottomLeft: Radius.circular(20.r),
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    child: (bookStatusList[index]
+                                                .book_image_url !=
+                                            null)
+                                        ? Image.network(
+                                            width: 96.w,
+                                            height: 142.h,
+                                            fit: BoxFit.cover,
+                                            bookStatusList[index]
+                                                .book_image_url!,
+                                          )
+                                        : Container(
+                                            width: 96.w,
+                                            height: 142.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.r),
+                                              color: AppColors.grey_F2,
+                                            ),
+                                          )),
+                                Visibility(
+                                  visible: (pageViewIndex != 2),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(bottom: 10.h),
+                                    width: 50.w,
+                                    height: 28.h,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20.r),
+                                        bottomLeft: Radius.circular(20.r),
+                                      ),
+                                      color: (pageViewIndex == 1)
+                                          ? AppColors.black_4A
+                                          : AppColors.grey_F2,
                                     ),
-                                    color: (pageViewIndex == 1)
-                                        ? AppColors.black_4A
-                                        : AppColors.grey_F2,
-                                  ),
-                                  child: Text(
-                                    '${bookStatusList[index].percent.floor()}%',
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: (pageViewIndex == 1)
-                                            ? Colors.white
-                                            : AppColors.black_4A),
+                                    child: Text(
+                                      '${bookStatusList[index].percent.floor()}%',
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: (pageViewIndex == 1)
+                                              ? Colors.white
+                                              : AppColors.black_4A),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(top: 8.h),
-                              alignment: Alignment.centerLeft,
-                              height: 20.h,
-                              child: Text(
-                                bookStatusList[index].book_title,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12.sp,
-                                ),
-                              ))
-                        ],
-                      ),
-                    );
-                  },
+                              ],
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(top: 8.h),
+                                alignment: Alignment.centerLeft,
+                                height: 20.h,
+                                child: Text(
+                                  bookStatusList[index].book_title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                  ),
+                                ))
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ));
   }
