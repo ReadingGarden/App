@@ -107,7 +107,6 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
             padding: EdgeInsets.symmetric(horizontal: 25.w),
             height: 36.h,
             decoration: BoxDecoration(
-              // color: Colors.amber,
               border: Border(
                   bottom: BorderSide(
                 color: AppColors.grey_F2,
@@ -215,8 +214,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                             'itemPage':
                                 bookStatusList[index].toJson()['book_page'],
                           };
-                          print(
-                              '------------------${bookStatusList[index].toJson()}');
+
                           context.pushNamed('book-add-garden',
                               extra: {'isbn13': 'null', 'book': data});
                         } else {
