@@ -180,7 +180,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      left: 24.w, right: 24.w, bottom: 20.h, top: 15.h),
+                      left: 24.w, right: 24.w, bottom: 40.h, top: 15.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -201,12 +201,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 15.h, bottom: 85.h),
-                      ),
-                      Container(
-                        width: 312.w,
-                        height: 340.h,
-                        color: Colors.amber,
+                        alignment: Alignment.bottomCenter,
+                        margin: EdgeInsets.only(top: 101.h),
+                        child: Container(
+                          width: 280.w,
+                          height: 306.h,
+                          color: Colors.amber,
+                        ),
                       ),
                     ],
                   ),
@@ -358,6 +359,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                     child: (bookDetail['book_read_list'] !=
                                             null)
                                         ? ListView(
+                                            physics:
+                                                const NeverScrollableScrollPhysics(),
                                             children: List.generate(
                                               bookDetail['book_read_list']
                                                   .length,
