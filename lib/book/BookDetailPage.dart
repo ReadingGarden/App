@@ -264,10 +264,25 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                         height: 64.r,
                         decoration: const BoxDecoration(
                             shape: BoxShape.circle, color: AppColors.black_4A),
-                        child: Text(
-                          '물주기',
-                          style: TextStyle(
-                              fontSize: 12.sp, color: AppColors.grey_FA),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: 19.35.h,
+                              width: 15.w,
+                              color: Colors.amber,
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 2.65.h),
+                              height: 20.h,
+                              child: Text(
+                                '물주기',
+                                style: TextStyle(
+                                    fontSize: 12.sp, color: AppColors.grey_FA),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Container(

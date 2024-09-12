@@ -53,6 +53,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
               book_title: json['book_title'],
               book_author: json['book_author'],
               book_publisher: json['book_publisher'],
+              book_info: json['book_info'],
               book_image_url: json['book_image_url'],
               book_tree: json['book_tree'],
               book_status: json['book_status'],
