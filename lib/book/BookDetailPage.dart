@@ -252,37 +252,44 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                       text:
                                           '/ ${bookDetail['book_page'] ?? 0}p',
                                       style: const TextStyle(
-                                          color: AppColors.grey_8D))
+                                          color: AppColors.grey_CA))
                                 ]))
                           ],
                         ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 20.h, right: 30.w),
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.black_4A),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: 19.35.h,
-                              width: 15.w,
-                              color: Colors.amber,
-                            ),
-                            Container(
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(top: 2.65.h),
-                              height: 20.h,
-                              child: Text(
-                                '물주기',
-                                style: TextStyle(
-                                    fontSize: 12.sp, color: AppColors.grey_FA),
+                      GestureDetector(
+                        onTap: () {
+                          context.pushNamed('book-add', extra: bookDetail);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 20.h, right: 30.w),
+                          width: 64.r,
+                          height: 64.r,
+                          decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.black_4A),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 19.35.h,
+                                width: 15.w,
+                                color: Colors.amber,
                               ),
-                            ),
-                          ],
+                              Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(top: 2.65.h),
+                                height: 20.h,
+                                child: Text(
+                                  '물주기',
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColors.grey_FA),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Container(

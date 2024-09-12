@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../book/BookAddGardenPage.dart';
+import '../book/BookAddPage.dart';
 import '../book/BookshelfPage.dart';
 import '../book/BookDetailPage.dart';
 import '../book/BookEditPage.dart';
@@ -149,7 +150,16 @@ final GoRouter router = GoRouter(
                       final book = state.extra as Map;
                       return BookEditPage(book: book);
                     },
-                  )
+                  ),
+                  GoRoute(
+                      path: 'book-add',
+                      name: 'book-add',
+                      builder: (context, state) {
+                        final bookRead = state.extra as Map;
+                        return BookAddPage(
+                          bookRead: bookRead,
+                        );
+                      })
                 ]),
           ]),
       GoRoute(
