@@ -121,6 +121,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
               'title': _titleController.text,
               'author': _authorController.text,
               'publisher': _publisherController.text,
+              'description': '',
               'page': _pageController.text
             });
           } else {

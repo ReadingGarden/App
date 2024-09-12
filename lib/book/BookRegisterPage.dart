@@ -57,7 +57,6 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     if (widget.book['isbn13'] != null) {
       data['book_page'] = widget.book['itemPage'];
       data['book_isbn'] = widget.book['isbn13'];
-      //TODO: - 책 소개 DB 수정
     }
     if (widget.book['cover'] != null) {
       data['book_image_url'] = widget.book['cover'];
@@ -75,6 +74,22 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     }
   }
 
+  //책 수정 api
+  void putBook() async {
+    final gardenAPI = GardenAPI(ref);
+
+    final data = {
+      "garden_no": gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
+          ['garden_no'],
+      "book_tree": Constant.FLOWER_LIST[ref.watch(flowerSelectIndexProvider)],
+      "book_status": 0,
+    };
+    final response = await bookService.putBook(widget.book['book_no'], data);
+    if (response?.statusCode == 200) {
+      postBookRead(widget.book['book_no']);
+    }
+  }
+
   //독서 기록 api
   void postBookRead(int book_no) async {
     final gardenAPI = GardenAPI(ref);
@@ -88,7 +103,6 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       "book_current_page": 0
     };
 
-    print(data);
     final response = await bookService.postBookRead(data);
     if (response?.statusCode == 201) {
       context.pushNamed('book-register-done',
@@ -231,7 +245,11 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
             margin: EdgeInsets.only(
                 left: 24.w, right: 24.w, bottom: 30.h, top: 10.h),
             child: Widgets.button('등록하기', true, () {
-              postBook();
+              if (widget.book['book_no'] == null) {
+                postBook();
+              } else {
+                putBook();
+              }
             })));
   }
 
