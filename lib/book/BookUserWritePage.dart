@@ -122,8 +122,6 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
               'author': _authorController.text,
               'publisher': _publisherController.text,
               'page': _pageController.text
-              //TODO
-              // 'cover': ''
             });
           } else {
             // context.pushNamed('book-register', extra: {});

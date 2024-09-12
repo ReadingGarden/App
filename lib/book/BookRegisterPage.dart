@@ -47,6 +47,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       "book_title": widget.book['title'],
       "book_author": widget.book['author'],
       "book_publisher": widget.book['publisher'],
+      "book_info": widget.book['description'],
       "book_tree": Constant.FLOWER_LIST[ref.watch(flowerSelectIndexProvider)],
       // "book_image_url": null,
       "book_status": 0,
@@ -56,6 +57,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     if (widget.book['isbn13'] != null) {
       data['book_page'] = widget.book['itemPage'];
       data['book_isbn'] = widget.book['isbn13'];
+      //TODO: - 책 소개 DB 수정
     }
     if (widget.book['cover'] != null) {
       data['book_image_url'] = widget.book['cover'];

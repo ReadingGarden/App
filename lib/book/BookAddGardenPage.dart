@@ -44,12 +44,11 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
   void postBookStatus() async {
     final detailIsbn = bookResult();
 
-    //TODO: - 책 소개 DB 수정
-
     final data = {
       "book_title": detailIsbn['title'],
       "book_author": detailIsbn['author'],
       "book_publisher": detailIsbn['publisher'],
+      "book_info": detailIsbn['description'],
       "book_status": 2,
       "book_page": detailIsbn['itemPage'],
       "book_image_url": detailIsbn['cover']

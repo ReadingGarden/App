@@ -189,6 +189,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                   _currentPage = 1;
                   getBookStatusList(pageViewIndex);
                 },
+                backgroundColor: Colors.white,
+                color: AppColors.grey_8D,
                 child: GridView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   controller: _scrollController,
@@ -213,9 +215,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                   bookStatusList[index].toJson()['book_author'],
                               'publisher': bookStatusList[index]
                                   .toJson()['book_publisher'],
-                              //TODO: - 책 소개 DB 수정
-                              'description': bookStatusList[index]
-                                  .toJson()['book_publisher'],
+                              'description':
+                                  bookStatusList[index].toJson()['book_info'],
                               'cover': bookStatusList[index]
                                   .toJson()['book_image_url'],
                               'itemPage':
