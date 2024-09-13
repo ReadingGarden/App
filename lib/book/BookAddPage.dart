@@ -139,7 +139,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         final result = await pageBottomSheet(
                             context,
                             _textEditingController,
-                            widget.bookRead['book_page']);
+                            widget.bookRead['book_current_page']);
 
                         if (result != null) {
                           currentPage = result;

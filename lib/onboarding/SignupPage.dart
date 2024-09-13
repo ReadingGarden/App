@@ -88,6 +88,7 @@ class SignupPage extends ConsumerWidget {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Container(
             margin: EdgeInsets.only(
                 top: 20.h, bottom: 38.h, left: 24.w, right: 24.w),
@@ -99,7 +100,6 @@ class SignupPage extends ConsumerWidget {
                     Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(bottom: 62.h),
-                        height: 36.h,
                         child: Text(
                           '회원가입',
                           style: TextStyle(
@@ -138,7 +138,6 @@ class SignupPage extends ConsumerWidget {
                     children: [
                       Container(
                         margin: EdgeInsets.only(bottom: 24.h),
-                        height: 44.h,
                         child: const Text(
                           '이메일로 회원가입 시 이용약관 및\n개인정보수집이용에 동의하는 것으로 간주됩니다',
                           textAlign: TextAlign.center,

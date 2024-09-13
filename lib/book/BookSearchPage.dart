@@ -298,7 +298,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                     style: const TextStyle(color: AppColors.grey_8D)),
                 TextSpan(
                     text: ref.watch(bookTotalCountProvider).toString(),
-                    style: TextStyle(color: AppColors.primaryColor))
+                    style: const TextStyle(color: AppColors.primaryColor))
               ]))),
           Expanded(
             child: ListView(
@@ -327,10 +327,9 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                           ),
                           SizedBox(
                             width: 252.w,
-                            height: 50.h,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   bookSearchList[index].title,

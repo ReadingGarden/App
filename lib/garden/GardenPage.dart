@@ -248,7 +248,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 20.w, vertical: 14.h),
                                   width: 312.w,
-                                  height: 76.h,
+                                  height: 86.h,
                                   decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius:
@@ -347,7 +347,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(
                             top: 56.h, left: 20.w, right: 20.w, bottom: 20.h),
-                        height: 180.h,
+                        height: 200.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20.r),
                             color: Colors.white),
@@ -434,7 +434,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                         Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(top: 8.h),
-                          height: 18.h,
                           child: Text(
                             '사진찍기',
                             style: TextStyle(
@@ -459,7 +458,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 8.h),
-                            height: 18.h,
                             child: Text(
                               '수정하기',
                               style: TextStyle(
@@ -486,7 +484,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 8.h),
-                            height: 18.h,
                             child: Text(
                               '공유하기',
                               style: TextStyle(
@@ -506,7 +503,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 30.h),
-                    height: 24.h,
                     color: Colors.transparent,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -578,7 +574,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 Container(
                   margin: EdgeInsets.only(left: 12.w),
                   width: 226.w,
-                  height: 42.h,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -778,7 +773,10 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('가든을 다 채울때까지 앞으로 ${30 - bookCount}권'),
+                    Text(
+                      '가든을 다 채울때까지 앞으로 ${30 - bookCount}권',
+                      style: TextStyle(fontSize: 12.sp),
+                    ),
                     Text(
                       '$bookCount/30',
                       style: TextStyle(fontSize: 12.sp),

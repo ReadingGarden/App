@@ -118,128 +118,135 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               child: Container(
-            margin: EdgeInsets.only(bottom: 60.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    height: 88.h,
-                    margin: EdgeInsets.only(left: 24.w, right: 24.w),
-                    child: Row(children: [
-                      (widget.book['cover'] != null &&
-                              widget.book['cover'] != '')
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(8.r),
-                              child: Image.network(
-                                width: 48.w,
-                                height: 64.h,
-                                fit: BoxFit.cover,
-                                widget.book['cover'],
-                              ),
-                            )
-                          : Container(
-                              width: 48.w,
-                              height: 64.h,
-                              decoration: BoxDecoration(
-                                  color: AppColors.grey_F2,
-                                  borderRadius: BorderRadius.circular(8.r)),
+                margin: EdgeInsets.only(bottom: 60.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        height: 88.h,
+                        margin: EdgeInsets.only(left: 24.w, right: 24.w),
+                        child: Row(children: [
+                          (widget.book['cover'] != null &&
+                                  widget.book['cover'] != '')
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: Image.network(
+                                    width: 48.w,
+                                    height: 64.h,
+                                    fit: BoxFit.cover,
+                                    widget.book['cover'],
+                                  ),
+                                )
+                              : Container(
+                                  width: 48.w,
+                                  height: 64.h,
+                                  decoration: BoxDecoration(
+                                      color: AppColors.grey_F2,
+                                      borderRadius: BorderRadius.circular(8.r)),
+                                ),
+                          Container(
+                            margin: EdgeInsets.only(left: 12.w),
+                            width: 252.w,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  widget.book['title'] ?? '',
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                  ),
+                                ),
+                                Text(
+                                  widget.book['author'] ?? '',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColors.grey_8D),
+                                ),
+                              ],
                             ),
-                      Container(
-                        margin: EdgeInsets.only(left: 12.w),
-                        width: 252.w,
+                          ),
+                        ])),
+                    Container(
+                      height: 1.h,
+                      color: AppColors.grey_F2,
+                    ),
+                    Container(
+                        margin:
+                            EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              widget.book['title'] ?? '',
-                              maxLines: 3,
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                            Text(
-                              widget.book['author'] ?? '',
-                              maxLines: 1,
-                              style: TextStyle(
-                                  fontSize: 12.sp, color: AppColors.grey_8D),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ])),
-                Container(
-                  height: 1.h,
-                  color: AppColors.grey_F2,
-                ),
-                Container(
-                    margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '어느 가든에 심을까요?',
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
-                        ),
-                        _gardenList()
-                      ],
-                    )),
-                Container(
-                    margin: EdgeInsets.only(top: 43.h, left: 24.w),
-                    child: Text(
-                      '어떤 꽃으로 자랄까요?',
-                      style: TextStyle(
-                          fontSize: 18.sp, fontWeight: FontWeight.bold),
-                    )),
-                _flowerList(),
-                Container(
-                    margin: EdgeInsets.only(top: 40.h, left: 24.w, right: 24.w),
-                    child: SizedBox(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(bottom: 16.h),
-                            child: Text(
-                              '언제 읽기 시작했나요?',
+                              '어느 가든에 심을까요?',
                               style: TextStyle(
                                   fontSize: 18.sp, fontWeight: FontWeight.bold),
                             ),
+                            _gardenList()
+                          ],
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(top: 43.h, left: 24.w),
+                        child: Text(
+                          '어떤 꽃으로 자랄까요?',
+                          style: TextStyle(
+                              fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        )),
+                    _flowerList(),
+                    Container(
+                        margin:
+                            EdgeInsets.only(top: 40.h, left: 24.w, right: 24.w),
+                        child: SizedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(bottom: 16.h),
+                                child: Text(
+                                  '언제 읽기 시작했나요?',
+                                  style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              TextField(
+                                controller: _dateController,
+                                keyboardType: TextInputType.number,
+                                maxLength: 10,
+                                inputFormatters: [AutoInputFormatter()],
+                                decoration: InputDecoration(
+                                    hintText: '2024.03.01',
+                                    counter: Container(),
+                                    hintStyle: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: AppColors.grey_8D),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      borderSide: const BorderSide(
+                                          color: AppColors.grey_F2),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      borderSide: const BorderSide(
+                                          color: AppColors.grey_F2),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                      borderSide: const BorderSide(
+                                          color: AppColors.grey_F2),
+                                    )),
+                              )
+                            ],
                           ),
-                          TextField(
-                            controller: _dateController,
-                            keyboardType: TextInputType.number,
-                            maxLength: 10,
-                            inputFormatters: [AutoInputFormatter()],
-                            decoration: InputDecoration(
-                                hintText: '2024.03.01',
-                                counter: Container(),
-                                hintStyle: TextStyle(
-                                    fontSize: 16.sp, color: AppColors.grey_8D),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: const BorderSide(
-                                      color: AppColors.grey_F2),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: const BorderSide(
-                                      color: AppColors.grey_F2),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10.r),
-                                  borderSide: const BorderSide(
-                                      color: AppColors.grey_F2),
-                                )),
-                          )
-                        ],
-                      ),
-                    ))
-              ],
-            ),
-          )),
+                        ))
+                  ],
+                ),
+              )),
         ),
         bottomNavigationBar: Container(
             margin: EdgeInsets.only(
@@ -284,23 +291,20 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                     ? AppColors.black_4A
                                     : AppColors.grey_F2),
                         color: Colors.white),
-                    child: SizedBox(
-                      height: 44.h,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            gardenAPI.gardenList()[index]['garden_title'],
-                            style: TextStyle(fontSize: 14.sp),
-                          ),
-                          Text(
-                            '심은 꽃 ${gardenAPI.gardenList()[index]['book_count']}/30',
-                            style: TextStyle(
-                                fontSize: 12.sp, color: AppColors.grey_8D),
-                          )
-                        ],
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          gardenAPI.gardenList()[index]['garden_title'],
+                          style: TextStyle(fontSize: 14.sp),
+                        ),
+                        Text(
+                          '심은 꽃 ${gardenAPI.gardenList()[index]['book_count']}/30',
+                          style: TextStyle(
+                              fontSize: 12.sp, color: AppColors.grey_8D),
+                        )
+                      ],
                     ),
                   ),
                   Container(
@@ -324,8 +328,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   Widget _flowerList() {
     return Container(
       margin: EdgeInsets.only(top: 13.h),
-      height: 148.h,
+      height: 152.h,
       child: ListView(
+        shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         children: List.generate(
           Constant.FLOWER_LIST.length,
@@ -349,7 +354,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                         color: Colors.amber),
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 24.h,
                     child: Text(
                       Constant.FLOWER_LIST[index],
                       style:

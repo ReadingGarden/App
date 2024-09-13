@@ -37,6 +37,7 @@ class _MyPageState extends ConsumerState<MyPage> {
         leading: Container(),
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Container(
           margin: EdgeInsets.only(bottom: 24.h),
           child: Column(
@@ -59,7 +60,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                           children: [
                             Container(
                               margin: EdgeInsets.only(bottom: 2.h),
-                              height: 24.h,
+                              // height: 24.h,
                               child: Text(
                                 authAPI.user()['user_nick'] ?? '',
                                 style: TextStyle(
@@ -68,7 +69,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                               ),
                             ),
                             SizedBox(
-                                height: 20.h,
+                                // height: 20.h,
                                 child: Text(authAPI.user()['user_email'] ?? '',
                                     style: TextStyle(
                                         fontSize: 12.sp,
@@ -113,7 +114,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 1.h),
-                                  height: 24.h,
+                                  // height: 24.h,
                                   child: Text(
                                     authAPI.user()['garden_count'].toString(),
                                     style: TextStyle(
@@ -137,7 +138,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 1.h),
-                                  height: 24.h,
+                                  // height: 24.h,
                                   child: Text(
                                     authAPI
                                         .user()['read_book_count']
@@ -163,7 +164,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                 ),
                                 Container(
                                   margin: EdgeInsets.only(top: 1.h),
-                                  height: 24.h,
+                                  // height: 24.h,
                                   child: Text(
                                     authAPI
                                         .user()['like_book_count']

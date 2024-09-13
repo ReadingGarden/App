@@ -429,10 +429,10 @@ class GardenEditBottomSheet extends ConsumerWidget {
                                 ? AppColors.grey_F2
                                 : Colors.white),
                         child: SizedBox(
-                          height: 44.h,
+                          // height: 44.h,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 gardenAPI.gardenList()[index]['garden_title'],

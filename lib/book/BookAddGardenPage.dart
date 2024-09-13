@@ -88,6 +88,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
     return Scaffold(
         appBar: Widgets.appBar(context),
         body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Container(
             margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 60.h),
             child: Column(
@@ -150,7 +151,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(top: 20.h, bottom: 30.h),
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          width: 93.w,
+                          width: 100.w,
                           height: 28.h,
                           decoration: BoxDecoration(
                               color: Colors.transparent,
@@ -190,7 +191,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(top: 20.h, bottom: 30.h),
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          width: 93.w,
+                          width: 100.w,
                           height: 28.h,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),

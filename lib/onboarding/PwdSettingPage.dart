@@ -98,7 +98,6 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
                       Container(
                           alignment: Alignment.centerLeft,
                           margin: EdgeInsets.only(bottom: 60.h),
-                          height: 36.h,
                           child: Text(
                             '비밀번호 설정하기',
                             style: TextStyle(

@@ -140,7 +140,6 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                     Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(bottom: 60.h),
-                        height: 36.h,
                         child: Text(
                           '비밀번호 찾기',
                           style: TextStyle(

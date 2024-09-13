@@ -193,7 +193,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
               },
               child: Container(
                 margin: EdgeInsets.only(right: 24.w),
-                height: 24.h,
+                // height: 24.h,
                 child: Text(
                   '완료',
                   style: TextStyle(
@@ -214,7 +214,6 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       }),
       body: GestureDetector(
         onTap: () {
-          print(widget.book);
           // 키보드 내리기
           FocusScope.of(context).unfocus();
         },
@@ -321,7 +320,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                               border: InputBorder.none,
                               hintText:
                                   '책에 대해 적어보세요.\n생각, 느낌, 독서 환경 등 뭐든 상관 없어요!',
-                              hintMaxLines: 2,
+                              hintMaxLines: 3,
                               hintStyle: TextStyle(color: AppColors.grey_8D))))
                 ],
               ),

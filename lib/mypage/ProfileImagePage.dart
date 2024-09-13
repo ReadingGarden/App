@@ -84,17 +84,14 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 22.h,
-                    child: const Text(
-                      '프로필 3/6',
-                      style: TextStyle(color: AppColors.grey_8D),
-                    ),
+                  const Text(
+                    '프로필 3/6',
+                    style: TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 24.h),
-                    height: 242.h,
                     child: GridView(
+                      shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           childAspectRatio: 0.8,
@@ -134,7 +131,6 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                                         ),
                                         Container(
                                             margin: EdgeInsets.only(top: 7.h),
-                                            height: 22.h,
                                             child: Text(
                                                 Constant.FLOWER_LIST[index]))
                                       ],
@@ -154,7 +150,6 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                                       ),
                                       Container(
                                           margin: EdgeInsets.only(top: 7.h),
-                                          height: 22.h,
                                           child: Text(
                                             Constant.FLOWER_LIST[index],
                                             style: const TextStyle(

@@ -286,13 +286,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(
-            height: 44.h,
-            child: const Text(
-              '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.grey_8D),
-            ),
+          const Text(
+            '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColors.grey_8D),
           ),
         ],
       ),

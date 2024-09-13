@@ -39,9 +39,11 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
         onRefresh: () async {
           gardenAPI.getGardenDetail(widget.garden['garden_no']);
         },
+        backgroundColor: Colors.white,
+        color: AppColors.grey_8D,
         child: SingleChildScrollView(
           // 스크롤이 항상 가능하도록 설정
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
 
           child: Container(
             margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),

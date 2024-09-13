@@ -113,7 +113,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                       (index) {
                         return Container(
                           margin: EdgeInsets.only(bottom: 24.h),
-                          height: 48.h,
+                          // height: 48.h,
                           child: Row(
                             children: [
                               Stack(
@@ -175,7 +175,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                       Widgets.shareBottomSheet(context, '멤버 초대하기');
                     },
                     child: Container(
-                      height: 22.h,
+                      // height: 22.h,
                       color: Colors.transparent,
                       child: const Text(
                         '+ 멤버 초대하기',

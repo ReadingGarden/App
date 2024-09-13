@@ -86,12 +86,9 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 22.h,
-              child: const Text(
-                '내 책장에 있는 책',
-                style: TextStyle(color: AppColors.grey_8D),
-              ),
+            const Text(
+              '내 책장에 있는 책',
+              style: TextStyle(color: AppColors.grey_8D),
             ),
             Expanded(child: _bookList()),
           ],
@@ -145,7 +142,6 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                       Container(
                         margin: EdgeInsets.only(left: 12.w),
                         width: 220.w,
-                        height: 50.h,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,

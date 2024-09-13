@@ -114,7 +114,6 @@ class Widgets {
         children: [
           Container(
             margin: EdgeInsets.only(bottom: 6.h),
-            height: 22.h,
             child: Text(
               label,
             ),
@@ -139,7 +138,10 @@ class Widgets {
               fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,
-              hintStyle: TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
+              hintStyle: TextStyle(
+                fontSize: 16.sp,
+                color: AppColors.grey_8D,
+              ),
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.r),
                   borderSide:
@@ -248,7 +250,7 @@ class Widgets {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
-                  height: 44.h,
+                  // height: 44.h,
                   child: (content != '' && contentWidget == null)
                       ? Text(
                           content,
@@ -311,7 +313,6 @@ class Widgets {
                 ),
                 Container(
                     margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
-                    height: 46.h,
                     child: content),
                 Column(
                   children: [

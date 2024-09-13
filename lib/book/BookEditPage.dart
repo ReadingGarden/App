@@ -145,6 +145,7 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                           Text(
                             widget.book['book_author'],
                             maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 12.sp, color: AppColors.grey_8D),
                           ),
@@ -189,7 +190,6 @@ Widget _dateTextField(
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 6.h),
-              height: 22.h,
               child: Text(
                 label,
               ),

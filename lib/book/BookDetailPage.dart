@@ -229,7 +229,6 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                       Container(
                         margin: EdgeInsets.only(top: 24.h, left: 40.w),
                         alignment: Alignment.topLeft,
-                        height: 56.h,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,6 +266,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                         },
                         child: Container(
                           alignment: Alignment.center,
+                          // padding: EdgeInsets.only(
+                          //     left: 16.w, right: 16.w, bottom: 8.h, top: 14.h),
                           margin: EdgeInsets.only(top: 20.h, right: 30.w),
                           width: 64.r,
                           height: 64.r,
@@ -429,7 +430,6 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                       }
                                     },
                                     child: Container(
-                                      height: 22.h,
                                       color: Colors.transparent,
                                       child: const Text(
                                         '+ 작성하기',
@@ -463,7 +463,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
       builder: (context) {
         return Container(
           alignment: Alignment.center,
-          height: 230.h,
+          height: 260.h,
           child: Container(
             margin: EdgeInsets.only(top: 30.h, bottom: 30.h),
             alignment: Alignment.center,
@@ -491,7 +491,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                   child: Container(
                     alignment: Alignment.center,
                     width: 312.w,
-                    height: 24.h,
+                    // height: 24.h,
                     color: Colors.transparent,
                     child: Text(
                       '책 수정하기',
@@ -522,7 +522,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                   child: Container(
                     alignment: Alignment.center,
                     width: 312.w,
-                    height: 24.h,
+                    // height: 24.h,
                     color: Colors.transparent,
                     child: Text(
                       '다른 가든으로 이전',
@@ -543,7 +543,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                   child: Container(
                     alignment: Alignment.center,
                     width: 312.w,
-                    height: 24.h,
+                    // height: 24.h,
                     color: Colors.transparent,
                     child: Text(
                       '책 삭제하기',
@@ -581,7 +581,6 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
     return Container(
       margin: EdgeInsets.only(top: 15.h),
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-      height: 28.h,
       decoration: BoxDecoration(
           border: Border.all(color: AppColors.black_4A),
           borderRadius: BorderRadius.circular(20.r),
