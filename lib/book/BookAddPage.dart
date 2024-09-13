@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +23,7 @@ class BookAddPage extends ConsumerStatefulWidget {
 }
 
 class _BookAddPageState extends ConsumerState<BookAddPage> {
+  final TextEditingController _textEditingController = TextEditingController();
   ui.Image? image;
   ui.Image? overlayImage;
   double dragPosition = 0.0; // From 0.0 to 1.0
@@ -33,7 +36,15 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     dragPosition = 0.0;
     currentPage = widget.bookRead['book_current_page'];
     dragPosition = (currentPage / widget.bookRead['book_page']);
+    _textEditingController.addListener(_validateInput);
     _loadImage();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _textEditingController.removeListener(_validateInput);
+    super.dispose();
   }
 
   //독서 기록 추가 api
@@ -94,6 +105,18 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     });
   }
 
+  //텍스트필드 최대 페이지 제한
+  void _validateInput() {
+    final int currentValue = int.tryParse(_textEditingController.text) ?? 0;
+    if (currentValue > widget.bookRead['book_page']) {
+      _textEditingController.text =
+          widget.bookRead['book_page'].toString(); // 값이 범위를 초과하면 최대값으로 설정
+      _textEditingController.selection = TextSelection.fromPosition(
+        TextPosition(offset: _textEditingController.text.length),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,20 +134,37 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 20.h, bottom: 90.h),
-                    child: Text.rich(TextSpan(
-                        style: TextStyle(
-                            fontSize: 32.sp, fontWeight: FontWeight.bold),
-                        children: [
-                          TextSpan(
-                              text: '${currentPage}p',
-                              style: const TextStyle(
-                                  color: AppColors.primaryColor,
-                                  decorationColor: AppColors.primaryColor,
-                                  decoration: ui.TextDecoration.underline)),
-                          TextSpan(
-                              text: ' / ${widget.bookRead['book_page']}p',
-                              style: const TextStyle(color: AppColors.grey_CA))
-                        ])),
+                    child: GestureDetector(
+                      onTap: () async {
+                        final result = await pageBottomSheet(
+                            context,
+                            _textEditingController,
+                            widget.bookRead['book_page']);
+
+                        if (result != null) {
+                          currentPage = result;
+                          setState(() {
+                            dragPosition =
+                                (currentPage / widget.bookRead['book_page']);
+                          });
+                        }
+                      },
+                      child: Text.rich(TextSpan(
+                          style: TextStyle(
+                              fontSize: 32.sp, fontWeight: FontWeight.bold),
+                          children: [
+                            TextSpan(
+                                text: '${currentPage}p',
+                                style: const TextStyle(
+                                    color: AppColors.primaryColor,
+                                    decorationColor: AppColors.primaryColor,
+                                    decoration: ui.TextDecoration.underline)),
+                            TextSpan(
+                                text: ' / ${widget.bookRead['book_page']}p',
+                                style:
+                                    const TextStyle(color: AppColors.grey_CA))
+                          ])),
+                    ),
                   )
                 ],
               ),
@@ -180,6 +220,68 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
           }),
         ));
   }
+}
+
+Future pageBottomSheet(
+    BuildContext context, TextEditingController controller, int page) {
+  return showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    backgroundColor: Colors.white,
+    builder: (context) {
+      return Padding(
+        padding: MediaQuery.of(context).viewInsets,
+        child: Container(
+          height: 246.h,
+          margin: EdgeInsets.only(
+            top: 30.h,
+            left: 24.w,
+            right: 24.w,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '읽은 페이지',
+                style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 24.h, bottom: 30.h),
+                child: TextField(
+                  controller: controller,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: InputDecoration(
+                      counter: Container(),
+                      fillColor: AppColors.grey_FA,
+                      filled: true,
+                      hintText: page.toString(),
+                      hintStyle:
+                          TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(
+                              color: Colors.transparent, width: 1.w)),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(
+                              color: Colors.transparent, width: 1.w)),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                          borderSide: BorderSide(
+                              color: Colors.transparent, width: 1.w))),
+                ),
+              ),
+              Widgets.button('확인', true, () {
+                int page = int.parse(controller.text);
+                context.pop(page);
+              }),
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
 
 class RevealPainter extends CustomPainter {
