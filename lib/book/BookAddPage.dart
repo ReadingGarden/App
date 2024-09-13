@@ -30,6 +30,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     super.initState();
     dragPosition = 0.0;
     currentPage = widget.bookRead['book_current_page'];
+    dragPosition = (currentPage / widget.bookRead['book_page']);
     _loadImage();
   }
 
@@ -52,7 +53,11 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     }
     final response = await bookService.postBookRead(data);
     if (response?.statusCode == 201) {
-      context.pop('fetchData');
+      if (currentPage == widget.bookRead['book_page']) {
+        context.pushNamed('book-read-done');
+      } else {
+        context.pop('fetchData');
+      }
     }
   }
 
@@ -204,5 +209,53 @@ class RevealPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class BookAddDonePage extends StatelessWidget {
+  BookAddDonePage({super.key, required this.bookRead});
+
+  Map bookRead;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container(
+          margin: EdgeInsets.only(top: 142.h),
+          child: Center(
+            child: Column(
+              children: [
+                Text.rich(
+                    style:
+                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                    TextSpan(children: [
+                      TextSpan(
+                          // text: gardenName,
+                          style:
+                              const TextStyle(color: AppColors.primaryColor)),
+                      const TextSpan(text: '에')
+                    ])),
+                Text(
+                  '새로운 책을 심었어요',
+                  style:
+                      TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 40.h),
+                  width: 312.r,
+                  height: 312.r,
+                  color: Colors.amber,
+                )
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
+          child: Widgets.button('가든으로 가기', true, () {
+            context.pushNamed('bottom-navi');
+            //TODO: - 자동으로 해당 가든 변경?
+          }),
+        ));
   }
 }

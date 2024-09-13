@@ -159,7 +159,19 @@ final GoRouter router = GoRouter(
                         return BookAddPage(
                           bookRead: bookRead,
                         );
-                      })
+                      },
+                      routes: [
+                        GoRoute(
+                          path: 'book-add-done',
+                          name: 'book-add-done',
+                          builder: (context, state) {
+                            final bookRead = state.extra as Map;
+                            return BookAddDonePage(
+                              bookRead: bookRead,
+                            );
+                          },
+                        )
+                      ])
                 ]),
           ]),
       GoRoute(

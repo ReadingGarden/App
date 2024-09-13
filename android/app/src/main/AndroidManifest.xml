@@ -38,7 +38,7 @@
     <!-- 카메라 권한-->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 마이크 권한-->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
     
 
 </manifest>
