@@ -1,14 +1,12 @@
 import 'dart:ui' as ui;
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
+import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
 
@@ -24,29 +22,56 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   ui.Image? image;
   ui.Image? overlayImage;
   double dragPosition = 0.0; // From 0.0 to 1.0
+  String imagePath = 'assets/images/testImage.png';
+  int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
     dragPosition = 0.0;
+    currentPage = widget.bookRead['book_current_page'];
     _loadImage();
+  }
+
+  //독서 기록 추가 api
+  void postBookRead() async {
+    final data = {
+      "book_no": widget.bookRead['book_no'],
+      // "book_start_date": "2024-09-13T00:06:17.520Z",
+      // "book_end_date": "2024-09-13T00:06:17.520Z",
+      "book_current_page": currentPage
+    };
+
+    //책 기록이 없을 때
+    if (widget.bookRead['book_current_page'] == 0) {
+      data['book_start_date'] = DateTime.now().toString();
+    }
+    //책 다 읽었을 때
+    if (currentPage == widget.bookRead['book_page']) {
+      data['book_end_date'] = DateTime.now().toString();
+    }
+    final response = await bookService.postBookRead(data);
+    if (response?.statusCode == 201) {
+      context.pop('fetchData');
+    }
   }
 
   Future<void> _loadImage() async {
     // Load main image
-    final ByteData data = await rootBundle.load(
-      'assets/images/290test.png',
-    );
-    final ui.Codec codec =
-        await ui.instantiateImageCodec(data.buffer.asUint8List());
+    final ByteData data = await rootBundle.load(imagePath);
+    final ui.Codec codec = await ui.instantiateImageCodec(
+        data.buffer.asUint8List(),
+        targetWidth: 280,
+        targetHeight: 304);
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
     final ui.Image mainImage = frameInfo.image;
 
     // Load overlay image
-    final ByteData overlayData =
-        await rootBundle.load('assets/images/290test.png');
-    final ui.Codec overlayCodec =
-        await ui.instantiateImageCodec(overlayData.buffer.asUint8List());
+    final ByteData overlayData = await rootBundle.load(imagePath);
+    final ui.Codec overlayCodec = await ui.instantiateImageCodec(
+        overlayData.buffer.asUint8List(),
+        targetWidth: 280,
+        targetHeight: 304);
     final ui.FrameInfo overlayFrameInfo = await overlayCodec.getNextFrame();
     final ui.Image overlayImage = overlayFrameInfo.image;
 
@@ -72,13 +97,13 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: 20.h, bottom: 71.h),
+                    padding: EdgeInsets.only(top: 20.h, bottom: 90.h),
                     child: Text.rich(TextSpan(
                         style: TextStyle(
                             fontSize: 32.sp, fontWeight: FontWeight.bold),
                         children: [
                           TextSpan(
-                              text: '${widget.bookRead['book_current_page']}p',
+                              text: '${currentPage}p',
                               style: const TextStyle(
                                   color: AppColors.primaryColor,
                                   decorationColor: AppColors.primaryColor,
@@ -96,18 +121,10 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                     children: [
                       Center(
                           child: Image.asset(
-                        'assets/images/290test.png',
-                        // width: 280.w,
-                        // height: 306.h,
-                        color: Colors.black,
+                        imagePath,
+                        width: 280,
+                        height: 304,
                       )),
-                      // Center(
-                      //   child: CustomPaint(
-                      //     size: Size(image!.width.toDouble(),
-                      //         image!.height.toDouble()),
-                      //     painter: RevealPainter(dragPosition, image!, image!),
-                      //   ),
-                      // ),
                       Center(
                         child: GestureDetector(
                             onVerticalDragUpdate: (details) {
@@ -115,10 +132,13 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                                 dragPosition -= details.primaryDelta! /
                                     context.size!.height;
                                 dragPosition = dragPosition.clamp(0.0, 1.0);
+                                currentPage = (widget.bookRead['book_page'] *
+                                        dragPosition)
+                                    .toInt();
                               });
                             },
                             child: image == null || overlayImage == null
-                                ? const CircularProgressIndicator()
+                                ? Container()
                                 : CustomPaint(
                                     size: Size(image!.width.toDouble(),
                                         image!.height.toDouble()),
@@ -142,7 +162,9 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
         ),
         bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-          child: Widgets.button('저장하기', true, () {}),
+          child: Widgets.button('저장하기', true, () {
+            postBookRead();
+          }),
         ));
   }
 }

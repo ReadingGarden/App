@@ -203,9 +203,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                       Container(
                         alignment: Alignment.bottomCenter,
                         margin: EdgeInsets.only(top: 101.h),
-                        child: Container(
-                          width: 280.w,
-                          height: 306.h,
+                        child: Image.asset(
+                          'assets/images/testImage.png',
                           color: Colors.amber,
                         ),
                       ),
@@ -258,8 +257,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          context.pushNamed('book-add', extra: bookDetail);
+                        onTap: () async {
+                          bookDetail['book_no'] = widget.book_no;
+                          final result = await context.pushNamed('book-add',
+                              extra: bookDetail);
+                          if (result != null) {
+                            getBookRead();
+                          }
                         },
                         child: Container(
                           alignment: Alignment.center,
