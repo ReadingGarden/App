@@ -2,12 +2,14 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 class BookAddPage extends ConsumerStatefulWidget {
@@ -38,8 +40,6 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   void postBookRead() async {
     final data = {
       "book_no": widget.bookRead['book_no'],
-      // "book_start_date": "2024-09-13T00:06:17.520Z",
-      // "book_end_date": "2024-09-13T00:06:17.520Z",
       "book_current_page": currentPage
     };
 
@@ -54,7 +54,15 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     final response = await bookService.postBookRead(data);
     if (response?.statusCode == 201) {
       if (currentPage == widget.bookRead['book_page']) {
-        context.pushNamed('book-read-done');
+        final bookReadData = {
+          'book_title': widget.bookRead['book_title'],
+          'book_tree': widget.bookRead['book_tree'],
+          'book_start_date': widget.bookRead['book_read_list']
+              [widget.bookRead['book_read_list'].length - 1]['book_start_date'],
+          'book_end_date': DateTime.now().toString()
+        };
+
+        context.pushNamed('book-add-done', extra: bookReadData);
       } else {
         context.pop('fetchData');
       }
@@ -221,30 +229,38 @@ class BookAddDonePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          margin: EdgeInsets.only(top: 142.h),
+          margin: EdgeInsets.only(top: 174.h),
           child: Center(
             child: Column(
               children: [
                 Text.rich(
                     style:
-                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                     TextSpan(children: [
                       TextSpan(
-                          // text: gardenName,
+                          text: bookRead['book_tree'],
                           style:
                               const TextStyle(color: AppColors.primaryColor)),
-                      const TextSpan(text: '에')
+                      const TextSpan(text: '가 다컸어요')
                     ])),
-                Text(
-                  '새로운 책을 심었어요',
-                  style:
-                      TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
-                ),
                 Container(
-                  margin: EdgeInsets.only(top: 40.h),
-                  width: 312.r,
-                  height: 312.r,
+                  margin: EdgeInsets.only(top: 40.h, bottom: 30.h),
+                  width: 250.r,
+                  height: 250.r,
                   color: Colors.amber,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 6.h),
+                  child: Text(
+                    bookRead['book_title'],
+                    style:
+                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(
+                  '${Functions.formatBookReadDate(bookRead['book_start_date'])} - ${Functions.formatBookReadDate(bookRead['book_end_date'])}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: AppColors.grey_8D),
                 )
               ],
             ),
