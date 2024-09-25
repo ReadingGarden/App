@@ -183,8 +183,10 @@ class _GardenPageState extends ConsumerState<GardenPage> {
       body: (false)
           ? _gardenMain()
           : Container(
+              color: Colors.green,
               child: Stack(
                 children: [
+                  _gardenMain(),
                   // OverflowBox(
                   //   maxWidth: MediaQuery.of(context).size.width + 100,
                   //   maxHeight: MediaQuery.of(context).size.height + 200,
@@ -297,7 +299,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           )
                         : Container(),
                   ),
-                  _gardenMain(),
                 ],
               ),
             ),
@@ -305,75 +306,76 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   Widget _gardenMain() {
-    return Container(
-      color: Colors.green,
-      child: InteractiveViewer(
-        // 이 위젯은 사용자가 터치하여 확대/축소할 수 있도록 해줍니다.
-        // constrained: true,
-        child: TwoDimensionalScrollable(
-          horizontalDetails: ScrollableDetails.horizontal(),
-          verticalDetails: ScrollableDetails.vertical(),
-          viewportBuilder: (context, verticalPosition, horizontalPosition) {
-            return LayoutBuilder(
-              builder: (context, constraints) {
-                return Stack(
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
+    final gardenAPI = GardenAPI(ref);
+
+    return TwoDimensionalScrollable(
+      horizontalDetails: ScrollableDetails.horizontal(),
+      verticalDetails: ScrollableDetails.vertical(),
+      viewportBuilder: (context, verticalPosition, horizontalPosition) {
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Container(
+                  width: constraints.maxWidth * 3, // 가로 스크롤을 위해 넓게 설정
+                  height: constraints.maxHeight, // 세로 스크롤을 위해 길게 설정
+                  child: GridView.builder(
+                    padding:
+                        EdgeInsets.only(top: 183.h, left: 43.w, bottom: 10.h),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 0.8, crossAxisCount: 8),
+                    itemCount: gardenAPI.gardenMainBookList().length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () async {
+                          print(gardenAPI.gardenMainBookList()[index]);
+                          final result = await context.pushNamed('book-detail',
+                              extra: gardenAPI.gardenMainBookList()[index]
+                                  ['book_no']);
+                          if (result != null) {}
+                        },
                         child: Container(
-                          width: constraints.maxWidth * 3, // 가로 스크롤을 위해 넓게 설정
-                          height: constraints.maxHeight, // 세로 스크롤을 위해 길게 설정
-                          child: GridView.builder(
-                            padding: EdgeInsets.only(
-                                top: 133.h, left: 43.w, bottom: 10.h),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 0.8, crossAxisCount: 8),
-                            itemCount: 30,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 110.w,
-                                      height: 120.h,
-                                      color: Colors.amber,
-                                    ),
-                                    Container(
-                                        alignment: Alignment.center,
-                                        margin: EdgeInsets.only(top: 1.h),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12.w, vertical: 4.h),
-                                        width: 89.w,
-                                        height: 28.h,
-                                        decoration: BoxDecoration(
-                                            color:
-                                                Colors.white.withOpacity(0.6),
-                                            borderRadius:
-                                                BorderRadius.circular(20.r)),
-                                        child: Text(
-                                          '안녕하세요22',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(fontSize: 12.sp),
-                                        ))
-                                  ],
-                                ),
-                              );
-                            },
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 110.w,
+                                height: 120.h,
+                                color: Colors.amber,
+                              ),
+                              Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(top: 1.h),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 12.w, vertical: 4.h),
+                                  width: 89.w,
+                                  height: 28.h,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.6),
+                                      borderRadius:
+                                          BorderRadius.circular(20.r)),
+                                  child: Text(
+                                    gardenAPI.gardenMainBookList()[index]
+                                        ["book_title"],
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 12.sp),
+                                  ))
+                            ],
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                );
-              },
+                      );
+                    },
+                  ),
+                ),
+              ),
             );
           },
-        ),
-      ),
+        );
+      },
     );
   }
 

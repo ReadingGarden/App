@@ -227,10 +227,10 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                             context.pushNamed('book-add-garden',
                                 extra: {'isbn13': 'null', 'book': data});
                           } else {
-                            final response = await context.pushNamed(
+                            final result = await context.pushNamed(
                                 'book-detail',
                                 extra: bookStatusList[index].book_no);
-                            if (response != null) {
+                            if (result != null) {
                               ref.read(bookStatusListProvider.notifier).reset();
                               _currentPage = 1;
                               getBookStatusList(pageViewIndex);
