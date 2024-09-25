@@ -180,58 +180,48 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
-      body: GestureDetector(
-        //드래그 이벤트 처리
-        onPanUpdate: _onPanUpdate,
-        // onTap: () => context.pushNamed('book-detail'),
-        child: Stack(
-          alignment: Alignment.bottomRight,
-          children: [
-            Container(
-              // width: 300,
-              // height: 300,
-              width: MediaQuery.of(context).size.width * 2,
-              height: MediaQuery.of(context).size.height * 2,
-              color: Constant.GARDEN_CHIP_COLOR_SET_LIST[3],
+      body: (false)
+          ? _gardenMain()
+          : Container(
               child: Stack(
                 children: [
-                  OverflowBox(
-                    maxWidth: MediaQuery.of(context).size.width + 100,
-                    maxHeight: MediaQuery.of(context).size.height + 200,
-                    child: Transform.translate(
-                      //배경을 이동시킬 오프셋
-                      offset: _backgroundOffset,
-                      child: Stack(
-                          // children: _textPositions.map((position) {
-                          //   return Positioned(
-                          //     left: position.dx,
-                          //     top: position.dy,
-                          //     child: Column(
-                          //       children: [
-                          //         SvgPicture.asset(
-                          //           'assets/images/star.svg',
-                          //           width: 112.w,
-                          //           height: 160.h,
-                          //         ),
-                          //         Container(
-                          //           padding: EdgeInsets.symmetric(
-                          //               vertical: 4, horizontal: 8),
-                          //           decoration: BoxDecoration(
-                          //             color: Colors.pink.shade100,
-                          //             borderRadius: BorderRadius.circular(10),
-                          //           ),
-                          //           child: Text(
-                          //             '이름을 입력해주세요',
-                          //             style: TextStyle(color: Colors.black),
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   );
-                          // }).toList(),
-                          ),
-                    ),
-                  ),
+                  // OverflowBox(
+                  //   maxWidth: MediaQuery.of(context).size.width + 100,
+                  //   maxHeight: MediaQuery.of(context).size.height + 200,
+                  //   child: Transform.translate(
+                  //     //배경을 이동시킬 오프셋
+                  //     offset: _backgroundOffset,
+                  //     child: Stack(
+                  //         // children: _textPositions.map((position) {
+                  //         //   return Positioned(
+                  //         //     left: position.dx,
+                  //         //     top: position.dy,
+                  //         //     child: Column(
+                  //         //       children: [
+                  //         //         SvgPicture.asset(
+                  //         //           'assets/images/star.svg',
+                  //         //           width: 112.w,
+                  //         //           height: 160.h,
+                  //         //         ),
+                  //         //         Container(
+                  //         //           padding: EdgeInsets.symmetric(
+                  //         //               vertical: 4, horizontal: 8),
+                  //         //           decoration: BoxDecoration(
+                  //         //             color: Colors.pink.shade100,
+                  //         //             borderRadius: BorderRadius.circular(10),
+                  //         //           ),
+                  //         //           child: Text(
+                  //         //             '이름을 입력해주세요',
+                  //         //             style: TextStyle(color: Colors.black),
+                  //         //           ),
+                  //         //         ),
+                  //         //       ],
+                  //         //     ),
+                  //         //   );
+                  //         // }).toList(),
+                  //         ),
+                  //   ),
+                  // ),
                   GestureDetector(
                     onTap: () async {
                       _gardenMenuBottomSheet();
@@ -307,15 +297,81 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           )
                         : Container(),
                   ),
+                  _gardenMain(),
                 ],
               ),
             ),
-            Text(
-              '터치 좌표\nX: ${_position.dx.toStringAsFixed(2)}\nY: ${_position.dy.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 24, color: Colors.black),
-              textAlign: TextAlign.center,
-            ),
-          ],
+    );
+  }
+
+  Widget _gardenMain() {
+    return Container(
+      color: Colors.green,
+      child: InteractiveViewer(
+        // 이 위젯은 사용자가 터치하여 확대/축소할 수 있도록 해줍니다.
+        // constrained: true,
+        child: TwoDimensionalScrollable(
+          horizontalDetails: ScrollableDetails.horizontal(),
+          verticalDetails: ScrollableDetails.vertical(),
+          viewportBuilder: (context, verticalPosition, horizontalPosition) {
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                return Stack(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Container(
+                          width: constraints.maxWidth * 3, // 가로 스크롤을 위해 넓게 설정
+                          height: constraints.maxHeight, // 세로 스크롤을 위해 길게 설정
+                          child: GridView.builder(
+                            padding: EdgeInsets.only(
+                                top: 133.h, left: 43.w, bottom: 10.h),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    childAspectRatio: 0.8, crossAxisCount: 8),
+                            itemCount: 30,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 110.w,
+                                      height: 120.h,
+                                      color: Colors.amber,
+                                    ),
+                                    Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.only(top: 1.h),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w, vertical: 4.h),
+                                        width: 89.w,
+                                        height: 28.h,
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.6),
+                                            borderRadius:
+                                                BorderRadius.circular(20.r)),
+                                        child: Text(
+                                          '안녕하세요22',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(fontSize: 12.sp),
+                                        ))
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            );
+          },
         ),
       ),
     );

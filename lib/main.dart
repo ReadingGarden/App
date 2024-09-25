@@ -82,7 +82,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     super.initState();
 
     //FCM 토큰을 비동기로 가져옵니다.
-    ref.read(fcmTokenProvider);
+    // ref.read(fcmTokenProvider);
 
     //1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () async {
@@ -96,21 +96,22 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       }
 
       print('ACCESS Token: $accessToken');
+      context.go('/start');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final fcmTokenAsyncValue = ref.watch(fcmTokenProvider);
+    // final fcmTokenAsyncValue = ref.watch(fcmTokenProvider);
 
-    fcmTokenAsyncValue.when(data: (fcmToken) {
-      print('FCM Token: $fcmToken');
-    }, loading: () {
-      //로딩 중
-      print('Loading FCM Token...');
-    }, error: (error, stackTrace) {
-      print('Error retrieving FCM token: $error');
-    });
+    // fcmTokenAsyncValue.when(data: (fcmToken) {
+    //   print('FCM Token: $fcmToken');
+    // }, loading: () {
+    //   //로딩 중
+    //   print('Loading FCM Token...');
+    // }, error: (error, stackTrace) {
+    //   print('Error retrieving FCM token: $error');
+    // });
 
     return const Scaffold(
       backgroundColor: Colors.amber,

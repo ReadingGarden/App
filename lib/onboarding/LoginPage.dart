@@ -70,6 +70,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           FocusScope.of(context).unfocus();
         },
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Container(
             margin: EdgeInsets.only(
                 top: 20.h,
@@ -82,7 +83,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(bottom: 44.h),
-                  height: 72.h,
                   child: Text(
                     '책을 읽어서\n나만의 가든을 꾸며봐요',
                     style:
@@ -99,12 +99,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         isPwd: true)),
                 Widgets.button('이메일로 로그인', true, () async {
                   // FCM 토큰을 비동기적으로 가져오기
-                  final fcmToken = await ref.read(fcmTokenProvider.future);
+                  // final fcmToken = await ref.read(fcmTokenProvider.future);
 
                   final data = {
                     "user_email": _emailController.text,
                     "user_password": _pwdController.text,
-                    "user_fcm": fcmToken ?? '',
+                    "user_fcm": '',
+                    // "user_fcm": fcmToken ?? '',
                     "user_social_id": "",
                     "user_social_type": ""
                   };
