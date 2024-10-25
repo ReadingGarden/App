@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +24,26 @@ class _MyPageState extends ConsumerState<MyPage> {
     Future.microtask(() {
       authAPI.getUser(context);
     });
+  }
+
+  //메일 보내기
+  Future<void> sendEmail() async {
+    final Email email = Email(
+      body: "",
+      subject: "ㅇㅇ",
+      recipients: ["dokseogardenapp@gmail.com"],
+      isHTML: false,
+    );
+
+    try {
+      await FlutterEmailSender.send(email);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('이메일이 성공적으로 전송되었습니다.')));
+    } catch (error) {
+      print(error);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('이메일 전송 중 오류가 발생했습니다: $error')));
+    }
   }
 
   @override
@@ -205,13 +226,14 @@ class _MyPageState extends ConsumerState<MyPage> {
                   ),
                   _subTitleList('지원'),
                   Widgets.titleList('이용 가이드', () {
-                    print('이용가이드 페이지로');
+                    Functions.launchURL(
+                        "https://www.notion.so/dokseogarden/1082d8001a9280f58ea8ea9916edbfea?v=b441041520b3422691c9f0d9cb091474&pvs=4");
                   }),
                   Widgets.titleList('1:1 문의하기', () {
                     print('1:1 문의하기 페이지로');
                   }),
                   Widgets.titleList('의견 보내기', () {
-                    print('의견보내기 페이지로');
+                    sendEmail();
                   }),
                   Widgets.titleList('리뷰 작성하기', () {
                     print('리뷰작성하기 페이지로');
