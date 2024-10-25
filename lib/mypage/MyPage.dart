@@ -221,7 +221,8 @@ class _MyPageState extends ConsumerState<MyPage> {
                     color: AppColors.grey_F2,
                   ),
                   _subTitleList('기타'),
-                  Widgets.titleList('이용 약관', () {
+                  Widgets.titleList('이용 약관', () => context.pushNamed('tos')),
+                  Widgets.titleList('개발자 홈페이지 바로가기', () {
                     print('이용 약관 페이지로');
                   }),
                 ],

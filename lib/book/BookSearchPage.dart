@@ -1,3 +1,4 @@
+import 'package:book_flutter/core/model/BookSearch.dart';
 import 'package:book_flutter/core/provider/BookSearchListNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/model/BookSearch.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Widgets.dart';
@@ -56,7 +56,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
 
     final response = await bookService.getSerachBook(query, _currentPage);
     if (response?.statusCode == 200) {
-      final List bookSearchList = response?.data['data']['item'];
+      final List<dynamic> bookSearchList = response?.data['data']['item'];
       final List<BookSearch> newBookSearchList = bookSearchList
           .map((json) => BookSearch(
               title: json['title'],

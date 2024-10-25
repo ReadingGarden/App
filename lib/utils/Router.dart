@@ -1,3 +1,4 @@
+import 'package:book_flutter/mypage/TosPage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -243,6 +244,11 @@ final GoRouter router = GoRouter(
               path: 'alert',
               name: 'alert',
               builder: (context, state) => AlertSettingPage(),
+            ),
+            GoRoute(
+              path: 'tos',
+              name: 'tos',
+              builder: (context, state) => TosPage(),
             )
           ]),
       GoRoute(
