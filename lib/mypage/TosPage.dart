@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../utils/AppColors.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 class TosPage extends ConsumerStatefulWidget {
@@ -23,7 +24,10 @@ class _TosPageState extends ConsumerState<TosPage> {
           children: [
             Widgets.titleList(
               '서비스 이용약관',
-              () {},
+              () {
+                Functions.launchURL(
+                    "https://www.notion.so/dokseogarden/825ddd95b1084d689c4275ae665510b5?pvs=4");
+              },
               widget: Container(
                 alignment: Alignment.center,
                 width: 20.r,
@@ -35,7 +39,10 @@ class _TosPageState extends ConsumerState<TosPage> {
             ),
             Widgets.titleList(
               '개인정보처리방침',
-              () {},
+              () {
+                Functions.launchURL(
+                    "https://www.notion.so/dokseogarden/dac7d2c7f8b241d8944a5ff957fab3ab?pvs=4");
+              },
               widget: Container(
                 alignment: Alignment.center,
                 width: 20.r,
@@ -47,7 +54,10 @@ class _TosPageState extends ConsumerState<TosPage> {
             ),
             Widgets.titleList(
               '개인정보 수집·이용 동의서',
-              () {},
+              () {
+                Functions.launchURL(
+                    "https://www.notion.so/dokseogarden/1182d8001a928098bb71c78cc5523cd4?pvs=4");
+              },
               widget: Container(
                 alignment: Alignment.center,
                 width: 20.r,

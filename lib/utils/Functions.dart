@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Constant.dart';
 
@@ -156,6 +157,17 @@ class Functions {
           print('권한 요청이 거부되었습니다.');
         }
       }
+    }
+  }
+
+  //URL 링크 열기
+  static Future<void> launchURL(String url) async {
+    Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
     }
   }
 }

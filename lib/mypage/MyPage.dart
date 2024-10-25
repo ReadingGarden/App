@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 class MyPage extends ConsumerStatefulWidget {
@@ -223,7 +224,8 @@ class _MyPageState extends ConsumerState<MyPage> {
                   _subTitleList('기타'),
                   Widgets.titleList('이용 약관', () => context.pushNamed('tos')),
                   Widgets.titleList('개발자 홈페이지 바로가기', () {
-                    print('이용 약관 페이지로');
+                    Functions.launchURL(
+                        "https://dokseogarden.notion.site/74d8c0678a4e49e6ab2e2152cfae24c7");
                   }),
                 ],
               )

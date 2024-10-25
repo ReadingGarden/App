@@ -96,7 +96,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       }
 
       print('ACCESS Token: $accessToken');
-      context.go('/start');
+      // context.go('/start');
     });
   }
 
