@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'Constant.dart';
@@ -170,5 +170,16 @@ class Functions {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  //초대 링크
+  static void shareInviteLink(String inviteCode) {
+    final String inviteLink = 'https://yourapp.com/invite?code=$inviteCode';
+    Share.share('Join me on this app using my invite link: $inviteLink');
+  }
+
+  //초대 링크 생성
+  static String createInviteLink(int garden_no) {
+    return 'myapp://invite/$garden_no';
   }
 }

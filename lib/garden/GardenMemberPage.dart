@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/AuthAPI.dart';
@@ -18,9 +19,13 @@ class GardenMemberPage extends ConsumerStatefulWidget {
 }
 
 class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
+  late FToast fToast;
+
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
 
     final gardenAPI = GardenAPI(ref);
 
@@ -172,7 +177,8 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Widgets.shareBottomSheet(context, '멤버 초대하기');
+                      Widgets.shareBottomSheet(
+                          context, '멤버 초대하기', widget.garden_no, fToast);
                     },
                     child: Container(
                       // height: 22.h,

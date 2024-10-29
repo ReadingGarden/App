@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../utils/AppColors.dart';
+import 'Functions.dart';
 
 class Widgets {
   static appBar(BuildContext context,
@@ -346,7 +349,7 @@ class Widgets {
         });
   }
 
-  static Future shareBottomSheet(context, String title) {
+  static Future shareBottomSheet(context, String title, int garden_no, fToast) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,
@@ -369,70 +372,99 @@ class Widgets {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.grey_F2),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 8.h),
-                        height: 20.h,
-                        child: Text(
-                          '카카오톡',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                  GestureDetector(
+                    onTap: () {
+                      context.pop();
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 64.r,
+                            height: 64.r,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.grey_F2),
                           ),
-                        ),
-                      )
-                    ],
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 8.h),
+                            height: 20.h,
+                            child: Text(
+                              '카카오톡',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  //TODO:  - 클립보드에 복사
-                  Column(
-                    children: [
-                      Container(
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.grey_F2),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 8.h),
-                        height: 20.h,
-                        child: Text(
-                          '링크복사',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                  GestureDetector(
+                    onTap: () {
+                      Clipboard.setData(ClipboardData(
+                          text: Functions.createInviteLink(garden_no)));
+                      fToast.showToast(child: Widgets.toast('클립보드에 복사'));
+                      context.pop();
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 64.r,
+                            height: 64.r,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.grey_F2),
                           ),
-                        ),
-                      )
-                    ],
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 8.h),
+                            height: 20.h,
+                            child: Text(
+                              '링크복사',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  Column(
-                    children: [
-                      Container(
-                        width: 64.r,
-                        height: 64.r,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: AppColors.grey_F2),
-                      ),
-                      //TODO:  -시스템공유
-                      Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(top: 8.h),
-                        height: 20.h,
-                        child: Text(
-                          '더보기',
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                  GestureDetector(
+                    onTap: () {
+                      Share.share(Functions.createInviteLink(garden_no));
+                      context.pop();
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 64.r,
+                            height: 64.r,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.grey_F2),
                           ),
-                        ),
-                      )
-                    ],
+                          Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 8.h),
+                            height: 20.h,
+                            child: Text(
+                              '더보기',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   )
                 ],
               ),

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app_links/app_links.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -77,9 +80,14 @@ class SplashPage extends ConsumerStatefulWidget {
 }
 
 class _SplashPageState extends ConsumerState<SplashPage> {
+  final AppLinks _appLinks = AppLinks();
+  String _linkMessage = 'No link received yet';
+
   @override
   void initState() {
     super.initState();
+    //TODO: - 딥링크 처리 or 스플래시 넘어감 둘중에 선택
+    _initAppLinks();
 
     //FCM 토큰을 비동기로 가져옵니다.
     // ref.read(fcmTokenProvider);
@@ -98,6 +106,35 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       print('ACCESS Token: $accessToken');
       // context.go('/start');
     });
+  }
+
+  Future<void> _initAppLinks() async {
+    // 앱이 시작될 때 딥링크 처리
+    _appLinks.uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        _handleDeepLink(uri.toString());
+      }
+    });
+  }
+
+  void _handleDeepLink(String url) {
+    final Uri uri = Uri.parse(url);
+    if (uri.scheme == 'myapp' && uri.host == 'invite') {
+      final String garden_no = uri.pathSegments[0]; // garden_no 추출
+      print(uri.scheme);
+      print(url);
+      print(garden_no);
+      if (mounted) {
+        setState(() {
+          _linkMessage = 'Received garden_no: $garden_no';
+          print(_linkMessage);
+        });
+
+        // 여기에서 mypage로 이동
+        context.goNamed('mypage');
+        // Navigator.of(context).go('profile');
+      }
+    }
   }
 
   @override

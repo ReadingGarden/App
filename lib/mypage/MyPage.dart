@@ -229,11 +229,12 @@ class _MyPageState extends ConsumerState<MyPage> {
                     Functions.launchURL(
                         "https://www.notion.so/dokseogarden/1082d8001a9280f58ea8ea9916edbfea?v=b441041520b3422691c9f0d9cb091474&pvs=4");
                   }),
-                  Widgets.titleList('1:1 문의하기', () {
-                    print('1:1 문의하기 페이지로');
-                  }),
+                  // Widgets.titleList('1:1 문의하기', () {
+                  //   Functions.launchURLTest();
+
+                  // }),
                   Widgets.titleList('의견 보내기', () {
-                    sendEmail();
+                    Functions.launchURL("https://forms.gle/EBuu4Vvw7C2g4LL58");
                   }),
                   Widgets.titleList('리뷰 작성하기', () {
                     print('리뷰작성하기 페이지로');

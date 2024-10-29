@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/GardenAPI.dart';
@@ -31,9 +32,13 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   final double widgetHeight = 200.0;
   late List<Offset> _textPositions;
 
+  late FToast fToast;
+
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
 
     final gardenAPI = GardenAPI(ref);
 
@@ -529,7 +534,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     GestureDetector(
                       onTap: () {
                         context.pop();
-                        Widgets.shareBottomSheet(context, '가든 공유하기');
+                        Widgets.shareBottomSheet(context, '가든 공유하기',
+                            gardenAPI.gardenMain()['garden_no'], fToast);
                       },
                       child: Column(
                         children: [
