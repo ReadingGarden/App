@@ -1,3 +1,4 @@
+import 'package:book_flutter/garden/GardenInvitePage.dart';
 import 'package:book_flutter/mypage/TosPage.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -44,6 +45,10 @@ final GoRouter router = GoRouter(
         name: 'splash',
         builder: (BuildContext context, GoRouterState state) => SplashPage(),
       ),
+      GoRoute(
+          path: '/invite',
+          name: 'invite',
+          builder: (context, state) => GardenInvitePage()),
       GoRoute(
           path: '/start',
           name: 'start',

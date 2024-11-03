@@ -91,30 +91,48 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
     //FCM 토큰을 비동기로 가져옵니다.
     // ref.read(fcmTokenProvider);
-
-    //1초 후에 로그인 페이지로 이동
-    Future.delayed(const Duration(seconds: 2), () async {
-      //저장된 Access 불러오기
-      final accessToken = await loadAccess();
-      //Access 저장 되어있으면 자동 로그인
-      if (accessToken == null) {
-        context.go('/start');
-      } else {
-        context.go('/bottom-navi');
-      }
-
-      print('ACCESS Token: $accessToken');
-      // context.go('/start');
-    });
   }
 
   Future<void> _initAppLinks() async {
-    // 앱이 시작될 때 딥링크 처리
-    _appLinks.uriLinkStream.listen((Uri? uri) {
-      if (uri != null) {
-        _handleDeepLink(uri.toString());
+    try {
+      // 앱이 처음 실행될 때 초기 딥링크 URI를 가져옴
+      final Uri? initialUri = await _appLinks.getInitialLink();
+      print(initialUri);
+
+      if (initialUri != null) {
+        // 딥링크로 앱이 열렸을 때 처리
+        _handleDeepLink(initialUri.toString());
+      } else {
+        // 딥링크 없이 앱이 열렸을 때 기본 페이지 처리
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            // 1초 후에 로그인 페이지로 이동
+            Future.delayed(const Duration(seconds: 2), () async {
+              //저장된 Access 불러오기
+              final accessToken = await loadAccess();
+              //Access 저장 되어있으면 자동 로그인
+              if (accessToken == null) {
+                context.go('/start');
+              } else {
+                context.go('/bottom-navi');
+              }
+
+              print('ACCESS Token: $accessToken');
+              // context.go('/start');
+            });
+          }
+        });
       }
-    });
+    } catch (e) {
+      print("Error initializing app links: $e");
+    }
+
+    // //앱이 시작될 때 딥링크 처리
+    // _appLinks.uriLinkStream.listen((Uri? uri) {
+    //   if (uri != null) {
+    //     _handleDeepLink(uri.toString());
+    //   }
+    // });
   }
 
   void _handleDeepLink(String url) {
@@ -124,15 +142,14 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       print(uri.scheme);
       print(url);
       print(garden_no);
+
       if (mounted) {
         setState(() {
           _linkMessage = 'Received garden_no: $garden_no';
           print(_linkMessage);
         });
 
-        // 여기에서 mypage로 이동
-        context.goNamed('mypage');
-        // Navigator.of(context).go('profile');
+        context.goNamed('invite');
       }
     }
   }

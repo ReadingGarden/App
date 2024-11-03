@@ -406,7 +406,7 @@ class Widgets {
                     onTap: () {
                       Clipboard.setData(ClipboardData(
                           text: Functions.createInviteLink(garden_no)));
-                      fToast.showToast(child: Widgets.toast('클립보드에 복사'));
+                      fToast.showToast(child: Widgets.toast('👌 초대링크를 복사했어요'));
                       context.pop();
                     },
                     child: Container(
