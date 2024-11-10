@@ -205,6 +205,28 @@ class GardenService {
       }
     }
   }
+
+  //가든 멤버 초대 수락
+  Future<Response?> postGardenInvite(int garden_no) async {
+    try {
+      final response = await _authenticatedDio.post(
+        '${Constant.URL}garden/invite?garden_no=$garden_no',
+      );
+      print(response.data.toString());
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        // 서버가 응답한 경우 (상태 코드와 함께)
+        print('Error: ${e.response?.data}');
+        print('Status code: ${e.response?.statusCode}');
+        return e.response;
+      } else {
+        // 서버가 응답하지 않은 경우
+        print('Error sending request: ${e.message}');
+        return null;
+      }
+    }
+  }
 }
 
 final gardenService = GardenService();
