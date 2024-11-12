@@ -349,7 +349,8 @@ class Widgets {
         });
   }
 
-  static Future shareBottomSheet(context, String title, int garden_no, fToast) {
+  static Future shareBottomSheet(
+      context, String title, String garden, int garden_no, fToast) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,
@@ -374,7 +375,8 @@ class Widgets {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      context.pop();
+                      Functions.kakaoShare(garden);
+                      // context.pop();
                     },
                     child: Container(
                       color: Colors.transparent,

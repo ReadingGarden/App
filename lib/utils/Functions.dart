@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -181,5 +182,33 @@ class Functions {
   //초대 링크 생성
   static String createInviteLink(int garden_no) {
     return 'myapp://invite/$garden_no';
+  }
+
+  //카카오톡 공유
+  static kakaoShare(String garden) async {
+    // 사용자 정의 템플릿 ID
+    int templateId = 111641;
+    // 카카오톡 실행 가능 여부 확인
+    bool isKakaoTalkSharingAvailable =
+        await ShareClient.instance.isKakaoTalkSharingAvailable();
+
+    if (isKakaoTalkSharingAvailable) {
+      try {
+        Uri uri =
+            await ShareClient.instance.shareCustom(templateId: templateId);
+        await ShareClient.instance.launchKakaoTalk(uri);
+        print('카카오톡 공유 완료');
+      } catch (error) {
+        print('카카오톡 공유 실패 $error');
+      }
+    } else {
+      try {
+        Uri shareUrl = await WebSharerClient.instance.makeCustomUrl(
+            templateId: templateId, templateArgs: {'garden': garden});
+        await launchBrowserTab(shareUrl, popupOpen: true);
+      } catch (error) {
+        print('카카오톡 공유 실패 $error');
+      }
+    }
   }
 }

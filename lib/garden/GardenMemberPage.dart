@@ -178,7 +178,11 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                   GestureDetector(
                     onTap: () {
                       Widgets.shareBottomSheet(
-                          context, '멤버 초대하기', widget.garden_no, fToast);
+                          context,
+                          '멤버 초대하기',
+                          gardenAPI.gardenMain()['garden_title'],
+                          widget.garden_no,
+                          fToast);
                     },
                     child: Container(
                       // height: 22.h,
