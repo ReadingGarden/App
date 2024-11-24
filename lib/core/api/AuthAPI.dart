@@ -45,9 +45,10 @@ class AuthAPI {
     if (response?.statusCode == 201) {
       //access,refresh 저장하고 회원가입 완료 페이지로
       //TODO: - 회원가입 토큰 저장
-      // saveAccess(response?.data['data']['access_token']);
-      // saveRefresh(response?.data['data']['refresh_token']);
-      context.goNamed('signup-done');
+      saveAccess(response?.data['data']['access_token']);
+      saveRefresh(response?.data['data']['refresh_token']);
+      context.goNamed('signup-done',
+          extra: response?.data['data']['user_nick']);
     } else if (response?.statusCode == 400) {}
   }
 

@@ -48,7 +48,10 @@ final GoRouter router = GoRouter(
       GoRoute(
           path: '/invite',
           name: 'invite',
-          builder: (context, state) => GardenInvitePage()),
+          builder: (context, state) {
+            final int garden_no = state.extra as int;
+            return GardenInvitePage(garden_no: garden_no);
+          }),
       GoRoute(
           path: '/start',
           name: 'start',
@@ -67,10 +70,12 @@ final GoRouter router = GoRouter(
                           SignupPage(),
                       routes: [
                         GoRoute(
-                          path: 'signup-done',
-                          name: 'signup-done',
-                          builder: (context, state) => SignupDonePage(),
-                        )
+                            path: 'signup-done',
+                            name: 'signup-done',
+                            builder: (context, state) {
+                              final String user_nick = state.extra as String;
+                              return SignupDonePage(user_nick: user_nick);
+                            })
                       ]),
                   GoRoute(
                       path: 'pwd-find',

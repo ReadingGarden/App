@@ -41,7 +41,8 @@ class SignupPage extends ConsumerWidget {
       //access,refresh 저장하고 회원가입 완료 페이지로
       saveAccess(response?.data['data']['access_token']);
       saveRefresh(response?.data['data']['refresh_token']);
-      context.goNamed('signup-done');
+      context.goNamed('signup-done',
+          extra: response?.data['data']['user_nick']);
     } else if (response?.statusCode == 400) {}
   }
 
@@ -162,9 +163,13 @@ class SignupPage extends ConsumerWidget {
 }
 
 class SignupDonePage extends StatelessWidget {
+  final String user_nick;
+
+  const SignupDonePage({super.key, required this.user_nick});
+
   // 회원가입 완료 -> 가든 페이지로
   void singupEnd(BuildContext context) {
-    context.goNamed('garden');
+    context.go('/bottom-navi');
   }
 
   @override
@@ -175,7 +180,6 @@ class SignupDonePage extends StatelessWidget {
           child: Column(
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 26.w),
@@ -187,32 +191,31 @@ class SignupDonePage extends StatelessWidget {
                           child: Text.rich(TextSpan(
                               style: TextStyle(
                                   fontSize: 24.sp, fontWeight: FontWeight.w600),
-                              children: const [
-                                TextSpan(text: '반가워요, '),
+                              children: [
+                                const TextSpan(text: '반가워요, '),
                                 TextSpan(
-                                    text: '@',
-                                    style: TextStyle(
+                                    text: user_nick,
+                                    style: const TextStyle(
                                         color: AppColors.primaryColor)),
-                                TextSpan(text: '님👋️')
+                                const TextSpan(text: '님')
                               ])),
                         ),
-                        const Text(
+                        Text(
                           '독서가든의 가드너가 되신걸 환영합니다!\n시작하기를 눌러 나의 첫번째 가든을 확인해보세요.',
-                          style: TextStyle(color: AppColors.grey_8D),
+                          style: TextStyle(
+                              color: AppColors.grey_8D, fontSize: 14.sp),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 52.h),
-                    width: 360.w,
-                    height: 380.h,
+                    margin: EdgeInsets.only(top: 40.h),
+                    width: 312.r,
+                    height: 312.r,
                     color: Colors.amber,
                   ),
                 ],
               ),
-              // Expanded(
-              //     child: Widgets.button('시작하기', true, () => singupEnd(context)))
             ],
           ),
         ),
