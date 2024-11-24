@@ -61,13 +61,13 @@ class Widgets {
         height: 60.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
-            color: isValid ? AppColors.primaryColor : AppColors.grey_CA),
+            color: isValid ? AppColors.black_4A : AppColors.grey_CA),
         child: Center(
             child: Text(
           title,
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               fontSize: 16.sp,
               color: Colors.white),
         )),
@@ -283,7 +283,7 @@ class Widgets {
                           cancelTitle ?? '취소',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w700,
                               fontSize: 16.sp,
                               color: AppColors.grey_8D),
                         )),
@@ -304,7 +304,7 @@ class Widgets {
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-            height: 282.h,
+            height: 258.h,
             margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -408,7 +408,7 @@ class Widgets {
                     onTap: () {
                       Clipboard.setData(ClipboardData(
                           text: Functions.createInviteLink(garden_no)));
-                      fToast.showToast(child: Widgets.toast('👌 초대링크를 복사했어요'));
+                      // fToast.showToast(child: Widgets.toast('👌 초대링크를 복사했어요'));
                       context.pop();
                     },
                     child: Container(
