@@ -499,7 +499,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                           Padding(
                                             padding: EdgeInsets.only(top: 8.h),
                                             child: Text(
-                                              bookDetail['book_info'],
+                                              bookDetail['book_info'] ?? '',
                                               style: TextStyle(fontSize: 12.sp),
                                             ),
                                           )
