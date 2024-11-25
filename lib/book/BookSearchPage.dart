@@ -148,8 +148,8 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                      margin:
-                          EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
+                      margin: EdgeInsets.only(
+                          top: 20.h, left: 24.w, right: 24.w, bottom: 12.h),
                       alignment: Alignment.center,
                       height: 72.h,
                       child: TextField(
@@ -218,14 +218,13 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                       Text(
                                         '책 직접 입력하기',
                                         style: TextStyle(
-                                            fontSize: 16.sp,
-                                            color: AppColors.primaryColor),
+                                          fontSize: 16.sp,
+                                        ),
                                       ),
                                       SvgPicture.asset(
                                         'assets/images/angle-right-b.svg',
                                         width: 20.r,
                                         height: 20.r,
-                                        color: AppColors.primaryColor,
                                       )
                                     ],
                                   ),
@@ -257,14 +256,13 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                       Text(
                                         '바코드로 검색하기',
                                         style: TextStyle(
-                                            fontSize: 16.sp,
-                                            color: AppColors.primaryColor),
+                                          fontSize: 16.sp,
+                                        ),
                                       ),
                                       SvgPicture.asset(
                                         'assets/images/angle-right-b.svg',
                                         width: 20.r,
                                         height: 20.r,
-                                        color: AppColors.primaryColor,
                                       )
                                     ],
                                   ),
