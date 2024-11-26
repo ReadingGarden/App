@@ -125,7 +125,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        height: 88.h,
+                        padding: EdgeInsets.only(bottom: 12.h),
                         margin: EdgeInsets.only(left: 24.w, right: 24.w),
                         child: Row(children: [
                           (widget.book['cover'] != null &&
