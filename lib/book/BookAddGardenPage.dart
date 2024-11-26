@@ -87,167 +87,176 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: Widgets.appBar(context),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Container(
-            margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 60.h),
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  width: 264.w,
-                  // height: 307.h,
+        body: (bookResult().isEmpty)
+            ? Container()
+            : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Container(
+                  margin:
+                      EdgeInsets.only(left: 24.w, right: 24.w, bottom: 60.h),
                   child: Column(
                     children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(8.r),
-                          child: (bookResult()['cover'] != null)
-                              ? Image.network(
-                                  width: 122.w,
-                                  height: 180.h,
-                                  fit: BoxFit.cover,
-                                  bookResult()['cover'],
-                                )
-                              : SizedBox(
-                                  width: 122.w,
-                                  height: 180.h,
-                                )),
                       Container(
-                        margin: EdgeInsets.only(top: 29.h, bottom: 6.h),
-                        child: Text(
-                          bookResult()['title'] ?? '',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        bookResult()['author'] ?? '',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 12.sp, color: AppColors.grey_8D),
-                      ),
-                      Text(
-                        bookResult()['publisher'] ?? '',
-                        style: TextStyle(
-                            fontSize: 12.sp, color: AppColors.grey_8D),
-                      ),
-                      Text(
-                        '${bookResult()['itemPage'] ?? ''}p',
-                        style: TextStyle(
-                            fontSize: 12.sp, color: AppColors.grey_8D),
-                      ),
-                    ],
-                  ),
-                ),
-                (!ref.watch(buttonCheckProvider))
-                    ? GestureDetector(
-                        onTap: () {
-                          ref.read(buttonCheckProvider.notifier).state = true;
-                          postBookStatus();
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: 20.h, bottom: 30.h),
-                          padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          width: 100.w,
-                          height: 28.h,
-                          decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20.r),
-                              border:
-                                  Border.all(color: AppColors.primaryColor)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 12.r,
-                                height: 12.r,
-                                child: SvgPicture.asset(
-                                  'assets/images/plus.svg',
+                        alignment: Alignment.center,
+                        width: 264.w,
+                        // height: 307.h,
+                        child: Column(
+                          children: [
+                            ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: (bookResult()['cover'] != null)
+                                    ? Image.network(
+                                        width: 122.w,
+                                        height: 180.h,
+                                        fit: BoxFit.cover,
+                                        bookResult()['cover'],
+                                      )
+                                    : SizedBox(
+                                        width: 122.w,
+                                        height: 180.h,
+                                      )),
+                            Container(
+                              margin: EdgeInsets.only(top: 29.h, bottom: 6.h),
+                              child: Text(
+                                bookResult()['title'] ?? '',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18.sp,
                                 ),
                               ),
-                              Text(
-                                '읽고싶어요',
-                                style: TextStyle(
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w600,
+                            ),
+                            Text(
+                              bookResult()['author'] ?? '',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            ),
+                            Text(
+                              bookResult()['publisher'] ?? '',
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            ),
+                            Text(
+                              '${bookResult()['itemPage'] ?? ''}p',
+                              style: TextStyle(
+                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            ),
+                          ],
+                        ),
+                      ),
+                      (!ref.watch(buttonCheckProvider))
+                          ? GestureDetector(
+                              onTap: () {
+                                ref.read(buttonCheckProvider.notifier).state =
+                                    true;
+                                postBookStatus();
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin:
+                                    EdgeInsets.only(top: 20.h, bottom: 30.h),
+                                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                width: 100.w,
+                                height: 28.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    border: Border.all(
+                                        color: AppColors.primaryColor)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      width: 12.r,
+                                      height: 12.r,
+                                      child: SvgPicture.asset(
+                                        'assets/images/plus.svg',
+                                      ),
+                                    ),
+                                    Text(
+                                      '읽고싶어요',
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.primaryColor),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                ref.read(buttonCheckProvider.notifier).state =
+                                    false;
+                                if (ref.watch(bookNoProvider) != null) {
+                                  deleteBookStatus();
+                                }
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin:
+                                    EdgeInsets.only(top: 20.h, bottom: 30.h),
+                                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                width: 100.w,
+                                height: 28.h,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20.r),
                                     color: AppColors.primaryColor),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    : GestureDetector(
-                        onTap: () {
-                          ref.read(buttonCheckProvider.notifier).state = false;
-                          if (ref.watch(bookNoProvider) != null) {
-                            deleteBookStatus();
-                          }
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: 20.h, bottom: 30.h),
-                          padding: EdgeInsets.symmetric(horizontal: 12.w),
-                          width: 100.w,
-                          height: 28.h,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.r),
-                              color: AppColors.primaryColor),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 12.r,
-                                height: 12.r,
-                                child: SvgPicture.asset(
-                                  'assets/images/check.svg',
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      width: 12.r,
+                                      height: 12.r,
+                                      child: SvgPicture.asset(
+                                        'assets/images/check.svg',
+                                      ),
+                                    ),
+                                    Text(
+                                      '읽고싶어요',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12.sp,
+                                          color: Colors.white),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Text(
-                                '읽고싶어요',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 12.sp,
-                                    color: Colors.white),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                Container(
-                  padding: EdgeInsets.only(
-                      top: 20.h, bottom: 20.h, left: 24.w, right: 24.w),
-                  width: 312.w,
-                  // height: 210.h,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.r),
-                      border: Border.all(color: AppColors.grey_F2)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                            ),
                       Container(
-                        margin: EdgeInsets.only(bottom: 8.h),
-                        height: 22.h,
-                        child: const Text(
-                          '책 소개',
-                          style: TextStyle(color: AppColors.grey_8D),
+                        padding: EdgeInsets.only(
+                            top: 20.h, bottom: 20.h, left: 24.w, right: 24.w),
+                        width: 312.w,
+                        // height: 210.h,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.r),
+                            border: Border.all(color: AppColors.grey_F2)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 8.h),
+                              height: 22.h,
+                              child: const Text(
+                                '책 소개',
+                                style: TextStyle(color: AppColors.grey_8D),
+                              ),
+                            ),
+                            Text(
+                              bookResult()['description'] ?? '',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
                         ),
-                      ),
-                      Text(
-                        bookResult()['description'] ?? '',
-                        style: TextStyle(fontSize: 12.sp),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              ),
         bottomNavigationBar: Container(
             margin: EdgeInsets.only(
                 left: 24.w, right: 24.w, bottom: 30.h, top: 10.h),
