@@ -80,93 +80,30 @@ class SplashPage extends ConsumerStatefulWidget {
 }
 
 class _SplashPageState extends ConsumerState<SplashPage> {
-  final AppLinks _appLinks = AppLinks();
-  String _linkMessage = 'No link received yet';
-
   @override
   void initState() {
     super.initState();
-    //TODO: - 딥링크 처리 or 스플래시 넘어감 둘중에 선택
-    _initAppLinks();
-
     //FCM 토큰을 비동기로 가져옵니다.
-    // ref.read(fcmTokenProvider);
-  }
+    ref.read(fcmTokenProvider);
 
-  Future<void> _initAppLinks() async {
-    try {
-      // 앱이 처음 실행될 때 초기 딥링크 URI를 가져옴
-      final Uri? initialUri = await _appLinks.getInitialLink();
-      print(initialUri);
-
-      if (initialUri != null) {
-        // 딥링크로 앱이 열렸을 때 처리
-        _handleDeepLink(initialUri.toString());
+    // 1초 후에 로그인 페이지로 이동
+    Future.delayed(const Duration(seconds: 2), () async {
+      //저장된 Access 불러오기
+      final accessToken = await loadAccess();
+      //Access 저장 되어있으면 자동 로그인
+      if (accessToken == null) {
+        context.go('/start');
       } else {
-        // 딥링크 없이 앱이 열렸을 때 기본 페이지 처리
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) {
-            // 1초 후에 로그인 페이지로 이동
-            Future.delayed(const Duration(seconds: 2), () async {
-              //저장된 Access 불러오기
-              final accessToken = await loadAccess();
-              //Access 저장 되어있으면 자동 로그인
-              if (accessToken == null) {
-                context.go('/start');
-              } else {
-                context.go('/bottom-navi');
-              }
-
-              print('ACCESS Token: $accessToken');
-              // context.go('/start');
-            });
-          }
-        });
+        context.go('/bottom-navi');
       }
-    } catch (e) {
-      print("Error initializing app links: $e");
-    }
 
-    // //앱이 시작될 때 딥링크 처리
-    // _appLinks.uriLinkStream.listen((Uri? uri) {
-    //   if (uri != null) {
-    //     _handleDeepLink(uri.toString());
-    //   }
-    // });
-  }
-
-  void _handleDeepLink(String url) {
-    final Uri uri = Uri.parse(url);
-    if (uri.scheme == 'myapp' && uri.host == 'invite') {
-      final String garden_no = uri.pathSegments[0]; // garden_no 추출
-      print(uri.scheme);
-      print(url);
-      print(garden_no);
-
-      if (mounted) {
-        setState(() {
-          _linkMessage = 'Received garden_no: $garden_no';
-          print(_linkMessage);
-        });
-
-        context.goNamed('invite');
-      }
-    }
+      print('ACCESS Token: $accessToken');
+      // context.go('/start');
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final fcmTokenAsyncValue = ref.watch(fcmTokenProvider);
-
-    // fcmTokenAsyncValue.when(data: (fcmToken) {
-    //   print('FCM Token: $fcmToken');
-    // }, loading: () {
-    //   //로딩 중
-    //   print('Loading FCM Token...');
-    // }, error: (error, stackTrace) {
-    //   print('Error retrieving FCM token: $error');
-    // });
-
     return const Scaffold(
       backgroundColor: Colors.amber,
       body: Center(child: Text('Splash')),

@@ -99,13 +99,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         isPwd: true)),
                 Widgets.button('이메일로 로그인', true, () async {
                   // FCM 토큰을 비동기적으로 가져오기
-                  // final fcmToken = await ref.read(fcmTokenProvider.future);
+                  final fcmToken = await ref.read(fcmTokenProvider.future);
 
                   final data = {
                     "user_email": _emailController.text,
                     "user_password": _pwdController.text,
-                    "user_fcm": '',
-                    // "user_fcm": fcmToken ?? '',
+                    "user_fcm": fcmToken ?? '',
                     "user_social_id": "",
                     "user_social_type": ""
                   };
