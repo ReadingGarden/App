@@ -21,11 +21,14 @@ class GardenPage extends ConsumerStatefulWidget {
 }
 
 class _GardenPageState extends ConsumerState<GardenPage> {
+  final ScrollController _horiScrollController = ScrollController();
+
   final AppLinks _appLinks = AppLinks();
   String _linkMessage = 'No link received yet';
 
   //배경 이미지 초기 오프셋
   // Offset _backgroundOffset = Offset.zero;
+
   //텍스트 위치 리스트
   // List<Offset> _textPositions = [];
   // late Future<int> _countFuture;
@@ -41,7 +44,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   @override
   void initState() {
     super.initState();
-
     _initAppLinks();
 
     fToast = FToast();
@@ -58,10 +60,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   //딥링크 열기
   Future<void> _initAppLinks() async {
     try {
-      // 앱이 처음 실행될 때 초기 딥링크 URI를 가져옴
+      // 앱이 열릴 때 딥링크를 처리
       final Uri? initialUri = await _appLinks.getInitialLink();
-      print(initialUri);
-
       if (initialUri != null) {
         // 딥링크로 앱이 열렸을 때 처리
         _handleDeepLink(initialUri.toString());
@@ -213,6 +213,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
           builder: (context, constraints) {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              controller: _horiScrollController,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SizedBox(
@@ -652,6 +653,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       gardenAPI.putGardenMain(
                           gardenAPI.gardenList()[index]['garden_no']);
                       context.pop();
+                      _horiScrollController.animateTo(
+                        0.0, // 스크롤 초기 위치
+                        duration:
+                            const Duration(milliseconds: 300), // 애니메이션 지속 시간
+                        curve: Curves.easeOut, // 애니메이션 커브
+                      );
                     },
                     child: Container(
                       margin: EdgeInsets.only(right: 12.w),
