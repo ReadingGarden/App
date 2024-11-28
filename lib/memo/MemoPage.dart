@@ -144,126 +144,141 @@ class _MemoPageState extends ConsumerState<MemoPage> {
   }
 
   Widget _memoList() {
-    return ListView(
-      controller: _scrollController,
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      children: List.generate(
-        ref.read(memoListProvider).length,
-        (index) {
-          return GestureDetector(
-            onTap: () async {
-              final result = await context.pushNamed('memo-detail',
-                  extra: ref.read(memoListProvider)[index].toJson());
-              if (result != null) {
-                getMemoList();
-              }
-            },
-            child: Container(
-              margin: EdgeInsets.only(bottom: 10.h),
-              padding: EdgeInsets.only(
-                  left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
-              width: 312.w,
-              decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.grey_F2),
-                  borderRadius: BorderRadius.circular(20.r),
-                  color: Colors.transparent),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      (ref.watch(memoListProvider)[index].book_image_url ==
-                              null)
-                          ? Container(
-                              width: 44.r,
-                              height: 44.r,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  color: AppColors.grey_F2),
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(8.r),
-                              child: Image.network(
+    return RefreshIndicator(
+      onRefresh: () async {
+        //메모 재로딩
+        _currentPage = 1;
+        ref.read(memoListProvider.notifier).reset();
+        ref.read(memoSelectIndexListProvider.notifier).state = [];
+        getMemoList();
+      },
+      backgroundColor: Colors.white,
+      color: AppColors.grey_8D,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        controller: _scrollController,
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        children: List.generate(
+          ref.read(memoListProvider).length,
+          (index) {
+            return GestureDetector(
+              onTap: () async {
+                final result = await context.pushNamed('memo-detail',
+                    extra: ref.read(memoListProvider)[index].toJson());
+                if (result != null) {
+                  getMemoList();
+                }
+              },
+              child: Container(
+                margin: EdgeInsets.only(bottom: 10.h),
+                padding: EdgeInsets.only(
+                    left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
+                width: 312.w,
+                decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.grey_F2),
+                    borderRadius: BorderRadius.circular(20.r),
+                    color: Colors.transparent),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        (ref.watch(memoListProvider)[index].book_image_url ==
+                                null)
+                            ? Container(
                                 width: 44.r,
                                 height: 44.r,
-                                fit: BoxFit.cover,
-                                ref
-                                    .watch(memoListProvider)[index]
-                                    .book_image_url!,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    color: AppColors.grey_F2),
+                              )
+                            : ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Image.network(
+                                  width: 44.r,
+                                  height: 44.r,
+                                  fit: BoxFit.cover,
+                                  ref
+                                      .watch(memoListProvider)[index]
+                                      .book_image_url!,
+                                ),
                               ),
-                            ),
-                      Container(
-                        width: 212.w,
-                        margin: EdgeInsets.only(left: 12.w),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Container(
+                          width: 212.w,
+                          margin: EdgeInsets.only(left: 12.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ref.watch(memoListProvider)[index].book_title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                ref.watch(memoListProvider)[index].book_author,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 12.sp, color: AppColors.grey_8D),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    Visibility(
+                        visible:
+                            (ref.watch(memoListProvider)[index].image_url !=
+                                null),
+                        child: Container(
+                          margin: EdgeInsets.only(top: 10.h),
+                          child: Image.network(
+                              width: 320.w,
+                              height: 140.h,
+                              fit: BoxFit.fitWidth,
+                              '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index].image_url}'),
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        child: Text(
+                          ref.watch(memoListProvider)[index].memo_content,
+                          maxLines: 5,
+                          style: TextStyle(
+                              fontSize: 12.sp, overflow: TextOverflow.ellipsis),
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(top: 10.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              ref.watch(memoListProvider)[index].book_title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              ref.watch(memoListProvider)[index].book_author,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                              Functions.formatDate(ref
+                                  .watch(memoListProvider)[index]
+                                  .memo_created_at),
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                putMemoLike(index,
+                                    ref.watch(memoListProvider)[index].id);
+                              },
+                              child: SvgPicture.asset(
+                                ref.watch(memoSelectIndexListProvider)[index]
+                                    ? 'assets/images/star.svg'
+                                    : 'assets/images/star-dis.svg',
+                                width: 20.r,
+                                height: 20.r,
+                              ),
                             )
                           ],
-                        ),
-                      )
-                    ],
-                  ),
-                  Visibility(
-                      visible: (ref.watch(memoListProvider)[index].image_url !=
-                          null),
-                      child: Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        child: Image.network(
-                            width: 320.w,
-                            height: 140.h,
-                            fit: BoxFit.fitWidth,
-                            '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index].image_url}'),
-                      )),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.h),
-                      child: Text(
-                        ref.watch(memoListProvider)[index].memo_content,
-                        maxLines: 5,
-                        style: TextStyle(
-                            fontSize: 12.sp, overflow: TextOverflow.ellipsis),
-                      )),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            Functions.formatDate(ref
-                                .watch(memoListProvider)[index]
-                                .memo_created_at),
-                            style: TextStyle(
-                                fontSize: 12.sp, color: AppColors.grey_8D),
-                          ),
-                          GestureDetector(
-                            onTap: () => putMemoLike(
-                                index, ref.watch(memoListProvider)[index].id),
-                            child: SvgPicture.asset(
-                              ref.watch(memoSelectIndexListProvider)[index]
-                                  ? 'assets/images/star.svg'
-                                  : 'assets/images/star-dis.svg',
-                              width: 20.r,
-                              height: 20.r,
-                            ),
-                          )
-                        ],
-                      )),
-                ],
+                        )),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
