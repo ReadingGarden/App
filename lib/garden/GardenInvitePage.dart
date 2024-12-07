@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/api/GardenAPI.dart';
 import '../core/service/GardenService.dart';
@@ -56,6 +57,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
         toolbarHeight: 80.h,
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
+        leading: Container(),
       ),
       body: (inviteGarden.isNotEmpty)
           ? Container(
@@ -137,15 +139,32 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                         padding: EdgeInsets.only(bottom: 10.h),
                         child: Widgets.button('초대 수락하기', true, () {}),
                       ),
-                      Widgets.button('거절하기', false, () {})
+                      GestureDetector(
+                        onTap: () {
+                          context.pop();
+                        },
+                        child: Container(
+                          height: 60.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.r),
+                              color: AppColors.grey_CA),
+                          child: Center(
+                              child: Text(
+                            '거절하기',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16.sp,
+                                color: Colors.white),
+                          )),
+                        ),
+                      ),
                     ],
                   ),
                 ],
               ),
             )
-          : Container(
-              child: Center(child: Text('존재하지 않는 가든')),
-            ),
+          : Container(),
     );
   }
 }

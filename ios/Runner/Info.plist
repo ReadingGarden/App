@@ -2,6 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>branch_key</key>
+	<dict>
+		<key>live</key>
+		<string>key_live_dvl8wi8dSGBZT8EKkkKVpkanEDjoxIAF</string>
+	</dict>
+	<key>branch_universal_link_domians</key>
+	<array>
+		<string>dokseogarden.app.link</string>
+		<string>dokseogarden-alternate.app.link</string>
+	</array>
+	<key>AssociatedDomains</key>
+	<array>
+		<string>applinks:dokseogarden.app.link</string>
+		<string>applinks:dokseogarden-alternate.app.link</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -25,11 +40,11 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-       		<key>CFBundleURLSchemes</key>
-        	<array>
-            	<string>myapp</string> <!-- 앱 고유의 스키마 -->
-        	</array>
-    	</dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>dokseogarden</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
@@ -39,6 +54,16 @@
 			<array>
 				<string>kakaoa4fcc9bb270d51847a1ae05d63619bda</string>
 				<string>com.googleusercontent.apps.494928162578-g1tcfssv21evd9ei162st7r11dc3q65v</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>io.Branch.Branchsters</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>branchsters</string>
 			</array>
 		</dict>
 	</array>
@@ -53,6 +78,7 @@
 		<string>kakaoplus</string>
 		<string>http</string>
 		<string>https</string>
+		<string>branch</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -65,6 +91,8 @@
 	<string>We need access to your camera to take photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to select photos.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We use your data to show personalized content.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -76,6 +104,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UISupportedExternalAccessoryProtocols</key>
+	<array>
+		<string>com.branch.sdk</string>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

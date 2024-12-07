@@ -46,13 +46,6 @@ final GoRouter router = GoRouter(
         builder: (BuildContext context, GoRouterState state) => SplashPage(),
       ),
       GoRoute(
-          path: '/invite',
-          name: 'invite',
-          builder: (context, state) {
-            final int garden_no = state.extra as int;
-            return GardenInvitePage(garden_no: garden_no);
-          }),
-      GoRoute(
           path: '/start',
           name: 'start',
           builder: (context, state) => StartPage(),
@@ -282,6 +275,13 @@ final GoRouter router = GoRouter(
             //         },
             //       )
             //     ]),
+            GoRoute(
+                path: 'invite',
+                name: 'invite',
+                builder: (context, state) {
+                  final int garden_no = state.extra as int;
+                  return GardenInvitePage(garden_no: garden_no);
+                }),
             GoRoute(
                 path: 'garden-edit',
                 name: 'garden-edit',

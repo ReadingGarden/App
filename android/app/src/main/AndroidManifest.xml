@@ -16,20 +16,20 @@
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
                  to determine the Window background behind the Flutter UI. -->
-            
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                 <!-- 초대링크 -->
+                 <!-- 초대링크 설정 -->                 
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="myapp" android:host="invite" />
+                <data android:scheme="dokseogarden" android:host="invite" />
             </intent-filter>
         </activity>
+        <!-- 카카오 설정 -->
         <activity
            android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
            android:exported="true">
@@ -37,27 +37,44 @@
                <action android:name="android.intent.action.VIEW" />
                <category android:name="android.intent.category.DEFAULT" />
                <category android:name="android.intent.category.BROWSABLE" />
-
-               <!-- Redirect URI, "kakao${YOUR_NATIVE_APP_KEY}://oauth" 형식 -->
                <data android:scheme="kakaoa4fcc9bb270d51847a1ae05d63619bda" android:host="oauth"/>
            </intent-filter>
        </activity>
+       <!-- Branch SDK 설정 -->
+        <meta-data
+            android:name="io.branch.sdk.BranchKey"
+            android:value="key_live_dvl8wi8dSGBZT8EKkkKVpkanEDjoxIAF" />
+        <meta-data
+            android:name="io.branch.sdk.TestMode"
+            android:value="false" />
+
+        <!-- Intent filter for Branch links -->
+        <activity
+            android:name="io.branch.referral.BranchActivity"
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="dokseogarden.app.link" />
+            </intent-filter>
+        </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
-    
-    <!-- Https 권한-->
+    <!-- Https 권한 -->
     <uses-permission android:name="android.permission.INTERNET"/>
-    <!-- 앨범 권한-->
+    <!-- 앨범 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 카메라 권한-->
+    <!-- 카메라 권한 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 마이크 권한-->
+    <!-- 마이크 권한 -->
     <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
-    
-
 </manifest>

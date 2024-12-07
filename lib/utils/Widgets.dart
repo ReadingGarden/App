@@ -375,8 +375,7 @@ class Widgets {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Functions.kakaoShare(garden);
-                      // context.pop();
+                      context.pop();
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -406,8 +405,10 @@ class Widgets {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Clipboard.setData(ClipboardData(
-                          text: Functions.createInviteLink(garden_no)));
+                      Functions.shareBranchLink(garden, garden_no);
+
+                      // Clipboard.setData(ClipboardData(
+                      //     text: Functions.createInviteLink(garden_no)));
                       // fToast.showToast(child: Widgets.toast('👌 초대링크를 복사했어요'));
                       context.pop();
                     },
@@ -438,10 +439,7 @@ class Widgets {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Share.share(Functions.createInviteLink(garden_no));
-                      context.pop();
-                    },
+                    onTap: () {},
                     child: Container(
                       color: Colors.transparent,
                       child: Column(

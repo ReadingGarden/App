@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,9 +24,6 @@ class GardenPage extends ConsumerStatefulWidget {
 class _GardenPageState extends ConsumerState<GardenPage> {
   final ScrollController _horiScrollController = ScrollController();
 
-  final AppLinks _appLinks = AppLinks();
-  String _linkMessage = 'No link received yet';
-
   //배경 이미지 초기 오프셋
   // Offset _backgroundOffset = Offset.zero;
 
@@ -40,11 +38,13 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   // late List<Offset> _textPositions;
 
   late FToast fToast;
+  late Stream<BranchResponse> stream;
 
   @override
   void initState() {
     super.initState();
-    _initAppLinks();
+    // Session 초기화
+    initBranchSession();
 
     fToast = FToast();
     fToast.init(context);
@@ -57,37 +57,16 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     });
   }
 
-  //딥링크 열기
-  Future<void> _initAppLinks() async {
-    try {
-      // 앱이 열릴 때 딥링크를 처리
-      final Uri? initialUri = await _appLinks.getInitialLink();
-      if (initialUri != null) {
-        // 딥링크로 앱이 열렸을 때 처리
-        _handleDeepLink(initialUri.toString());
+  void initBranchSession() async {
+    // Branch SDK Session 시작
+    FlutterBranchSdk.initSession().listen((data) {
+      print('DeepLink Data: $data');
+      if (data['+clicked_branch_link']) {
+        context.pushNamed('invite', extra: data['garden_no']);
       }
-    } catch (e) {
-      print("Error initializing app links: $e");
-    }
-  }
-
-  //딥링크 처리
-  void _handleDeepLink(String url) {
-    final Uri uri = Uri.parse(url);
-    if (uri.scheme == 'myapp' && uri.host == 'invite') {
-      final String garden_no = uri.pathSegments[0]; // garden_no 추출
-      print(uri.scheme);
-      print(url);
-
-      if (mounted) {
-        setState(() {
-          _linkMessage = 'Received garden_no: $garden_no';
-          print(_linkMessage);
-        });
-
-        context.goNamed('invite', extra: int.parse(garden_no));
-      }
-    }
+    }, onError: (error) {
+      print('Error: $error');
+    });
   }
 
   @override
@@ -105,6 +84,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 _gardenMain(),
                 GestureDetector(
                   onTap: () async {
+                    // _createBranchLink();
                     _gardenMenuBottomSheet();
                   },
                   child: (gardenAPI.gardenMain().isNotEmpty)
@@ -433,12 +413,15 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     GestureDetector(
                       onTap: () {
                         context.pop();
-                        Widgets.shareBottomSheet(
-                            context,
-                            '가든 공유하기',
+                        Functions.shareBranchLink(
                             gardenAPI.gardenMain()['garden_title'],
-                            gardenAPI.gardenMain()['garden_no'],
-                            fToast);
+                            gardenAPI.gardenMain()['garden_no']);
+                        // Widgets.shareBottomSheet(
+                        //     context,
+                        //     '가든 공유하기',
+                        //     gardenAPI.gardenMain()['garden_title'],
+                        //     gardenAPI.gardenMain()['garden_no'],
+                        //     fToast);
                       },
                       child: Column(
                         children: [

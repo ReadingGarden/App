@@ -7,6 +7,7 @@ PODS:
   - AppAuth/Core (1.7.5)
   - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
+  - BranchSDK (3.6.5)
   - camera_avfoundation (0.0.1):
     - Flutter
   - Firebase/Auth (11.4.0):
@@ -63,6 +64,9 @@ PODS:
     - nanopb (~> 3.30910.0)
   - Flutter (1.0.0)
   - flutter_barcode_scanner (2.0.0):
+    - Flutter
+  - flutter_branch_sdk (8.2.0):
+    - BranchSDK (~> 3.6.0)
     - Flutter
   - flutter_email_sender (0.0.1):
     - Flutter
@@ -155,6 +159,7 @@ DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
   - flutter_barcode_scanner (from `.symlinks/plugins/flutter_barcode_scanner/ios`)
+  - flutter_branch_sdk (from `.symlinks/plugins/flutter_branch_sdk/ios`)
   - flutter_email_sender (from `.symlinks/plugins/flutter_email_sender/ios`)
   - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
@@ -170,6 +175,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
+    - BranchSDK
     - Firebase
     - FirebaseAppCheckInterop
     - FirebaseAuth
@@ -205,6 +211,8 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_barcode_scanner:
     :path: ".symlinks/plugins/flutter_barcode_scanner/ios"
+  flutter_branch_sdk:
+    :path: ".symlinks/plugins/flutter_branch_sdk/ios"
   flutter_email_sender:
     :path: ".symlinks/plugins/flutter_email_sender/ios"
   flutter_inappwebview_ios:
@@ -231,6 +239,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   app_links: e7a6750a915a9e161c58d91bc610e8cd1d4d0ad0
   AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
+  BranchSDK: ef7d89062afb08b20f65d5b1633b215ee77ab77f
   camera_avfoundation: dd002b0330f4981e1bbcb46ae9b62829237459a4
   Firebase: cf1b19f21410b029b6786a54e9764a0cacad3c99
   firebase_auth: 42718683069d35d73af7a986b55b194589039e5e
@@ -246,6 +255,7 @@ SPEC CHECKSUMS:
   FirebaseMessaging: f8a160d99c2c2e5babbbcc90c4a3e15db036aee2
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_barcode_scanner: 7a1144744c28dc0c57a8de7218ffe5ec59a9e4bf
+  flutter_branch_sdk: b3763b3d53a7cfbc87c51136bed66fcdc282bdf5
   flutter_email_sender: 10a22605f92809a11ef52b2f412db806c6082d40
   flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
   fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c

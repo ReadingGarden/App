@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:intl/intl.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -173,21 +175,90 @@ class Functions {
     }
   }
 
-  //초대 링크
-  static void shareInviteLink(String inviteCode) {
-    final String inviteLink = 'https://yourapp.com/invite?code=$inviteCode';
-    Share.share('Join me on this app using my invite link: $inviteLink');
+  //초대 링크 생성 (시스템 공유)
+  static Future<void> shareBranchLink(String garden, int garden_no) async {
+    BranchUniversalObject buo = BranchUniversalObject(
+      canonicalIdentifier: 'flutter/branch',
+      title: '독서가든',
+      contentDescription: '$garden에 초대',
+      // 사용자 정의 파라미터 추가 (contentMetadata 사용)
+      contentMetadata: BranchContentMetaData()
+        ..addCustomMetadata('garden_no', garden_no),
+    );
+
+    BranchLinkProperties linkProperties = BranchLinkProperties(
+      // channel: 'kakao',
+      feature: 'sharing',
+    );
+
+    BranchResponse response = await FlutterBranchSdk.getShortUrl(
+        buo: buo, linkProperties: linkProperties);
+
+    if (response.success) {
+      Share.share(response.result.toString());
+    }
   }
 
   //초대 링크 생성
-  static String createInviteLink(int garden_no) {
-    return 'myapp://invite/$garden_no';
+  static Future<void> createBranchLink2() async {
+    BranchUniversalObject buo = BranchUniversalObject(
+      canonicalIdentifier: 'flutter/branch',
+      title: '독서가든',
+      contentDescription: '{독서가든}에 초대',
+      // 사용자 정의 파라미터 추가 (contentMetadata 사용)
+      contentMetadata: BranchContentMetaData()
+        ..addCustomMetadata('garden', '가든')
+        ..addCustomMetadata('garden_no', '17'),
+    );
+
+    BranchLinkProperties linkProperties = BranchLinkProperties(
+      // channel: 'kakao',
+      feature: 'sharing',
+    );
+
+    BranchResponse response = await FlutterBranchSdk.getShortUrl(
+        buo: buo, linkProperties: linkProperties);
+
+    if (response.success) {
+      print('Generated Branch Link: ${response.result}');
+      // 이 링크를 카카오톡에서 공유
+      await Functions.kakaoShare(response.result, 'garden');
+      ;
+    } else {
+      print('Error: ${response.errorMessage}');
+    }
   }
 
   //카카오톡 공유
-  static kakaoShare(String garden) async {
-    // 사용자 정의 템플릿 ID
-    int templateId = 111641;
+  static kakaoShare(String deepLinkUrl, String garden) async {
+    final FeedTemplate defaultFeed = FeedTemplate(
+      content: Content(
+        title: '딸기 치즈 케익',
+        description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
+        imageUrl: Uri.parse(
+            'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
+        link: Link(
+            webUrl: Uri.parse(deepLinkUrl),
+            mobileWebUrl: Uri.parse(deepLinkUrl)),
+      ),
+      social: Social(likeCount: 286, commentCount: 45, sharedCount: 845),
+      buttons: [
+        // Button(
+        //   title: '웹으로 보기',
+        //   link: Link(
+        //     webUrl: Uri.parse(deepLinkUrl),
+        //     mobileWebUrl: Uri.parse(deepLinkUrl),
+        //   ),
+        // ),
+        Button(
+          title: '앱으로보기',
+          link: Link(
+            androidExecutionParams: {'garden_no': 'value1'},
+            iosExecutionParams: {'garden_no': 'value1'},
+          ),
+        ),
+      ],
+    );
     // 카카오톡 실행 가능 여부 확인
     bool isKakaoTalkSharingAvailable =
         await ShareClient.instance.isKakaoTalkSharingAvailable();
@@ -195,7 +266,7 @@ class Functions {
     if (isKakaoTalkSharingAvailable) {
       try {
         Uri uri =
-            await ShareClient.instance.shareCustom(templateId: templateId);
+            await ShareClient.instance.shareDefault(template: defaultFeed);
         await ShareClient.instance.launchKakaoTalk(uri);
         print('카카오톡 공유 완료');
       } catch (error) {
@@ -203,12 +274,74 @@ class Functions {
       }
     } else {
       try {
-        Uri shareUrl = await WebSharerClient.instance.makeCustomUrl(
-            templateId: templateId, templateArgs: {'garden': garden});
+        Uri shareUrl = await WebSharerClient.instance
+            .makeDefaultUrl(template: defaultFeed);
         await launchBrowserTab(shareUrl, popupOpen: true);
       } catch (error) {
         print('카카오톡 공유 실패 $error');
       }
     }
+
+    // // 사용자 정의 템플릿 ID
+    // int templateId = 111641;
+    // // 카카오톡 실행 가능 여부 확인
+    // bool isKakaoTalkSharingAvailable =
+    //     await ShareClient.instance.isKakaoTalkSharingAvailable();
+
+    // if (isKakaoTalkSharingAvailable) {
+    //   try {
+    //     Uri uri = await ShareClient.instance
+    //         .shareCustom(templateId: templateId, templateArgs: {
+    //       'link': branchLink,
+    //       'garden': garden,
+    //       'link_click_id': '17' // 여기에 17을 전달
+    //     });
+    //     await ShareClient.instance.launchKakaoTalk(uri);
+    //     print('카카오톡 공유 완료');
+    //   } catch (error) {
+    //     print('카카오톡 공유 실패 $error');
+    //   }
+    // } else {
+    //   try {
+    //     Uri shareUrl = await WebSharerClient.instance
+    //         .makeCustomUrl(templateId: templateId, templateArgs: {
+    //       'link': branchLink,
+    //       'garden': garden,
+    //       'link_click_id': '17', // 여기에 17을 전달
+    //     });
+    //     await launchBrowserTab(shareUrl, popupOpen: true);
+    //   } catch (error) {
+    //     print('카카오톡 공유 실패 $error');
+    //   }
+    // }
+
+    // try {
+    //   // 카카오톡 공유 템플릿 설정
+    //   Map<String, String> templateArgs = {
+    //     'garden': garden,
+    //     'link': link,
+    //     // 'link_click_id': '17',       // 추가 파라미터
+    //     // 'link': link,                // Branch 링크 포함
+    //     'androidExecutionParams':
+    //         'garden=value1&key2=value2', // Android 실행 파라미터
+    //     'iosExecutionParams': 'garden=value1&key2=value2', // iOS 실행 파라미터
+    //     // 'I_E': link // Branch 링크
+    //   };
+
+    //   // 템플릿 ID를 실제 사용하는 카카오톡 템플릿 ID로 설정
+    //   int templateId = 111641;
+
+    //   // 카카오톡 템플릿 공유
+    //   Uri uri = await ShareClient.instance.shareCustom(
+    //     templateId: templateId,
+    //     templateArgs: templateArgs,
+    //   );
+
+    //   // 카카오톡 실행
+    //   await ShareClient.instance.launchKakaoTalk(uri);
+    //   print('카카오톡 공유 완료');
+    // } catch (error) {
+    //   print('카카오톡 공유 실패: $error');
+    // }
   }
 }
