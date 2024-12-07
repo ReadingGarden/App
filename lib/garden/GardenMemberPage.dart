@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../core/api/AuthAPI.dart';
 import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 class GardenMemberPage extends ConsumerStatefulWidget {
@@ -177,12 +178,15 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Widgets.shareBottomSheet(
-                          context,
-                          '멤버 초대하기',
+                      Functions.shareBranchLink(
                           gardenAPI.gardenMain()['garden_title'],
-                          widget.garden_no,
-                          fToast);
+                          gardenAPI.gardenMain()['garden_no']);
+                      // Widgets.shareBottomSheet(
+                      //     context,
+                      //     '멤버 초대하기',
+                      //     gardenAPI.gardenMain()['garden_title'],
+                      //     widget.garden_no,
+                      //     fToast);
                     },
                     child: Container(
                       // height: 22.h,
