@@ -73,7 +73,7 @@ android {
    }
     buildTypes {
         release {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 
@@ -96,4 +96,6 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics"
     implementation 'com.google.firebase:firebase-messaging:24.0.3'
     implementation 'com.google.android.gms:play-services-base:18.1.0'
+    implementation 'com.google.android.gms:play-services-auth:20.6.0'  // 구글 로그인에 필요한 라이브러리
+    implementation 'com.google.firebase:firebase-auth:21.0.5'  // Firebase 인증 라이브러리
 }
