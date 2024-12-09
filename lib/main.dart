@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:app_links/app_links.dart';
+import 'package:book_flutter/utils/Messaging.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
@@ -20,6 +22,9 @@ import 'utils/SharedPreferences.dart';
 void main() async {
   // 플러그인 초기화
   WidgetsFlutterBinding.ensureInitialized();
+  KakaoSdk.init(
+    nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda',
+  );
   //권한 요청
   await Functions.requestPermissions();
   // FlutterBranchSdk 초기화
@@ -28,14 +33,33 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // runApp() 호출 전 Flutter SDK 초기화
-  KakaoSdk.init(
-    nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda',
-  );
-  // 위젯이 providers를 읽을 수 있게 하려면 전체 애플리케이션을 "ProviderScope" 위젯으로 감싸야 합니다.
-  // 여기에 providers의 상태가 저장됩니다.
+
+  messaging.initializeNotification();
+  messaging.foregroundMessage();
+
+  // 알림 권한 요청 (iOS 전용)
+  // await FirebaseMessaging.instance.requestPermission();
+
+  // 위젯이 providers를 읽을 수 있게 하려면 전체 애플리케이션을 "ProviderScope" 위젯으로 감싸야
   runApp(const ProviderScope(child: MyApp()));
 }
+
+//iOS 푸시 알림 권한 요청
+// void requestPermissions() async {
+//   FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+//   NotificationSettings settings = await messaging.requestPermission(
+//     alert: true,
+//     announcement: false,
+//     badge: true,
+//     carPlay: false,
+//     criticalAlert: false,
+//     provisional: false,
+//     sound: true,
+//   );
+
+//   print('User granted permission: ${settings.authorizationStatus}');
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -87,7 +111,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   void initState() {
     super.initState();
     //FCM 토큰을 비동기로 가져옵니다.
-    ref.read(fcmTokenProvider);
+    print(ref.read(fcmTokenProvider));
 
     // 1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () async {

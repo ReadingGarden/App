@@ -63,6 +63,8 @@ dependencies:
   app_links: ^6.3.2
   kakao_flutter_sdk_share: ^1.9.6
   flutter_branch_sdk: ^8.2.0
+  firebase_analytics: ^11.3.6
+  flutter_local_notifications: ^18.0.1
 
 dev_dependencies:
   flutter_test:

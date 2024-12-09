@@ -3,6 +3,13 @@
         android:label="book_flutter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <!-- Firebase 알림 채널 설정 -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
+        
+        <!-- MainActivity 설정 -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -11,25 +18,33 @@
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
-            android:usesCleartextTraffic="true">
-            <!-- Specifies an Android theme to apply to this Activity as soon as
-                 the Android process has started. This theme is visible to the user
-                 while the Flutter UI initializes. After that, this theme continues
-                 to determine the Window background behind the Flutter UI. -->
+            android:usesCleartextTraffic="true"
+            android:showWhenLocked="true"
+	        android:turnScreenOn="true">
+            
+            <!-- Notification Click Intent Filter -->
+            <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <!-- 앱 시작 시 표시되는 테마 설정 -->
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"/>
+            <!-- 앱 런처 설정 -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                 <!-- 초대링크 설정 -->                 
+                 <!-- 초대 링크 처리 -->                 
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="dokseogarden" android:host="invite" />
             </intent-filter>
         </activity>
-        <!-- 카카오 설정 -->
+
+        <!-- Kakao SDK 설정 -->
         <activity
            android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
            android:exported="true">
@@ -40,6 +55,7 @@
                <data android:scheme="kakaoa4fcc9bb270d51847a1ae05d63619bda" android:host="oauth"/>
            </intent-filter>
        </activity>
+
        <!-- Branch SDK 설정 -->
         <meta-data
             android:name="io.branch.sdk.BranchKey"
@@ -47,8 +63,7 @@
         <meta-data
             android:name="io.branch.sdk.TestMode"
             android:value="false" />
-
-        <!-- Intent filter for Branch links -->
+        <!-- Branch 링크 처리 -->
         <activity
             android:name="io.branch.referral.BranchActivity"
             android:launchMode="singleTask"
@@ -62,12 +77,19 @@
                     android:host="dokseogarden.app.link" />
             </intent-filter>
         </activity>
-        <!-- Don't delete the meta-data below.
-             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+    
+        <!-- FlutterLocalNotificationsReceiver (푸시 알림을 처리) -->
+        <receiver
+            android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
+            android:exported="false" />
+
+        <!-- Flutter 플러그인 생성 및 설정 -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
     </application>
+
     <!-- Https 권한 -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 앨범 권한 -->
@@ -75,6 +97,18 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 카메라 권한 -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- 푸시 알림 권한 -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+
     <!-- 마이크 권한 -->
     <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
 </manifest>

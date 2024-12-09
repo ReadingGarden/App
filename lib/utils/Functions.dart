@@ -180,7 +180,7 @@ class Functions {
     BranchUniversalObject buo = BranchUniversalObject(
       canonicalIdentifier: 'flutter/branch',
       title: '$garden에 초대합니다🪴',
-      contentDescription: '독서가든에서 가드너들과 함께 책을 읽고 기록해봐요!',
+      contentDescription: '독서가든에서 함께 책을 읽고 기록해봐요!',
       // 사용자 정의 파라미터 추가 (contentMetadata 사용)
       contentMetadata: BranchContentMetaData()
         ..addCustomMetadata('garden_no', garden_no),
