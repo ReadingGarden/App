@@ -17,12 +17,27 @@ final pwdErrorProvider = StateProvider<String?>((ref) => null);
 // 비밀번호 확인 에러 메시지 상태를 관리하는 프로바이더
 final pwdCheckErrorProvider = StateProvider<String?>((ref) => null);
 
-class SignupPage extends ConsumerWidget {
+class SignupPage extends ConsumerStatefulWidget {
+  @override
+  _SignupPageState createState() => _SignupPageState();
+}
+
+class _SignupPageState extends ConsumerState<SignupPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
   final TextEditingController _pwdCheckController = TextEditingController();
 
   bool isValid = false;
+
+  @override
+  void initState() {
+    Future.microtask(() {
+      ref.read(emailErrorProvider.notifier).state = null;
+      ref.read(pwdErrorProvider.notifier).state = null;
+      ref.read(pwdCheckErrorProvider.notifier).state = null;
+    });
+    super.initState();
+  }
 
   void postSignup(BuildContext context, WidgetRef ref) async {
     // FCM 토큰을 비동기적으로 가져오기
@@ -46,43 +61,42 @@ class SignupPage extends ConsumerWidget {
     } else if (response?.statusCode == 400) {}
   }
 
+  void _validate() {
+    final emailErrorNotifier = ref.read(emailErrorProvider.notifier);
+    final pwdErrorNotifier = ref.read(pwdErrorProvider.notifier);
+    final pwdCheckErrorNotifier = ref.read(pwdCheckErrorProvider.notifier);
+    if (!Functions.emailValidation(_emailController.text)) {
+      emailErrorNotifier.state = '올바르지 않은 이메일 형식이에요';
+      isValid = false;
+    } else {
+      emailErrorNotifier.state = null;
+    }
+    if (_pwdController.text.length < 6 || _pwdController.text.length > 12) {
+      pwdErrorNotifier.state = '비밀번호 규칙을 확인해주세요';
+      isValid = false;
+    } else {
+      pwdErrorNotifier.state = null;
+    }
+    if (_pwdController.text != _pwdCheckController.text) {
+      pwdCheckErrorNotifier.state = '동일한 비밀번호를 입력해주세요';
+      isValid = false;
+    } else {
+      pwdCheckErrorNotifier.state = null;
+    }
+
+    // 최종 확인
+    if (emailErrorNotifier.state == null &&
+        pwdErrorNotifier.state == null &&
+        pwdCheckErrorNotifier.state == null) {
+      isValid = true;
+    }
+  }
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final emailErrorText = ref.watch(emailErrorProvider);
     final pwdErrorText = ref.watch(pwdErrorProvider);
     final pwdCheckErrorText = ref.watch(pwdCheckErrorProvider);
-
-    void _validate() {
-      final emailErrorNotifier = ref.read(emailErrorProvider.notifier);
-      final pwdErrorNotifier = ref.read(pwdErrorProvider.notifier);
-      final pwdCheckErrorNotifier = ref.read(pwdCheckErrorProvider.notifier);
-
-      if (!Functions.emailValidation(_emailController.text)) {
-        emailErrorNotifier.state = '올바르지 않은 이메일 형식이에요';
-        isValid = false;
-      } else {
-        emailErrorNotifier.state = null;
-      }
-      if (_pwdController.text.length < 6 || _pwdController.text.length > 12) {
-        pwdErrorNotifier.state = '비밀번호 규칙을 확인해주세요';
-        isValid = false;
-      } else {
-        pwdErrorNotifier.state = null;
-      }
-      if (_pwdController.text != _pwdCheckController.text) {
-        pwdCheckErrorNotifier.state = '동일한 비밀번호를 입력해주세요';
-        isValid = false;
-      } else {
-        pwdCheckErrorNotifier.state = null;
-      }
-
-      // 최종 확인
-      if (emailErrorNotifier.state == null &&
-          pwdErrorNotifier.state == null &&
-          pwdCheckErrorNotifier.state == null) {
-        isValid = true;
-      }
-    }
 
     return Scaffold(
       appBar: Widgets.appBar(context),

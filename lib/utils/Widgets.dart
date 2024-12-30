@@ -129,6 +129,11 @@ class Widgets {
               // errorText 초기화
               ref.read(errorProvider.notifier).state = null;
             },
+            onTapOutside: (event) {
+              if (validateFunction != null) {
+                validateFunction();
+              }
+            },
             onSubmitted: (value) {
               if (validateFunction != null) {
                 validateFunction();
