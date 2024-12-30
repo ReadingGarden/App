@@ -137,7 +137,7 @@ class Widgets {
             style: TextStyle(fontSize: 16.sp),
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
-              counter: Container(),
+              // counter: Container(),
               fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,
