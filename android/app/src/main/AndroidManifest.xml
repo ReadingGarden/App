@@ -19,6 +19,7 @@
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:screenOrientation="portrait"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"
             android:usesCleartextTraffic="true"
@@ -31,6 +32,15 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
+            <!-- Branch App Links - Live App -->
+			<intent-filter android:autoVerify="true">
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<data android:scheme="https" android:host="dokseogarden.app.link" />
+				<data android:scheme="https" android:host="dokseogarden-alternate.app.link" />
+			</intent-filter>
+
             <!-- 앱 시작 시 표시되는 테마 설정 -->
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
@@ -40,12 +50,12 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-                 <!-- 초대 링크 처리 -->
+            <!-- 초대 링크 처리 -->
             <intent-filter>                 
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="dokseogarden" android:host="invite" />
+                <data android:scheme="dokseogarden" android:host="open" />
             </intent-filter>
         </activity>
 
@@ -68,20 +78,6 @@
         <meta-data
             android:name="io.branch.sdk.TestMode"
             android:value="false" />
-        <!-- Branch 링크 처리 -->
-        <activity
-            android:name="io.branch.referral.BranchActivity"
-            android:launchMode="singleTask"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="https"
-                    android:host="dokseogarden.app.link" />
-            </intent-filter>
-        </activity>
     
         <!-- FlutterLocalNotificationsReceiver (푸시 알림을 처리) -->
         <receiver
