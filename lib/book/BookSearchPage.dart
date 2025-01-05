@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
@@ -27,6 +28,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
   String _query = '';
   int _currentPage = 1;
   bool _isLoading = false;
+  bool _isSearch = false;
 
   @override
   void initState() {
@@ -52,6 +54,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
 
     setState(() {
       _isLoading = true;
+      _isSearch = false;
     });
 
     final response = await bookService.getSerachBook(query, _currentPage);
@@ -81,6 +84,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
 
       setState(() {
         _isLoading = false;
+        _isSearch = true;
       });
     }
   }
@@ -155,10 +159,15 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                       child: TextField(
                         controller: _textEditingController,
                         onSubmitted: (value) {
+                          _currentPage = 1;
                           _query = value;
                           ref.read(bookSearchListProvider.notifier).reset();
                           ref.read(bookTotalCountProvider.notifier).state = 0;
-                          getSearchBook(value);
+                          if (value.isNotEmpty) {
+                            getSearchBook(value);
+                          } else {
+                            _isSearch = false;
+                          }
                         },
                         style: TextStyle(fontSize: 16.sp),
                         decoration: InputDecoration(
@@ -189,87 +198,144 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                 fontSize: 16.sp, color: AppColors.grey_8D)),
                       )),
                 ),
-                (ref.watch(bookSearchListProvider).isNotEmpty || _isLoading)
-                    ? _serachList(_textEditingController.text)
-                    : Column(
-                        children: [
-                          GestureDetector(
-                            onTap: () => context.pushNamed('book-user-write'),
-                            child: Container(
-                                alignment: Alignment.center,
-                                height: 72.h,
-                                child: Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding:
-                                      EdgeInsets.only(left: 24.w, right: 22.w),
-                                  width: 312.w,
-                                  height: 64.h,
-                                  decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: AppColors.grey_F2),
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      color: Colors.transparent),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '책 직접 입력하기',
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                        ),
-                                      ),
-                                      SvgPicture.asset(
-                                        'assets/images/angle-right-b.svg',
-                                        width: 20.r,
-                                        height: 20.r,
-                                      )
-                                    ],
-                                  ),
-                                )),
+                (_isLoading && _currentPage == 1)
+                    ? Container(
+                        margin: EdgeInsets.only(top: 200.h),
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: AppColors.primaryColor,
+                            color: AppColors.grey_CA,
                           ),
-                          GestureDetector(
-                            onTap: _scanBarcode,
-                            // onTap: () => context.pushNamed('book-barcode'),
-                            child: Container(
-                                alignment: Alignment.center,
-                                height: 72.h,
-                                child: Container(
-                                  alignment: Alignment.centerLeft,
+                        ),
+                      )
+                    : (_isSearch && ref.watch(bookTotalCountProvider) == 0)
+                        ? Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.only(top: 200.h),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '검색 결과를 찾지 못했어요',
+                                  style: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: AppColors.black_2B,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Padding(
                                   padding:
-                                      EdgeInsets.only(left: 24.w, right: 22.w),
-                                  width: 312.w,
-                                  height: 64.h,
-                                  decoration: BoxDecoration(
-                                      border:
-                                          Border.all(color: AppColors.grey_F2),
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      color: Colors.transparent),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '바코드로 검색하기',
-                                        style: TextStyle(
-                                          fontSize: 16.sp,
-                                        ),
-                                      ),
-                                      SvgPicture.asset(
-                                        'assets/images/angle-right-b.svg',
-                                        width: 20.r,
-                                        height: 20.r,
-                                      )
-                                    ],
+                                      EdgeInsets.only(top: 6.h, bottom: 20.h),
+                                  child: Text('책을 추가하려면 아래 기능을 이용해 보세요',
+                                      style: TextStyle(
+                                          fontSize: 14.sp,
+                                          color: AppColors.grey_8D)),
+                                ),
+                                GestureDetector(
+                                  onTap: () =>
+                                      context.pushNamed('book-user-write'),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: 120.w,
+                                    height: 36.h,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.grey_EF,
+                                        borderRadius:
+                                            BorderRadius.circular(8.r)),
+                                    child: Text(
+                                      '책 직접 입력하기',
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.black_4A),
+                                    ),
                                   ),
-                                )),
+                                )
+                              ],
+                            ),
                           )
-                        ],
-                      ),
+                        : (ref.watch(bookSearchListProvider).isNotEmpty)
+                            ? _serachList(_textEditingController.text)
+                            : Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () =>
+                                        context.pushNamed('book-user-write'),
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        height: 72.h,
+                                        child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: EdgeInsets.only(
+                                              left: 24.w, right: 22.w),
+                                          width: 312.w,
+                                          height: 64.h,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: AppColors.grey_F2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r),
+                                              color: Colors.transparent),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '책 직접 입력하기',
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                              SvgPicture.asset(
+                                                'assets/images/angle-right-b.svg',
+                                                width: 20.r,
+                                                height: 20.r,
+                                              )
+                                            ],
+                                          ),
+                                        )),
+                                  ),
+                                  GestureDetector(
+                                    onTap: _scanBarcode,
+                                    // onTap: () => context.pushNamed('book-barcode'),
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        height: 72.h,
+                                        child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          padding: EdgeInsets.only(
+                                              left: 24.w, right: 22.w),
+                                          width: 312.w,
+                                          height: 64.h,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: AppColors.grey_F2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r),
+                                              color: Colors.transparent),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '바코드로 검색하기',
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                              SvgPicture.asset(
+                                                'assets/images/angle-right-b.svg',
+                                                width: 20.r,
+                                                height: 20.r,
+                                              )
+                                            ],
+                                          ),
+                                        )),
+                                  )
+                                ],
+                              ),
               ],
             ),
           ),

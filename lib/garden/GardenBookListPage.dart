@@ -41,33 +41,32 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
         },
         backgroundColor: Colors.white,
         color: AppColors.grey_8D,
-        child: SingleChildScrollView(
+        child: ListView(
           // 스크롤이 항상 가능하도록 설정
           physics: const BouncingScrollPhysics(),
-
-          child: Container(
-            margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
-            height: MediaQuery.of(context).size.height,
-            color: Colors.transparent,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('책 ${bookList.length}권',
-                    style: const TextStyle(color: AppColors.grey_8D)),
-                (bookList.isNotEmpty)
-                    ? Container(
-                        margin: EdgeInsets.only(top: 18.h),
-                        child: GridView(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 12.w,
-                                  crossAxisCount: 3,
-                                  childAspectRatio: 0.5),
-                          children: List.generate(
-                            bookList.length,
-                            (index) {
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
+              // height: MediaQuery.of(context).size.height,
+              color: Colors.transparent,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('책 ${bookList.length}권',
+                      style: const TextStyle(color: AppColors.grey_8D)),
+                  (bookList.isNotEmpty)
+                      ? Container(
+                          margin: EdgeInsets.only(top: 18.h),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisSpacing: 12.w,
+                                    crossAxisCount: 3,
+                                    childAspectRatio: 0.5),
+                            itemCount: bookList.length,
+                            itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () {
                                   context.pushNamed('book-detail',
@@ -154,13 +153,12 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                 ),
                               );
                             },
-                          ),
-                        ),
-                      )
-                    : _bookEmpty()
-              ],
-            ),
-          ),
+                          ))
+                      : _bookEmpty()
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

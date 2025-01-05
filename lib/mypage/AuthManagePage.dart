@@ -96,11 +96,9 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
                 height: 46.h,
                 color: Colors.transparent,
                 child: Text(
-                  '게정 삭제하기',
+                  '계정 삭제하기',
                   style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.errorRedColor),
+                      fontSize: 14.sp, color: AppColors.errorRedColor),
                 ),
               ),
             )

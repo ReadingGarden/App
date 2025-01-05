@@ -20,6 +20,7 @@ class Widgets {
       scrolledUnderElevation: 0,
       backgroundColor: (color != null) ? color : Colors.white,
       toolbarHeight: 60.h,
+      titleSpacing: 10,
       title: Container(
         alignment: Alignment.center,
         width: 240.w,
@@ -123,7 +124,11 @@ class Widgets {
           ),
           TextField(
             controller: controller,
-            maxLength: (label == '가든 소개') ? 30 : null,
+            maxLength: (label == '가든 소개')
+                ? 30
+                : (label == '가든 이름')
+                    ? 10
+                    : null,
             maxLines: (label == '가든 소개') ? 2 : 1,
             onChanged: (value) {
               // errorText 초기화
@@ -139,10 +144,12 @@ class Widgets {
                 validateFunction();
               }
             },
+            textInputAction: (label == '가든 소개') ? TextInputAction.done : null,
             style: TextStyle(fontSize: 16.sp),
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
-              // counter: Container(),
+              counter:
+                  (label == '가든 소개' || label == '가든 이름') ? Container() : null,
               fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,

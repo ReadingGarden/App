@@ -307,6 +307,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                   Container(
                       margin: EdgeInsets.only(top: 20.h),
                       child: TextField(
+                          textInputAction: TextInputAction.newline,
                           controller: _memoController,
                           focusNode: _focusNode,
                           onChanged: (value) {

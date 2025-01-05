@@ -137,7 +137,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
-      appBar: Widgets.appBar(context, title: '가든 수정하기'),
+      appBar: Widgets.appBar(context,
+          title: '가든 수정하기', backFunction: _gardenEditBottomSheet),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
@@ -280,8 +281,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
       ),
       bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-          child: Widgets.button('수정하기', ref.watch(gardenEditButtonProvider),
-              () => _gardenEditBottomSheet())),
+          child: Widgets.button(
+              '수정하기', ref.watch(gardenEditButtonProvider), () => putGarden())),
     );
   }
 
@@ -336,7 +337,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
         cancelTitle: '건너뛰기',
         contentWidget: Text.rich(
             TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
-          TextSpan(text: '독서기록과 메모를 유지하고 싶다면'),
+          TextSpan(text: '독서기록과 메모를 유지하고 싶다면 '),
           TextSpan(
               text: '전체 이전하기', style: TextStyle(fontWeight: FontWeight.bold)),
           TextSpan(text: '를 해주세요.'),

@@ -57,71 +57,85 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Widgets.appBar(context, title: '새로운 가든 추가하기'),
-      body: Container(
-        margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 20.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Widgets.textfield(ref, _titleController, '가든 이름',
-                '영어, 한글 최대 10글자까지 쓸 수 있어요', null, StateProvider((ref) => null),
-                validateFunction: _gardenAddValid),
-            Widgets.textfield(ref, _infoController, '가든 소개', '소개글을 입력해주세요',
-                null, StateProvider((ref) => null),
-                validateFunction: _gardenAddValid),
-            Column(
+      body: GestureDetector(
+        onTap: () {
+          // 키보드 내리기
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(left: 24.w, right: 24.w, top: 20.h),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                    margin: EdgeInsets.only(bottom: 16.h, top: 12.h),
-                    child: const Text('대표 색상')),
-                SizedBox(
-                  height: 92.h,
-                  child: GridView(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: 26.w,
-                      mainAxisSpacing: 18.w,
-                      crossAxisCount: 6,
-                    ),
-                    shrinkWrap: true,
-                    children: List.generate(
-                      Constant.GARDEN_COLOR_LIST.length,
-                      (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            ref
-                                .read(gardenColorSelectIndexProvider.notifier)
-                                .state = index;
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            width: 38.r,
-                            height: 38.r,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.transparent,
-                                border: (ref.watch(
-                                            gardenColorSelectIndexProvider) ==
-                                        index)
-                                    ? Border.all(
-                                        color: Constant
-                                            .GARDEN_COLOR_SET_LIST[index],
-                                        width: 2.w,
-                                      )
-                                    : null),
-                            child: Container(
+                Widgets.textfield(
+                    ref,
+                    _titleController,
+                    '가든 이름',
+                    '영어, 한글 최대 10글자까지 쓸 수 있어요',
+                    null,
+                    StateProvider((ref) => null),
+                    validateFunction: _gardenAddValid),
+                Widgets.textfield(ref, _infoController, '가든 소개', '소개글을 입력해주세요',
+                    null, StateProvider((ref) => null),
+                    validateFunction: _gardenAddValid),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(bottom: 16.h, top: 12.h),
+                        child: const Text('대표 색상')),
+                    SizedBox(
+                      height: 92.h,
+                      child: GridView(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisSpacing: 26.w,
+                          mainAxisSpacing: 18.w,
+                          crossAxisCount: 6,
+                        ),
+                        shrinkWrap: true,
+                        children: List.generate(
+                          Constant.GARDEN_COLOR_LIST.length,
+                          (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                ref
+                                    .read(
+                                        gardenColorSelectIndexProvider.notifier)
+                                    .state = index;
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(2),
+                                width: 38.r,
+                                height: 38.r,
                                 decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Constant.GARDEN_COLOR_SET_LIST[index],
-                            )),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                                    shape: BoxShape.circle,
+                                    color: Colors.transparent,
+                                    border: (ref.watch(
+                                                gardenColorSelectIndexProvider) ==
+                                            index)
+                                        ? Border.all(
+                                            color: Constant
+                                                .GARDEN_COLOR_SET_LIST[index],
+                                            width: 2.w,
+                                          )
+                                        : null),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Constant.GARDEN_COLOR_SET_LIST[index],
+                                )),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
       bottomNavigationBar: Container(

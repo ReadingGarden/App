@@ -52,7 +52,7 @@ class _MyPageState extends ConsumerState<MyPage> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 30.h,
+        toolbarHeight: 50.h,
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         leadingWidth: 0,
@@ -102,7 +102,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      margin: EdgeInsets.only(top: 20.h, bottom: 40.h),
+                      margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       width: 312.w,
                       decoration: BoxDecoration(

@@ -31,9 +31,20 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   @override
   void initState() {
     super.initState();
+
+    final gardenAPI = GardenAPI(ref);
+
     Future.microtask(() {
       ref.read(gardenSelectIndexProvider.notifier).state = 0;
       ref.read(flowerSelectIndexProvider.notifier).state = 0;
+
+      // 첫 실행 시 유효한 인덱스를 선택
+      for (int i = 0; i < gardenAPI.gardenList().length; i++) {
+        if (gardenAPI.gardenList()[i]['book_count'] != 30) {
+          ref.read(gardenSelectIndexProvider.notifier).state = i;
+          break;
+        }
+      }
     });
   }
 
@@ -84,9 +95,16 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       "book_tree": Constant.FLOWER_LIST[ref.watch(flowerSelectIndexProvider)],
       "book_status": 0,
     };
+
     final response = await bookService.putBook(widget.book['book_no'], data);
     if (response?.statusCode == 200) {
-      postBookRead(widget.book['book_no']);
+      if (_dateController.text.isNotEmpty) {
+        postBookRead(widget.book['book_no']);
+      } else {
+        context.pushNamed('book-register-done',
+            extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
+                ['garden_title']);
+      }
     }
   }
 
@@ -273,7 +291,10 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
           (index) {
             return GestureDetector(
               onTap: () {
-                ref.read(gardenSelectIndexProvider.notifier).state = index;
+                // 북 카운트가 30이 아닌 경우에만 선택 가능
+                if (gardenAPI.gardenList()[index]['book_count'] != 30) {
+                  ref.read(gardenSelectIndexProvider.notifier).state = index;
+                }
               },
               child: Stack(
                 alignment: Alignment.topRight,
@@ -290,14 +311,23 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                 (index == ref.watch(gardenSelectIndexProvider))
                                     ? AppColors.black_4A
                                     : AppColors.grey_F2),
-                        color: Colors.white),
+                        color:
+                            (gardenAPI.gardenList()[index]['book_count'] == 30)
+                                ? AppColors.grey_F2
+                                : Colors.white),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           gardenAPI.gardenList()[index]['garden_title'],
-                          style: TextStyle(fontSize: 14.sp),
+                          style: TextStyle(
+                              fontSize: 14.sp,
+                              color: (gardenAPI.gardenList()[index]
+                                          ['book_count'] ==
+                                      30)
+                                  ? AppColors.grey_8D
+                                  : Colors.black),
                         ),
                         Text(
                           '심은 꽃 ${gardenAPI.gardenList()[index]['book_count']}/30',
@@ -339,29 +369,37 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
               onTap: () {
                 ref.read(flowerSelectIndexProvider.notifier).state = index;
               },
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        right: 8.w, left: (index == 0) ? 24.w : 0, bottom: 8.h),
-                    width: 120.r,
-                    height: 120.r,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        border: (index == ref.watch(flowerSelectIndexProvider))
-                            ? Border.all(color: Colors.black)
-                            : null,
-                        color: Colors.amber),
-                  ),
-                  SizedBox(
-                    height: 24.h,
-                    child: Text(
-                      Constant.FLOWER_LIST[index],
-                      style:
-                          TextStyle(fontSize: 14.sp, color: AppColors.grey_8D),
+              child: Padding(
+                padding:
+                    EdgeInsets.only(right: 8.w, left: (index == 0) ? 24.w : 0),
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 8.h),
+                      width: 120.r,
+                      height: 120.r,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.r),
+                          border:
+                              (index == ref.watch(flowerSelectIndexProvider))
+                                  ? Border.all(color: Colors.black)
+                                  : null,
+                          color: Colors.amber),
                     ),
-                  )
-                ],
+                    SizedBox(
+                      height: 24.h,
+                      child: Text(
+                        Constant.FLOWER_LIST[index],
+                        style: TextStyle(
+                            fontSize: 14.sp,
+                            color:
+                                (index == ref.watch(flowerSelectIndexProvider))
+                                    ? Colors.black
+                                    : AppColors.grey_8D),
+                      ),
+                    )
+                  ],
+                ),
               ),
             );
           },
