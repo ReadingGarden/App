@@ -246,10 +246,20 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                 style: TextStyle(color: AppColors.grey_8D),
                               ),
                             ),
-                            Text(
-                              bookResult()['description'] ?? '',
-                              style: TextStyle(fontSize: 12.sp),
-                            ),
+                            (bookResult()['description'] != '')
+                                ? Text(
+                                    bookResult()['description'] ?? '',
+                                    style: TextStyle(fontSize: 12.sp),
+                                  )
+                                : Container(
+                                    alignment: Alignment.center,
+                                    margin:
+                                        EdgeInsets.only(top: 8.h, bottom: 8.h),
+                                    child: Text('소개글이 등록되지 않은 책이에요',
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: AppColors.grey_8D)),
+                                  ),
                           ],
                         ),
                       ),
