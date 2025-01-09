@@ -25,9 +25,9 @@ class BottomNaviPage extends ConsumerWidget {
     final currentIndex = ref.watch(currentIndexProvider);
 
     return Scaffold(
-      backgroundColor: (gardenAPI.gardenMain().isEmpty)
-          ? Colors.white
-          : Functions.gardenBackColor(gardenAPI.gardenMain()['garden_color']),
+      backgroundColor:
+          (gardenAPI.gardenMain().isEmpty) ? Colors.white : Colors.transparent,
+      // : Functions.gardenBackColor(gardenAPI.gardenMain()['garden_color']),
       body: IndexedStack(
         index: currentIndex,
         children: [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
@@ -37,6 +37,10 @@ class BottomNaviPage extends ConsumerWidget {
         onTabSelected: (index) {
           //선택된 인덱스를 업데이트
           ref.read(currentIndexProvider.notifier).state = index;
+          if (ref.read(currentIndexProvider.notifier).state == 0) {
+            //가든 페이지 리프레시
+            gardenAPI.getGardenLsit();
+          }
         },
       ),
     );

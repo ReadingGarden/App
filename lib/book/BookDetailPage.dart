@@ -1,3 +1,4 @@
+import 'package:book_flutter/core/api/GardenAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -170,6 +171,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
             ),
           )
         ],
+        backFunction: () => context.pop('fetchData'),
         color: ref.watch(bookDetailAppBarColorProvider),
       ),
       body: Visibility(
