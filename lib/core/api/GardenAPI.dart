@@ -71,7 +71,7 @@ class GardenAPI {
     final response = await gardenService.getGardenList();
     if (response?.statusCode == 200) {
       updateGardenList(response?.data['data']);
-      // //가든의 리스트의 첫번째를 상세 조회 (메인 가든 조회)
+      // 가든의 리스트의 첫번째를 상세 조회 (메인 가든 조회)
       getGardenDetail(ref.watch(gardenListProvider)[0]['garden_no']);
     }
   }

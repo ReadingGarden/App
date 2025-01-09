@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
+import '../BottomNaviPage.dart';
 import '../core/provider/FcmTokenProvider.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
@@ -32,6 +33,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.initState();
     fToast = FToast();
     fToast.init(context);
+    Future.microtask(() {
+      ref.read(currentIndexProvider.notifier).state = 0;
+    });
   }
 
   //로그인 api
@@ -147,14 +151,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Container(
                     margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween, iOS
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        CircleAvatar(
-                          backgroundColor: AppColors.black_4A,
-                          radius: 27.5.r,
-                          child:
-                              SvgPicture.asset('assets/images/apple_logo.svg'),
-                        ),
+                        //iOS
+                        // CircleAvatar(
+                        //   backgroundColor: AppColors.black_4A,
+                        //   radius: 27.5.r,
+                        //   child:
+                        //       SvgPicture.asset('assets/images/apple_logo.svg'),
+                        // ),
                         CircleAvatar(
                           backgroundColor: AppColors.grey_F2,
                           radius: 27.5.r,

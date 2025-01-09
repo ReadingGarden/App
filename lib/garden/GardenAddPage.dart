@@ -40,6 +40,14 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
 
     final response = await gardenService.postGarden(data);
     if (response?.statusCode == 201) {
+      putGardenMain(response?.data['data']['garden_no']);
+    }
+  }
+
+  //가든 메인 변경 api
+  void putGardenMain(int garden_no) async {
+    final response = await gardenService.putGardenMain(garden_no);
+    if (response?.statusCode == 200) {
       context.pushNamed('garden-add-done');
     }
   }

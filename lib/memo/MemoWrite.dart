@@ -310,6 +310,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           textInputAction: TextInputAction.newline,
                           controller: _memoController,
                           focusNode: _focusNode,
+                          maxLines: null,
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               ref.read(okButtonProvider.notifier).state = true;

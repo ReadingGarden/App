@@ -238,7 +238,8 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                 maxLength: 10,
                                 inputFormatters: [AutoInputFormatter()],
                                 decoration: InputDecoration(
-                                    hintText: '2024.03.01',
+                                    hintText: Functions.formatBookReadDate(
+                                        DateTime.now().toString()),
                                     counter: Container(),
                                     hintStyle: TextStyle(
                                         fontSize: 16.sp,
