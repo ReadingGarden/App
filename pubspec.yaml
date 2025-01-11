@@ -118,6 +118,17 @@ flutter:
           weight: 400
         - asset: assets/fonts/SUIT-ttf/SUIT-Light.ttf
         - asset: assets/fonts/SUIT-ttf/SUIT-Thin.ttf
+    - family: SUITE
+      fonts:
+        - asset: assets/fonts/SUITE-otf/SUITE-Bold.otf
+          weight: 700
+        - asset: assets/fonts/SUITE-otf/SUITE-SemiBold.otf
+          weight: 600
+        - asset: assets/fonts/SUITE-otf/SUITE-Medium.otf
+          weight: 500
+        - asset: assets/fonts/SUITE-otf/SUITE-Regular.otf
+          weight: 400
+        - asset: assets/fonts/SUITE-otf/SUITE-Light.otf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
