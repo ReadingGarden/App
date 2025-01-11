@@ -152,7 +152,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
                     child: Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceBetween, iOS
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         //iOS
                         // CircleAvatar(
@@ -164,8 +164,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         CircleAvatar(
                           backgroundColor: AppColors.grey_F2,
                           radius: 27.5.r,
-                          child:
-                              SvgPicture.asset('assets/images/google_logo.svg'),
+                          child: SvgPicture.asset(
+                            'assets/images/google_logo.svg',
+                          ),
                         ),
                         GestureDetector(
                           onTap: () => SocialLogin.kakaoLogin(ref, context),
