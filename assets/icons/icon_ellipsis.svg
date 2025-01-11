@@ -1,24 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: none;
-        opacity: .2;
-      }
-    </style>
-  </defs>
-  <g id="guid">
-    <g>
-      <rect class="cls-1" width="48" height="48"/>
-      <rect class="cls-1" x="4" y="4" width="40" height="40"/>
-    </g>
-  </g>
-  <g id="Layer_2" data-name="Layer 2">
-    <g>
-      <circle cx="25" cy="10" r="3"/>
-      <circle cx="25" cy="24" r="3"/>
-      <circle cx="25" cy="38" r="3"/>
-    </g>
-  </g>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_2188_3089)">
+<path d="M25 13C26.6569 13 28 11.6569 28 10C28 8.34315 26.6569 7 25 7C23.3431 7 22 8.34315 22 10C22 11.6569 23.3431 13 25 13Z" fill="black"/>
+<path d="M25 27C26.6569 27 28 25.6569 28 24C28 22.3431 26.6569 21 25 21C23.3431 21 22 22.3431 22 24C22 25.6569 23.3431 27 25 27Z" fill="black"/>
+<path d="M25 41C26.6569 41 28 39.6569 28 38C28 36.3431 26.6569 35 25 35C23.3431 35 22 36.3431 22 38C22 39.6569 23.3431 41 25 41Z" fill="black"/>
+</g>
+<defs>
+<clipPath id="clip0_2188_3089">
+<rect width="48" height="48" fill="white"/>
+</clipPath>
+</defs>
 </svg>
