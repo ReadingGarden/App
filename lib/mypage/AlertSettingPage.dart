@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/service/PushService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
@@ -131,12 +132,12 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
-                    alignment: Alignment.center,
                     margin: EdgeInsets.only(left: 8.w),
-                    width: 20.r,
-                    height: 20.r,
                     child: SvgPicture.asset(
-                      'assets/images/angle-right-b.svg',
+                      '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                      color: AppColors.grey_8D,
+                      width: 20.r,
+                      height: 20.r,
                     ),
                   ),
                 ],

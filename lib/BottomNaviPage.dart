@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'book/BookshelfPage.dart';
@@ -9,7 +10,7 @@ import 'garden/GardenPage.dart';
 import 'memo/MemoPage.dart';
 import 'mypage/MyPage.dart';
 import 'utils/AppColors.dart';
-import 'utils/Functions.dart';
+import 'utils/Constant.dart';
 
 //현재 선택된 인덱스를 관리하는 ...
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -68,12 +69,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
         children: [
           _buildTabItem(
             index: 0,
-            icon: Icons.home,
+            icon: 'icon_garden',
             label: '가든',
           ),
           _buildTabItem(
             index: 1,
-            icon: Icons.book,
+            icon: 'icon_book',
             label: '책장',
           ),
           GestureDetector(
@@ -81,22 +82,29 @@ class CustomBottomNavigationBar extends StatelessWidget {
               child: SizedBox(
                 width: 72.w,
                 child: Container(
+                  alignment: Alignment.center,
                   width: 50.r,
                   height: 50.r,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.black_4A,
                   ),
+                  child: SvgPicture.asset(
+                    '${Constant.ASSETS_ICONS}icon_add_big.svg',
+                    color: Colors.white,
+                    width: 28.r,
+                    height: 28.r,
+                  ),
                 ),
               )),
           _buildTabItem(
             index: 2,
-            icon: Icons.memory,
+            icon: 'icon_memo',
             label: '메모',
           ),
           _buildTabItem(
             index: 3,
-            icon: Icons.person,
+            icon: 'icon_user',
             label: '설정',
           )
         ],
@@ -105,7 +113,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   }
 
   Widget _buildTabItem(
-      {required int index, required IconData icon, required String label}) {
+      {required int index, required String icon, required String label}) {
     return GestureDetector(
       onTap: () => onTabSelected(index),
       child: Container(
@@ -114,11 +122,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
+            SvgPicture.asset(
+              '${Constant.ASSETS_ICONS}$icon.svg',
               color: currentIndex == index
                   ? AppColors.black_4A
                   : AppColors.grey_CA,
+              width: 24.r,
+              height: 24.r,
             ),
             Text(
               label,

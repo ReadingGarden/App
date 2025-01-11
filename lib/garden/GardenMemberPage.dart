@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../core/api/AuthAPI.dart';
 import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
@@ -48,7 +49,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
           children: [
             Visibility(
               visible: gardenAPI.gardenMainMemberList().length > 1 &&
-                  (gardenAPI.gardenMainMemberList()[0]['user_no'] ==
+                  (gardenAPI.gardenMainMemberList()[0]['user_no'] !=
                       authAPI.user()['user_no']),
               child: GestureDetector(
                 onTap: () {
@@ -66,21 +67,10 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/images/users-alt.svg',
-                                  width: 18.r,
-                                  height: 18.r,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 9.w),
-                                  child: const Text('대표 변경하기'),
-                                ),
-                              ],
-                            ),
+                            const Text('대표 변경하기'),
                             SvgPicture.asset(
-                              'assets/images/member-angle-right-b.svg',
+                              '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                              color: AppColors.grey_8D,
                               width: 20.r,
                               height: 20.r,
                             )
@@ -136,12 +126,10 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                     visible:
                                         gardenAPI.gardenMainMemberList()[index]
                                             ['garden_leader'],
-                                    child: Container(
-                                      width: 18.r,
-                                      height: 18.r,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.black),
+                                    child: SvgPicture.asset(
+                                      '${Constant.ASSETS_ICONS}icon_leader.svg',
+                                      width: 20.r,
+                                      height: 20.r,
                                     ),
                                   ),
                                 ],
@@ -181,21 +169,24 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                       Functions.shareBranchLink(
                           gardenAPI.gardenMain()['garden_title'],
                           gardenAPI.gardenMain()['garden_no']);
-                      // Widgets.shareBottomSheet(
-                      //     context,
-                      //     '멤버 초대하기',
-                      //     gardenAPI.gardenMain()['garden_title'],
-                      //     widget.garden_no,
-                      //     fToast);
                     },
                     child: Container(
-                      // height: 22.h,
                       color: Colors.transparent,
-                      child: const Text(
-                        '+ 멤버 초대하기',
-                        style: TextStyle(
+                      child: Row(
+                        children: [
+                          SvgPicture.asset(
+                            '${Constant.ASSETS_ICONS}icon_add.svg',
                             color: AppColors.primaryColor,
-                            fontWeight: FontWeight.bold),
+                            width: 20.r,
+                            height: 20.r,
+                          ),
+                          const Text(
+                            '멤버 초대하기',
+                            style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ),
                   )

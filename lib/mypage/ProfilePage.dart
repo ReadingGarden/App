@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -37,13 +38,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               () {
                 context.pushNamed('profile-image');
               },
-              widget: Container(
-                alignment: Alignment.center,
+              widget: SvgPicture.asset(
+                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                color: AppColors.grey_8D,
                 width: 20.r,
                 height: 20.r,
-                child: SvgPicture.asset(
-                  'assets/images/angle-right-b.svg',
-                ),
               ),
             ),
             _titleList(
@@ -63,7 +62,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     width: 20.r,
                     height: 20.r,
                     child: SvgPicture.asset(
-                      'assets/images/angle-right-b.svg',
+                      '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                      color: AppColors.grey_8D,
+                      width: 20.r,
+                      height: 20.r,
                     ),
                   ),
                 ],

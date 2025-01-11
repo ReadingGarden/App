@@ -127,12 +127,14 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                 }
               },
               child: Container(
-                margin: EdgeInsets.only(right: 14.w),
+                alignment: Alignment.center,
+                width: 60.r,
+                height: 60.r,
                 color: Colors.transparent,
                 child: SvgPicture.asset(
-                  'assets/images/angle-left-write.svg',
-                  width: 32.r,
-                  height: 32.r,
+                  '${Constant.ASSETS_ICONS}icon_write.svg',
+                  width: 24.r,
+                  height: 24.r,
                 ),
               ),
             )
@@ -265,8 +267,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                               },
                               child: SvgPicture.asset(
                                 ref.watch(memoSelectIndexListProvider)[index]
-                                    ? 'assets/images/star.svg'
-                                    : 'assets/images/star-dis.svg',
+                                    ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
+                                    : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
+                                color: ref.watch(
+                                        memoSelectIndexListProvider)[index]
+                                    ? AppColors.starYellowColor
+                                    : AppColors.grey_CA,
                                 width: 20.r,
                                 height: 20.r,
                               ),

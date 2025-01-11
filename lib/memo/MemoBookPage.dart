@@ -8,6 +8,7 @@ import '../core/model/Book.dart';
 import '../core/provider/BookStatusAllListNotifier.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
 
 class MemoBookPage extends ConsumerStatefulWidget {
@@ -164,8 +165,11 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                       ),
                     ],
                   ),
-                  SvgPicture.asset('assets/images/angle-right-b.svg',
-                      width: 20.r, height: 20.r)
+                  SvgPicture.asset(
+                      '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                      color: AppColors.grey_8D,
+                      width: 20.r,
+                      height: 20.r)
                 ],
               ),
             ),

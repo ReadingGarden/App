@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
 
 final buttonCheckProvider = StateProvider<bool>((ref) => false);
@@ -169,10 +170,11 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                   children: [
                                     Container(
                                       alignment: Alignment.center,
-                                      width: 12.r,
-                                      height: 12.r,
                                       child: SvgPicture.asset(
-                                        'assets/images/plus.svg',
+                                        '${Constant.ASSETS_ICONS}icon_add.svg',
+                                        color: AppColors.primaryColor,
+                                        width: 16.r,
+                                        height: 16.r,
                                       ),
                                     ),
                                     Text(
@@ -210,10 +212,11 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                   children: [
                                     Container(
                                       alignment: Alignment.center,
-                                      width: 12.r,
-                                      height: 12.r,
                                       child: SvgPicture.asset(
-                                        'assets/images/check.svg',
+                                        '${Constant.ASSETS_ICONS}icon_check.svg',
+                                        color: Colors.white,
+                                        width: 16.r,
+                                        height: 16.r,
                                       ),
                                     ),
                                     Text(
@@ -241,9 +244,10 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                             Container(
                               margin: EdgeInsets.only(bottom: 8.h),
                               height: 22.h,
-                              child: const Text(
+                              child: Text(
                                 '책 소개',
-                                style: TextStyle(color: AppColors.grey_8D),
+                                style: TextStyle(
+                                    fontSize: 12.sp, color: AppColors.grey_8D),
                               ),
                             ),
                             (bookResult()['description'] != '')

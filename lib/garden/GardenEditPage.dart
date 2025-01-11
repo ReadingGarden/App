@@ -457,8 +457,9 @@ class GardenEditBottomSheet extends ConsumerWidget {
                       Container(
                         margin: EdgeInsets.only(right: 20.w),
                         child: SvgPicture.asset(
-                          'assets/images/garden-color.svg',
+                          '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
                           width: 20.w,
+                          height: 24.h,
                           color: Functions.gardenColor(
                               gardenAPI.gardenList()[index]['garden_color']),
                         ),

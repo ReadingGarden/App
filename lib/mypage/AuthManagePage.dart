@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../core/api/AuthAPI.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/SharedPreferences.dart';
 import '../utils/Widgets.dart';
 
@@ -53,13 +54,11 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
                   'isLoginPage': false
                 });
               },
-              widget: Container(
-                alignment: Alignment.center,
+              widget: SvgPicture.asset(
+                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                color: AppColors.grey_8D,
                 width: 20.r,
                 height: 20.r,
-                child: SvgPicture.asset(
-                  'assets/images/angle-right-b.svg',
-                ),
               ),
             ),
             Widgets.titleList(

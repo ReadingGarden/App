@@ -293,11 +293,18 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                                 true;
                           },
                           child: Container(
+                            alignment: Alignment.center,
                             margin: EdgeInsets.only(right: 10.w, bottom: 10.h),
+                            width: 30.r,
+                            height: 30.r,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(4.r)),
                             child: SvgPicture.asset(
-                              'assets/images/photo-delete_btn.svg',
-                              width: 30.r,
-                              height: 30.r,
+                              '${Constant.ASSETS_ICONS}icon_close.svg',
+                              color: AppColors.primaryColor,
+                              width: 20.r,
+                              height: 20.r,
                             ),
                           ),
                         )
@@ -344,16 +351,17 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                     ? GestureDetector(
                         onTap: () => _takePhoto(),
                         child: SvgPicture.asset(
-                          'assets/images/camera.svg',
-                          width: 30.r,
-                          height: 30.r,
+                          '${Constant.ASSETS_ICONS}icon_camera.svg',
+                          color: AppColors.grey_8D,
+                          width: 20.r,
+                          height: 20.r,
                         ),
                       )
                     : SvgPicture.asset(
-                        'assets/images/camera.svg',
-                        color: AppColors.grey_CA,
-                        width: 30.r,
-                        height: 30.r,
+                        '${Constant.ASSETS_ICONS}icon_camera.svg',
+                        color: AppColors.grey_8D,
+                        width: 20.r,
+                        height: 20.r,
                       ),
                 (ref.watch(memoImageNameProvider.notifier).state == null)
                     ? GestureDetector(
@@ -362,9 +370,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           margin: EdgeInsets.only(left: 10.w),
                           color: Colors.transparent,
                           child: SvgPicture.asset(
-                            'assets/images/photo.svg',
-                            width: 30.r,
-                            height: 30.r,
+                            '${Constant.ASSETS_ICONS}icon_album.svg',
+                            color: AppColors.grey_8D,
+                            width: 20.r,
+                            height: 20.r,
                           ),
                         ),
                       )
@@ -372,10 +381,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                         margin: EdgeInsets.only(left: 10.w),
                         color: Colors.transparent,
                         child: SvgPicture.asset(
-                          'assets/images/photo.svg',
-                          color: AppColors.grey_CA,
-                          width: 30.r,
-                          height: 30.r,
+                          '${Constant.ASSETS_ICONS}icon_album.svg',
+                          color: AppColors.grey_8D,
+                          width: 20.r,
+                          height: 20.r,
                         ),
                       ),
               ],
@@ -391,10 +400,11 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
               },
               child: SvgPicture.asset(
                 (!FocusScope.of(context).hasFocus)
-                    ? 'assets/images/keyboard-hide.svg'
-                    : 'assets/images/keyboard-live.svg',
-                width: 30.r,
-                height: 30.r,
+                    ? '${Constant.ASSETS_ICONS}icon_keyboard_up.svg'
+                    : '${Constant.ASSETS_ICONS}icon_keyboard_down.svg',
+                color: AppColors.grey_8D,
+                width: 20.r,
+                height: 20.r,
               ),
             ),
           ],

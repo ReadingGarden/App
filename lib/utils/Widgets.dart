@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../utils/AppColors.dart';
+import 'Constant.dart';
 import 'Functions.dart';
 
 class Widgets {
@@ -40,10 +41,12 @@ class Widgets {
         },
         child: Container(
           alignment: Alignment.center,
-          width: 32.r,
-          height: 32.r,
           color: Colors.transparent,
-          child: SvgPicture.asset('assets/images/angle-left.svg'),
+          child: SvgPicture.asset(
+            '${Constant.ASSETS_ICONS}icon_angle_left.svg',
+            width: 24.r,
+            height: 24.r,
+          ),
         ),
       ),
 
@@ -189,7 +192,7 @@ class Widgets {
     );
   }
 
-  static toast(String msg, {bool? icon}) {
+  static toast(String msg) {
     return Container(
       width: 312.w,
       height: 40.h,
@@ -198,20 +201,9 @@ class Widgets {
         borderRadius: BorderRadius.circular(20.r),
         color: AppColors.black_4A,
       ),
-      child: Row(
-        children: [
-          (icon != null)
-              ? Container(
-                  width: 24.r,
-                  height: 24.r,
-                  margin: EdgeInsets.only(right: 10.w),
-                  child: SvgPicture.asset('assets/images/check-circle.svg'))
-              : Container(),
-          Text(
-            msg,
-            style: TextStyle(fontSize: 14.sp, color: Colors.white),
-          ),
-        ],
+      child: Text(
+        msg,
+        style: TextStyle(fontSize: 14.sp, color: Colors.white),
       ),
     );
   }

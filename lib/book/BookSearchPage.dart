@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Widgets.dart';
 
 final bookTotalCountProvider = StateProvider<int>((ref) => 0);
@@ -176,7 +177,10 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                               width: 20.r,
                               height: 20.r,
                               child: SvgPicture.asset(
-                                'assets/images/search.svg',
+                                '${Constant.ASSETS_ICONS}icon_search.svg',
+                                color: AppColors.grey_8D,
+                                width: 20.r,
+                                height: 20.r,
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -275,8 +279,6 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                                   BorderRadius.circular(20.r),
                                               color: Colors.transparent),
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
@@ -287,7 +289,8 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                                 ),
                                               ),
                                               SvgPicture.asset(
-                                                'assets/images/angle-right-b.svg',
+                                                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                                                color: AppColors.grey_8D,
                                                 width: 20.r,
                                                 height: 20.r,
                                               )
@@ -314,8 +317,6 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                                   BorderRadius.circular(20.r),
                                               color: Colors.transparent),
                                           child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
@@ -326,7 +327,8 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                                 ),
                                               ),
                                               SvgPicture.asset(
-                                                'assets/images/angle-right-b.svg',
+                                                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                                                color: AppColors.grey_8D,
                                                 width: 20.r,
                                                 height: 20.r,
                                               )

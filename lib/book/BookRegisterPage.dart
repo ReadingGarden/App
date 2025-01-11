@@ -341,8 +341,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                   Container(
                     margin: EdgeInsets.only(right: 20.w),
                     child: SvgPicture.asset(
-                      'assets/images/garden-color.svg',
-                      width: 20.w,
+                      '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
+                      width: 20.h,
+                      height: 24.h,
                       color: Functions.gardenColor(
                           gardenAPI.gardenList()[index]['garden_color']),
                     ),

@@ -37,9 +37,13 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
               _moreBottomSheet();
             },
             child: Container(
-              margin: EdgeInsets.only(right: 14.w),
-              child: SvgPicture.asset('assets/images/angle-left-detail.svg',
-                  width: 32.r, height: 32.r),
+              alignment: Alignment.center,
+              width: 60.r,
+              height: 60.r,
+              child: SvgPicture.asset(
+                  '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
+                  width: 24.r,
+                  height: 24.r),
             ),
           )
         ]),

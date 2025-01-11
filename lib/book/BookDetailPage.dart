@@ -1,4 +1,3 @@
-import 'package:book_flutter/core/api/GardenAPI.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -165,9 +164,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
           GestureDetector(
             onTap: _moreBottomSheet,
             child: Container(
-              margin: EdgeInsets.only(right: 14.w),
-              child: SvgPicture.asset('assets/images/angle-left-detail.svg',
-                  width: 32.r, height: 32.r),
+              alignment: Alignment.center,
+              width: 60.r,
+              height: 60.r,
+              child: SvgPicture.asset(
+                  '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
+                  width: 24.r,
+                  height: 24.r),
             ),
           )
         ],
@@ -273,8 +276,6 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                           },
                           child: Container(
                             alignment: Alignment.center,
-                            // padding: EdgeInsets.only(
-                            //     left: 16.w, right: 16.w, bottom: 8.h, top: 14.h),
                             margin: EdgeInsets.only(top: 20.h, right: 30.w),
                             width: 64.r,
                             height: 64.r,
@@ -285,14 +286,16 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  height: 19.35.h,
-                                  width: 15.w,
-                                  color: Colors.amber,
+                                  alignment: Alignment.center,
+                                  child: SvgPicture.asset(
+                                    '${Constant.ASSETS_ICONS}icon_water.svg',
+                                    color: Colors.white,
+                                    width: 24.r,
+                                    height: 24.r,
+                                  ),
                                 ),
                                 Container(
                                   alignment: Alignment.center,
-                                  margin: EdgeInsets.only(top: 2.65.h),
-                                  height: 20.h,
                                   child: Text(
                                     '물주기',
                                     style: TextStyle(
@@ -387,7 +390,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                                     style: TextStyle(
                                                         fontSize: 12.sp,
                                                         color:
-                                                            AppColors.black_4A),
+                                                            AppColors.grey_8D),
                                                   ),
                                                 ],
                                               ),
@@ -453,14 +456,25 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                                   getBookRead();
                                                 }
                                               },
-                                              child: Container(
-                                                color: Colors.transparent,
-                                                child: const Text(
-                                                  '+ 작성하기',
-                                                  style: TextStyle(
-                                                      color: AppColors
-                                                          .primaryColor),
-                                                ),
+                                              child: Row(
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    '${Constant.ASSETS_ICONS}icon_add.svg',
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    width: 16.r,
+                                                    height: 16.r,
+                                                  ),
+                                                  Container(
+                                                    color: Colors.transparent,
+                                                    child: const Text(
+                                                      '작성하기',
+                                                      style: TextStyle(
+                                                          color: AppColors
+                                                              .primaryColor),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             )
                                           ],
@@ -493,9 +507,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          const Text(
+                                          Text(
                                             '책 소개',
                                             style: TextStyle(
+                                                fontSize: 12.sp,
                                                 color: AppColors.grey_8D),
                                           ),
                                           Padding(
@@ -861,8 +876,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                           child: SvgPicture.asset(
                                             ref.watch(bookDetailMemoSelectIndexListProvider)[
                                                     index]
-                                                ? 'assets/images/star.svg'
-                                                : 'assets/images/star-dis.svg',
+                                                ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
+                                                : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
+                                            color: ref.watch(
+                                                        bookDetailMemoSelectIndexListProvider)[
+                                                    index]
+                                                ? AppColors.starYellowColor
+                                                : AppColors.grey_CA,
                                             width: 20.r,
                                             height: 20.r,
                                           ),
