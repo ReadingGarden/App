@@ -344,7 +344,9 @@ class BookAddDonePage extends StatelessWidget {
                           text: bookRead['book_tree'],
                           style:
                               const TextStyle(color: AppColors.primaryColor)),
-                      const TextSpan(text: '가 다컸어요')
+                      TextSpan(
+                          text:
+                              '${Functions.getPostpositionString(bookRead['book_tree'], '이', '가')} 다컸어요')
                     ])),
                 Container(
                   margin: EdgeInsets.only(top: 40.h, bottom: 30.h),

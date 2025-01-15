@@ -123,6 +123,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
               onTap: () async {
                 final result = await context.pushNamed('memo-book');
                 if (result != null) {
+                  //메모 재로딩
+                  _currentPage = 1;
+                  ref.read(memoListProvider.notifier).reset();
+                  ref.read(memoSelectIndexListProvider.notifier).state = [];
                   getMemoList();
                 }
               },
@@ -164,123 +168,164 @@ class _MemoPageState extends ConsumerState<MemoPage> {
           ref.read(memoListProvider).length,
           (index) {
             return GestureDetector(
-              onTap: () async {
-                final result = await context.pushNamed('memo-detail',
-                    extra: ref.read(memoListProvider)[index].toJson());
-                if (result != null) {
-                  getMemoList();
-                }
-              },
-              child: Container(
-                margin: EdgeInsets.only(bottom: 10.h),
-                padding: EdgeInsets.only(
-                    left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
-                width: 312.w,
-                decoration: BoxDecoration(
-                    border: Border.all(color: AppColors.grey_F2),
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: Colors.transparent),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        (ref.watch(memoListProvider)[index].book_image_url ==
-                                null)
-                            ? Container(
-                                width: 44.r,
-                                height: 44.r,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    color: AppColors.grey_F2),
-                              )
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(8.r),
-                                child: Image.network(
-                                  width: 44.r,
-                                  height: 44.r,
-                                  fit: BoxFit.cover,
-                                  ref
-                                      .watch(memoListProvider)[index]
-                                      .book_image_url!,
-                                ),
-                              ),
-                        Container(
-                          width: 212.w,
-                          margin: EdgeInsets.only(left: 12.w),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+              // onTap: () async {
+              //   final result = await context.pushNamed('memo-detail',
+              //       extra: ref.read(memoListProvider)[index].toJson());
+              //   if (result != null) {
+              //     //메모 재로딩
+              //     _currentPage = 1;
+              //     ref.read(memoListProvider.notifier).reset();
+              //     ref.read(memoSelectIndexListProvider.notifier).state = [];
+              //     getMemoList();
+              //   }
+              // },
+              child: Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      final result = await context.pushNamed('memo-detail',
+                          extra: ref.read(memoListProvider)[index].toJson());
+                      if (result != null) {
+                        //메모 재로딩
+                        _currentPage = 1;
+                        ref.read(memoListProvider.notifier).reset();
+                        ref.read(memoSelectIndexListProvider.notifier).state =
+                            [];
+                        getMemoList();
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 10.h),
+                      padding: EdgeInsets.only(
+                          left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
+                      width: 312.w,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.grey_F2),
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: Colors.transparent),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
                             children: [
-                              Text(
-                                ref.watch(memoListProvider)[index].book_title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                ref.watch(memoListProvider)[index].book_author,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 12.sp, color: AppColors.grey_8D),
+                              (ref
+                                          .watch(memoListProvider)[index]
+                                          .book_image_url ==
+                                      null)
+                                  ? Container(
+                                      width: 44.r,
+                                      height: 44.r,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
+                                          color: AppColors.grey_F2),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      child: Image.network(
+                                        width: 44.r,
+                                        height: 44.r,
+                                        fit: BoxFit.cover,
+                                        ref
+                                            .watch(memoListProvider)[index]
+                                            .book_image_url!,
+                                      ),
+                                    ),
+                              Container(
+                                width: 212.w,
+                                margin: EdgeInsets.only(left: 12.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      ref
+                                          .watch(memoListProvider)[index]
+                                          .book_title,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      ref
+                                          .watch(memoListProvider)[index]
+                                          .book_author,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColors.grey_8D),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),
-                        )
-                      ],
+                          Visibility(
+                              visible: (ref
+                                      .watch(memoListProvider)[index]
+                                      .image_url !=
+                                  null),
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10.h),
+                                child: Image.network(
+                                    width: 320.w,
+                                    height: 140.h,
+                                    fit: BoxFit.fitWidth,
+                                    '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index].image_url}'),
+                              )),
+                          Container(
+                              margin: EdgeInsets.only(top: 10.h),
+                              child: Text(
+                                ref.watch(memoListProvider)[index].memo_content,
+                                maxLines: 5,
+                                style: TextStyle(
+                                    fontSize: 12.sp,
+                                    overflow: TextOverflow.ellipsis,
+                                    height: 1.75.h),
+                              )),
+                          Container(
+                              margin: EdgeInsets.only(top: 10.h),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    Functions.formatDate(ref
+                                        .watch(memoListProvider)[index]
+                                        .memo_created_at),
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: AppColors.grey_8D),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ),
                     ),
-                    Visibility(
-                        visible:
-                            (ref.watch(memoListProvider)[index].image_url !=
-                                null),
-                        child: Container(
-                          margin: EdgeInsets.only(top: 10.h),
-                          child: Image.network(
-                              width: 320.w,
-                              height: 140.h,
-                              fit: BoxFit.fitWidth,
-                              '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index].image_url}'),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        child: Text(
-                          ref.watch(memoListProvider)[index].memo_content,
-                          maxLines: 5,
-                          style: TextStyle(
-                              fontSize: 12.sp, overflow: TextOverflow.ellipsis),
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              Functions.formatDate(ref
-                                  .watch(memoListProvider)[index]
-                                  .memo_created_at),
-                              style: TextStyle(
-                                  fontSize: 12.sp, color: AppColors.grey_8D),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                putMemoLike(index,
-                                    ref.watch(memoListProvider)[index].id);
-                              },
-                              child: SvgPicture.asset(
-                                ref.watch(memoSelectIndexListProvider)[index]
-                                    ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
-                                    : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
-                                color: ref.watch(
-                                        memoSelectIndexListProvider)[index]
-                                    ? AppColors.starYellowColor
-                                    : AppColors.grey_CA,
-                                width: 20.r,
-                                height: 20.r,
-                              ),
-                            )
-                          ],
-                        )),
-                  ],
-                ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      putMemoLike(index, ref.watch(memoListProvider)[index].id);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(right: 10.w, bottom: 20.h),
+                      width: 40.r,
+                      height: 40.r,
+                      color: Colors.transparent,
+                      child: SvgPicture.asset(
+                        ref.watch(memoSelectIndexListProvider)[index]
+                            ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
+                            : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
+                        color: ref.watch(memoSelectIndexListProvider)[index]
+                            ? AppColors.starYellowColor
+                            : AppColors.grey_CA,
+                        width: 20.r,
+                        height: 20.r,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           },

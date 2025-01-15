@@ -52,6 +52,19 @@ class Functions {
     return formattedDate;
   }
 
+  //을를 이가
+  static String getPostpositionString(String word, String case1, String case2) {
+    // 단어가 한글인지 확인
+    final codeUnit = word.codeUnits.last;
+    if (codeUnit >= 0xAC00 && codeUnit <= 0xD7A3) {
+      // 한글 유니코드 계산
+      final hasJongseong = (codeUnit - 0xAC00) % 28 != 0;
+      return hasJongseong ? case1 : case2;
+    }
+    // 한글이 아닌 경우 기본값 반환
+    return case2;
+  }
+
   //가든 컬러
   static Color gardenColor(String color) {
     int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);

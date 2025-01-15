@@ -701,7 +701,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                 TextSpan(
                     text: bookDetail['book_tree'] ?? '',
                     style: const TextStyle(fontWeight: FontWeight.bold)),
-                const TextSpan(text: '가 다컸어요')
+                TextSpan(
+                    text:
+                        '${Functions.getPostpositionString(bookDetail['book_tree'] ?? '', '이', '가')} 다컸어요')
               ])),
               Padding(
                 padding: EdgeInsets.only(top: 4.h),
@@ -724,7 +726,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                     TextSpan(
                         text: bookDetail['book_tree'] ?? '',
                         style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const TextSpan(text: '를 심었어요')
+                    TextSpan(
+                        text:
+                            '${Functions.getPostpositionString(bookDetail['book_tree'] ?? '', '을', '를')} 심었어요')
                   ])),
                   Padding(
                     padding: EdgeInsets.only(top: 4.h),
@@ -775,134 +779,148 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
             children: List.generate(
               memoList.length,
               (index) {
-                return GestureDetector(
-                  onTap: () async {
-                    Map data = memoList[index];
-                    data['book_no'] = widget.book_no;
-                    data['book_title'] = bookDetail['book_title'];
-                    data['book_author'] = bookDetail['book_author'];
-                    data['book_image_url'] = bookDetail['book_image_url'];
+                return Stack(
+                  alignment: Alignment.bottomRight,
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        Map data = memoList[index];
+                        data['book_no'] = widget.book_no;
+                        data['book_title'] = bookDetail['book_title'];
+                        data['book_author'] = bookDetail['book_author'];
+                        data['book_image_url'] = bookDetail['book_image_url'];
 
-                    final result =
-                        await context.pushNamed('memo-detail', extra: data);
-                    if (result != null) {
-                      getBookRead();
-                    }
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 10.h),
-                    padding: EdgeInsets.only(
-                        left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
-                    width: 312.w,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.grey_F2),
-                        borderRadius: BorderRadius.circular(20.r),
-                        color: Colors.transparent),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                        final result =
+                            await context.pushNamed('memo-detail', extra: data);
+                        if (result != null) {
+                          getBookRead();
+                        }
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 10.h),
+                        padding: EdgeInsets.only(
+                            left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
+                        width: 312.w,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.grey_F2),
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: Colors.transparent),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            (bookDetail['book_image_url'] == null)
-                                ? Container(
-                                    width: 44.r,
-                                    height: 44.r,
-                                    decoration: BoxDecoration(
+                            Row(
+                              children: [
+                                (bookDetail['book_image_url'] == null)
+                                    ? Container(
+                                        width: 44.r,
+                                        height: 44.r,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.r),
+                                            color: AppColors.grey_F2),
+                                      )
+                                    : ClipRRect(
                                         borderRadius:
                                             BorderRadius.circular(8.r),
-                                        color: AppColors.grey_F2),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    child: Image.network(
-                                      width: 44.r,
-                                      height: 44.r,
-                                      fit: BoxFit.cover,
-                                      bookDetail['book_image_url'],
-                                    ),
+                                        child: Image.network(
+                                          width: 44.r,
+                                          height: 44.r,
+                                          fit: BoxFit.cover,
+                                          bookDetail['book_image_url'],
+                                        ),
+                                      ),
+                                Container(
+                                  width: 212.w,
+                                  margin: EdgeInsets.only(left: 12.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        bookDetail['book_title'] ?? '',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(
+                                        bookDetail['book_author'] ?? '',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: AppColors.grey_8D),
+                                      )
+                                    ],
                                   ),
+                                )
+                              ],
+                            ),
+                            Visibility(
+                                visible: (memoList[index]['image_url'] != null),
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 10.h),
+                                  child: Image.network(
+                                      width: 320.w,
+                                      height: 140.h,
+                                      fit: BoxFit.fitWidth,
+                                      '${Constant.IMAGE_URL}${memoList[index]['image_url']}'),
+                                )),
                             Container(
-                              width: 212.w,
-                              margin: EdgeInsets.only(left: 12.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    bookDetail['book_title'] ?? '',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    bookDetail['book_author'] ?? '',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.grey_8D),
-                                  )
-                                ],
-                              ),
-                            )
+                                margin: EdgeInsets.only(top: 10.h),
+                                child: Text(
+                                  memoList[index]['memo_content'],
+                                  maxLines: 5,
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      overflow: TextOverflow.ellipsis),
+                                )),
+                            Container(
+                                margin: EdgeInsets.only(top: 10.h),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        Functions.formatDate(
+                                            memoList[index]['memo_created_at']),
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: AppColors.grey_8D),
+                                      ),
+                                    ])),
                           ],
                         ),
-                        Visibility(
-                            visible: (memoList[index]['image_url'] != null),
-                            child: Container(
-                              margin: EdgeInsets.only(top: 10.h),
-                              child: Image.network(
-                                  width: 320.w,
-                                  height: 140.h,
-                                  fit: BoxFit.fitWidth,
-                                  '${Constant.IMAGE_URL}${memoList[index]['image_url']}'),
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(top: 10.h),
-                            child: Text(
-                              memoList[index]['memo_content'],
-                              maxLines: 5,
-                              style: TextStyle(
-                                  fontSize: 12.sp,
-                                  overflow: TextOverflow.ellipsis),
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(top: 10.h),
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    Functions.formatDate(
-                                        memoList[index]['memo_created_at']),
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.grey_8D),
-                                  ),
-                                  (ref
-                                          .watch(
-                                              bookDetailMemoSelectIndexListProvider)
-                                          .isNotEmpty)
-                                      ? GestureDetector(
-                                          onTap: () => putMemoLike(
-                                              index, memoList[index]['id']),
-                                          child: SvgPicture.asset(
-                                            ref.watch(bookDetailMemoSelectIndexListProvider)[
-                                                    index]
-                                                ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
-                                                : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
-                                            color: ref.watch(
-                                                        bookDetailMemoSelectIndexListProvider)[
-                                                    index]
-                                                ? AppColors.starYellowColor
-                                                : AppColors.grey_CA,
-                                            width: 20.r,
-                                            height: 20.r,
-                                          ),
-                                        )
-                                      : Container()
-                                ])),
-                      ],
+                      ),
                     ),
-                  ),
+                    (ref
+                            .watch(bookDetailMemoSelectIndexListProvider)
+                            .isNotEmpty)
+                        ? GestureDetector(
+                            onTap: () =>
+                                putMemoLike(index, memoList[index]['id']),
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin:
+                                  EdgeInsets.only(right: 10.w, bottom: 20.h),
+                              width: 40.r,
+                              height: 40.r,
+                              color: Colors.transparent,
+                              child: SvgPicture.asset(
+                                ref.watch(bookDetailMemoSelectIndexListProvider)[
+                                        index]
+                                    ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
+                                    : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
+                                color: ref.watch(
+                                            bookDetailMemoSelectIndexListProvider)[
+                                        index]
+                                    ? AppColors.starYellowColor
+                                    : AppColors.grey_CA,
+                                width: 20.r,
+                                height: 20.r,
+                              ),
+                            ),
+                          )
+                        : Container()
+                  ],
                 );
               },
             ),
