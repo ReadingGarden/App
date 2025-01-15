@@ -57,7 +57,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
         await gardenService.deleteGarden(gardenAPI.gardenMain()['garden_no']);
     if (response?.statusCode == 200) {
       context.pop();
-      context.pushNamed('bottom-navi');
+      context.replaceNamed('bottom-navi');
     } else if (response?.statusCode == 403) {
       fToast.showToast(child: Widgets.toast('😢 가든이 하나뿐이라 삭제할 수 없어요'));
     }
@@ -92,7 +92,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
         gardenAPI.gardenMain()['garden_no'], data);
     if (response?.statusCode == 200) {
       context.pop();
-      context.pushNamed('bottom-navi');
+      context.replaceNamed('bottom-navi');
     }
   }
 
@@ -104,7 +104,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
         await gardenService.byeGarden(gardenAPI.gardenMain()['garden_no']);
     if (response?.statusCode == 200) {
       context.pop();
-      context.pushNamed('bottom-navi');
+      context.replaceNamed('bottom-navi');
     }
   }
 

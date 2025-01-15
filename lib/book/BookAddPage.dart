@@ -73,7 +73,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
           'book_end_date': DateTime.now().toString()
         };
 
-        context.pushNamed('book-add-done', extra: bookReadData);
+        context.pushReplacementNamed('book-add-done', extra: bookReadData);
       } else {
         context.pop('fetchData');
       }
@@ -224,6 +224,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
 
 Future pageBottomSheet(
     BuildContext context, TextEditingController controller, int page) {
+  controller.text = page.toString();
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -255,7 +256,7 @@ Future pageBottomSheet(
                       counter: Container(),
                       fillColor: AppColors.grey_FA,
                       filled: true,
-                      hintText: page.toString(),
+                      // hintText: page.toString(),
                       hintStyle:
                           TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
                       enabledBorder: OutlineInputBorder(
@@ -352,9 +353,11 @@ class BookAddDonePage extends StatelessWidget {
                   color: Colors.amber,
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 6.h),
+                  padding:
+                      EdgeInsets.only(bottom: 6.h, left: 48.w, right: 48.w),
                   child: Text(
                     bookRead['book_title'],
+                    textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style:
@@ -373,7 +376,7 @@ class BookAddDonePage extends StatelessWidget {
         bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
           child: Widgets.button('가든으로 가기', true, () {
-            context.pushNamed('bottom-navi');
+            context.replaceNamed('bottom-navi');
             //TODO: - 자동으로 해당 가든 변경?
           }),
         ));

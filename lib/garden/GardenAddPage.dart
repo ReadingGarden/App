@@ -162,7 +162,7 @@ class GardenAddDonePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
       context.pop();
-      context.pushNamed('bottom-navi');
+      context.replaceNamed('bottom-navi');
     });
     return Scaffold(
       body: Center(),

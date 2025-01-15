@@ -80,27 +80,70 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bookList = ref.watch(bookStatusAllListProvider);
+
     return Scaffold(
       appBar: Widgets.appBar(context, title: '메모할 책 선택'),
-      body: Container(
-        margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '내 책장에 있는 책',
-              style: TextStyle(color: AppColors.grey_8D),
+      body: (bookList.isNotEmpty)
+          ? Container(
+              margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    '내 책장에 있는 책',
+                    style: TextStyle(color: AppColors.grey_8D),
+                  ),
+                  Expanded(child: _bookList(bookList)),
+                ],
+              ),
+            )
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '저장된 책이 없어요!',
+                    style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.black_2B),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 6.h, bottom: 20.h),
+                    child: const Text(
+                      '내 책장에 있는 책에만 메모를 쓸 수 있어요\n우선, 가든에 책을 추가해주세요',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppColors.grey_8D),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.pushNamed('book-serach');
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 96.w,
+                      height: 36.h,
+                      decoration: BoxDecoration(
+                          color: AppColors.grey_EF,
+                          borderRadius: BorderRadius.circular(8.r)),
+                      child: Text(
+                        '책 추가하기',
+                        style: TextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black_4A),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
-            Expanded(child: _bookList()),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget _bookList() {
-    final bookList = ref.watch(bookStatusAllListProvider);
-
+  Widget _bookList(bookList) {
     return ListView(
       controller: _scrollController,
       padding: EdgeInsets.only(top: 10.h),

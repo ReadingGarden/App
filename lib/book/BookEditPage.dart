@@ -160,7 +160,8 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                         children: [
                           Text(
                             widget.book['book_title'],
-                            maxLines: 3,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 16.sp,
                             ),

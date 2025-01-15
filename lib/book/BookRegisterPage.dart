@@ -47,6 +47,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
         }
       }
     });
+
+    _dateController.text =
+        Functions.formatBookReadDate(DateTime.now().toString());
   }
 
   //책 등록 api
@@ -79,7 +82,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       if (_dateController.text.isNotEmpty) {
         postBookRead(response?.data['data']['book_no']);
       } else {
-        context.pushNamed('book-register-done',
+        context.pushReplacementNamed('book-register-done',
             extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
                 ['garden_title']);
       }
@@ -102,7 +105,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       if (_dateController.text.isNotEmpty) {
         postBookRead(widget.book['book_no']);
       } else {
-        context.pushNamed('book-register-done',
+        context.pushReplacementNamed('book-register-done',
             extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
                 ['garden_title']);
       }
@@ -124,7 +127,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
 
     final response = await bookService.postBookRead(data);
     if (response?.statusCode == 201) {
-      context.pushNamed('book-register-done',
+      context.pushReplacementNamed('book-register-done',
           extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
               ['garden_title']);
     }
@@ -259,8 +262,6 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                   _validate();
                                 },
                                 decoration: InputDecoration(
-                                  hintText: Functions.formatBookReadDate(
-                                      DateTime.now().toString()),
                                   counter: const Text(''),
                                   hintStyle: TextStyle(
                                       fontSize: 16.sp,
@@ -493,7 +494,7 @@ class BookRegisterDonePage extends StatelessWidget {
         bottomNavigationBar: Container(
           margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
           child: Widgets.button('가든으로 가기', true, () {
-            context.pushNamed('bottom-navi');
+            context.replaceNamed('bottom-navi');
             //TODO: - 자동으로 해당 가든 변경?
           }),
         ));

@@ -131,7 +131,9 @@ class Widgets {
                 ? 30
                 : (label == '가든 이름')
                     ? 10
-                    : null,
+                    : (label == '총 페이지')
+                        ? 4
+                        : null,
             maxLines: (label == '가든 소개') ? 2 : 1,
             onChanged: (value) {
               // errorText 초기화
@@ -152,7 +154,9 @@ class Widgets {
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
               counter:
-                  (label == '가든 소개' || label == '가든 이름') ? Container() : null,
+                  (label == '가든 소개' || label == '가든 이름' || label == '총 페이지')
+                      ? Container()
+                      : null,
               fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,

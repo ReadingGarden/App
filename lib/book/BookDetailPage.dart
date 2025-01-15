@@ -135,7 +135,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
     final response = await bookService.deleteBook(widget.book_no);
     if (response?.statusCode == 200) {
       context.pop();
-      context.pushNamed('bottom-navi');
+      context.replaceNamed('bottom-navi');
     }
   }
 
