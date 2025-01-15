@@ -318,6 +318,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           controller: _memoController,
                           focusNode: _focusNode,
                           maxLines: null,
+                          style: TextStyle(fontSize: 14.sp, height: 1.7.h),
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               ref.read(okButtonProvider.notifier).state = true;
@@ -352,16 +353,16 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                         onTap: () => _takePhoto(),
                         child: SvgPicture.asset(
                           '${Constant.ASSETS_ICONS}icon_camera.svg',
-                          color: AppColors.grey_8D,
-                          width: 20.r,
-                          height: 20.r,
+                          color: AppColors.black_4A,
+                          width: 24.r,
+                          height: 24.r,
                         ),
                       )
                     : SvgPicture.asset(
                         '${Constant.ASSETS_ICONS}icon_camera.svg',
-                        color: AppColors.grey_8D,
-                        width: 20.r,
-                        height: 20.r,
+                        color: AppColors.grey_CA,
+                        width: 24.r,
+                        height: 24.r,
                       ),
                 (ref.watch(memoImageNameProvider.notifier).state == null)
                     ? GestureDetector(
@@ -371,9 +372,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           color: Colors.transparent,
                           child: SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_album.svg',
-                            color: AppColors.grey_8D,
-                            width: 20.r,
-                            height: 20.r,
+                            color: AppColors.black_4A,
+                            width: 24.r,
+                            height: 24.r,
                           ),
                         ),
                       )
@@ -382,9 +383,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                         color: Colors.transparent,
                         child: SvgPicture.asset(
                           '${Constant.ASSETS_ICONS}icon_album.svg',
-                          color: AppColors.grey_8D,
-                          width: 20.r,
-                          height: 20.r,
+                          color: AppColors.grey_CA,
+                          width: 24.r,
+                          height: 24.r,
                         ),
                       ),
               ],
@@ -402,9 +403,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                 (!FocusScope.of(context).hasFocus)
                     ? '${Constant.ASSETS_ICONS}icon_keyboard_up.svg'
                     : '${Constant.ASSETS_ICONS}icon_keyboard_down.svg',
-                color: AppColors.grey_8D,
-                width: 20.r,
-                height: 20.r,
+                color: AppColors.black_4A,
+                width: 24.r,
+                height: 24.r,
               ),
             ),
           ],

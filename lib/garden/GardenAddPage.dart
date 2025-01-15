@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/service/GardenService.dart';
@@ -20,9 +21,14 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _infoController = TextEditingController();
 
+  late FToast fToast;
+
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
+
     Future.microtask(() {
       ref.read(gardenAddButtonProvider.notifier).state = false;
       ref.read(gardenColorSelectIndexProvider.notifier).state = 0;
@@ -41,6 +47,8 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
     final response = await gardenService.postGarden(data);
     if (response?.statusCode == 201) {
       putGardenMain(response?.data['data']['garden_no']);
+    } else if (response?.statusCode == 403) {
+      fToast.showToast(child: Widgets.toast('최대 5개의 가든만 만들 수 있어요'));
     }
   }
 
@@ -76,13 +84,8 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Widgets.textfield(
-                    ref,
-                    _titleController,
-                    '가든 이름',
-                    '영어, 한글 최대 10글자까지 쓸 수 있어요',
-                    null,
-                    StateProvider((ref) => null),
+                Widgets.textfield(ref, _titleController, '가든 이름',
+                    '최대 12글자까지 쓸 수 있어요', null, StateProvider((ref) => null),
                     validateFunction: _gardenAddValid),
                 Widgets.textfield(ref, _infoController, '가든 소개', '소개글을 입력해주세요',
                     null, StateProvider((ref) => null),

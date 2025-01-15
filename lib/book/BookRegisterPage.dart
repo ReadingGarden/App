@@ -16,6 +16,7 @@ import '../utils/Widgets.dart';
 final gardenSelectIndexProvider = StateProvider<int>((ref) => 0);
 //꽃 선택 인덱스 ...
 final flowerSelectIndexProvider = StateProvider<int>((ref) => 0);
+final dateErrorProvider = StateProvider<String?>((ref) => null);
 
 class BookRegisterPage extends ConsumerStatefulWidget {
   const BookRegisterPage({required this.book});
@@ -129,6 +130,15 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     }
   }
 
+  //날짜 error
+  void _validate() {
+    if (_dateController.text.length == 10 || _dateController.text.isEmpty) {
+      ref.read(dateErrorProvider.notifier).state = null;
+    } else {
+      ref.read(dateErrorProvider.notifier).state = 'YYYY.MM.DD 형식으로 적어주세요';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,28 +247,55 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                 keyboardType: TextInputType.number,
                                 maxLength: 10,
                                 inputFormatters: [AutoInputFormatter()],
+                                onChanged: (value) {
+                                  // errorText 초기화
+                                  ref.read(dateErrorProvider.notifier).state =
+                                      null;
+                                },
+                                onTapOutside: (event) {
+                                  _validate();
+                                },
+                                onSubmitted: (value) {
+                                  _validate();
+                                },
                                 decoration: InputDecoration(
-                                    hintText: Functions.formatBookReadDate(
-                                        DateTime.now().toString()),
-                                    counter: Container(),
-                                    hintStyle: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: AppColors.grey_8D),
-                                    border: OutlineInputBorder(
+                                  hintText: Functions.formatBookReadDate(
+                                      DateTime.now().toString()),
+                                  counter: const Text(''),
+                                  hintStyle: TextStyle(
+                                      fontSize: 16.sp,
+                                      color: AppColors.grey_8D),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.grey_F2),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.grey_F2),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderSide: const BorderSide(
+                                        color: AppColors.grey_F2),
+                                  ),
+                                  errorText: ref.watch(dateErrorProvider),
+                                  errorStyle: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: AppColors.errorRedColor,
+                                  ),
+                                  errorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: const BorderSide(
-                                          color: AppColors.grey_F2),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: AppColors.errorRedColor,
+                                          width: 1.w)),
+                                  focusedErrorBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: const BorderSide(
-                                          color: AppColors.grey_F2),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: const BorderSide(
-                                          color: AppColors.grey_F2),
-                                    )),
+                                      borderSide: BorderSide(
+                                          color: AppColors.errorRedColor,
+                                          width: 1.w)),
+                                ),
                               )
                             ],
                           ),
@@ -425,8 +462,10 @@ class BookRegisterDonePage extends StatelessWidget {
             child: Column(
               children: [
                 Text.rich(
-                    style:
-                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w600,
+                        height: 1.33.h),
                     TextSpan(children: [
                       TextSpan(
                           text: gardenName,
@@ -436,8 +475,10 @@ class BookRegisterDonePage extends StatelessWidget {
                     ])),
                 Text(
                   '새로운 책을 심었어요',
-                  style:
-                      TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w600,
+                      height: 1.33.h),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 40.h),

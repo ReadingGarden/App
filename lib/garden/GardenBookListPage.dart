@@ -89,14 +89,14 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                                       null)
                                                   ? Image.network(
                                                       width: 96.w,
-                                                      height: 142.h,
+                                                      height: 132.h,
                                                       fit: BoxFit.cover,
                                                       bookList[index]
                                                           ['book_image_url'],
                                                     )
                                                   : Container(
                                                       width: 96.w,
-                                                      height: 142.h,
+                                                      height: 132.h,
                                                       decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius

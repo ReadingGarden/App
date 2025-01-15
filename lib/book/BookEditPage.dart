@@ -10,6 +10,8 @@ import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 final bookReadListProvider = StateProvider<List>((ref) => []);
+final startDateErrorProvider = StateProvider<String?>((ref) => null);
+final endDateErrorProvider = StateProvider<String?>((ref) => null);
 
 class BookEditPage extends ConsumerStatefulWidget {
   BookEditPage({super.key, required this.book});
@@ -96,8 +98,29 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
     context.pop('BookDetailPage_getBookRead');
   }
 
+  //읽기 시작한 날 error
+  void _startValidate() {
+    if (_startController.text.length == 10) {
+      ref.read(startDateErrorProvider.notifier).state = null;
+    } else {
+      ref.read(startDateErrorProvider.notifier).state = 'YYYY.MM.DD 형식으로 적어주세요';
+    }
+  }
+
+  //다 읽은 날 error
+  void _endValidate() {
+    if (_endController.text.length == 10 || _endController.text.isEmpty) {
+      ref.read(endDateErrorProvider.notifier).state = null;
+    } else {
+      ref.read(endDateErrorProvider.notifier).state = 'YYYY.MM.DD 형식으로 적어주세요';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final startErrorText = ref.watch(startDateErrorProvider);
+    final endErrorText = ref.watch(endDateErrorProvider);
+
     return Scaffold(
       appBar: Widgets.appBar(context, title: '책 수정하기'),
       body: GestureDetector(
@@ -162,8 +185,21 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                 child: Column(
                   children: [
                     _dateTextField(
-                        _startController, '읽기 시작한 날', '읽기 시작한 날짜를 알려주세요'),
-                    _dateTextField(_endController, '다 읽은 날', '완독한 날짜를 입력해주세요')
+                        ref,
+                        _startController,
+                        '읽기 시작한 날',
+                        '읽기 시작한 날짜를 알려주세요',
+                        startErrorText,
+                        startDateErrorProvider,
+                        () => _startValidate()),
+                    _dateTextField(
+                        ref,
+                        _endController,
+                        '다 읽은 날',
+                        '완독한 날짜를 입력해주세요',
+                        endErrorText,
+                        endDateErrorProvider,
+                        () => _endValidate())
                   ],
                 ),
               )
@@ -179,7 +215,13 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
 }
 
 Widget _dateTextField(
-    TextEditingController controller, String label, String hint) {
+    WidgetRef ref,
+    TextEditingController controller,
+    String label,
+    String hint,
+    String? errorText,
+    StateProvider<String?> errorProvider,
+    Function? validateFunction) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -199,9 +241,23 @@ Widget _dateTextField(
               keyboardType: TextInputType.number,
               maxLength: 10,
               inputFormatters: [AutoInputFormatter()],
+              onChanged: (value) {
+                // errorText 초기화
+                ref.read(errorProvider.notifier).state = null;
+              },
+              onTapOutside: (event) {
+                if (validateFunction != null) {
+                  validateFunction();
+                }
+              },
+              onSubmitted: (value) {
+                if (validateFunction != null) {
+                  validateFunction();
+                }
+              },
               style: TextStyle(fontSize: 16.sp),
               decoration: InputDecoration(
-                counter: Container(),
+                counter: const Text(''),
                 fillColor: AppColors.grey_FA,
                 filled: true,
                 hintText: hint,
@@ -218,6 +274,19 @@ Widget _dateTextField(
                     borderRadius: BorderRadius.circular(10.r),
                     borderSide:
                         BorderSide(color: Colors.transparent, width: 1.w)),
+                errorText: errorText,
+                errorStyle: TextStyle(
+                  fontSize: 14.sp,
+                  color: AppColors.errorRedColor,
+                ),
+                errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide:
+                        BorderSide(color: AppColors.errorRedColor, width: 1.w)),
+                focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.r),
+                    borderSide:
+                        BorderSide(color: AppColors.errorRedColor, width: 1.w)),
               ),
             ),
           ],

@@ -194,7 +194,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                       Text(
                         bookDetail['book_title'] ?? '',
                         style: TextStyle(
-                            fontSize: 24.sp, fontWeight: FontWeight.w600),
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 1.33.h),
                       ),
                       Row(
                         children: [
@@ -314,23 +316,30 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           children: [
-                            (bookDetail['book_image_url'] == null)
-                                ? Container(
-                                    width: 122.w,
-                                    height: 180.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        color: AppColors.grey_F2),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    child: Image.network(
-                                        width: 122.w,
-                                        height: 180.h,
-                                        fit: BoxFit.cover,
-                                        bookDetail['book_image_url'] ?? ''),
-                                  ),
+                            Container(
+                              width: 145.w,
+                              height: 200.h,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  color: AppColors.grey_F2,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 16.r,
+                                        color:
+                                            AppColors.black_4A.withOpacity(0.1))
+                                  ]),
+                              child: (bookDetail['book_image_url'] == null)
+                                  ? Container()
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      child: Image.network(
+                                          width: 145.w,
+                                          height: 200.h,
+                                          fit: BoxFit.cover,
+                                          bookDetail['book_image_url'] ?? ''),
+                                    ),
+                            ),
                             Padding(
                               padding: EdgeInsets.only(top: 30.h, bottom: 8.h),
                               child: Text(
@@ -517,7 +526,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                             padding: EdgeInsets.only(top: 8.h),
                                             child: Text(
                                               bookDetail['book_info'] ?? '',
-                                              style: TextStyle(fontSize: 12.sp),
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  height: 1.75.h),
                                             ),
                                           )
                                         ],

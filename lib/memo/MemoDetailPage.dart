@@ -80,7 +80,11 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                       children: [
                         Text(
                           widget.memo['book_title'],
-                          style: TextStyle(fontSize: 16.sp),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
                         ),
                         Text(
                           widget.memo['book_author'],
@@ -118,6 +122,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                     child: Text(
                       widget.memo['memo_content'],
                       textAlign: TextAlign.start,
+                      style: TextStyle(fontSize: 14.sp, height: 1.7.h),
                     ),
                   )
                 ],

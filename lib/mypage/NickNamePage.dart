@@ -19,6 +19,12 @@ class _NickNamePageState extends ConsumerState<NickNamePage> {
   @override
   void initState() {
     super.initState();
+
+    final authAPI = AuthAPI(ref);
+
+    Future.microtask(() {
+      _nicknameController.text = authAPI.user()['user_nick'];
+    });
   }
 
   @override
@@ -31,13 +37,8 @@ class _NickNamePageState extends ConsumerState<NickNamePage> {
       appBar: Widgets.appBar(context, title: '닉네임'),
       body: Container(
           margin: EdgeInsets.only(top: 10.h, left: 24.w, right: 24.w),
-          child: Widgets.textfield(
-              ref,
-              _nicknameController,
-              '닉네임',
-              authAPI.user()['user_nick'],
-              nicknameErrorText,
-              nicknameErrorProvider)),
+          child: Widgets.textfield(ref, _nicknameController, '닉네임', '',
+              nicknameErrorText, nicknameErrorProvider)),
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
         child: Widgets.button('저장하기', true, () {

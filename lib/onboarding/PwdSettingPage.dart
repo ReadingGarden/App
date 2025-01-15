@@ -52,7 +52,7 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
 
       final response = await authService.putPwdUpdate(data);
       if (response?.statusCode == 200) {
-        fToast.showToast(child: Widgets.toast('새로운 비밀번호가 생성되었습니다'));
+        fToast.showToast(child: Widgets.toast('🔏 새로운 비밀번호가 생성되었습니다'));
         widget.isLoginPage ? context.goNamed('login') : context.pop();
       }
     }

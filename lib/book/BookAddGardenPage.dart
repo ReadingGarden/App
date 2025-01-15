@@ -103,19 +103,27 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                         // height: 307.h,
                         child: Column(
                           children: [
-                            ClipRRect(
-                                borderRadius: BorderRadius.circular(8.r),
-                                child: (bookResult()['cover'] != null)
-                                    ? Image.network(
-                                        width: 122.w,
-                                        height: 180.h,
-                                        fit: BoxFit.cover,
-                                        bookResult()['cover'],
-                                      )
-                                    : SizedBox(
-                                        width: 122.w,
-                                        height: 180.h,
-                                      )),
+                            Container(
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                    offset: const Offset(0, 4),
+                                    blurRadius: 16.r,
+                                    color: AppColors.black_4A.withOpacity(0.1))
+                              ]),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: (bookResult()['cover'] != null)
+                                      ? Image.network(
+                                          width: 145.w,
+                                          height: 200.h,
+                                          fit: BoxFit.cover,
+                                          bookResult()['cover'],
+                                        )
+                                      : Container(
+                                          width: 145.w,
+                                          height: 200.h,
+                                        )),
+                            ),
                             Container(
                               margin: EdgeInsets.only(top: 29.h, bottom: 6.h),
                               child: Text(
@@ -157,7 +165,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                 margin:
                                     EdgeInsets.only(top: 20.h, bottom: 30.h),
                                 padding: EdgeInsets.symmetric(horizontal: 12.w),
-                                width: 100.w,
+                                width: 104.w,
                                 height: 28.h,
                                 decoration: BoxDecoration(
                                     color: Colors.transparent,
@@ -201,7 +209,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                 margin:
                                     EdgeInsets.only(top: 20.h, bottom: 30.h),
                                 padding: EdgeInsets.symmetric(horizontal: 12.w),
-                                width: 100.w,
+                                width: 104.w,
                                 height: 28.h,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20.r),
@@ -253,7 +261,8 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                             (bookResult()['description'] != '')
                                 ? Text(
                                     bookResult()['description'] ?? '',
-                                    style: TextStyle(fontSize: 12.sp),
+                                    style: TextStyle(
+                                        fontSize: 12.sp, height: 1.75.h),
                                   )
                                 : Container(
                                     alignment: Alignment.center,

@@ -95,9 +95,9 @@ class _StartPageState extends State<StartPage> {
                       child: Text(
                         titleList[index],
                         style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 1.33.h),
                       ),
                     ),
                     Text(

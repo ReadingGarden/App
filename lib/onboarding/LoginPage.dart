@@ -89,8 +89,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   margin: EdgeInsets.only(bottom: 44.h),
                   child: Text(
                     '책을 읽어서\n나만의 가든을 꾸며봐요',
-                    style:
-                        TextStyle(fontWeight: FontWeight.w600, fontSize: 24.sp),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24.sp,
+                        height: 1.33.h),
                   ),
                 ),
                 SizedBox(

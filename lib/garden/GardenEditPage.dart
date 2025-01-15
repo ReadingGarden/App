@@ -164,7 +164,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                                 ref,
                                 _titleController,
                                 '가든 이름',
-                                '영어, 한글 최대 10글자까지 쓸 수 있어요',
+                                '최대 12글자까지 쓸 수 있어요',
                                 null,
                                 StateProvider((ref) => null),
                                 validateFunction: _gardenEditValid),

@@ -355,6 +355,8 @@ class BookAddDonePage extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 6.h),
                   child: Text(
                     bookRead['book_title'],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style:
                         TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                   ),

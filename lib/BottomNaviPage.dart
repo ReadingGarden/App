@@ -59,7 +59,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 10.w, right: 10.w),
-      height: 82.h,
+      height: 70.h,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -123,12 +123,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SvgPicture.asset(
-              '${Constant.ASSETS_ICONS}$icon.svg',
-              color: currentIndex == index
-                  ? AppColors.black_4A
-                  : AppColors.grey_CA,
-              width: 24.r,
-              height: 24.r,
+              currentIndex == index
+                  ? '${Constant.ASSETS_ICONS}${icon}_fill.svg'
+                  : '${Constant.ASSETS_ICONS}$icon.svg',
+              width: 28.r,
+              height: 28.r,
             ),
             Text(
               label,
