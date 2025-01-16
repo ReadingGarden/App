@@ -91,7 +91,7 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    '프로필 3/6',
+                    '프로필 5/5',
                     style: TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(

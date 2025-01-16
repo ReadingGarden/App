@@ -49,7 +49,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
           children: [
             Visibility(
               visible: gardenAPI.gardenMainMemberList().length > 1 &&
-                  (gardenAPI.gardenMainMemberList()[0]['user_no'] !=
+                  (gardenAPI.gardenMainMemberList()[0]['user_no'] ==
                       authAPI.user()['user_no']),
               child: GestureDetector(
                 onTap: () {

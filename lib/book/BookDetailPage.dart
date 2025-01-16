@@ -80,7 +80,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
             .state
             .add(memo['memo_like']);
       }
-      getGardenDetial(response?.data['data']['garden_no']);
+      getGardenDetail(response?.data['data']['garden_no']);
 
       // ref.read(bookDetailProvider.notifier).state = response?.data['data'];
 
@@ -102,7 +102,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
   }
 
   //가든 상세 조회 api
-  void getGardenDetial(int garden_no) async {
+  void getGardenDetail(int garden_no) async {
     final response = await gardenService.getGardenDetail(garden_no);
     if (response?.statusCode == 200) {
       Map gardenDetail = {};
@@ -161,18 +161,20 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
       appBar: Widgets.appBar(
         context,
         actions: [
-          GestureDetector(
-            onTap: _moreBottomSheet,
-            child: Container(
-              alignment: Alignment.center,
-              width: 60.r,
-              height: 60.r,
-              child: SvgPicture.asset(
-                  '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
-                  width: 24.r,
-                  height: 24.r),
-            ),
-          )
+          (bookDetail['user_no'] == authAPI.user()['user_no'])
+              ? GestureDetector(
+                  onTap: _moreBottomSheet,
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 60.r,
+                    height: 60.r,
+                    child: SvgPicture.asset(
+                        '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
+                        width: 24.r,
+                        height: 24.r),
+                  ),
+                )
+              : Container()
         ],
         backFunction: () => context.pop('fetchData'),
         color: ref.watch(bookDetailAppBarColorProvider),
@@ -511,28 +513,38 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                                         borderRadius:
                                             BorderRadius.circular(20.r),
                                         color: Colors.white),
-                                    child: Container(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 8.h),
+                                          height: 22.h,
+                                          child: Text(
                                             '책 소개',
                                             style: TextStyle(
                                                 fontSize: 12.sp,
                                                 color: AppColors.grey_8D),
                                           ),
-                                          Padding(
-                                            padding: EdgeInsets.only(top: 8.h),
-                                            child: Text(
-                                              bookDetail['book_info'] ?? '',
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  height: 1.75.h),
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                        (bookDetail['book_info'] != '')
+                                            ? Text(
+                                                bookDetail['book_info'] ?? '',
+                                                style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    height: 1.75.h),
+                                              )
+                                            : Container(
+                                                alignment: Alignment.center,
+                                                margin: EdgeInsets.only(
+                                                    top: 8.h, bottom: 8.h),
+                                                child: Text('소개글이 등록되지 않은 책이에요',
+                                                    style: TextStyle(
+                                                        fontSize: 12.sp,
+                                                        color:
+                                                            AppColors.grey_8D)),
+                                              ),
+                                      ],
                                     )),
                           ],
                         ),

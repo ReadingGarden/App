@@ -41,7 +41,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
 
       // 첫 실행 시 유효한 인덱스를 선택
       for (int i = 0; i < gardenAPI.gardenList().length; i++) {
-        if (gardenAPI.gardenList()[i]['book_count'] != 30) {
+        if (gardenAPI.gardenList()[i]['book_count'] < 30) {
           ref.read(gardenSelectIndexProvider.notifier).state = i;
           break;
         }
@@ -331,7 +331,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
             return GestureDetector(
               onTap: () {
                 // 북 카운트가 30이 아닌 경우에만 선택 가능
-                if (gardenAPI.gardenList()[index]['book_count'] != 30) {
+                if (gardenAPI.gardenList()[index]['book_count'] < 30) {
                   ref.read(gardenSelectIndexProvider.notifier).state = index;
                 }
               },
@@ -351,9 +351,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                     ? AppColors.black_4A
                                     : AppColors.grey_F2),
                         color:
-                            (gardenAPI.gardenList()[index]['book_count'] == 30)
-                                ? AppColors.grey_F2
-                                : Colors.white),
+                            (gardenAPI.gardenList()[index]['book_count'] < 30)
+                                ? Colors.white
+                                : AppColors.grey_F2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -363,10 +363,10 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                           style: TextStyle(
                               fontSize: 14.sp,
                               color: (gardenAPI.gardenList()[index]
-                                          ['book_count'] ==
+                                          ['book_count'] <
                                       30)
-                                  ? AppColors.grey_8D
-                                  : Colors.black),
+                                  ? Colors.black
+                                  : AppColors.grey_8D),
                         ),
                         Text(
                           '심은 꽃 ${gardenAPI.gardenList()[index]['book_count']}/30',

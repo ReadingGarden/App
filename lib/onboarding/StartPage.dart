@@ -79,6 +79,7 @@ class _StartPageState extends State<StartPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: 360.w,
@@ -86,7 +87,7 @@ class _StartPageState extends State<StartPage> {
               color: Colors.green,
             ),
             Container(
-                margin: EdgeInsets.only(top: 30.h),
+                margin: EdgeInsets.only(top: 30.h, left: 24.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
