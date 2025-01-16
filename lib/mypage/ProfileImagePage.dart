@@ -41,7 +41,13 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
     final listIndex = ref.watch(profileSelectIndexProvider);
 
     return Scaffold(
-      appBar: Widgets.appBar(context, title: '대표 프로필 변경'),
+      appBar: Widgets.appBar(context, title: '대표 프로필 변경', backFunction: () {
+        final data = {
+          "user_image":
+              Constant.FLOWER_LIST[ref.watch(profileSelectIndexProvider)]
+        };
+        authAPI.putUser(context, data);
+      }),
       body: Container(
         margin: EdgeInsets.only(top: 20.h),
         child: Column(
@@ -101,18 +107,13 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                       children: List.generate(
                         Constant.FLOWER_LIST.length,
                         (index) {
-                          return (index <= 2)
+                          return (index <= 5)
                               ? GestureDetector(
                                   onTap: () {
                                     ref
                                         .read(
                                             profileSelectIndexProvider.notifier)
                                         .state = index;
-                                    final data = {
-                                      "user_image": Constant.FLOWER_LIST[
-                                          ref.watch(profileSelectIndexProvider)]
-                                    };
-                                    authAPI.putUser(context, data);
                                   },
                                   child: SizedBox(
                                     child: Column(
@@ -125,14 +126,17 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                                               shape: BoxShape.circle,
                                               border: (listIndex == index)
                                                   ? Border.all(
-                                                      color: AppColors
-                                                          .primaryColor)
+                                                      color: AppColors.black_4A)
                                                   : null),
                                         ),
                                         Container(
                                             margin: EdgeInsets.only(top: 7.h),
                                             child: Text(
-                                                Constant.FLOWER_LIST[index]))
+                                                Constant.FLOWER_LIST[index],
+                                                style: TextStyle(
+                                                    color: (listIndex == index)
+                                                        ? Colors.black
+                                                        : AppColors.grey_8D)))
                                       ],
                                     ),
                                   ),
