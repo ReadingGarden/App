@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/GardenAPI.dart';
@@ -19,9 +20,13 @@ class GardenInvitePage extends ConsumerStatefulWidget {
 }
 
 class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
+  late FToast fToast;
+
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
 
     Future.microtask(() {
       ref.read(inviteGardenProvider.notifier).state = {};
@@ -40,11 +45,18 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
 
   //가든 초대 수락 api
   void postGardenInvite() async {
+    final gardenAPI = GardenAPI(ref);
     final response = await gardenService.postGardenInvite(widget.garden_no);
     if (response?.statusCode == 201) {
       print('가든 초대 수락 완료');
+      gardenAPI.putGardenMain(widget.garden_no);
+      //TODO: - 가든 메인으로 가서 리스트 다시 불러와라
+      context.pop();
+      context.pop();
     } else if (response?.statusCode == 403) {
-      print('멤버 초과 토스트 띄우렴');
+      fToast.showToast(child: Widgets.toast('멤버 정원이 꽉 차서 참여할 수 없어요'));
+    } else if (response?.statusCode == 409) {
+      fToast.showToast(child: Widgets.toast('이미 가입한 가든의 초대는 수락할 수 없어요'));
     }
   }
 
@@ -137,7 +149,9 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(bottom: 10.h),
-                        child: Widgets.button('초대 수락하기', true, () {}),
+                        child: Widgets.button('초대 수락하기', true, () {
+                          postGardenInvite();
+                        }),
                       ),
                       GestureDetector(
                         onTap: () {
