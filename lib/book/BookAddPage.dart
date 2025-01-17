@@ -233,7 +233,7 @@ Future pageBottomSheet(
       return Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: Container(
-          height: 246.h,
+          height: 236.h,
           margin: EdgeInsets.only(
             top: 30.h,
             left: 24.w,

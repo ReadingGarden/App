@@ -378,7 +378,8 @@ class GardenEditBottomSheet extends ConsumerWidget {
 
     return Container(
       margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
-      height: (68.h + 10.h) * gardenAPI.gardenList().length + 90.h,
+      height:
+          (68.h + 10.h) * gardenAPI.gardenList().length + 24.h + 20.h + 30.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

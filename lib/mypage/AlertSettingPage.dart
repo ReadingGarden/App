@@ -95,7 +95,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                             left: 24.w,
                             right: 24.w,
                           ),
-                          height: 372.h,
+                          height: 342.h,
                           child: Column(
                             children: [
                               Container(

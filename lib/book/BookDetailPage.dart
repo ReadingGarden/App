@@ -567,7 +567,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
       builder: (context) {
         return Container(
           alignment: Alignment.center,
-          height: 260.h,
+          height: 250.h,
           child: Container(
             margin: EdgeInsets.only(top: 30.h, bottom: 30.h),
             alignment: Alignment.center,
