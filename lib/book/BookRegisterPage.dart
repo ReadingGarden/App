@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/GardenAPI.dart';
@@ -29,9 +30,13 @@ class BookRegisterPage extends ConsumerStatefulWidget {
 class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   final TextEditingController _dateController = TextEditingController();
 
+  late FToast fToast;
+
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
 
     final gardenAPI = GardenAPI(ref);
 
@@ -86,6 +91,8 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
             extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
                 ['garden_title']);
       }
+    } else if (response?.statusCode == 403) {
+      fToast.showToast(child: Widgets.toast('😢 꽉 찼어요! 다른 가든을 선택해주세요'));
     }
   }
 
