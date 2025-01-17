@@ -26,9 +26,9 @@ class BottomNaviPage extends ConsumerWidget {
     final currentIndex = ref.watch(currentIndexProvider);
 
     return Scaffold(
-      backgroundColor:
-          (gardenAPI.gardenMain().isEmpty) ? Colors.white : Colors.transparent,
-      // : Functions.gardenBackColor(gardenAPI.gardenMain()['garden_color']),
+      backgroundColor: (ref.read(currentIndexProvider.notifier).state == 0)
+          ? const Color(0xff92AC7D)
+          : Colors.white,
       body: IndexedStack(
         index: currentIndex,
         children: [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],

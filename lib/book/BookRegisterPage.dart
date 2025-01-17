@@ -96,7 +96,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     }
   }
 
-  //책 수정 api
+  //책 수정 api (읽고싶어요 -> 등록)
   void putBook() async {
     final gardenAPI = GardenAPI(ref);
 
