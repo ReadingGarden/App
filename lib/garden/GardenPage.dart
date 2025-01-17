@@ -144,6 +144,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
       }
     });
     context.pop();
+    fToast.showToast(child: Widgets.toast('갤러리에 사진이 저장되었어요!'));
   }
 
   @override
