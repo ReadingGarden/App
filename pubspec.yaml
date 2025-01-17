@@ -41,7 +41,8 @@ dependencies:
   go_router: ^14.1.4
   flutter_screenutil: ^5.9.3
   dio: ^5.4.3+1
-  flutter_svg: ^2.0.10+1
+  flutter_svg: ^2.0.9
+  # flutter_svg: ^2.0.10+1
   shared_preferences: ^2.2.3
   fluttertoast: ^8.2.6
   flutter_switch: ^0.3.2
@@ -65,6 +66,8 @@ dependencies:
   flutter_branch_sdk: ^8.2.0
   firebase_analytics: ^11.3.6
   flutter_local_notifications: ^18.0.1
+  screenshot: ^3.0.0
+  gallery_saver: ^2.1.1
 
 dev_dependencies:
   flutter_test:

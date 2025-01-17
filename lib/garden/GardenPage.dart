@@ -1,14 +1,21 @@
+import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
@@ -22,7 +29,10 @@ class GardenPage extends ConsumerStatefulWidget {
 }
 
 class _GardenPageState extends ConsumerState<GardenPage> {
+  // 스크롤 가능한 영역을 위한 GlobalKey
+  final GlobalKey _scrollViewKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
+  final ScreenshotController screenshotController = ScreenshotController();
 
   late FToast fToast;
   late Stream<BranchResponse> stream;
@@ -39,7 +49,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final gardenAPI = GardenAPI(ref);
 
     Future.microtask(() {
-      // gardenAPI.resetGardenMain();
       gardenAPI.getGardenLsit();
     });
   }
@@ -88,10 +97,53 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   // 현재 화면 높이 + 스크롤된 거리
   double getTotalScrollHeight(int bookCount) {
     if (bookCount <= 9) {
-      return 600.h;
+      return 530.h;
     } else {
-      return 600.h + ((bookCount - 9) / 3) * 180.h;
+      // print('----------------------------------------');
+      // print((bookCount - 9));
+      // print(((bookCount - 9) / 3).ceil());
+      return 530.h + ((bookCount - 9) / 3).ceil() * (160.h);
     }
+  }
+
+  // 화면 스크린샷
+  void _captureScreenshot() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        // RepaintBoundary 사용하여 스크롤 가능한 영역을 캡처
+        RenderRepaintBoundary? boundary = _scrollViewKey.currentContext
+            ?.findRenderObject() as RenderRepaintBoundary?;
+
+        if (boundary != null) {
+          var image = await boundary.toImage(pixelRatio: 3.0);
+          ByteData? byteData =
+              await image.toByteData(format: ImageByteFormat.png);
+          Uint8List uint8List = byteData!.buffer.asUint8List();
+
+          // 이미지 파일로 저장
+          final directory = await getApplicationDocumentsDirectory();
+          final path = '${directory.path}/screenshot.png';
+          final file = File(path);
+          await file.writeAsBytes(uint8List);
+
+          // 갤러리에 저장
+          GallerySaver.saveImage(path).then((bool? success) {
+            if (success != null && success) {
+              print('Screenshot saved to gallery');
+            } else {
+              print('Failed to save screenshot');
+            }
+          }).catchError((e) {
+            print('Error saving screenshot: $e');
+          });
+        } else {
+          print('Failed to capture screenshot: boundary is null');
+        }
+      } catch (e) {
+        print('Error capturing screenshot: $e');
+      }
+    });
+    context.pop();
   }
 
   @override
@@ -99,8 +151,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
-      body: Container(
-        color: Colors.red,
+      body: Screenshot(
+        controller: screenshotController,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -193,7 +245,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
               visible: (gardenAPI.gardenMainBookList().isEmpty),
               child: Container(
                 alignment: Alignment.bottomCenter,
-                // color: Colors.red,
                 child: Visibility(
                   visible: gardenAPI.gardenMainBookList().isEmpty,
                   child: Container(
@@ -227,9 +278,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   Widget _gardenMain(gardenAPI) {
     return SingleChildScrollView(
       controller: _scrollController,
-      child: Container(
-        // alignment: Alignment.bottomCenter,
-        color: Colors.red,
+      child: RepaintBoundary(
+        key: _scrollViewKey,
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
@@ -237,6 +287,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
               children: [
                 Image.asset(
                   'assets/images/main_top_back.png',
+                  width: 360.w,
+                  fit: BoxFit.cover,
                 ),
                 Image.asset(
                   'assets/images/main_bottom_back.png',
@@ -417,31 +469,36 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width: 64.r,
-                            height: 64.r,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
-                            child: SvgPicture.asset(
-                              '${Constant.ASSETS_ICONS}icon_photo.svg',
-                              width: 28.r,
-                              height: 28.r,
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 8.h),
-                            child: Text(
-                              '사진찍기',
-                              style: TextStyle(
-                                fontSize: 12.sp,
+                      GestureDetector(
+                        onTap: () {
+                          _captureScreenshot();
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: 64.r,
+                              height: 64.r,
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.white),
+                              child: SvgPicture.asset(
+                                '${Constant.ASSETS_ICONS}icon_photo.svg',
+                                width: 28.r,
+                                height: 28.r,
                               ),
                             ),
-                          )
-                        ],
+                            Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 8.h),
+                              child: Text(
+                                '사진찍기',
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       GestureDetector(
                         onTap: () {
