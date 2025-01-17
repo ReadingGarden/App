@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -31,6 +32,9 @@ class BookDetailPage extends ConsumerStatefulWidget {
 
 class _BookDetailPageState extends ConsumerState<BookDetailPage> {
   final ScrollController _scrollController = ScrollController();
+
+  // bool _isAutoScrolling = false; // 자동 스크롤 상태 체크
+
   late FToast fToast;
 
   @override
@@ -46,13 +50,27 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
       ref.read(bookDetailMemoSelectIndexListProvider.notifier).state = [];
     });
     _scrollController.addListener(() {
-      if (_scrollController.offset > 580) {
+      if (_scrollController.offset > 600) {
         ref.read(bookDetailAppBarColorProvider.notifier).state = Colors.white;
       } else {
         ref.read(bookDetailAppBarColorProvider.notifier).state =
             Functions.gardenBackColor(
                 ref.watch(bookDetailProvider)['garden_color']);
       }
+      // // 스크롤이 시작되었는지 확인
+      // if (!_isAutoScrolling &&
+      //     _scrollController.position.isScrollingNotifier.value) {
+      //   // 원하는 위치로 바로 스크롤
+      //   _isAutoScrolling = true;
+      //   // 원하는 위치로 즉시 이동
+      //   _scrollController
+      //       .animateTo(500,
+      //           duration: const Duration(milliseconds: 300),
+      //           curve: Curves.easeOut)
+      //       .then((_) {
+      //     _isAutoScrolling = false;
+      //   }); // 자동 스크롤 종료
+      // }
     });
     getBookRead();
   }
@@ -314,7 +332,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                       ),
                       Container(
                         margin: EdgeInsets.only(
-                            left: 24.w, right: 24.w, top: 136.w, bottom: 53.h),
+                            left: 24.w, right: 24.w, top: 136.h, bottom: 53.h),
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           children: [

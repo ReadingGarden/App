@@ -36,7 +36,10 @@ import '../onboarding/SignupPage.dart';
 import '../onboarding/StartPage.dart';
 import '../BottomNaviPage.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 final GoRouter router = GoRouter(
+    navigatorKey: navigatorKey, // NavigatorKey 설정
     initialLocation: '/',
     errorBuilder: (context, state) => ErrorPage(),
     routes: <RouteBase>[
@@ -44,6 +47,13 @@ final GoRouter router = GoRouter(
         path: '/',
         name: 'splash',
         builder: (BuildContext context, GoRouterState state) => SplashPage(),
+      ),
+      GoRoute(
+        path: '/error',
+        name: 'error',
+        builder: (context, state) {
+          return ErrorPage();
+        },
       ),
       GoRoute(
           path: '/start',

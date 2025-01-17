@@ -19,6 +19,10 @@ import 'utils/Functions.dart';
 import 'utils/Router.dart';
 import 'utils/SharedPreferences.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Handling a background message: ${message.messageId}');
+}
+
 void main() async {
   // 플러그인 초기화
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,13 +33,13 @@ void main() async {
   await Functions.requestPermissions();
   // FlutterBranchSdk 초기화
   await FlutterBranchSdk.init();
+
   // Firebase 초기화
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  messaging.initializeNotification();
-  messaging.foregroundMessage();
+  //백그라운드 메세지 핸들러 등록
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   // 알림 권한 요청 (iOS 전용)
   // await FirebaseMessaging.instance.requestPermission();
@@ -66,13 +70,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    messaging.initializeNotification(context);
+    messaging.foregroundMessage();
+
     return ScreenUtilInit(
       designSize: const Size(360, 800),
       minTextAdapt: true,
       builder: (context, child) {
         return MaterialApp.router(
           theme: ThemeData(
-              fontFamily: 'SUIT',
+              fontFamily: 'SUITE',
               scaffoldBackgroundColor: Colors.white,
               textTheme: TextTheme(
                 //앱바
@@ -125,7 +132,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       }
 
       print('ACCESS Token: $accessToken');
-      // context.go('/start');
+      context.go('/start');
     });
   }
 

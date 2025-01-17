@@ -22,20 +22,7 @@ class GardenPage extends ConsumerStatefulWidget {
 }
 
 class _GardenPageState extends ConsumerState<GardenPage> {
-  final ScrollController _horiScrollController = ScrollController();
-
-  //배경 이미지 초기 오프셋
-  // Offset _backgroundOffset = Offset.zero;
-
-  //텍스트 위치 리스트
-  // List<Offset> _textPositions = [];
-  // late Future<int> _countFuture;
-
-  // final Random _random = Random();
-  // Offset _position = Offset.zero;
-  // final double widgetWidth = 150.0;
-  // final double widgetHeight = 200.0;
-  // late List<Offset> _textPositions;
+  final ScrollController _scrollController = ScrollController();
 
   late FToast fToast;
   late Stream<BranchResponse> stream;
@@ -75,7 +62,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     //   print("First referring params: $params");
     // });
 
-    // // Branch SDK Session 시작
+    // Branch SDK Session 시작
     FlutterBranchSdk.initSession().listen((data) {
       print('DeepLink Data: $data');
       if (data['+clicked_branch_link']) {
@@ -98,17 +85,27 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     return 3;
   }
 
+  // 현재 화면 높이 + 스크롤된 거리
+  double getTotalScrollHeight(int bookCount) {
+    if (bookCount <= 9) {
+      return 600.h;
+    } else {
+      return 600.h + ((bookCount - 9) / 3) * 180.h;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final gardenAPI = GardenAPI(ref);
 
     return Scaffold(
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Container(
-            color: Colors.green,
-            child: Stack(
+      body: Container(
+        color: Colors.red,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Stack(
+              alignment: Alignment.topCenter,
               children: [
                 _gardenMain(gardenAPI),
                 GestureDetector(
@@ -192,115 +189,129 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 ),
               ],
             ),
-          ),
-          Visibility(
-            visible: gardenAPI.gardenMainBookList().isEmpty,
-            child: Container(
-                margin: EdgeInsets.only(bottom: 20.h),
-                child: Stack(
-                  // alignment: Alignment.centerLeft,
-
-                  children: [
-                    SvgPicture.asset('assets/images/image_add.svg'),
-                    Container(
-                      margin: EdgeInsets.only(left: 18.w, top: 10.h),
-                      child: Text(
-                        '💡   + 버튼으로 새로운 책을 등록해보세요!',
-                        style: TextStyle(color: Colors.white, fontSize: 12.sp),
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-        ],
+            Visibility(
+              visible: (gardenAPI.gardenMainBookList().isEmpty),
+              child: Container(
+                alignment: Alignment.bottomCenter,
+                // color: Colors.red,
+                child: Visibility(
+                  visible: gardenAPI.gardenMainBookList().isEmpty,
+                  child: Container(
+                      alignment: Alignment.bottomCenter,
+                      width: 320.w,
+                      height: 52.h,
+                      margin: EdgeInsets.only(bottom: 20.h),
+                      color: Colors.transparent,
+                      child: Stack(
+                        children: [
+                          SvgPicture.asset('assets/images/image_add.svg'),
+                          Container(
+                            margin: EdgeInsets.only(left: 18.w, top: 10.h),
+                            child: Text(
+                              '💡   + 버튼으로 새로운 책을 등록해보세요!',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12.sp),
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _gardenMain(gardenAPI) {
-    return TwoDimensionalScrollable(
-      horizontalDetails: const ScrollableDetails.horizontal(),
-      verticalDetails: const ScrollableDetails.vertical(),
-      viewportBuilder: (context, verticalPosition, horizontalPosition) {
-        return LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              controller: _horiScrollController,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SizedBox(
-                  width: constraints.maxWidth * 1.7, // 가로 스크롤을 위해 넓게 설정
-                  height: constraints.maxHeight, // 세로 스크롤을 위해 길게 설정
-                  child: GridView.builder(
-                    padding: EdgeInsets.only(
-                        top: 200.h, left: 42.w, right: 42.w, bottom: 200.h),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      mainAxisExtent: 126.h, //세로 길이
-                      mainAxisSpacing: 30.h, //세로 패딩
-                      crossAxisSpacing: 24.w, //가로 패딩
-                      crossAxisCount: 5,
-                    ),
-                    itemCount: gardenAPI.gardenMainBookList().length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () async {
-                          final result = await context.pushNamed('book-detail',
-                              extra: gardenAPI.gardenMainBookList()[index]
-                                  ['book_no']);
-                          if (result != null) {
-                            gardenAPI.getGardenLsit();
-                          }
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 83.w,
-                                height: 90.h,
-                                color: Colors.amber,
-                                child: Image.asset(
-                                    '${Constant.MAIN_FLOWERS}${flowerPercent(gardenAPI.gardenMainBookList()[index]['percent'])}_${gardenAPI.gardenMainBookList()[index]['book_tree']}.png'),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.only(top: 8.h),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 12.w, vertical: 2.h),
-                                  height: 28.h,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.grey_F2,
-                                      border: Border.all(
-                                          width: 1.w,
-                                          color: AppColors.black_4A),
-                                      borderRadius:
-                                          BorderRadius.circular(20.r)),
-                                  child: Text(
-                                    gardenAPI.gardenMainBookList()[index]
-                                        ["book_title"],
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ))
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Container(
+        // alignment: Alignment.bottomCenter,
+        color: Colors.red,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Column(
+              children: [
+                Image.asset(
+                  'assets/images/main_top_back.png',
                 ),
+                Image.asset(
+                  'assets/images/main_bottom_back.png',
+                  fit: BoxFit.cover,
+                  width: 360.w,
+                  height: getTotalScrollHeight(
+                      gardenAPI.gardenMainBookList().length),
+                ),
+              ],
+            ),
+            GridView.builder(
+              padding: EdgeInsets.only(
+                top: 200.h,
+                left: 20.w,
+                right: 20.w,
               ),
-            );
-          },
-        );
-      },
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisExtent: 126.h, //세로 길이
+                mainAxisSpacing: 30.h, //세로 패딩
+                crossAxisSpacing: 8.w, //가로 패딩
+                crossAxisCount: 3,
+              ),
+              itemCount: gardenAPI.gardenMainBookList().length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () async {
+                    final result = await context.pushNamed('book-detail',
+                        extra: gardenAPI.gardenMainBookList()[index]
+                            ['book_no']);
+                    if (result != null) {
+                      gardenAPI.getGardenLsit();
+                    }
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          width: 83.w,
+                          height: 90.h,
+                          child: Image.asset(
+                              '${Constant.MAIN_FLOWERS}${flowerPercent(gardenAPI.gardenMainBookList()[index]['percent'])}_${gardenAPI.gardenMainBookList()[index]['book_tree']}.png'),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(top: 8.h),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 12.w, vertical: 4.h),
+                            height: 28.h,
+                            decoration: BoxDecoration(
+                                color: AppColors.grey_F2,
+                                border: Border.all(
+                                    width: 1.w, color: AppColors.black_4A),
+                                borderRadius: BorderRadius.circular(20.r)),
+                            child: Text(
+                              gardenAPI.gardenMainBookList()[index]
+                                  ["book_title"],
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontSize: 10.sp, fontWeight: FontWeight.w600),
+                            ))
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Future _gardenMenuBottomSheet(gardenAPI) {
-    // final gardenAPI = GardenAPI(ref);
     gardenAPI.getGardenLsit();
 
     return showModalBottomSheet(
@@ -704,7 +715,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       gardenAPI.putGardenMain(
                           gardenAPI.gardenList()[index]['garden_no']);
                       context.pop();
-                      _horiScrollController.animateTo(
+                      _scrollController.animateTo(
                         0.0, // 스크롤 초기 위치
                         duration:
                             const Duration(milliseconds: 300), // 애니메이션 지속 시간
