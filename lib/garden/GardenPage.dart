@@ -131,7 +131,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                           offset: const Offset(0, 4),
                                           blurRadius: 16.r,
                                           color: AppColors.black_4A
-                                              .withOpacity(0.01))
+                                              .withOpacity(0.3))
                                     ],
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20.r)),

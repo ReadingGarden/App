@@ -174,403 +174,420 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
     final authAPI = AuthAPI(ref);
     final bookDetail = ref.watch(bookDetailProvider);
 
-    return Scaffold(
-      backgroundColor: ref.watch(bookDetailAppBarColorProvider),
-      appBar: Widgets.appBar(
-        context,
-        actions: [
-          (bookDetail['user_no'] == authAPI.user()['user_no'])
-              ? GestureDetector(
-                  onTap: _moreBottomSheet,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 60.r,
-                    height: 60.r,
-                    child: SvgPicture.asset(
-                        '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
-                        width: 24.r,
-                        height: 24.r),
-                  ),
-                )
-              : Container()
-        ],
-        backFunction: () => context.pop('fetchData'),
-        color: ref.watch(bookDetailAppBarColorProvider),
-      ),
-      body: Visibility(
-        visible: bookDetail['garden_color'] != null,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Container(
-            color: ref.watch(bookDetailAppBarColorProvider),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                      left: 24.w, right: 24.w, bottom: 40.h, top: 15.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        bookDetail['book_title'] ?? '',
-                        style: TextStyle(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.w600,
-                            height: 1.33.h),
-                      ),
-                      Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.w),
-                            child: _borderContainer(
-                                bookDetail['garden_title'] ?? ''),
-                          ),
-                          _borderContainer(Functions.bookStatusString(
-                              bookDetail['book_status'] ?? 0)),
-                        ],
-                      ),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        margin: EdgeInsets.only(top: 101.h),
-                        child: Image.asset(
-                          'assets/images/testImage.png',
-                          color: Colors.amber,
+    return WillPopScope(
+      onWillPop: () async {
+        context.pop('fetchData');
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: ref.watch(bookDetailAppBarColorProvider),
+        appBar: Widgets.appBar(
+          context,
+          actions: [
+            (bookDetail['user_no'] == authAPI.user()['user_no'])
+                ? GestureDetector(
+                    onTap: _moreBottomSheet,
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 60.r,
+                      height: 60.r,
+                      child: SvgPicture.asset(
+                          '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
+                          width: 24.r,
+                          height: 24.r),
+                    ),
+                  )
+                : Container()
+          ],
+          backFunction: () => context.pop('fetchData'),
+          color: ref.watch(bookDetailAppBarColorProvider),
+        ),
+        body: Visibility(
+          visible: bookDetail['garden_color'] != null,
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: Container(
+              color: ref.watch(bookDetailAppBarColorProvider),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 24.w, right: 24.w, bottom: 40.h, top: 15.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          bookDetail['book_title'] ?? '',
+                          style: TextStyle(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w600,
+                              height: 1.33.h),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            offset: const Offset(0, -4),
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 16.r)
-                      ],
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.r),
-                          topRight: Radius.circular(20.r))),
-                  child: Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 24.h, left: 40.w),
-                        alignment: Alignment.topLeft,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
-                            Text(
-                              '읽은 페이지',
-                              style: TextStyle(
-                                  fontSize: 12.sp, color: AppColors.grey_8D),
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.w),
+                              child: _borderContainer(
+                                  bookDetail['garden_title'] ?? ''),
                             ),
-                            Text.rich(TextSpan(
-                                style: TextStyle(
-                                    fontSize: 24.sp,
-                                    fontWeight: FontWeight.w600),
-                                children: [
-                                  TextSpan(
-                                      text:
-                                          '${bookDetail['book_current_page']}p '),
-                                  TextSpan(
-                                      text:
-                                          '/ ${bookDetail['book_page'] ?? 0}p',
-                                      style: const TextStyle(
-                                          color: AppColors.grey_CA))
-                                ]))
+                            _borderContainer(Functions.bookStatusString(
+                                bookDetail['book_status'] ?? 0)),
                           ],
                         ),
-                      ),
-                      Visibility(
-                        visible:
-                            bookDetail['user_no'] == authAPI.user()['user_no'],
-                        child: GestureDetector(
-                          onTap: () async {
-                            bookDetail['book_no'] = widget.book_no;
-                            final result = await context.pushNamed('book-add',
-                                extra: bookDetail);
-                            if (result != null) {
-                              getBookRead();
-                            }
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 20.h, right: 30.w),
-                            width: 64.r,
-                            height: 64.r,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.black_4A),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: SvgPicture.asset(
-                                    '${Constant.ASSETS_ICONS}icon_water.svg',
-                                    color: Colors.white,
-                                    width: 24.r,
-                                    height: 24.r,
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          margin: EdgeInsets.only(top: 101.h),
+                          child: Image.asset(
+                            'assets/images/testImage.png',
+                            color: Colors.amber,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              offset: const Offset(0, -4),
+                              color: Colors.black.withOpacity(0.08),
+                              blurRadius: 16.r)
+                        ],
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.r),
+                            topRight: Radius.circular(20.r))),
+                    child: Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 24.h, left: 40.w),
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '읽은 페이지',
+                                style: TextStyle(
+                                    fontSize: 12.sp, color: AppColors.grey_8D),
+                              ),
+                              Text.rich(TextSpan(
+                                  style: TextStyle(
+                                      fontSize: 24.sp,
+                                      fontWeight: FontWeight.w600),
+                                  children: [
+                                    TextSpan(
+                                        text:
+                                            '${bookDetail['book_current_page']}p '),
+                                    TextSpan(
+                                        text:
+                                            '/ ${bookDetail['book_page'] ?? 0}p',
+                                        style: const TextStyle(
+                                            color: AppColors.grey_CA))
+                                  ]))
+                            ],
+                          ),
+                        ),
+                        Visibility(
+                          visible: bookDetail['user_no'] ==
+                              authAPI.user()['user_no'],
+                          child: GestureDetector(
+                            onTap: () async {
+                              bookDetail['book_no'] = widget.book_no;
+                              final result = await context.pushNamed('book-add',
+                                  extra: bookDetail);
+                              if (result != null) {
+                                getBookRead();
+                              }
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.only(top: 20.h, right: 30.w),
+                              width: 64.r,
+                              height: 64.r,
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.black_4A),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: SvgPicture.asset(
+                                      '${Constant.ASSETS_ICONS}icon_water.svg',
+                                      color: Colors.white,
+                                      width: 24.r,
+                                      height: 24.r,
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    '물주기',
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.grey_FA),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      '물주기',
+                                      style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: AppColors.grey_FA),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            left: 24.w, right: 24.w, top: 136.h, bottom: 53.h),
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 145.w,
-                              height: 200.h,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  color: AppColors.grey_F2,
-                                  boxShadow: [
-                                    BoxShadow(
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 16.r,
-                                        color:
-                                            AppColors.black_4A.withOpacity(0.1))
-                                  ]),
-                              child: (bookDetail['book_image_url'] == null)
-                                  ? Container()
-                                  : ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      child: Image.network(
-                                          width: 145.w,
-                                          height: 200.h,
-                                          fit: BoxFit.cover,
-                                          bookDetail['book_image_url'] ?? ''),
-                                    ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 30.h, bottom: 8.h),
-                              child: Text(
-                                bookDetail['book_title'] ?? '',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 18.sp),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20.h,
-                              child: Text(
-                                bookDetail['book_author'] ?? '',
-                                style: TextStyle(
-                                    fontSize: 12.sp, color: AppColors.grey_8D),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 2.h, bottom: 40.h),
-                              height: 20.h,
-                              child: Text(
-                                bookDetail['book_publisher'] ?? '',
-                                style: TextStyle(
-                                    fontSize: 12.sp, color: AppColors.grey_8D),
-                              ),
-                            ),
-                            bookDetail['user_no'] == authAPI.user()['user_no']
-                                ? Column(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(
-                                            left: 24.w,
-                                            right: 38.w,
-                                            top: 20.h,
-                                            bottom: 2.h),
-                                        decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  offset: const Offset(0, 4),
-                                                  blurRadius: 8.r,
-                                                  color: const Color(0xff97CD8D)
-                                                      .withOpacity(0.05))
-                                            ],
-                                            border: Border.all(
-                                                color: AppColors.grey_F2),
-                                            borderRadius:
-                                                BorderRadius.circular(20.r),
-                                            color: Colors.white),
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 18.h),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    '히스토리',
-                                                    style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        color:
-                                                            AppColors.grey_8D),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: (bookDetail[
-                                                          'book_read_list'] !=
-                                                      null)
-                                                  ? (46.h + 18.h) *
-                                                      bookDetail[
-                                                              'book_read_list']
-                                                          .length
-                                                  : 0,
-                                              child: (bookDetail[
-                                                          'book_read_list'] !=
-                                                      null)
-                                                  ? ListView(
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      children: List.generate(
-                                                        bookDetail[
-                                                                'book_read_list']
-                                                            .length,
-                                                        (index) {
-                                                          return Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
-                                                                      bottom:
-                                                                          18.h),
-                                                              child:
-                                                                  _bookReadListWidget(
-                                                                      index));
-                                                        },
-                                                      ),
-                                                    )
-                                                  : Container(),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 40.h),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              '메모',
-                                              style: TextStyle(
-                                                  fontSize: 18.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () async {
-                                                Map data = bookDetail;
-                                                data['book_no'] =
-                                                    widget.book_no;
-                                                final result = await context
-                                                    .pushNamed('memo-write',
-                                                        extra: bookDetail);
-
-                                                if (result != null) {
-                                                  getBookRead();
-                                                }
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    '${Constant.ASSETS_ICONS}icon_add.svg',
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                    width: 16.r,
-                                                    height: 16.r,
-                                                  ),
-                                                  Container(
-                                                    color: Colors.transparent,
-                                                    child: const Text(
-                                                      '작성하기',
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .primaryColor),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      _memoList()
-                                    ],
-                                  )
-                                : Container(
-                                    padding: EdgeInsets.only(
-                                        left: 24.w,
-                                        right: 24.w,
-                                        top: 20.h,
-                                        bottom: 20.h),
-                                    decoration: BoxDecoration(
-                                        boxShadow: [
-                                          BoxShadow(
-                                              offset: const Offset(0, 4),
-                                              blurRadius: 8.r,
-                                              color: const Color(0xff97CD8D)
-                                                  .withOpacity(0.05))
-                                        ],
-                                        border: Border.all(
-                                            color: AppColors.grey_F2),
+                        Container(
+                          margin: EdgeInsets.only(
+                              left: 24.w,
+                              right: 24.w,
+                              top: 136.h,
+                              bottom: 53.h),
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              Container(
+                                width: 145.w,
+                                height: 200.h,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    color: AppColors.grey_F2,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          offset: const Offset(0, 4),
+                                          blurRadius: 16.r,
+                                          color: AppColors.black_4A
+                                              .withOpacity(0.1))
+                                    ]),
+                                child: (bookDetail['book_image_url'] == null)
+                                    ? Container()
+                                    : ClipRRect(
                                         borderRadius:
-                                            BorderRadius.circular(20.r),
-                                        color: Colors.white),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                            BorderRadius.circular(8.r),
+                                        child: Image.network(
+                                            width: 145.w,
+                                            height: 200.h,
+                                            fit: BoxFit.cover,
+                                            bookDetail['book_image_url'] ?? ''),
+                                      ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(top: 30.h, bottom: 8.h),
+                                child: Text(
+                                  bookDetail['book_title'] ?? '',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 18.sp),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.h,
+                                child: Text(
+                                  bookDetail['book_author'] ?? '',
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColors.grey_8D),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 2.h, bottom: 40.h),
+                                height: 20.h,
+                                child: Text(
+                                  bookDetail['book_publisher'] ?? '',
+                                  style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: AppColors.grey_8D),
+                                ),
+                              ),
+                              bookDetail['user_no'] == authAPI.user()['user_no']
+                                  ? Column(
                                       children: [
                                         Container(
-                                          margin: EdgeInsets.only(bottom: 8.h),
-                                          height: 22.h,
-                                          child: Text(
-                                            '책 소개',
-                                            style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: AppColors.grey_8D),
+                                          padding: EdgeInsets.only(
+                                              left: 24.w,
+                                              right: 38.w,
+                                              top: 20.h,
+                                              bottom: 2.h),
+                                          decoration: BoxDecoration(
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    offset: const Offset(0, 4),
+                                                    blurRadius: 8.r,
+                                                    color:
+                                                        const Color(0xff97CD8D)
+                                                            .withOpacity(0.05))
+                                              ],
+                                              border: Border.all(
+                                                  color: AppColors.grey_F2),
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r),
+                                              color: Colors.white),
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    bottom: 18.h),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '히스토리',
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          color: AppColors
+                                                              .grey_8D),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: (bookDetail[
+                                                            'book_read_list'] !=
+                                                        null)
+                                                    ? (46.h + 18.h) *
+                                                        bookDetail[
+                                                                'book_read_list']
+                                                            .length
+                                                    : 0,
+                                                child: (bookDetail[
+                                                            'book_read_list'] !=
+                                                        null)
+                                                    ? ListView(
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        children: List.generate(
+                                                          bookDetail[
+                                                                  'book_read_list']
+                                                              .length,
+                                                          (index) {
+                                                            return Container(
+                                                                margin: EdgeInsets
+                                                                    .only(
+                                                                        bottom: 18
+                                                                            .h),
+                                                                child:
+                                                                    _bookReadListWidget(
+                                                                        index));
+                                                          },
+                                                        ),
+                                                      )
+                                                    : Container(),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                        (bookDetail['book_info'] != '')
-                                            ? Text(
-                                                bookDetail['book_info'] ?? '',
+                                        Container(
+                                          margin: EdgeInsets.only(top: 40.h),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '메모',
                                                 style: TextStyle(
-                                                    fontSize: 12.sp,
-                                                    height: 1.75.h),
-                                              )
-                                            : Container(
-                                                alignment: Alignment.center,
-                                                margin: EdgeInsets.only(
-                                                    top: 8.h, bottom: 8.h),
-                                                child: Text('소개글이 등록되지 않은 책이에요',
-                                                    style: TextStyle(
-                                                        fontSize: 12.sp,
-                                                        color:
-                                                            AppColors.grey_8D)),
+                                                    fontSize: 18.sp,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  Map data = bookDetail;
+                                                  data['book_no'] =
+                                                      widget.book_no;
+                                                  final result = await context
+                                                      .pushNamed('memo-write',
+                                                          extra: bookDetail);
+
+                                                  if (result != null) {
+                                                    getBookRead();
+                                                  }
+                                                },
+                                                child: Row(
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      '${Constant.ASSETS_ICONS}icon_add.svg',
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                      width: 16.r,
+                                                      height: 16.r,
+                                                    ),
+                                                    Container(
+                                                      color: Colors.transparent,
+                                                      child: const Text(
+                                                        '작성하기',
+                                                        style: TextStyle(
+                                                            color: AppColors
+                                                                .primaryColor),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        _memoList()
                                       ],
-                                    )),
-                          ],
+                                    )
+                                  : Container(
+                                      padding: EdgeInsets.only(
+                                          left: 24.w,
+                                          right: 24.w,
+                                          top: 20.h,
+                                          bottom: 20.h),
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                                offset: const Offset(0, 4),
+                                                blurRadius: 8.r,
+                                                color: const Color(0xff97CD8D)
+                                                    .withOpacity(0.05))
+                                          ],
+                                          border: Border.all(
+                                              color: AppColors.grey_F2),
+                                          borderRadius:
+                                              BorderRadius.circular(20.r),
+                                          color: Colors.white),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 8.h),
+                                            height: 22.h,
+                                            child: Text(
+                                              '책 소개',
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.grey_8D),
+                                            ),
+                                          ),
+                                          (bookDetail['book_info'] != '')
+                                              ? Text(
+                                                  bookDetail['book_info'] ?? '',
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      height: 1.75.h),
+                                                )
+                                              : Container(
+                                                  alignment: Alignment.center,
+                                                  margin: EdgeInsets.only(
+                                                      top: 8.h, bottom: 8.h),
+                                                  child: Text(
+                                                      '소개글이 등록되지 않은 책이에요',
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          color: AppColors
+                                                              .grey_8D)),
+                                                ),
+                                        ],
+                                      )),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
