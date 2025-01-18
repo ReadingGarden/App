@@ -182,149 +182,161 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
     final bookStatusList = ref.watch(bookStatusListProvider);
 
     return Center(
-        child: bookStatusList.isEmpty
-            ? _bookshelfEmpty()
-            : RefreshIndicator(
-                onRefresh: () async {
-                  ref.read(bookStatusListProvider.notifier).reset();
-                  _currentPage = 1;
-                  getBookStatusList(pageViewIndex);
-                },
-                backgroundColor: Colors.white,
-                color: AppColors.grey_8D,
-                child: GridView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  controller: _scrollController,
-                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 0.5,
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 12.w,
-                  ),
-                  children: List.generate(
-                    bookStatusList.length,
-                    (index) {
-                      return GestureDetector(
-                        onTap: () async {
-                          if (pageViewIndex == 2) {
-                            final data = {
-                              'book_no':
-                                  bookStatusList[index].toJson()['book_no'],
-                              'title':
-                                  bookStatusList[index].toJson()['book_title'],
-                              'author':
-                                  bookStatusList[index].toJson()['book_author'],
-                              'publisher': bookStatusList[index]
-                                  .toJson()['book_publisher'],
-                              'description':
-                                  bookStatusList[index].toJson()['book_info'],
-                              'cover': bookStatusList[index]
-                                  .toJson()['book_image_url'],
-                              'itemPage':
-                                  bookStatusList[index].toJson()['book_page'],
-                            };
+        child: (_isLoading)
+            ? const Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: AppColors.primaryColor,
+                  color: AppColors.grey_CA,
+                ),
+              )
+            : bookStatusList.isEmpty
+                ? _bookshelfEmpty()
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      ref.read(bookStatusListProvider.notifier).reset();
+                      _currentPage = 1;
+                      getBookStatusList(pageViewIndex);
+                    },
+                    backgroundColor: Colors.white,
+                    color: AppColors.grey_8D,
+                    child: GridView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      controller: _scrollController,
+                      padding:
+                          EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: 0.5,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 12.w,
+                      ),
+                      children: List.generate(
+                        bookStatusList.length,
+                        (index) {
+                          return GestureDetector(
+                            onTap: () async {
+                              if (pageViewIndex == 2) {
+                                final data = {
+                                  'book_no':
+                                      bookStatusList[index].toJson()['book_no'],
+                                  'title': bookStatusList[index]
+                                      .toJson()['book_title'],
+                                  'author': bookStatusList[index]
+                                      .toJson()['book_author'],
+                                  'publisher': bookStatusList[index]
+                                      .toJson()['book_publisher'],
+                                  'description': bookStatusList[index]
+                                      .toJson()['book_info'],
+                                  'cover': bookStatusList[index]
+                                      .toJson()['book_image_url'],
+                                  'itemPage': bookStatusList[index]
+                                      .toJson()['book_page'],
+                                };
 
-                            context.pushNamed('book-add-garden',
-                                extra: {'isbn13': 'null', 'book': data});
-                          } else {
-                            final result = await context.pushNamed(
-                                'book-detail',
-                                extra: bookStatusList[index].book_no);
-                            if (result != null) {
-                              ref.read(bookStatusListProvider.notifier).reset();
-                              _currentPage = 1;
-                              getBookStatusList(pageViewIndex);
-                            }
-                          }
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              alignment: Alignment.bottomRight,
+                                context.pushNamed('book-add-garden',
+                                    extra: {'isbn13': 'null', 'book': data});
+                              } else {
+                                final result = await context.pushNamed(
+                                    'book-detail',
+                                    extra: bookStatusList[index].book_no);
+                                if (result != null) {
+                                  ref
+                                      .read(bookStatusListProvider.notifier)
+                                      .reset();
+                                  _currentPage = 1;
+                                  getBookStatusList(pageViewIndex);
+                                }
+                              }
+                            },
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(boxShadow: [
-                                    BoxShadow(
-                                        offset: const Offset(0, 4),
-                                        blurRadius: 16.r,
-                                        color:
-                                            AppColors.black_4A.withOpacity(0.1))
-                                  ]),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.r),
-                                      child: (bookStatusList[index]
-                                                  .book_image_url !=
-                                              null)
-                                          ? Image.network(
-                                              width: 96.w,
-                                              height: 132.h,
-                                              fit: BoxFit.cover,
-                                              bookStatusList[index]
-                                                  .book_image_url!,
-                                            )
-                                          : Container(
-                                              width: 96.w,
-                                              height: 132.h,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.r),
-                                                color: AppColors.grey_F2,
-                                              ),
-                                            )),
-                                ),
-                                Visibility(
-                                  visible: (pageViewIndex != 2),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.only(bottom: 10.h),
-                                    width: 50.w,
-                                    height: 28.h,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20.r),
-                                          bottomLeft: Radius.circular(20.r),
-                                        ),
-                                        color: (pageViewIndex == 1)
-                                            ? AppColors.black_4A
-                                            : Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                              offset: const Offset(0, 4),
-                                              blurRadius: 16.r,
-                                              color: AppColors.black_4A
-                                                  .withOpacity(0.1))
-                                        ]),
-                                    child: Text(
-                                      '${bookStatusList[index].percent.floor()}%',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: (pageViewIndex == 1)
-                                              ? Colors.white
-                                              : AppColors.black_4A),
+                                Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(boxShadow: [
+                                        BoxShadow(
+                                            offset: const Offset(0, 4),
+                                            blurRadius: 16.r,
+                                            color: AppColors.black_4A
+                                                .withOpacity(0.1))
+                                      ]),
+                                      child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
+                                          child: (bookStatusList[index]
+                                                      .book_image_url !=
+                                                  null)
+                                              ? Image.network(
+                                                  width: 96.w,
+                                                  height: 132.h,
+                                                  fit: BoxFit.cover,
+                                                  bookStatusList[index]
+                                                      .book_image_url!,
+                                                )
+                                              : Container(
+                                                  width: 96.w,
+                                                  height: 132.h,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.r),
+                                                    color: AppColors.grey_F2,
+                                                  ),
+                                                )),
                                     ),
-                                  ),
+                                    Visibility(
+                                      visible: (pageViewIndex != 2),
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.only(bottom: 10.h),
+                                        width: 50.w,
+                                        height: 28.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20.r),
+                                              bottomLeft: Radius.circular(20.r),
+                                            ),
+                                            color: (pageViewIndex == 1)
+                                                ? AppColors.black_4A
+                                                : Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  offset: const Offset(0, 4),
+                                                  blurRadius: 16.r,
+                                                  color: AppColors.black_4A
+                                                      .withOpacity(0.1))
+                                            ]),
+                                        child: Text(
+                                          '${bookStatusList[index].percent.floor()}%',
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: (pageViewIndex == 1)
+                                                  ? Colors.white
+                                                  : AppColors.black_4A),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                Container(
+                                    margin: EdgeInsets.only(top: 8.h),
+                                    alignment: Alignment.centerLeft,
+                                    height: 20.h,
+                                    child: Text(
+                                      bookStatusList[index].book_title,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                      ),
+                                    ))
                               ],
                             ),
-                            Container(
-                                margin: EdgeInsets.only(top: 8.h),
-                                alignment: Alignment.centerLeft,
-                                height: 20.h,
-                                child: Text(
-                                  bookStatusList[index].book_title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 12.sp,
-                                  ),
-                                ))
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ));
+                          );
+                        },
+                      ),
+                    ),
+                  ));
   }
 
   Widget _bookshelfEmpty() {
