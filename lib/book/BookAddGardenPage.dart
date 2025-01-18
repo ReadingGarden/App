@@ -76,6 +76,20 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
     }
   }
 
+  //책 중복 확인
+  void getBookDuplication() async {
+    final response = await bookService.getBookDuplication(widget.isbn13);
+    if (response?.statusCode == 200) {
+      context.pushNamed('book-register', extra: bookResult());
+    } else if (response?.statusCode == 403) {
+      Widgets.baseBottomSheet(
+          context, '이미 저장된 책이에요', '가든에 등록되어 있는 책이에요. 또 저장할까요?', '등록하기', () {
+        context.pop();
+        context.pushNamed('book-register', extra: bookResult());
+      }, cancelTitle: '그냥 나가기');
+    }
+  }
+
   Map bookResult() {
     Map bookResult = ref.watch(detailIsbnProvider);
     if (widget.isbn13 == 'null') {
@@ -284,7 +298,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
             margin: EdgeInsets.only(
                 left: 24.w, right: 24.w, bottom: 30.h, top: 10.h),
             child: Widgets.button('내 가든에 심기', true, () {
-              context.pushNamed('book-register', extra: bookResult());
+              getBookDuplication();
             })));
   }
 }

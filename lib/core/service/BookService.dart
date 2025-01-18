@@ -50,6 +50,26 @@ class BookService {
     }
   }
 
+  // 책 중복 확인
+  Future<Response?> getBookDuplication(String isbn) async {
+    try {
+      final response =
+          await _authenticatedDio.get('${Constant.URL}book/?isbn=$isbn');
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        // 서버가 응답한 경우 (상태 코드와 함께)
+        print('Error: ${e.response?.data}');
+        print('Status code: ${e.response?.statusCode}');
+        return e.response;
+      } else {
+        // 서버가 응답하지 않은 경우
+        print('Error sending request: ${e.message}');
+        return null;
+      }
+    }
+  }
+
   // 책 등록
   Future<Response?> postBook(Map data) async {
     try {

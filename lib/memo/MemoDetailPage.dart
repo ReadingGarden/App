@@ -102,7 +102,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
               color: AppColors.grey_F2,
             ),
             Container(
-              margin: EdgeInsets.only(left: 24.w, right: 24.w),
+              margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 100.h),
               child: Column(
                 children: [
                   Visibility(
@@ -111,8 +111,6 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                       margin: EdgeInsets.only(top: 20.h),
                       child: Image.network(
                           width: 320.w,
-                          height: 165.h,
-                          fit: BoxFit.fitWidth,
                           '${Constant.IMAGE_URL}${widget.memo['image_url']}'),
                     ),
                   ),
