@@ -37,6 +37,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     currentPage = widget.bookRead['book_current_page'];
     dragPosition = (currentPage / widget.bookRead['book_page']);
     _textEditingController.addListener(_validateInput);
+    _textEditingController.text =
+        widget.bookRead['book_current_page'].toString();
     _loadImage();
   }
 
@@ -188,6 +190,13 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                                 currentPage = (widget.bookRead['book_page'] *
                                         dragPosition)
                                     .toInt();
+
+                                //텍스트 필드에도 적용
+                                _textEditingController.text =
+                                    (widget.bookRead['book_page'] *
+                                            dragPosition)
+                                        .toInt()
+                                        .toString();
                               });
                             },
                             child: image == null || overlayImage == null
@@ -224,7 +233,6 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
 
 Future pageBottomSheet(
     BuildContext context, TextEditingController controller, int page) {
-  controller.text = page.toString();
   return showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -256,7 +264,6 @@ Future pageBottomSheet(
                       counter: Container(),
                       fillColor: AppColors.grey_FA,
                       filled: true,
-                      // hintText: page.toString(),
                       hintStyle:
                           TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
                       enabledBorder: OutlineInputBorder(

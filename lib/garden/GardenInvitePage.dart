@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import '../core/api/GardenAPI.dart';
 import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
+import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
 final inviteGardenProvider = StateProvider<Map>((ref) => {});
@@ -110,11 +112,11 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                           decoration: const BoxDecoration(
                               color: Colors.white, shape: BoxShape.circle),
                           child: SvgPicture.asset(
-                            'assets/images/garden-color.svg',
-                            // color: Functions.gardenColor(gardenAPI
-                            //     .gardenList()[index]['garden_color']),
-                            width: 40.w,
-                            height: 60.h,
+                            '${Constant.ASSETS_ICONS}icon_bookmark.svg',
+                            color: Functions.gardenColor(
+                                inviteGarden['garden_color']),
+                            width: 56.r,
+                            height: 56.r,
                           ),
                         ),
                         Padding(

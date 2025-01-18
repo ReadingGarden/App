@@ -122,7 +122,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
 
           // 이미지 파일로 저장
           final directory = await getApplicationDocumentsDirectory();
-          final path = '${directory.path}/screenshot.png';
+          final path = '${directory.path}/garden.png';
           final file = File(path);
           await file.writeAsBytes(uint8List);
 
