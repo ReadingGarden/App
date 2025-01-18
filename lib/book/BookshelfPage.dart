@@ -243,27 +243,36 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                             Stack(
                               alignment: Alignment.bottomRight,
                               children: [
-                                ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    child: (bookStatusList[index]
-                                                .book_image_url !=
-                                            null)
-                                        ? Image.network(
-                                            width: 96.w,
-                                            height: 132.h,
-                                            fit: BoxFit.cover,
-                                            bookStatusList[index]
-                                                .book_image_url!,
-                                          )
-                                        : Container(
-                                            width: 96.w,
-                                            height: 132.h,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.r),
-                                              color: AppColors.grey_F2,
-                                            ),
-                                          )),
+                                Container(
+                                  decoration: BoxDecoration(boxShadow: [
+                                    BoxShadow(
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 16.r,
+                                        color:
+                                            AppColors.black_4A.withOpacity(0.1))
+                                  ]),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      child: (bookStatusList[index]
+                                                  .book_image_url !=
+                                              null)
+                                          ? Image.network(
+                                              width: 96.w,
+                                              height: 132.h,
+                                              fit: BoxFit.cover,
+                                              bookStatusList[index]
+                                                  .book_image_url!,
+                                            )
+                                          : Container(
+                                              width: 96.w,
+                                              height: 132.h,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8.r),
+                                                color: AppColors.grey_F2,
+                                              ),
+                                            )),
+                                ),
                                 Visibility(
                                   visible: (pageViewIndex != 2),
                                   child: Container(
@@ -272,14 +281,20 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                     width: 50.w,
                                     height: 28.h,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20.r),
-                                        bottomLeft: Radius.circular(20.r),
-                                      ),
-                                      color: (pageViewIndex == 1)
-                                          ? AppColors.black_4A
-                                          : AppColors.grey_F2,
-                                    ),
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20.r),
+                                          bottomLeft: Radius.circular(20.r),
+                                        ),
+                                        color: (pageViewIndex == 1)
+                                            ? AppColors.black_4A
+                                            : Colors.white,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              offset: const Offset(0, 4),
+                                              blurRadius: 16.r,
+                                              color: AppColors.black_4A
+                                                  .withOpacity(0.1))
+                                        ]),
                                     child: Text(
                                       '${bookStatusList[index].percent.floor()}%',
                                       style: TextStyle(

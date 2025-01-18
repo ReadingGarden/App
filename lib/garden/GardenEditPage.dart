@@ -59,7 +59,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
       context.pop();
       context.replaceNamed('bottom-navi');
     } else if (response?.statusCode == 403) {
-      fToast.showToast(child: Widgets.toast('😢 가든이 하나뿐이라 삭제할 수 없어요'));
+      fToast.showToast(child: Widgets.toast('가든이 하나뿐이라 삭제할 수 없어요'));
     }
   }
 
@@ -71,10 +71,10 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
         gardenAPI.gardenMain()['garden_no'], to_garden_no);
     if (response?.statusCode == 200) {
       context.pop();
-      fToast.showToast(child: Widgets.toast('👌 남아있는 책을 모두 옮겼어요!'));
+      fToast.showToast(child: Widgets.toast('남아있는 책을 모두 옮겼어요!'));
       gardenAPI.getGardenLsit();
     } else if (response?.statusCode == 403) {
-      fToast.showToast(child: Widgets.toast('😢 꽉 찼어요! 다른 가든을 선택해주세요'));
+      fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
     }
   }
 

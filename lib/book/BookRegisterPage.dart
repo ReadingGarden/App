@@ -92,7 +92,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                 ['garden_title']);
       }
     } else if (response?.statusCode == 403) {
-      fToast.showToast(child: Widgets.toast('😢 꽉 찼어요! 다른 가든을 선택해주세요'));
+      fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
     }
   }
 

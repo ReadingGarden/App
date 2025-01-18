@@ -31,6 +31,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               margin: EdgeInsets.only(bottom: 40.h),
               child: CircleAvatar(
                 radius: 60.r,
+                child: Image.asset(
+                  '${Constant.PROFILE}profile_${authAPI.user()['user_image']}.png',
+                ),
               ),
             ),
             _titleList(

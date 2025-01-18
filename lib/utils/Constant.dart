@@ -3,9 +3,10 @@ import 'dart:ui';
 class Constant {
   static const ASSETS_ICONS = 'assets/icons/';
   static const MAIN_FLOWERS = 'assets/images/main_flowers/';
+  static const PROFILE = 'assets/images/profile/';
 
-  // static const URL = 'http://192.168.0.15:8000/api/v1/';
-  // static const URL = 'http://172.30.1.34:8000/api/v1/';
+  // static const URL = 'http://192.168.0.16:8000/api/v1/';
+
   static const URL =
       'http://ec2-43-203-248-188.ap-northeast-2.compute.amazonaws.com/api/v1/';
   static const IMAGE_URL =

@@ -194,7 +194,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       Row(
                                         children: [
@@ -702,43 +702,52 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             height: 32.r,
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: Colors.green),
-          ),
-          Visibility(
-            visible: memberCount >= 2,
-            child: SizedBox(
-              width: 32.r * 2,
-              child: Container(
-                width: 32.r,
-                height: 32.r,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.red),
-              ),
+            child: Image.asset(
+              '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][0]['user_image']}.png',
             ),
           ),
-          Visibility(
-            visible: false,
-            child: SizedBox(
-              width: 100.w,
-              child: Container(
-                width: 32.r,
-                height: 32.r,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.black),
-              ),
-            ),
-          ),
-          Visibility(
-            visible: false,
-            child: SizedBox(
-              width: 140.w,
-              child: Container(
-                width: 32.r,
-                height: 32.r,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.amber),
-              ),
-            ),
-          ),
+          (memberCount >= 2)
+              ? SizedBox(
+                  width: 32.r * 2,
+                  child: Container(
+                    width: 32.r,
+                    height: 32.r,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.red),
+                    child: Image.asset(
+                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][1]['user_image']}.png',
+                    ),
+                  ),
+                )
+              : Container(),
+          (memberCount >= 3)
+              ? SizedBox(
+                  width: 100.w,
+                  child: Container(
+                    width: 32.r,
+                    height: 32.r,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.black),
+                    child: Image.asset(
+                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][2]['user_image']}.png',
+                    ),
+                  ),
+                )
+              : Container(),
+          (memberCount == 4)
+              ? SizedBox(
+                  width: 140.w,
+                  child: Container(
+                    width: 32.r,
+                    height: 32.r,
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.amber),
+                    child: Image.asset(
+                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][3]['user_image']}.png',
+                    ),
+                  ),
+                )
+              : Container(),
         ],
       ),
     );

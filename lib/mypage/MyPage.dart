@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
@@ -75,6 +76,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                           margin: EdgeInsets.only(right: 14.w),
                           child: CircleAvatar(
                             radius: 30.r,
+                            child: Image.asset(
+                              '${Constant.PROFILE}profile_${authAPI.user()['user_image']}.png',
+                            ),
                           ),
                         ),
                         Column(
@@ -82,7 +86,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                           children: [
                             Container(
                               margin: EdgeInsets.only(bottom: 2.h),
-                              // height: 24.h,
                               child: Text(
                                 authAPI.user()['user_nick'] ?? '',
                                 style: TextStyle(
@@ -91,7 +94,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                               ),
                             ),
                             SizedBox(
-                                // height: 20.h,
                                 child: Text(authAPI.user()['user_email'] ?? '',
                                     style: TextStyle(
                                         fontSize: 12.sp,

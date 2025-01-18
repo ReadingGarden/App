@@ -141,10 +141,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
     final response = await bookService.putBook(widget.book_no, data);
     if (response?.statusCode == 200) {
       context.pop();
-      fToast.showToast(child: Widgets.toast('👌 선택한 가든으로 옮겨 심었어요'));
+      fToast.showToast(child: Widgets.toast('선택한 가든으로 옮겨 심었어요'));
       getBookRead();
     } else if (response?.statusCode == 403) {
-      fToast.showToast(child: Widgets.toast('😢 꽉 찼어요! 다른 가든을 선택해주세요'));
+      fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
     }
   }
 

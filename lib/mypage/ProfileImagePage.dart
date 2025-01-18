@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
@@ -60,6 +59,9 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                   margin: EdgeInsets.only(bottom: 20.h),
                   child: CircleAvatar(
                     radius: 60.r,
+                    child: Image.asset(
+                      '${Constant.PROFILE}profile_${Constant.FLOWER_LIST[listIndex]}.png',
+                    ),
                   ),
                 ),
                 Container(
@@ -122,12 +124,15 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                                           width: 80.r,
                                           height: 80.r,
                                           decoration: BoxDecoration(
-                                              color: Colors.yellow,
+                                              color: Colors.transparent,
                                               shape: BoxShape.circle,
                                               border: (listIndex == index)
                                                   ? Border.all(
                                                       color: AppColors.black_4A)
                                                   : null),
+                                          child: Image.asset(
+                                            '${Constant.PROFILE}profile_${Constant.FLOWER_LIST[index]}.png',
+                                          ),
                                         ),
                                         Container(
                                             margin: EdgeInsets.only(top: 7.h),
