@@ -36,7 +36,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
       // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMemoList();
+        getMemoList(scroll: true);
       }
     });
   }
@@ -48,11 +48,13 @@ class _MemoPageState extends ConsumerState<MemoPage> {
   }
 
   //메모 리스트 조회 api
-  void getMemoList() async {
+  void getMemoList({bool? scroll}) async {
     if (_isLoading) return;
 
     setState(() {
-      _isLoading = true;
+      if (scroll == null) {
+        _isLoading = true;
+      }
     });
 
     final response = await memoService.getMemoList(_currentPage);
@@ -144,9 +146,16 @@ class _MemoPageState extends ConsumerState<MemoPage> {
             )
           ],
         ),
-        body: (ref.watch(memoListProvider).isNotEmpty)
-            ? _memoList()
-            : _memoEmpty());
+        body: (_isLoading)
+            ? const Center(
+                child: CircularProgressIndicator(
+                  backgroundColor: AppColors.primaryColor,
+                  color: AppColors.grey_CA,
+                ),
+              )
+            : (ref.watch(memoListProvider).isNotEmpty)
+                ? _memoList()
+                : _memoEmpty());
   }
 
   Widget _memoList() {

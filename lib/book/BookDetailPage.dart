@@ -30,10 +30,11 @@ class BookDetailPage extends ConsumerStatefulWidget {
   final int book_no;
 }
 
-class _BookDetailPageState extends ConsumerState<BookDetailPage> {
+class _BookDetailPageState extends ConsumerState<BookDetailPage>
+    with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
-
-  // bool _isAutoScrolling = false; // 자동 스크롤 상태 체크
+  late final AnimationController _animationController;
+  late ColorTween _colorTween;
 
   late FToast fToast;
 
@@ -43,34 +44,35 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
     fToast = FToast();
     fToast.init(context);
 
+    // 애니메이션 컨트롤러 초기화
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+
     Future.microtask(() {
       ref.read(bookDetailProvider.notifier).reset();
       ref.read(bookDetailAppBarColorProvider.notifier).state = Colors.white;
       ref.read(bookDetailMemoListProvider.notifier).state = [];
       ref.read(bookDetailMemoSelectIndexListProvider.notifier).state = [];
+
+      // 색상 초기화
+      _colorTween = ColorTween(
+          begin: ref.watch(bookDetailAppBarColorProvider), end: Colors.white);
     });
+
+    // 스크롤 상단바 색 변경
     _scrollController.addListener(() {
-      if (_scrollController.offset > 600) {
-        ref.read(bookDetailAppBarColorProvider.notifier).state = Colors.white;
-      } else {
-        ref.read(bookDetailAppBarColorProvider.notifier).state =
-            Functions.gardenBackColor(
-                ref.watch(bookDetailProvider)['garden_color']);
-      }
-      // // 스크롤이 시작되었는지 확인
-      // if (!_isAutoScrolling &&
-      //     _scrollController.position.isScrollingNotifier.value) {
-      //   // 원하는 위치로 바로 스크롤
-      //   _isAutoScrolling = true;
-      //   // 원하는 위치로 즉시 이동
-      //   _scrollController
-      //       .animateTo(500,
-      //           duration: const Duration(milliseconds: 300),
-      //           curve: Curves.easeOut)
-      //       .then((_) {
-      //     _isAutoScrolling = false;
-      //   }); // 자동 스크롤 종료
-      // }
+      double offset = _scrollController.offset;
+
+      // 0 ~ 600 범위를 0.0 ~ 1.0으로 변환
+      double animationValue = (offset / 600).clamp(0.0, 1.0);
+      _animationController.value = animationValue; // 애니메이션 컨트롤러에 값 설정
+
+      // 애니메이션 색상 값 업데이트
+      Color updatedColor = _colorTween.evaluate(_animationController)!;
+      ref.read(bookDetailAppBarColorProvider.notifier).state =
+          updatedColor; // 색상 업데이트
     });
     getBookRead();
   }
@@ -78,6 +80,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -99,23 +102,6 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
             .add(memo['memo_like']);
       }
       getGardenDetail(response?.data['data']['garden_no']);
-
-      // ref.read(bookDetailProvider.notifier).state = response?.data['data'];
-
-      // ref.read(bookReadListProvider.notifier).state =
-      //     response?.data['data']['book_read_list'];
-
-      // if (ref.watch(bookReadListProvider).isNotEmpty) {
-      //   //읽기 시작한 날
-      //   _startController.text = Functions.formatBookReadDate(
-      //       ref.watch(bookReadListProvider)[
-      //           ref.watch(bookReadListProvider).length - 1]['book_start_date']);
-
-      //   //다 읽은 날
-      //   if (ref.watch(bookReadListProvider)[0]['book_end_date'] != null) {
-      //     _endController.text = Functions.formatBookReadDate(
-      //         ref.watch(bookReadListProvider)[0]['book_end_date']);
-      //   }
     }
   }
 
@@ -129,6 +115,11 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
       ref.read(bookDetailProvider.notifier).updateGardenDetail(gardenDetail);
       ref.read(bookDetailAppBarColorProvider.notifier).state =
           Functions.gardenBackColor(gardenDetail['garden_color']);
+
+      // 색상 다시 초기화
+      _colorTween = ColorTween(
+          begin: Functions.gardenBackColor(gardenDetail['garden_color']),
+          end: Colors.white);
     }
   }
 
@@ -200,6 +191,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage> {
                 : Container()
           ],
           backFunction: () => context.pop('fetchData'),
+          // color: animatedColor
           color: ref.watch(bookDetailAppBarColorProvider),
         ),
         body: Visibility(
