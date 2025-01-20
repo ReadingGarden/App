@@ -34,7 +34,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
       // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getBookStatusList(ref.watch(pageViewIndexProvider));
+        getBookStatusList(ref.watch(pageViewIndexProvider), scroll: true);
       }
     });
   }
@@ -46,11 +46,13 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
   }
 
   //책 목록(상태) 리스트 조회 api
-  void getBookStatusList(int status) async {
+  void getBookStatusList(int status, {bool? scroll}) async {
     if (_isLoading) return;
 
     setState(() {
-      _isLoading = true;
+      if (scroll == null) {
+        _isLoading = true;
+      }
     });
 
     final response = await bookService.getBookStatusList(status, _currentPage);
@@ -205,7 +207,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                       padding:
                           EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.5,
+                        childAspectRatio: 0.57,
                         crossAxisCount: 3,
                         crossAxisSpacing: 12.w,
                       ),

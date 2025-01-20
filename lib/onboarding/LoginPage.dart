@@ -168,6 +168,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           radius: 27.5.r,
                           child: SvgPicture.asset(
                             'assets/images/google_logo.svg',
+                            width: 20.r,
+                            height: 20.r,
                           ),
                         ),
                         GestureDetector(
@@ -176,7 +178,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             backgroundColor: const Color(0xffFFEF5E),
                             radius: 27.5.r,
                             child: SvgPicture.asset(
-                                'assets/images/kakao_logo.svg'),
+                              'assets/images/kakao_logo.svg',
+                              width: 20.r,
+                              height: 20.r,
+                            ),
                           ),
                         )
                       ],

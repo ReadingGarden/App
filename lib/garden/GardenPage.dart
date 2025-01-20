@@ -168,7 +168,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   child: (gardenAPI.gardenMain().isNotEmpty)
                       ? Container(
                           margin: EdgeInsets.only(
-                              top: 80.h, left: 24.w, right: 24.w),
+                              top: 70.h, left: 24.w, right: 24.w),
                           color: Colors.transparent,
                           child: Stack(
                             alignment: Alignment.topRight,
@@ -373,8 +373,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
       useSafeArea: true,
       backgroundColor: AppColors.grey_F2,
       builder: (context) {
-        return Container(
-          height: 700.h,
+        return SizedBox(
+          height: 730.h,
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Container(
@@ -392,7 +392,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(
                               top: 56.h, left: 20.w, right: 20.w, bottom: 20.h),
-                          height: 200.h,
+                          height: 190.h,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),
                               color: Colors.white),
@@ -503,6 +503,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       ),
                       GestureDetector(
                         onTap: () {
+                          context.pop();
                           context.pushNamed('garden-edit');
                         },
                         child: Column(

@@ -53,7 +53,7 @@ class _MyPageState extends ConsumerState<MyPage> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 50.h,
+        toolbarHeight: 0.h,
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         leadingWidth: 0,
@@ -62,7 +62,7 @@ class _MyPageState extends ConsumerState<MyPage> {
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Container(
-          margin: EdgeInsets.only(bottom: 24.h),
+          margin: EdgeInsets.only(top: 30.h, bottom: 24.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

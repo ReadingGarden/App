@@ -118,9 +118,12 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                   Container(
                                     width: 48.r,
                                     height: 48.r,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.grey),
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][index]['user_image']}.png',
+                                    ),
                                   ),
                                   Visibility(
                                     visible:

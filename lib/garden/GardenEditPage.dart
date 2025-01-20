@@ -91,7 +91,6 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     final response = await gardenService.putGarden(
         gardenAPI.gardenMain()['garden_no'], data);
     if (response?.statusCode == 200) {
-      context.pop();
       context.replaceNamed('bottom-navi');
     }
   }
@@ -136,164 +135,180 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   Widget build(BuildContext context) {
     final gardenAPI = GardenAPI(ref);
 
-    return Scaffold(
-      appBar: Widgets.appBar(context,
-          title: '가든 수정하기', backFunction: _gardenEditBottomSheet),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: Container(
-            margin: EdgeInsets.only(top: 20.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 24.w,
-                    right: 24.w,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Visibility(
-                        visible: _gardenLeaderBool(),
-                        child: Column(
-                          children: [
-                            Widgets.textfield(
-                                ref,
-                                _titleController,
-                                '가든 이름',
-                                '최대 12글자까지 쓸 수 있어요',
-                                null,
-                                StateProvider((ref) => null),
-                                validateFunction: _gardenEditValid),
-                            Widgets.textfield(
-                                ref,
-                                _infoController,
-                                '가든 소개',
-                                '소개글을 입력해주세요',
-                                null,
-                                StateProvider((ref) => null),
-                                validateFunction: _gardenEditValid),
-                          ],
+    return WillPopScope(
+      onWillPop: () async {
+        _gardenEditBottomSheet();
+        return true;
+      },
+      child: Scaffold(
+        appBar: Widgets.appBar(context,
+            title: '가든 수정하기', backFunction: _gardenEditBottomSheet),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Container(
+              margin: EdgeInsets.only(top: 20.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: 24.w,
+                      right: 24.w,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Visibility(
+                          visible: _gardenLeaderBool(),
+                          child: Column(
+                            children: [
+                              Widgets.textfield(
+                                  ref,
+                                  _titleController,
+                                  '가든 이름',
+                                  '최대 12글자까지 쓸 수 있어요',
+                                  null,
+                                  StateProvider((ref) => null),
+                                  validateFunction: _gardenEditValid),
+                              Widgets.textfield(
+                                  ref,
+                                  _infoController,
+                                  '가든 소개',
+                                  '소개글을 입력해주세요',
+                                  null,
+                                  StateProvider((ref) => null),
+                                  validateFunction: _gardenEditValid),
+                            ],
+                          ),
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                  bottom: 16.h,
-                                  top: (_gardenLeaderBool()) ? 12.h : 4.h),
-                              child: const Text('대표 색상')),
-                          SizedBox(
-                            height: 92.h,
-                            child: GridView(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisSpacing: 26.w,
-                                mainAxisSpacing: 18.w,
-                                crossAxisCount: 6,
-                              ),
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              children: List.generate(
-                                Constant.GARDEN_COLOR_LIST.length,
-                                (index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      ref
-                                          .read(
-                                              gardenEditColorSelectIndexProvider
-                                                  .notifier)
-                                          .state = index;
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(2),
-                                      width: 38.r,
-                                      height: 38.r,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.transparent,
-                                          border: (ref.watch(
-                                                      gardenEditColorSelectIndexProvider) ==
-                                                  index)
-                                              ? Border.all(
-                                                  color: Constant
-                                                          .GARDEN_COLOR_SET_LIST[
-                                                      index],
-                                                  width: 2.w,
-                                                )
-                                              : null),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(
+                                    bottom: 16.h,
+                                    top: (_gardenLeaderBool()) ? 12.h : 4.h),
+                                child: const Text('대표 색상')),
+                            SizedBox(
+                              height: 92.h,
+                              child: GridView(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisSpacing: 26.w,
+                                  mainAxisSpacing: 18.w,
+                                  crossAxisCount: 6,
+                                ),
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                children: List.generate(
+                                  Constant.GARDEN_COLOR_LIST.length,
+                                  (index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ref
+                                            .read(
+                                                gardenEditColorSelectIndexProvider
+                                                    .notifier)
+                                            .state = index;
+                                      },
                                       child: Container(
-                                          decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Constant
-                                            .GARDEN_COLOR_SET_LIST[index],
-                                      )),
-                                    ),
-                                  );
-                                },
+                                        padding: const EdgeInsets.all(2),
+                                        width: 38.r,
+                                        height: 38.r,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.transparent,
+                                            border: (ref.watch(
+                                                        gardenEditColorSelectIndexProvider) ==
+                                                    index)
+                                                ? Border.all(
+                                                    color: Constant
+                                                            .GARDEN_COLOR_SET_LIST[
+                                                        index],
+                                                    width: 2.w,
+                                                  )
+                                                : null),
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Constant
+                                              .GARDEN_COLOR_SET_LIST[index],
+                                        )),
+                                      ),
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 10.h, bottom: 20.h),
-                  height: 1.h,
-                  color: AppColors.grey_F2,
-                ),
-                gardenAPI.gardenMain()['garden_members'].length <= 1
-                    ? GestureDetector(
-                        onTap: () =>
-                            (gardenAPI.gardenMain()['book_list'].length > 0)
-                                ? _gardenDeleteBottomSheet()
-                                : _gardenRealDeleteBottomSheet(),
-                        child: Container(
-                            margin: EdgeInsets.only(left: 24.w),
-                            height: 46.h,
-                            color: Colors.transparent,
-                            child: const Text(
-                              '가든 삭제하기',
-                              style: TextStyle(color: AppColors.errorRedColor),
-                            )),
-                      )
-                    : GestureDetector(
-                        onTap: () => _gardenByeBottomSheet(),
-                        child: Container(
-                            margin: EdgeInsets.only(left: 24.w),
-                            height: 46.h,
-                            color: Colors.transparent,
-                            child: const Text(
-                              '가든 나가기',
-                              style: TextStyle(color: AppColors.errorRedColor),
-                            )),
-                      )
-              ],
+                  Container(
+                    margin: EdgeInsets.only(top: 10.h, bottom: 20.h),
+                    height: 1.h,
+                    color: AppColors.grey_F2,
+                  ),
+                  gardenAPI.gardenMain()['garden_members'].length <= 1
+                      ? GestureDetector(
+                          onTap: () =>
+                              (gardenAPI.gardenMain()['book_list'].length > 0)
+                                  ? _gardenDeleteBottomSheet()
+                                  : _gardenRealDeleteBottomSheet(),
+                          child: Container(
+                              margin: EdgeInsets.only(left: 24.w),
+                              height: 46.h,
+                              color: Colors.transparent,
+                              child: const Text(
+                                '가든 삭제하기',
+                                style:
+                                    TextStyle(color: AppColors.errorRedColor),
+                              )),
+                        )
+                      : GestureDetector(
+                          onTap: () => _gardenByeBottomSheet(),
+                          child: Container(
+                              margin: EdgeInsets.only(left: 24.w),
+                              height: 46.h,
+                              color: Colors.transparent,
+                              child: const Text(
+                                '가든 나가기',
+                                style:
+                                    TextStyle(color: AppColors.errorRedColor),
+                              )),
+                        )
+                ],
+              ),
             ),
           ),
         ),
+        bottomNavigationBar: Container(
+            margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
+            child: Widgets.button('수정하기', ref.watch(gardenEditButtonProvider),
+                () => putGarden())),
       ),
-      bottomNavigationBar: Container(
-          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-          child: Widgets.button(
-              '수정하기', ref.watch(gardenEditButtonProvider), () => putGarden())),
     );
   }
 
   //가든 수정 바텀시트
   Future _gardenEditBottomSheet() {
-    return Widgets.baseBottomSheet(context, '수정한 내용을 저장할까요?',
-        '이전 화면으로 돌아가기 전 수정 내역을 저장할지 저희에게 알려주세요.', '저장하고 나가기', () => putGarden(),
-        cancelTitle: '그냥 나가기', cancelBtnFunction: () {
-      context.pop();
-      context.pop();
-    });
+    return Widgets.baseBottomSheet(
+        context,
+        '수정한 내용을 저장할까요?',
+        '이전 화면으로 돌아가기 전 수정 내역을 저장할지 저희에게 알려주세요.',
+        '저장하고 나가기',
+        () {
+          context.pop();
+          putGarden();
+        },
+        cancelTitle: '그냥 나가기',
+        cancelBtnFunction: () {
+          context.pop();
+          context.pop();
+        });
   }
 
   //가든 나가기 바텀시트 (공유)
