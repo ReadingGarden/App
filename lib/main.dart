@@ -13,14 +13,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
+import 'BottomNaviPage.dart';
+import 'core/api/GardenAPI.dart';
 import 'core/provider/FcmTokenProvider.dart';
+import 'core/service/GardenService.dart';
 import 'firebase_options.dart';
 import 'utils/Functions.dart';
 import 'utils/Router.dart';
 import 'utils/SharedPreferences.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('Handling a background message: ${message.messageId}');
+  print('백그라운드 수신: ${message.messageId}');
 }
 
 void main() async {
@@ -38,14 +41,26 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // ProviderContainer 생성
+  final container = ProviderContainer();
+
   //백그라운드 메세지 핸들러 등록
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    print('백그라운드에서 클릭된 알림: ${message.data}');
+
+    container.read(currentIndexProvider.notifier).state = 0;
+    putGardenMain(container, int.parse(message.data["garden_no"]));
+  });
 
   // 알림 권한 요청 (iOS 전용)
   // await FirebaseMessaging.instance.requestPermission();
 
   // 위젯이 providers를 읽을 수 있게 하려면 전체 애플리케이션을 "ProviderScope" 위젯으로 감싸야
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(
+      parent: container, // 전역 컨테이너 연결,
+      child: MyApp()));
 }
 
 //iOS 푸시 알림 권한 요청
@@ -64,6 +79,28 @@ void main() async {
 
 //   print('User granted permission: ${settings.authorizationStatus}');
 // }
+
+//가든 메인 변경 api
+void putGardenMain(ProviderContainer container, int garden_no) async {
+  final response = await gardenService.putGardenMain(garden_no);
+  if (response?.statusCode == 200) {
+    getGardenDetail(container, garden_no);
+  }
+}
+
+//가든 상세 조회 api
+void getGardenDetail(ProviderContainer container, int garden_no) async {
+  final response = await gardenService.getGardenDetail(garden_no);
+  if (response?.statusCode == 200) {
+    container.read(gardenMainProvider.notifier).state = response?.data['data'];
+    container.read(gardenMainBookListProvider.notifier).state =
+        response?.data['data']['book_list'];
+    container.read(gardenMainMemberListProvider.notifier).state =
+        response?.data['data']['garden_members'];
+
+    navigatorKey.currentState?.pushNamed('garden');
+  }
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -132,7 +169,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       }
 
       print('ACCESS Token: $accessToken');
-      context.go('/start');
+      // context.go('/start');
     });
   }
 
