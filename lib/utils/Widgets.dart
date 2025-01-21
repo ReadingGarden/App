@@ -113,9 +113,10 @@ class Widgets {
       {Function? validateFunction,
       bool? isPwd}) {
     return Container(
-      padding: (errorText == null)
-          ? EdgeInsets.only(top: 6.h, bottom: 12.h)
-          : EdgeInsets.only(top: 8.h, bottom: 8.h),
+      padding: EdgeInsets.only(bottom: 12.h),
+      // padding: (errorText == null)
+      //     ? EdgeInsets.only(top: 6.h, bottom: 12.h)
+      //     : EdgeInsets.only(top: 8.h, bottom: 8.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

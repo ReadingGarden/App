@@ -1,18 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class Messaging {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    print('Handling a background message: ${message.messageId}');
-  }
-
-  Future<void> initializeNotification() async {
-    //백그라운드 메세지 핸들러 등록
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-
+  Future<void> initializeNotification(BuildContext context) async {
     //알림 채널 생성
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -27,7 +20,11 @@ class Messaging {
         android: AndroidInitializationSettings("@mipmap/ic_launcher"),
       ),
       onDidReceiveNotificationResponse: (details) {
-        print("Notification clicked: ${details.payload}");
+        // 알림 클릭 이벤트 처리
+        print("포그라운드 클릭");
+      },
+      onDidReceiveBackgroundNotificationResponse: (details) {
+        print("백그라운드 클릭");
       },
     );
 
@@ -60,7 +57,7 @@ class Messaging {
             ),
           ),
         );
-        print("Foreground 메시지 수신: ${message.notification!.body!}");
+        print("Foreground 메시지 수신: ${message.notification!}");
       }
     });
   }

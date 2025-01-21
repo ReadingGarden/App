@@ -96,12 +96,15 @@ class Functions {
     Map<Permission, PermissionStatus> statuses = await [
       Permission.camera,
       Permission.storage,
+      Permission.notification
       // Permission.microphone
     ].request();
 
     // 상태 확인
     print('Camera permission status: ${statuses[Permission.camera]}');
     print('Storage permission status: ${statuses[Permission.storage]}');
+    print(
+        'Notification permission status: ${statuses[Permission.notification]}');
     // print('Microphone permission status: ${statuses[Permission.microphone]}');
   }
 
