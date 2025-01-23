@@ -207,7 +207,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                       padding:
                           EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 0.55,
+                        childAspectRatio:
+                            MediaQuery.of(context).size.aspectRatio / 0.85,
                         crossAxisCount: 3,
                         crossAxisSpacing: 12.w,
                       ),

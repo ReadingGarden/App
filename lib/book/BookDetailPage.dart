@@ -202,20 +202,15 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
               color: ref.watch(bookDetailAppBarColorProvider),
               child: Column(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: 24.w, right: 24.w, bottom: 40.h, top: 15.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          bookDetail['book_title'] ?? '',
-                          style: TextStyle(
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w600,
-                              height: 1.33.h),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 24.w,
+                          right: 24.w,
                         ),
-                        Row(
+                        child: Row(
                           children: [
                             Padding(
                               padding: EdgeInsets.only(right: 8.w),
@@ -226,16 +221,31 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                 bookDetail['book_status'] ?? 0)),
                           ],
                         ),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          margin: EdgeInsets.only(top: 101.h),
-                          child: Image.asset(
-                            'assets/images/testImage.png',
-                            color: Colors.amber,
-                          ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsets.only(top: 10.h, left: 24.w, right: 24.w),
+                        child: Text(
+                          bookDetail['book_title'] ?? '',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.w600,
+                              height: 1.33.h),
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        alignment: Alignment.bottomCenter,
+                        height: 480.h,
+                        margin: EdgeInsets.only(bottom: 20.h),
+                        child: Image.asset(
+                          'assets/images/book_flowers/book_${bookDetail['book_tree']}.png',
+                          width: 360.w,
+                          height: 459.h,
+                        ),
+                      ),
+                    ],
                   ),
                   Container(
                     decoration: BoxDecoration(

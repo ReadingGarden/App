@@ -99,7 +99,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                     margin: EdgeInsets.only(top: 40.h, bottom: 65.h),
                     padding: EdgeInsets.only(top: 30.h, bottom: 30.h),
                     width: 312.w,
-                    height: 300.h,
+                    // height: 300.h,
                     decoration: BoxDecoration(
                         color: AppColors.grey_FA,
                         borderRadius: BorderRadius.circular(20.r)),

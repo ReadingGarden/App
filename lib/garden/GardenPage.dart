@@ -308,7 +308,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
               ),
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                mainAxisExtent: 126.h, //세로 길이
+                mainAxisExtent: 130.h, //세로 길이
                 mainAxisSpacing: 30.h, //세로 패딩
                 crossAxisSpacing: 8.w, //가로 패딩
                 crossAxisCount: 3,
@@ -339,7 +339,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                             margin: EdgeInsets.only(top: 8.h),
                             padding: EdgeInsets.symmetric(
                                 horizontal: 12.w, vertical: 4.h),
-                            height: 28.h,
+                            // height: 28.h,
                             decoration: BoxDecoration(
                                 color: AppColors.grey_F2,
                                 border: Border.all(
@@ -392,7 +392,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           alignment: Alignment.topLeft,
                           padding: EdgeInsets.only(
                               top: 56.h, left: 20.w, right: 20.w, bottom: 20.h),
-                          height: 190.h,
+                          // height: 190.h,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.r),
                               color: Colors.white),

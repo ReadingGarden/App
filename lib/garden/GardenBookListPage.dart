@@ -62,9 +62,12 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisSpacing: 12.w,
-                                    crossAxisCount: 3,
-                                    childAspectRatio: 0.55),
+                              childAspectRatio:
+                                  MediaQuery.of(context).size.aspectRatio /
+                                      0.85,
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 12.w,
+                            ),
                             itemCount: bookList.length,
                             itemBuilder: (context, index) {
                               return GestureDetector(

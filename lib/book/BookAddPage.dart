@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
+import '../utils/Constant.dart';
 import '../utils/Functions.dart';
 import '../utils/Widgets.dart';
 
@@ -27,18 +28,21 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   ui.Image? image;
   ui.Image? overlayImage;
   double dragPosition = 0.0; // From 0.0 to 1.0
-  String imagePath = 'assets/images/testImage.png';
+  String imagePath = 'assets/images/page_flowers/page_데이지.png';
   int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
+    imagePath =
+        'assets/images/page_flowers/page_${widget.bookRead['book_tree']}.png';
     dragPosition = 0.0;
     currentPage = widget.bookRead['book_current_page'];
     dragPosition = (currentPage / widget.bookRead['book_page']);
     _textEditingController.addListener(_validateInput);
     _textEditingController.text =
         widget.bookRead['book_current_page'].toString();
+
     _loadImage();
   }
 
@@ -318,7 +322,8 @@ class RevealPainter extends CustomPainter {
 
     // Overlay image with black color filter
     final overlayPaint = Paint()
-      ..colorFilter = const ColorFilter.mode(Colors.black, BlendMode.srcIn);
+      ..colorFilter =
+          const ColorFilter.mode(AppColors.black_4A, BlendMode.srcIn);
 
     // Draw the overlay image as black
     canvas.drawImageRect(overlayImage, srcRect, dstRect, overlayPaint);
