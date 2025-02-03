@@ -5,7 +5,7 @@ class Constant {
   static const MAIN_FLOWERS = 'assets/images/main_flowers/';
   static const PROFILE = 'assets/images/profile/';
 
-  // static const URL = 'http://192.168.0.16:8000/api/v1/';
+  // static const URL = 'http://172.30.1.41:8000/api/v1/';
 
   static const URL =
       'http://ec2-43-203-248-188.ap-northeast-2.compute.amazonaws.com/api/v1/';
@@ -34,35 +34,24 @@ class Constant {
   ];
 
   static const GARDEN_COLOR_SET_LIST = [
-    Color(0xffEE5757),
-    Color(0xffFA8BB3),
-    Color(0xffFFC038),
-    Color(0xff79D94C),
-    Color(0xff00AA96),
-    Color(0xff476EFF),
-    Color(0xff9570FF),
-    Color(0xff2F2F2F),
+    Color(0xffE27979),
+    Color(0xffEAACC5),
+    Color(0xffF9D780),
+    Color(0xff9DCC93),
+    Color(0xff6A9386),
+    Color(0xff97C2DD),
+    Color(0xff9C95C4),
+    Color(0xff595959),
   ];
 
-  static const GARDEN_TEXT_COLOR_SET_LIST = [
-    Color(0xffEE5757),
-    Color(0xffDA2A69),
-    Color(0xffBC7016),
-    Color(0xff49A71D),
-    Color(0xff00AA96),
-    Color(0xff476EFF),
-    Color(0xff9570FF),
-    Color(0xff2F2F2F),
-  ];
-
-  static const GARDEN_CHIP_COLOR_SET_LIST = [
-    Color(0xffFEEFEF),
-    Color(0xffFFF4F8),
-    Color(0xffFFF2D7),
-    Color(0xffE4F7DB),
-    Color(0xffE6F7F5),
-    Color(0xffEDF1FF),
-    Color(0xffEDF1FF),
-    Color(0xffEFEFEF),
+  static const GARDEN_BACK_COLOR_SET_LIST = [
+    Color(0xffE5C3C1),
+    Color(0xffE5CAD5),
+    Color(0xffF4EBC9),
+    Color(0xffD6E2C3),
+    Color(0xffC1D6CB),
+    Color(0xffC6DBE0),
+    Color(0xffCFCFE5),
+    Color(0xffCACACA),
   ];
 }

@@ -427,11 +427,14 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                       height: 120.r,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.r),
-                          border:
-                              (index == ref.watch(flowerSelectIndexProvider))
-                                  ? Border.all(color: Colors.black)
-                                  : null,
-                          color: Colors.amber),
+                          border: Border.all(
+                              color: (index ==
+                                      ref.watch(flowerSelectIndexProvider))
+                                  ? Colors.black
+                                  : AppColors.grey_F2),
+                          color: Colors.transparent),
+                      child: Image.asset(
+                          'assets/images/select_flowers/select_${Constant.FLOWER_LIST[index]}.png'),
                     ),
                     SizedBox(
                       height: 24.h,

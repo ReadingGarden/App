@@ -186,8 +186,8 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                 putPush(data);
               }
             },
-            width: 40.w,
-            height: 20.h,
+            width: 40.r,
+            height: 20.r,
             toggleSize: 18.r,
             padding: 1.w,
             inactiveColor: AppColors.grey_CA,
