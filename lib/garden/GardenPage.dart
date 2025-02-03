@@ -85,13 +85,13 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   //꽃 퍼센트 분류
   int flowerPercent(double percent) {
     if (percent <= 32) {
-      return 0;
-    } else if (percent <= 65) {
       return 1;
-    } else if (percent <= 99) {
+    } else if (percent <= 65) {
       return 2;
+    } else if (percent <= 99) {
+      return 3;
     }
-    return 3;
+    return 4;
   }
 
   // 현재 화면 높이 + 스크롤된 거리
