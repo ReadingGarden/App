@@ -439,7 +439,7 @@ class GardenEditBottomSheet extends ConsumerWidget {
                                     : (index ==
                                             ref.watch(
                                                 gardenEditSelectIndexProvider))
-                                        ? AppColors.black_4A
+                                        ? AppColors.black_59
                                         : AppColors.grey_F2),
                             color: (gardenNo ==
                                     gardenAPI.gardenList()[index]['garden_no'])

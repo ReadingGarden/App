@@ -165,7 +165,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
               border: Border(
                   bottom: BorderSide(
                 color: ref.watch(pageViewIndexProvider) == index
-                    ? AppColors.black_4A
+                    ? AppColors.black_59
                     : Colors.transparent,
                 width: 2.w,
               ))),
@@ -173,7 +173,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
             title,
             style: (ref.watch(pageViewIndexProvider) == index)
                 ? const TextStyle(
-                    color: AppColors.black_4A, fontWeight: FontWeight.bold)
+                    color: AppColors.black_59, fontWeight: FontWeight.bold)
                 : const TextStyle(color: AppColors.grey_8D),
           )),
     );
@@ -261,7 +261,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                         BoxShadow(
                                             offset: const Offset(0, 4),
                                             blurRadius: 16.r,
-                                            color: AppColors.black_4A
+                                            color: AppColors.black_59
                                                 .withOpacity(0.1))
                                       ]),
                                       child: ClipRRect(
@@ -301,13 +301,13 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                               bottomLeft: Radius.circular(20.r),
                                             ),
                                             color: (pageViewIndex == 1)
-                                                ? AppColors.black_4A
+                                                ? AppColors.black_59
                                                 : Colors.white,
                                             boxShadow: [
                                               BoxShadow(
                                                   offset: const Offset(0, 4),
                                                   blurRadius: 16.r,
-                                                  color: AppColors.black_4A
+                                                  color: AppColors.black_59
                                                       .withOpacity(0.1))
                                             ]),
                                         child: Text(
@@ -316,7 +316,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                               fontSize: 12.sp,
                                               color: (pageViewIndex == 1)
                                                   ? Colors.white
-                                                  : AppColors.black_4A),
+                                                  : AppColors.black_59),
                                         ),
                                       ),
                                     ),

@@ -65,7 +65,7 @@ class Widgets {
         height: 60.h,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20.r),
-            color: isValid ? AppColors.black_4A : AppColors.grey_CA),
+            color: isValid ? AppColors.black_59 : AppColors.grey_CA),
         child: Center(
             child: Text(
           title,
@@ -204,7 +204,7 @@ class Widgets {
       padding: EdgeInsets.only(left: 18.w, top: 10.h, bottom: 10.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: AppColors.black_4A,
+        color: AppColors.black_59,
       ),
       child: Text(
         msg,

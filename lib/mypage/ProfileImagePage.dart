@@ -86,7 +86,7 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: AppColors.black_4A,
+                      color: AppColors.black_59,
                     ),
                   ),
                   Container(
@@ -138,7 +138,7 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                                                 border: (listIndex == index)
                                                     ? Border.all(
                                                         color:
-                                                            AppColors.black_4A)
+                                                            AppColors.black_59)
                                                     : null),
                                             child: Image.asset(
                                               '${Constant.PROFILE}profile_${Constant.FLOWER_LIST[index]}.png',

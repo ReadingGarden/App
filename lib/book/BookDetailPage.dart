@@ -310,7 +310,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                               height: 64.r,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: AppColors.black_4A),
+                                  color: AppColors.black_59),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -356,7 +356,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                       BoxShadow(
                                           offset: const Offset(0, 4),
                                           blurRadius: 16.r,
-                                          color: AppColors.black_4A
+                                          color: AppColors.black_59
                                               .withOpacity(0.1))
                                     ]),
                                 child: (bookDetail['book_image_url'] == null)
@@ -723,7 +723,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       margin: EdgeInsets.only(top: 15.h),
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
       decoration: BoxDecoration(
-          border: Border.all(color: AppColors.black_4A),
+          border: Border.all(color: AppColors.black_59),
           borderRadius: BorderRadius.circular(20.r),
           color: Colors.transparent),
       child: Text(
@@ -731,7 +731,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
         style: TextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.black_4A),
+            color: AppColors.black_59),
       ),
     );
   }

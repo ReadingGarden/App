@@ -90,7 +90,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                               BoxShadow(
                                                   offset: const Offset(0, 4),
                                                   blurRadius: 16.r,
-                                                  color: AppColors.black_4A
+                                                  color: AppColors.black_59
                                                       .withOpacity(0.1))
                                             ]),
                                             child: ClipRRect(
@@ -136,14 +136,14 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                                 color: (bookList[index]
                                                             ['percent'] ==
                                                         100)
-                                                    ? AppColors.black_4A
+                                                    ? AppColors.black_59
                                                     : Colors.white,
                                                 boxShadow: [
                                                   BoxShadow(
                                                       offset:
                                                           const Offset(0, 4),
                                                       blurRadius: 16.r,
-                                                      color: AppColors.black_4A
+                                                      color: AppColors.black_59
                                                           .withOpacity(0.1))
                                                 ]),
                                             child: Text(
@@ -154,7 +154,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                                               ['percent'] ==
                                                           100)
                                                       ? Colors.white
-                                                      : AppColors.black_4A),
+                                                      : AppColors.black_59),
                                             ),
                                           ),
                                         ],

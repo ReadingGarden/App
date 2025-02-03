@@ -133,7 +133,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                         style: TextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.black_4A),
+                            color: AppColors.black_59),
                       ),
                     ),
                   )

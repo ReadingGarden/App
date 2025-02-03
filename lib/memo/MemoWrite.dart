@@ -367,7 +367,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           onTap: () => _takePhoto(),
                           child: SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_camera.svg',
-                            color: AppColors.black_4A,
+                            color: AppColors.black_59,
                             width: 24.r,
                             height: 24.r,
                           ),
@@ -386,7 +386,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                             color: Colors.transparent,
                             child: SvgPicture.asset(
                               '${Constant.ASSETS_ICONS}icon_album.svg',
-                              color: AppColors.black_4A,
+                              color: AppColors.black_59,
                               width: 24.r,
                               height: 24.r,
                             ),
@@ -417,7 +417,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                   (!FocusScope.of(context).hasFocus)
                       ? '${Constant.ASSETS_ICONS}icon_keyboard_up.svg'
                       : '${Constant.ASSETS_ICONS}icon_keyboard_down.svg',
-                  color: AppColors.black_4A,
+                  color: AppColors.black_59,
                   width: 24.r,
                   height: 24.r,
                 ),

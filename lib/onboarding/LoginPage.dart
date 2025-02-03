@@ -158,7 +158,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       children: [
                         //iOS
                         // CircleAvatar(
-                        //   backgroundColor: AppColors.black_4A,
+                        //   backgroundColor: AppColors.black_59,
                         //   radius: 27.5.r,
                         //   child:
                         //       SvgPicture.asset('assets/images/apple_logo.svg'),

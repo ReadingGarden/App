@@ -323,7 +323,7 @@ class RevealPainter extends CustomPainter {
     // Overlay image with black color filter
     final overlayPaint = Paint()
       ..colorFilter =
-          const ColorFilter.mode(AppColors.black_4A, BlendMode.srcIn);
+          const ColorFilter.mode(AppColors.black_59, BlendMode.srcIn);
 
     // Draw the overlay image as black
     canvas.drawImageRect(overlayImage, srcRect, dstRect, overlayPaint);

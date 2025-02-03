@@ -126,7 +126,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                             style: TextStyle(
                                 fontSize: 24.sp,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.black_4A),
+                                color: AppColors.black_59),
                           ),
                         ),
                         Padding(
@@ -136,7 +136,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                             child: Text(
                               inviteGarden['garden_info'],
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: AppColors.black_4A),
+                              style: const TextStyle(color: AppColors.black_59),
                             ),
                           ),
                         ),

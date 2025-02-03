@@ -87,7 +87,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                   height: 50.r,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColors.black_4A,
+                    color: AppColors.black_59,
                   ),
                   child: SvgPicture.asset(
                     '${Constant.ASSETS_ICONS}icon_add_big.svg',
@@ -134,7 +134,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               style: TextStyle(
                   fontSize: 10.sp,
                   color: currentIndex == index
-                      ? AppColors.black_4A
+                      ? AppColors.black_59
                       : AppColors.grey_8D),
             ),
           ],

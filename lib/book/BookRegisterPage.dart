@@ -355,7 +355,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                         border: Border.all(
                             color:
                                 (index == ref.watch(gardenSelectIndexProvider))
-                                    ? AppColors.black_4A
+                                    ? AppColors.black_59
                                     : AppColors.grey_F2),
                         color:
                             (gardenAPI.gardenList()[index]['book_count'] < 30)

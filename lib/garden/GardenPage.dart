@@ -183,7 +183,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                       BoxShadow(
                                           offset: const Offset(0, 4),
                                           blurRadius: 16.r,
-                                          color: AppColors.black_4A
+                                          color: AppColors.black_59
                                               .withOpacity(0.3))
                                     ],
                                     color: Colors.white,
@@ -343,7 +343,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                             decoration: BoxDecoration(
                                 color: AppColors.grey_F2,
                                 border: Border.all(
-                                    width: 1.w, color: AppColors.black_4A),
+                                    width: 1.w, color: AppColors.black_59),
                                 borderRadius: BorderRadius.circular(20.r)),
                             child: Text(
                               gardenAPI.gardenMainBookList()[index]
@@ -804,7 +804,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                             ['garden_no'] ==
                                         gardenAPI.gardenMain()['garden_no'])
                                     ? Border.all(
-                                        width: 1.w, color: AppColors.black_4A)
+                                        width: 1.w, color: AppColors.black_59)
                                     : null,
                                 shape: BoxShape.circle,
                                 color: Colors.white),

@@ -249,7 +249,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                       style: TextStyle(
                                           fontSize: 12.sp,
                                           fontWeight: FontWeight.w600,
-                                          color: AppColors.black_4A),
+                                          color: AppColors.black_59),
                                     ),
                                   ),
                                 )
