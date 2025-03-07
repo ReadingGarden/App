@@ -168,7 +168,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   child: (gardenAPI.gardenMain().isNotEmpty)
                       ? Container(
                           margin: EdgeInsets.only(
-                              top: 70.h, left: 24.w, right: 24.w),
+                              top: 34.h, left: 24.w, right: 24.w),
                           color: Colors.transparent,
                           child: Stack(
                             alignment: Alignment.topRight,
@@ -289,11 +289,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 Image.asset(
                   'assets/images/main_top_back.png',
                   width: 360.w,
-                  fit: BoxFit.cover,
+                  height: 200.5.h,
+                  fit: BoxFit.fill,
                 ),
                 Image.asset(
                   'assets/images/main_bottom_back.png',
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                   width: 360.w,
                   height: getTotalScrollHeight(
                       gardenAPI.gardenMainBookList().length),
