@@ -492,10 +492,10 @@ class BookRegisterDonePage extends StatelessWidget {
                       height: 1.33.h),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 40.h),
-                  width: 312.r,
-                  height: 312.r,
-                  color: Colors.amber,
+                  margin: EdgeInsets.only(top: 62.h),
+                  width: 260.r,
+                  height: 260.r,
+                  child: Image.asset('assets/images/book_register.png'),
                 )
               ],
             ),

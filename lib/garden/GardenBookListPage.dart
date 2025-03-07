@@ -193,11 +193,10 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
         margin: EdgeInsets.only(top: 78.h),
         child: Column(
           children: [
-            Container(
-              width: 200.r,
-              height: 200.r,
-              color: Colors.green,
-            ),
+            SizedBox(
+                width: 200.r,
+                height: 200.r,
+                child: Image.asset('assets/images/empty/empty_가든 책 리스트.png')),
             Container(
               margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
               child: Text(

@@ -18,6 +18,7 @@ import 'core/api/GardenAPI.dart';
 import 'core/provider/FcmTokenProvider.dart';
 import 'core/service/GardenService.dart';
 import 'firebase_options.dart';
+import 'utils/AppColors.dart';
 import 'utils/Functions.dart';
 import 'utils/Router.dart';
 import 'utils/SharedPreferences.dart';
@@ -175,9 +176,17 @@ class _SplashPageState extends ConsumerState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.amber,
-      body: Center(child: Text('Splash')),
+    return Scaffold(
+      backgroundColor: AppColors.grey_F2,
+      body: Padding(
+        padding: EdgeInsets.only(bottom: 91.h),
+        child: Center(
+            child: Image.asset(
+          'assets/images/splash.png',
+          width: 120.w,
+          height: 156.h,
+        )),
+      ),
     );
   }
 }

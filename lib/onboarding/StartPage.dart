@@ -81,10 +81,13 @@ class _StartPageState extends State<StartPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: 360.w,
               height: 400.h,
-              color: Colors.green,
+              child: Image.asset(
+                'assets/images/start_${index + 1}.png',
+                fit: BoxFit.cover,
+              ),
             ),
             Container(
                 margin: EdgeInsets.only(top: 30.h, left: 24.w),

@@ -223,9 +223,11 @@ class SignupDonePage extends StatelessWidget {
           leadingWidth: 0,
           leading: Container(),
         ),
-        body: Padding(
-          padding: EdgeInsets.only(top: 20.h, left: 24.w),
+        body: Container(
+          alignment: Alignment.topLeft,
+          margin: EdgeInsets.only(top: 20.h, left: 24.w),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,12 +256,12 @@ class SignupDonePage extends StatelessWidget {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(
-                  top: 40.h,
-                ),
+                margin: EdgeInsets.only(top: 40.h, left: 12.w),
                 width: 312.r,
                 height: 312.r,
-                color: Colors.amber,
+                child: Image.asset(
+                  'assets/images/signup.png',
+                ),
               ),
             ],
           ),

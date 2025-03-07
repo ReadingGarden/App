@@ -361,10 +361,11 @@ class BookAddDonePage extends StatelessWidget {
                               '${Functions.getPostpositionString(bookRead['book_tree'], '이', '가')} 다컸어요')
                     ])),
                 Container(
-                  margin: EdgeInsets.only(top: 40.h, bottom: 30.h),
-                  width: 250.r,
-                  height: 250.r,
-                  color: Colors.amber,
+                  margin: EdgeInsets.only(top: 24.h, bottom: 20.h),
+                  width: 260.r,
+                  height: 260.r,
+                  child: Image.asset(
+                      'assets/images/book_flowers/book_ok_${bookRead['book_tree']}.png'),
                 ),
                 Padding(
                   padding:

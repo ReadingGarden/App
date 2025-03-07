@@ -349,11 +349,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
       margin: EdgeInsets.only(top: 120.h),
       child: Column(
         children: [
-          Container(
-            width: 200.r,
-            height: 200.r,
-            color: Colors.green,
-          ),
+          SizedBox(
+              width: 200.r,
+              height: 200.r,
+              child: Image.asset('assets/images/empty/empty_메모.png')),
           Container(
             margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
             child: Text(
