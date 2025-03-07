@@ -349,10 +349,14 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
       margin: EdgeInsets.only(top: 84.h),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 200.r,
             height: 200.r,
-            color: Colors.green,
+            child: Image.asset((pageViewIndex == 0)
+                ? 'assets/images/empty/empty_읽고있어요.png'
+                : (pageViewIndex == 1)
+                    ? 'assets/images/empty/empty_다읽었어요.png'
+                    : 'assets/images/empty/empty_읽고싶어요.png'),
           ),
           Container(
             margin: EdgeInsets.only(top: 16.h, bottom: 6.h),

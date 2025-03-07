@@ -99,6 +99,7 @@ flutter:
     - assets/images/page_flowers/
     - assets/images/select_flowers/
     - assets/images/profile/
+    - assets/images/empty/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
