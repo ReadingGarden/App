@@ -286,15 +286,11 @@ class _GardenPageState extends ConsumerState<GardenPage> {
           children: [
             Column(
               children: [
-                Image.asset(
-                  'assets/images/main_top_back.png',
-                  width: 360.w,
-                  height: 200.5.h,
-                  fit: BoxFit.fill,
-                ),
+                Image.asset('assets/images/main_top_back.png',
+                    width: 360.w, height: 200.5.w, fit: BoxFit.fill),
                 Image.asset(
                   'assets/images/main_bottom_back.png',
-                  fit: BoxFit.fill,
+                  fit: BoxFit.fitWidth,
                   width: 360.w,
                   height: getTotalScrollHeight(
                       gardenAPI.gardenMainBookList().length),
@@ -303,7 +299,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             ),
             GridView.builder(
               padding: EdgeInsets.only(
-                top: 200.h,
+                top: 210.h,
                 left: 20.w,
                 right: 20.w,
               ),
