@@ -96,6 +96,7 @@ flutter:
     - assets/images/
     - assets/images/main_flowers/
     - assets/images/book_flowers/
+    - assets/images/ok_flowers/
     - assets/images/page_flowers/
     - assets/images/select_flowers/
     - assets/images/profile/

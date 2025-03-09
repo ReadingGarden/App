@@ -365,7 +365,7 @@ class BookAddDonePage extends StatelessWidget {
                   width: 260.r,
                   height: 260.r,
                   child: Image.asset(
-                      'assets/images/book_flowers/book_ok_${bookRead['book_tree']}.png'),
+                      'assets/images/ok_flowers/ok_${bookRead['book_tree']}.png'),
                 ),
                 Padding(
                   padding:
