@@ -27,7 +27,7 @@ class BottomNaviPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: (ref.read(currentIndexProvider.notifier).state == 0)
-          ? const Color(0xff92AC7D)
+          ? const Color(0xffA4BC8A)
           : Colors.white,
       body: IndexedStack(
         index: currentIndex,

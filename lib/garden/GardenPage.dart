@@ -287,10 +287,10 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             Column(
               children: [
                 Image.asset('assets/images/main_top_back.png',
-                    width: 360.w, height: 200.5.w, fit: BoxFit.fill),
+                    width: 360.w, height: 200.5.w, fit: BoxFit.fitWidth),
                 Image.asset(
                   'assets/images/main_bottom_back.png',
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.cover,
                   width: 360.w,
                   height: getTotalScrollHeight(
                       gardenAPI.gardenMainBookList().length),
