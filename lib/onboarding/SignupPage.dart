@@ -100,107 +100,104 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     final pwdCheckErrorText = ref.watch(pwdCheckErrorProvider);
 
     return Scaffold(
-      appBar: Widgets.appBar(context),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Container(
-            margin: EdgeInsets.only(
-                top: 20.h, bottom: 38.h, left: 24.w, right: 24.w),
-            child: Column(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(bottom: 62.h),
-                        child: Text(
-                          '회원가입',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 24.sp),
-                        )),
-                    SizedBox(
-                        child: Widgets.textfield(ref, _emailController, '이메일',
-                            '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
-                            validateFunction: _validate)),
-                    SizedBox(
-                        child: Widgets.textfield(
-                            ref,
-                            _pwdController,
-                            '비밀번호',
-                            '6자 이상 12자 이하로 입력해주세요',
-                            pwdErrorText,
-                            pwdErrorProvider,
-                            validateFunction: _validate,
-                            isPwd: true)),
-                    SizedBox(
-                        child: Widgets.textfield(
-                            ref,
-                            _pwdCheckController,
-                            '비밀번호 확인',
-                            '비밀번호를 다시 입력해주세요',
-                            pwdCheckErrorText,
-                            pwdCheckErrorProvider,
-                            validateFunction: _validate,
-                            isPwd: true)),
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      top: (pwdCheckErrorText == null) ? 117.h : 57.h),
-                  child: Column(
-                    children: [
-                      Text.rich(
-                          textAlign: TextAlign.center,
-                          TextSpan(
-                              style: TextStyle(
-                                  fontSize: 12.sp, color: AppColors.grey_8D),
-                              children: [
-                                const TextSpan(text: '이메일로 회원가입 시 '),
-                                TextSpan(
-                                    text: '이용약관',
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: AppColors.grey_8D),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Functions.launchURL(
-                                            "https://www.notion.so/dokseogarden/825ddd95b1084d689c4275ae665510b5?pvs=4");
-                                      }),
-                                const TextSpan(
-                                  text: ' 및\n',
-                                ),
-                                TextSpan(
-                                    text: '개인정보수집이용',
-                                    style: const TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        decorationColor: AppColors.grey_8D),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        Functions.launchURL(
-                                            "https://www.notion.so/1182d8001a928098bb71c78cc5523cd4?pvs=21");
-                                      }),
-                                const TextSpan(text: '에 동의하는 것으로 간주됩니다')
-                              ])),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 24.h),
-                      ),
-                      Widgets.button(
-                        '이메일로 회원가입',
-                        isValid,
-                        () => postSignup(context, ref),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+        appBar: Widgets.appBar(context),
+        body: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Container(
+              margin: EdgeInsets.only(
+                  top: 20.h, bottom: 38.h, left: 24.w, right: 24.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(bottom: 62.h),
+                      child: Text(
+                        '회원가입',
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600, fontSize: 24.sp),
+                      )),
+                  SizedBox(
+                      child: Widgets.textfield(ref, _emailController, '이메일',
+                          '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
+                          validateFunction: _validate)),
+                  SizedBox(
+                      child: Widgets.textfield(
+                          ref,
+                          _pwdController,
+                          '비밀번호',
+                          '6자 이상 12자 이하로 입력해주세요',
+                          pwdErrorText,
+                          pwdErrorProvider,
+                          validateFunction: _validate,
+                          isPwd: true)),
+                  SizedBox(
+                      child: Widgets.textfield(
+                          ref,
+                          _pwdCheckController,
+                          '비밀번호 확인',
+                          '비밀번호를 다시 입력해주세요',
+                          pwdCheckErrorText,
+                          pwdCheckErrorProvider,
+                          validateFunction: _validate,
+                          isPwd: true)),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
+          height: 120.h,
+          // margin:
+          //     EdgeInsets.only(top: (pwdCheckErrorText == null) ? 117.h : 57.h),
+          child: Column(
+            children: [
+              Text.rich(
+                  textAlign: TextAlign.center,
+                  TextSpan(
+                      style:
+                          TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                      children: [
+                        const TextSpan(text: '이메일로 회원가입 시 '),
+                        TextSpan(
+                            text: '이용약관',
+                            style: const TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.grey_8D),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Functions.launchURL(
+                                    "https://www.notion.so/dokseogarden/825ddd95b1084d689c4275ae665510b5?pvs=4");
+                              }),
+                        const TextSpan(
+                          text: ' 및\n',
+                        ),
+                        TextSpan(
+                            text: '개인정보수집이용',
+                            style: const TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.grey_8D),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Functions.launchURL(
+                                    "https://www.notion.so/1182d8001a928098bb71c78cc5523cd4?pvs=21");
+                              }),
+                        const TextSpan(text: '에 동의하는 것으로 간주됩니다')
+                      ])),
+              Container(
+                margin: EdgeInsets.only(top: 24.h),
+                child: Widgets.button(
+                  '이메일로 회원가입',
+                  isValid,
+                  () => postSignup(context, ref),
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }
 

@@ -1,9 +1,9 @@
 <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_2312_4295)">
-<circle cx="24" cy="24" r="17.4" fill="black" stroke="black" stroke-width="3.2"/>
+<circle cx="24" cy="24" r="17.4" fill="#595959" stroke="#595959" stroke-width="3.2"/>
 <path d="M24 5C13.51 5 5 13.51 5 24C5 27.87 6.16 31.48 8.16 34.48C11.56 39.62 17.38 43 24 43C30.62 43 36.44 39.62 39.84 34.48C41.84 31.48 43 27.87 43 24C43 13.51 34.49 5 24 5ZM37.69 32.25C34.06 28.99 29.26 27 24 27C18.74 27 13.94 28.99 10.31 32.25C8.8 29.77 8 26.94 8 24C8 15.18 15.18 8 24 8C32.82 8 40 15.18 40 24C40 26.93 39.2 29.76 37.69 32.25Z" fill="white"/>
 <path d="M24 12C20.6829 12 18 14.6829 18 18C18 21.3171 20.6829 24 24 24C27.3171 24 30 21.3171 30 18C30 14.6829 27.3171 12 24 12Z" fill="white"/>
-<circle cx="24" cy="24" r="17.4" stroke="black" stroke-width="3.2"/>
+<circle cx="24" cy="24" r="17.4" stroke="#595959" stroke-width="3.2"/>
 </g>
 <defs>
 <clipPath id="clip0_2312_4295">

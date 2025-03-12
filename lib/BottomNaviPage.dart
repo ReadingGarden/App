@@ -128,6 +128,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                   : '${Constant.ASSETS_ICONS}$icon.svg',
               width: 28.r,
               height: 28.r,
+              color: (index != 3) ? AppColors.black_59 : null,
             ),
             Text(
               label,
