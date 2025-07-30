@@ -37,8 +37,8 @@
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<data android:scheme="https" android:host="dokseogarden.app.link" />
-				<data android:scheme="https" android:host="dokseogarden-alternate.app.link" />
+				<!-- <data android:scheme="https" android:host="dokseogarden.app.link" /> -->
+				<!-- <data android:scheme="https" android:host="dokseogarden-alternate.app.link" /> -->
 			</intent-filter>
 
             <!-- 앱 시작 시 표시되는 테마 설정 -->
@@ -103,10 +103,8 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
 
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
 

@@ -17,7 +17,7 @@ class Messaging {
     //로컬 알림 초기화
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings("@mipmap/ic_launcher"),
+        android: AndroidInitializationSettings("@drawable/ic_notification"),
       ),
       onDidReceiveNotificationResponse: (details) {
         // 알림 클릭 이벤트 처리
@@ -49,12 +49,12 @@ class Messaging {
           notification.body,
           const NotificationDetails(
             android: AndroidNotificationDetails(
-              'high_importance_channel',
-              'high_importance_notification',
-              importance: Importance.max,
-              priority: Priority.high,
-              icon: '@mipmap/ic_launcher', // 알림 아이콘
-            ),
+                'high_importance_channel', 'high_importance_notification',
+                importance: Importance.max,
+                priority: Priority.high,
+                icon: '@drawable/ic_notification'
+                // icon: '@mipmap/ic_launcher', // 알림 아이콘
+                ),
           ),
         );
         print("Foreground 메시지 수신: ${message.notification!}");
