@@ -38,10 +38,11 @@ void main() async {
   // 알림 권한 요청 (iOS 전용)
   // await FirebaseMessaging.instance.requestPermission();
 
-  // 위젯이 providers를 읽을 수 있게 하려면 전체 애플리케이션을 "ProviderScope" 위젯으로 감싸야
-  runApp(ProviderScope(
-      parent: container, // 전역 컨테이너 연결,
-      child: const MyApp()));
+  // 전역 컨테이너를 앱 루트에 연결합니다.
+  runApp(UncontrolledProviderScope(
+    container: container,
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
