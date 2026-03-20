@@ -89,7 +89,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
                   ),
                   child: SvgPicture.asset(
                     '${Constant.ASSETS_ICONS}icon_add_big.svg',
-                    color: Colors.white,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
                     width: 28.r,
                     height: 28.r,
                   ),
@@ -129,7 +132,12 @@ class CustomBottomNavigationBar extends StatelessWidget {
                   : '${Constant.ASSETS_ICONS}$icon.svg',
               width: 28.r,
               height: 28.r,
-              color: (index != 3) ? AppColors.black_59 : null,
+              colorFilter: (index != 3)
+                  ? const ColorFilter.mode(
+                      AppColors.black_59,
+                      BlendMode.srcIn,
+                    )
+                  : null,
             ),
             Text(
               label,

@@ -361,7 +361,7 @@ class Widgets {
   }
 
   static Future shareBottomSheet(
-      context, String title, String garden, int garden_no, fToast) {
+      context, String title, String garden, int gardenNo, fToast) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
       context: context,
@@ -416,7 +416,7 @@ class Widgets {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Functions.shareBranchLink(garden, garden_no);
+                      Functions.shareBranchLink(garden, gardenNo);
 
                       // Clipboard.setData(ClipboardData(
                       //     text: Functions.createInviteLink(garden_no)));

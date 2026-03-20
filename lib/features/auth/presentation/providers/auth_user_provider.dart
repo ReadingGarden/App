@@ -7,17 +7,14 @@ import '../../domain/entities/user_entity.dart';
 
 final authUserProvider = StateProvider<UserEntity>((ref) => UserEntity.empty);
 
-Future<void> fetchUser(WidgetRef ref, BuildContext context) async {
+Future<bool> fetchUser(WidgetRef ref) async {
   final repository = ref.read(authRepositoryProvider);
   final user = await repository.fetchUser();
   if (user != null) {
     ref.read(authUserProvider.notifier).state = user;
-    return;
+    return true;
   }
-
-  if (context.mounted) {
-    context.go('/start');
-  }
+  return false;
 }
 
 Future<int> updateUser(
@@ -28,9 +25,14 @@ Future<int> updateUser(
   final repository = ref.read(authRepositoryProvider);
   final statusCode = await repository.updateUser(data);
   if (statusCode == 200) {
-    await fetchUser(ref, context);
-    if (context.mounted) {
+    final fetched = await fetchUser(ref);
+    if (!context.mounted) {
+      return statusCode;
+    }
+    if (fetched) {
       context.pop();
+    } else {
+      context.go('/start');
     }
   }
   return statusCode;

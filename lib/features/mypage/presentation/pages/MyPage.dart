@@ -21,8 +21,14 @@ class _MyPageState extends ConsumerState<MyPage> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
-      auth_feature.fetchUser(ref, context);
+    Future.microtask(() async {
+      final fetched = await auth_feature.fetchUser(ref);
+      if (!mounted) {
+        return;
+      }
+      if (!fetched) {
+        context.go('/start');
+      }
     });
   }
 
@@ -37,10 +43,16 @@ class _MyPageState extends ConsumerState<MyPage> {
 
     try {
       await FlutterEmailSender.send(email);
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('이메일이 성공적으로 전송되었습니다.')));
+          .showSnackBar(const SnackBar(content: Text('이메일이 성공적으로 전송되었습니다.')));
     } catch (error) {
       print(error);
+      if (!mounted) {
+        return;
+      }
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text('이메일 전송 중 오류가 발생했습니다: $error')));
     }
