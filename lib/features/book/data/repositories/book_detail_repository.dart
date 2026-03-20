@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/service/GardenService.dart';
-import '../../../../core/service/MemoService.dart';
 import '../../domain/entities/book_detail_entity.dart';
 import '../dtos/book_detail_dto.dart';
 import '../services/book_service.dart';
+import '../../../garden/data/services/garden_service.dart';
+import '../../../memo/data/services/memo_service.dart';
 
 final bookDetailRepositoryProvider = Provider<BookDetailRepository>((ref) {
   return BookDetailRepository(

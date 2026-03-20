@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/provider/FcmTokenProvider.dart';
-import 'package:book_flutter/core/service/AuthService.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/auth/data/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

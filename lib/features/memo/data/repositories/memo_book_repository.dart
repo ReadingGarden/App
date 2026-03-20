@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/service/BookService.dart';
 import '../../domain/entities/memo_book_selector_entity.dart';
+import '../../../book/data/services/book_service.dart';
 
 final memoBookRepositoryProvider = Provider<MemoBookRepository>((ref) {
-  return MemoBookRepository(bookService);
+  return MemoBookRepository(BookService());
 });
 
 class MemoBookRepository {

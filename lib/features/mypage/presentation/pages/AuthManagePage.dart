@@ -5,11 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/api/AuthAPI.dart';
-import 'package:book_flutter/core/service/AuthService.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
+import 'package:book_flutter/features/auth/data/services/auth_service.dart';
 
 class AuthManagePage extends ConsumerStatefulWidget {
   @override
