@@ -1,48 +1,28 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:book_flutter/utils/Messaging.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'BottomNaviPage.dart';
-import 'core/provider/FcmTokenProvider.dart';
-import 'core/service/GardenService.dart';
-import 'firebase_options.dart';
-import 'utils/AppColors.dart';
-import 'utils/Functions.dart';
+import 'app/bootstrap/app_bootstrap.dart';
+import 'app/bootstrap/garden_notification_handler.dart';
 import 'app/router/app_router.dart';
+import 'core/provider/FcmTokenProvider.dart';
 import 'core/storage/token_storage.dart';
-import 'features/garden/domain/entities/garden_main_entity.dart';
-import 'features/garden/presentation/providers/garden_provider.dart';
+import 'utils/AppColors.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('백그라운드 수신: ${message.messageId}');
 }
 
 void main() async {
-  // 플러그인 초기화
-  WidgetsFlutterBinding.ensureInitialized();
-  KakaoSdk.init(
-    nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda',
-  );
-  //권한 요청
-  await Functions.requestPermissions();
-  // FlutterBranchSdk 초기화
-  await FlutterBranchSdk.init();
-
-  // Firebase 초기화
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await bootstrapApplication();
 
   // ProviderContainer 생성
   final container = ProviderContainer();
@@ -53,7 +33,10 @@ void main() async {
     print('백그라운드에서 클릭된 알림: ${message.data}');
 
     container.read(currentIndexProvider.notifier).state = 0;
-    putGardenMain(container, int.parse(message.data["garden_no"]));
+    openGardenFromNotification(
+      container,
+      int.parse(message.data["garden_no"]),
+    );
   });
 
   // 알림 권한 요청 (iOS 전용)
@@ -63,47 +46,6 @@ void main() async {
   runApp(ProviderScope(
       parent: container, // 전역 컨테이너 연결,
       child: MyApp()));
-}
-
-//iOS 푸시 알림 권한 요청
-// void requestPermissions() async {
-//   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-//   NotificationSettings settings = await messaging.requestPermission(
-//     alert: true,
-//     announcement: false,
-//     badge: true,
-//     carPlay: false,
-//     criticalAlert: false,
-//     provisional: false,
-//     sound: true,
-//   );
-
-//   print('User granted permission: ${settings.authorizationStatus}');
-// }
-
-//가든 메인 변경 api
-void putGardenMain(ProviderContainer container, int garden_no) async {
-  final response = await gardenService.putGardenMain(garden_no);
-  if (response?.statusCode == 200) {
-    getGardenDetail(container, garden_no);
-  }
-}
-
-//가든 상세 조회 api
-void getGardenDetail(ProviderContainer container, int garden_no) async {
-  final response = await gardenService.getGardenDetail(garden_no);
-  if (response?.statusCode == 200) {
-    final garden = GardenMainEntity.fromMap(
-      Map<String, dynamic>.from(response?.data['data'] ?? {}),
-    );
-    container.read(gardenMainProvider.notifier).state = garden;
-    container.read(gardenMainBookListProvider.notifier).state = garden.bookList;
-    container.read(gardenMainMemberListProvider.notifier).state =
-        garden.gardenMembers;
-
-    navigatorKey.currentState?.pushNamed('garden');
-  }
 }
 
 class MyApp extends StatelessWidget {
