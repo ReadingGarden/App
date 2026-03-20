@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:book_flutter/onboarding/PwdFindPage.dart';
+import 'package:book_flutter/features/auth/presentation/pages/pwd_find_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 //TimerNotifier 클래스를 생성하여 타이머 상태 관리

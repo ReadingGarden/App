@@ -12,9 +12,10 @@ final bookEditRepositoryStateProvider = Provider<BookEditRepository>((ref) {
 });
 
 Future<void> fetchBookReadList(WidgetRef ref, int bookNo) async {
-  final list = await ref.read(bookEditRepositoryStateProvider).fetchBookReadList(
-        bookNo,
-      );
+  final list =
+      await ref.read(bookEditRepositoryStateProvider).fetchBookReadList(
+            bookNo,
+          );
   ref.read(bookReadListProvider.notifier).state = list;
 }
 

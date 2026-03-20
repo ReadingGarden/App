@@ -52,4 +52,3 @@ class BookAddGardenNotifier extends StateNotifier<BookIsbnDetailEntity> {
     return _repository.checkDuplication(isbn13);
   }
 }
-

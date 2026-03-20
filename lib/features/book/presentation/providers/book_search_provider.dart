@@ -6,8 +6,9 @@ import '../../domain/entities/book_search_entity.dart';
 final bookTotalCountProvider = StateProvider<int>((ref) => 0);
 final barcodeValueProvider = StateProvider<String>((ref) => '');
 
-final bookSearchListProvider = StateNotifierProvider<BookSearchListNotifier,
-    List<BookSearchEntity>>((ref) {
+final bookSearchListProvider =
+    StateNotifierProvider<BookSearchListNotifier, List<BookSearchEntity>>(
+        (ref) {
   return BookSearchListNotifier();
 });
 

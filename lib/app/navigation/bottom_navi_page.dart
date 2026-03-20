@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../book/BookshelfPage.dart';
+import '../../features/book/presentation/pages/bookshelf_page.dart';
 import '../../features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import '../../garden/GardenPage.dart';
-import '../../memo/MemoPage.dart';
-import '../../mypage/MyPage.dart';
+import '../../features/garden/presentation/pages/garden_page.dart';
+import '../../features/memo/presentation/pages/memo_page.dart';
+import '../../features/mypage/presentation/pages/my_page.dart';
 import '../../utils/AppColors.dart';
 import '../../utils/Constant.dart';
 

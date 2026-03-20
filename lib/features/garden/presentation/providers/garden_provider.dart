@@ -5,7 +5,8 @@ import '../../domain/entities/garden_main_book_entity.dart';
 import '../../domain/entities/garden_main_entity.dart';
 import '../../domain/entities/garden_summary_entity.dart';
 
-final gardenListProvider = StateProvider<List<GardenSummaryEntity>>((ref) => []);
+final gardenListProvider =
+    StateProvider<List<GardenSummaryEntity>>((ref) => []);
 final gardenMainProvider =
     StateProvider<GardenMainEntity>((ref) => GardenMainEntity.empty);
 final gardenMainBookListProvider =
@@ -33,7 +34,8 @@ Future<void> fetchGardenDetail(WidgetRef ref, int gardenNo) async {
   if (garden != null) {
     ref.read(gardenMainProvider.notifier).state = garden;
     ref.read(gardenMainBookListProvider.notifier).state = garden.bookList;
-    ref.read(gardenMainMemberListProvider.notifier).state = garden.gardenMembers;
+    ref.read(gardenMainMemberListProvider.notifier).state =
+        garden.gardenMembers;
   }
 }
 
