@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/MemoService.dart';
+import '../features/memo/domain/entities/memo_list_item_entity.dart';
+import '../features/memo/presentation/providers/memo_detail_provider.dart'
+    as memo_detail_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../core/ui/app_widgets.dart';
@@ -12,7 +14,7 @@ import '../core/ui/app_widgets.dart';
 class MemoDetailPage extends ConsumerStatefulWidget {
   const MemoDetailPage({required this.memo});
 
-  final Map memo;
+  final MemoListItemEntity memo;
 
   @override
   _MemoBookPageState createState() => _MemoBookPageState();
@@ -21,8 +23,9 @@ class MemoDetailPage extends ConsumerStatefulWidget {
 class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
   //메모 삭제 api
   void deleteMemo() async {
-    final response = await memoService.deleteMemo(widget.memo['id']);
-    if (response?.statusCode == 200) {
+    final deleted = await memo_detail_feature.deleteMemo(ref, widget.memo.id);
+    if (deleted) {
+      if (!mounted) return;
       context.pop();
       context.pop('MemoPage_getMemoList');
     }
@@ -54,7 +57,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
               margin: EdgeInsets.only(left: 24.w, right: 24.w),
               child: Row(
                 children: [
-                  (widget.memo['book_image_url'] == null)
+                  (widget.memo.bookImageUrl == null)
                       ? Container(
                           width: 48.w,
                           height: 64.h,
@@ -68,7 +71,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                             width: 48.w,
                             height: 64.h,
                             fit: BoxFit.cover,
-                            widget.memo['book_image_url'],
+                            widget.memo.bookImageUrl!,
                           ),
                         ),
                   Container(
@@ -79,7 +82,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.memo['book_title'],
+                          widget.memo.bookTitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -87,7 +90,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                           ),
                         ),
                         Text(
-                          widget.memo['book_author'],
+                          widget.memo.bookAuthor,
                           style: TextStyle(
                               fontSize: 12.sp, color: AppColors.grey_8D),
                         )
@@ -106,19 +109,18 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
               child: Column(
                 children: [
                   Visibility(
-                    visible: widget.memo['image_url'] != null,
+                    visible: widget.memo.imageUrl != null,
                     child: Container(
                       margin: EdgeInsets.only(top: 20.h),
                       child: Image.network(
-                          width: 320.w,
-                          '${Constant.IMAGE_URL}${widget.memo['image_url']}'),
+                          width: 320.w, '${Constant.IMAGE_URL}${widget.memo.imageUrl}'),
                     ),
                   ),
                   Container(
                     alignment: Alignment.topLeft,
                     margin: EdgeInsets.only(top: 20.h),
                     child: Text(
-                      widget.memo['memo_content'],
+                      widget.memo.memoContent,
                       textAlign: TextAlign.start,
                       style: TextStyle(fontSize: 14.sp, height: 1.7.h),
                     ),
@@ -147,7 +149,7 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                 GestureDetector(
                   onTap: () {
                     context.pop();
-                    context.pushNamed('memo-write', extra: widget.memo);
+                    context.pushNamed('memo-write', extra: widget.memo.toMap());
                   },
                   child: Container(
                     alignment: Alignment.center,

@@ -24,6 +24,7 @@ import 'package:book_flutter/memo/MemoBookPage.dart';
 import 'package:book_flutter/memo/MemoDetailPage.dart';
 import 'package:book_flutter/memo/MemoPage.dart';
 import 'package:book_flutter/memo/MemoWrite.dart';
+import 'package:book_flutter/features/memo/domain/entities/memo_list_item_entity.dart';
 import 'package:book_flutter/mypage/AlertSettingPage.dart';
 import 'package:book_flutter/mypage/AuthManagePage.dart';
 import 'package:book_flutter/mypage/MyPage.dart';
@@ -216,7 +217,7 @@ final GoRouter router = GoRouter(
                 builder: (context, state) {
                   final Map memo = state.extra as Map;
                   return MemoDetailPage(
-                    memo: memo,
+                    memo: MemoListItemEntity.fromMap(memo.cast<String, dynamic>()),
                   );
                 }),
             GoRoute(

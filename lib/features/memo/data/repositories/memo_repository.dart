@@ -28,4 +28,9 @@ class MemoRepository {
     final response = await _service.putMemoLike(id);
     return response?.statusCode == 200;
   }
+
+  Future<bool> deleteMemo(int id) async {
+    final response = await _service.deleteMemo(id);
+    return response?.statusCode == 200;
+  }
 }
