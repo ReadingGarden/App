@@ -12,15 +12,17 @@ import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/features/auth/data/services/auth_service.dart';
 
 class AuthManagePage extends ConsumerStatefulWidget {
+  const AuthManagePage({super.key});
+
   @override
-  _AuthManagePageState createState() => _AuthManagePageState();
+  ConsumerState<AuthManagePage> createState() => _AuthManagePageState();
 }
 
 class _AuthManagePageState extends ConsumerState<AuthManagePage> {
   void postLogout() async {
     final response = await authService.postLogout();
-    if (response?.statusCode == 200) {
-      context.pop();
+    if (response?.statusCode == 200 && mounted) {
+      Navigator.of(context).pop();
       removeLoginInfo();
       context.goNamed('start');
     }
@@ -28,8 +30,8 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
 
   void deleteUser() async {
     final response = await authService.deleteUser();
-    if (response?.statusCode == 200) {
-      context.pop();
+    if (response?.statusCode == 200 && mounted) {
+      Navigator.of(context).pop();
       removeLocalStorage();
       context.goNamed('start');
     }
@@ -56,7 +58,10 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
               },
               widget: SvgPicture.asset(
                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                color: AppColors.grey_8D,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.grey_8D,
+                  BlendMode.srcIn,
+                ),
                 width: 20.r,
                 height: 20.r,
               ),

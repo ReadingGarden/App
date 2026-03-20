@@ -21,8 +21,10 @@ final bookSwitchProvider = StateProvider<bool>((ref) => false);
 final timeProvider = StateProvider<DateTime>((ref) => DateTime.now());
 
 class AlertSettingPage extends ConsumerStatefulWidget {
+  const AlertSettingPage({super.key});
+
   @override
-  _AlertSettingPageState createState() => _AlertSettingPageState();
+  ConsumerState<AlertSettingPage> createState() => _AlertSettingPageState();
 }
 
 class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
@@ -54,10 +56,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
 
   //푸시 알림 수정 api
   void putPush(Map data) async {
-    final response = await pushService.putPush(data);
-    if (response?.statusCode == 200) {
-      print(data);
-    }
+    await pushService.putPush(data);
   }
 
   @override
@@ -134,7 +133,10 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                     margin: EdgeInsets.only(left: 8.w),
                     child: SvgPicture.asset(
                       '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                      color: AppColors.grey_8D,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.grey_8D,
+                        BlendMode.srcIn,
+                      ),
                       width: 20.r,
                       height: 20.r,
                     ),
