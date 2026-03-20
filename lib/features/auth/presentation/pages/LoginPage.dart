@@ -6,12 +6,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
+import 'package:book_flutter/core/services/social_login_service.dart';
 import 'package:book_flutter/core/provider/FcmTokenProvider.dart';
 import 'package:book_flutter/core/service/AuthService.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/SocialLogin.dart';
 
 // 이메일, 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final loginErrorProvider = StateProvider<String?>((ref) => null);
