@@ -14,12 +14,12 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class MemoWritePage extends ConsumerStatefulWidget {
-  const MemoWritePage({required this.book});
+  const MemoWritePage({super.key, required this.book});
 
   final MemoWriteInputEntity book;
 
   @override
-  _MemoBookPageState createState() => _MemoBookPageState();
+  ConsumerState<MemoWritePage> createState() => _MemoBookPageState();
 }
 
 class _MemoBookPageState extends ConsumerState<MemoWritePage> {
@@ -95,15 +95,16 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   Widget build(BuildContext context) {
     final okButtonBool = ref.watch(memo_write_feature.okButtonProvider);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
         Widgets.baseBottomSheet(context, '메모가 저장되지 않았어요!',
             '작성하던 메모를 삭제하고 이전 페이지로 돌아가시겠어요?', '삭제하고 나가기', () {
           context.pop();
           context.pop();
           context.pop();
         });
-        return true;
       },
       child: Scaffold(
         appBar: Widgets.appBar(context,
@@ -228,7 +229,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                                   borderRadius: BorderRadius.circular(4.r)),
                               child: SvgPicture.asset(
                                 '${Constant.ASSETS_ICONS}icon_close.svg',
-                                color: AppColors.primaryColor,
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.primaryColor,
+                                  BlendMode.srcIn,
+                                ),
                                 width: 20.r,
                                 height: 20.r,
                               ),
@@ -277,14 +281,20 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           onTap: () => _takePhoto(),
                           child: SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_camera.svg',
-                            color: AppColors.black_59,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.black_59,
+                              BlendMode.srcIn,
+                            ),
                             width: 24.r,
                             height: 24.r,
                           ),
                         )
                       : SvgPicture.asset(
                           '${Constant.ASSETS_ICONS}icon_camera.svg',
-                          color: AppColors.grey_CA,
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.grey_CA,
+                            BlendMode.srcIn,
+                          ),
                           width: 24.r,
                           height: 24.r,
                         ),
@@ -296,7 +306,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                             color: Colors.transparent,
                             child: SvgPicture.asset(
                               '${Constant.ASSETS_ICONS}icon_album.svg',
-                              color: AppColors.black_59,
+                              colorFilter: const ColorFilter.mode(
+                                AppColors.black_59,
+                                BlendMode.srcIn,
+                              ),
                               width: 24.r,
                               height: 24.r,
                             ),
@@ -307,7 +320,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           color: Colors.transparent,
                           child: SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_album.svg',
-                            color: AppColors.grey_CA,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.grey_CA,
+                              BlendMode.srcIn,
+                            ),
                             width: 24.r,
                             height: 24.r,
                           ),
@@ -327,7 +343,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                   (!FocusScope.of(context).hasFocus)
                       ? '${Constant.ASSETS_ICONS}icon_keyboard_up.svg'
                       : '${Constant.ASSETS_ICONS}icon_keyboard_down.svg',
-                  color: AppColors.black_59,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.black_59,
+                    BlendMode.srcIn,
+                  ),
                   width: 24.r,
                   height: 24.r,
                 ),

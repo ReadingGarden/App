@@ -10,7 +10,9 @@ final nicknameErrorProvider = StateProvider<String?>((ref) => null);
 
 class NickNamePage extends ConsumerStatefulWidget {
   @override
-  _NickNamePageState createState() => _NickNamePageState();
+  ConsumerState<NickNamePage> createState() => _NickNamePageState();
+
+  const NickNamePage({super.key});
 }
 
 class _NickNamePageState extends ConsumerState<NickNamePage> {

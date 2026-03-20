@@ -11,8 +11,10 @@ import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MemoPage extends ConsumerStatefulWidget {
+  const MemoPage({super.key});
+
   @override
-  _MemoPageState createState() => _MemoPageState();
+  ConsumerState<MemoPage> createState() => _MemoPageState();
 }
 
 class _MemoPageState extends ConsumerState<MemoPage> {
@@ -227,9 +229,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                         memo.memoLike
                             ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
                             : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
-                        color: memo.memoLike
-                            ? AppColors.starYellowColor
-                            : AppColors.grey_CA,
+                        colorFilter: ColorFilter.mode(
+                          memo.memoLike
+                              ? AppColors.starYellowColor
+                              : AppColors.grey_CA,
+                          BlendMode.srcIn,
+                        ),
                         width: 20.r,
                         height: 20.r,
                       ),

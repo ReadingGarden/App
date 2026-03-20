@@ -12,7 +12,9 @@ final profileSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class ProfileImagePage extends ConsumerStatefulWidget {
   @override
-  _ProfileImagePageState createState() => _ProfileImagePageState();
+  ConsumerState<ProfileImagePage> createState() => _ProfileImagePageState();
+
+  const ProfileImagePage({super.key});
 }
 
 class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
@@ -39,14 +41,15 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
     final authAPI = AuthAPI(ref);
     final listIndex = ref.watch(profileSelectIndexProvider);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
         final data = {
           "user_image":
               Constant.FLOWER_LIST[ref.watch(profileSelectIndexProvider)]
         };
         authAPI.putUser(context, data);
-        return false;
       },
       child: Scaffold(
         appBar: Widgets.appBar(context, title: '대표 프로필 변경', backFunction: () {
@@ -163,7 +166,7 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                                         Container(
                                           width: 80.r,
                                           height: 80.r,
-                                          decoration: BoxDecoration(
+                                          decoration: const BoxDecoration(
                                             color: Colors.grey,
                                             shape: BoxShape.circle,
                                           ),
