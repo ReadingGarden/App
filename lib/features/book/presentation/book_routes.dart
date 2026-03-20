@@ -16,7 +16,7 @@ List<RouteBase> get bookRoutes => [
       GoRoute(
         path: '/bottom-navi/book-serach',
         name: 'book-serach',
-        builder: (context, state) => BookSearchPage(),
+        builder: (context, state) => const BookSearchPage(),
         routes: [
           GoRoute(
             path: 'book-add-garden',
@@ -67,7 +67,7 @@ List<RouteBase> get bookRoutes => [
             name: 'book-detail',
             builder: (context, state) {
               final bookNo = state.extra as int;
-              return BookDetailPage(book_no: bookNo);
+              return BookDetailPage(bookNo: bookNo);
             },
             routes: [
               GoRoute(

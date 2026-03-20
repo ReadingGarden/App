@@ -11,20 +11,20 @@ List<RouteBase> get gardenRoutes => [
       GoRoute(
         path: '/bottom-navi/garden',
         name: 'garden',
-        builder: (context, state) => GardenPage(),
+        builder: (context, state) => const GardenPage(),
         routes: [
           GoRoute(
             path: 'invite',
             name: 'invite',
             builder: (context, state) {
               final gardenNo = state.extra as int;
-              return GardenInvitePage(garden_no: gardenNo);
+              return GardenInvitePage(gardenNo: gardenNo);
             },
           ),
           GoRoute(
             path: 'garden-edit',
             name: 'garden-edit',
-            builder: (context, state) => GardenEditPage(),
+            builder: (context, state) => const GardenEditPage(),
           ),
           GoRoute(
             path: 'garden-book',
@@ -39,13 +39,13 @@ List<RouteBase> get gardenRoutes => [
             name: 'garden-member',
             builder: (context, state) {
               final gardenNo = state.extra as int;
-              return GardenMemberPage(garden_no: gardenNo);
+              return GardenMemberPage(gardenNo: gardenNo);
             },
             routes: [
               GoRoute(
                 path: 'garden-leader',
                 name: 'garden-leader',
-                builder: (context, state) => GardenLeaderPage(),
+                builder: (context, state) => const GardenLeaderPage(),
               ),
             ],
           ),

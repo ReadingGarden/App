@@ -10,7 +10,7 @@ List<RouteBase> get memoRoutes => [
       GoRoute(
         path: '/bottom-navi/memo',
         name: 'memo',
-        builder: (context, state) => MemoPage(),
+        builder: (context, state) => const MemoPage(),
         routes: [
           GoRoute(
             path: 'memo-detail',
@@ -39,7 +39,7 @@ List<RouteBase> get memoRoutes => [
           GoRoute(
             path: 'memo-book',
             name: 'memo-book',
-            builder: (context, state) => MemoBookPage(),
+            builder: (context, state) => const MemoBookPage(),
             routes: [
               GoRoute(
                 path: 'memo-write',

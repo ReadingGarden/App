@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/ui/app_colors.dart';
 
 class ErrorPage extends StatelessWidget {
+  const ErrorPage({super.key});
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
