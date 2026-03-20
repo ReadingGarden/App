@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/GardenService.dart';
+import '../features/garden/domain/entities/garden_add_input_entity.dart';
+import '../features/garden/presentation/providers/garden_add_provider.dart'
+    as garden_add_feature;
 import '../utils/Constant.dart';
 import '../core/ui/app_widgets.dart';
 
@@ -37,26 +39,20 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
 
   //가든 추가 api
   void postGarden() async {
-    final data = {
-      "garden_title": _titleController.text,
-      "garden_info": _infoController.text,
-      "garden_color":
-          Constant.GARDEN_COLOR_LIST[ref.watch(gardenColorSelectIndexProvider)]
-    };
+    final input = GardenAddInputEntity(
+      gardenTitle: _titleController.text,
+      gardenInfo: _infoController.text,
+      gardenColor:
+          Constant.GARDEN_COLOR_LIST[ref.read(gardenColorSelectIndexProvider)],
+    );
 
-    final response = await gardenService.postGarden(data);
-    if (response?.statusCode == 201) {
-      putGardenMain(response?.data['data']['garden_no']);
-    } else if (response?.statusCode == 403) {
-      fToast.showToast(child: Widgets.toast('최대 5개의 가든만 만들 수 있어요'));
-    }
-  }
-
-  //가든 메인 변경 api
-  void putGardenMain(int garden_no) async {
-    final response = await gardenService.putGardenMain(garden_no);
-    if (response?.statusCode == 200) {
+    final created =
+        await garden_add_feature.createGardenAndSelectMain(ref, input);
+    if (created) {
+      if (!mounted) return;
       context.pushNamed('garden-add-done');
+    } else {
+      fToast.showToast(child: Widgets.toast('최대 5개의 가든만 만들 수 있어요'));
     }
   }
 
@@ -158,6 +154,8 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
 }
 
 class GardenAddDonePage extends StatelessWidget {
+  const GardenAddDonePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
