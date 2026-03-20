@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/BookService.dart';
+import '../features/book/domain/entities/book_edit_input_entity.dart';
+import '../features/book/presentation/providers/book_edit_provider.dart';
 import '../utils/AppColors.dart';
 import '../utils/AutoInputFormatter.dart';
 import '../utils/Functions.dart';
 import '../core/ui/app_widgets.dart';
 
-final bookReadListProvider = StateProvider<List>((ref) => []);
 final startDateErrorProvider = StateProvider<String?>((ref) => null);
 final endDateErrorProvider = StateProvider<String?>((ref) => null);
 
@@ -18,7 +18,7 @@ class BookEditPage extends ConsumerStatefulWidget {
 
   _BookEditPageState createState() => _BookEditPageState();
 
-  final Map book;
+  final BookEditInputEntity book;
 }
 
 class _BookEditPageState extends ConsumerState<BookEditPage> {
@@ -28,72 +28,31 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
   @override
   void initState() {
     super.initState();
-    getBookRead();
-  }
-
-  //독서 기록 조회 api
-  void getBookRead() async {
-    final response = await bookService.getBookRead(widget.book['book_no']);
-    if (response?.statusCode == 200) {
-      ref.read(bookReadListProvider.notifier).state =
-          response?.data['data']['book_read_list'];
-
-      if (ref.watch(bookReadListProvider).isNotEmpty) {
-        //읽기 시작한 날
+    fetchBookReadList(ref, widget.book.bookNo).then((_) {
+      final bookReadList = ref.read(bookReadListProvider);
+      if (bookReadList.isNotEmpty) {
         _startController.text = Functions.formatBookReadDate(
-            ref.watch(bookReadListProvider)[
-                ref.watch(bookReadListProvider).length - 1]['book_start_date']);
+          bookReadList.last.bookStartDate!,
+        );
 
-        //다 읽은 날
-        if (ref.watch(bookReadListProvider)[0]['book_end_date'] != null) {
+        if (bookReadList.first.bookEndDate != null) {
           _endController.text = Functions.formatBookReadDate(
-              ref.watch(bookReadListProvider)[0]['book_end_date']);
+            bookReadList.first.bookEndDate!,
+          );
         }
       }
-    }
-  }
-
-  //독서 기록 수정 api
-  Future<bool> putBookRead(int id, Map data) async {
-    final response = await bookService.putBookRead(id, data);
-    if (response?.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    });
   }
 
   //수정하기 버튼
   void _bookReadEdit() async {
     final bookReadList = ref.watch(bookReadListProvider);
-
-    //첫 번째 요청: 시작 날짜 업데이트
-    if (_startController.text !=
-            Functions.formatBookReadDate(ref.watch(bookReadListProvider)[
-                    ref.watch(bookReadListProvider).length - 1]
-                ['book_start_date']) &&
-        _startController.text.isNotEmpty) {
-      int startId = bookReadList[bookReadList.length - 1]['id'];
-      Map data = {
-        "book_start_date":
-            Functions.formatBookReadString(_startController.text).toString(),
-      };
-      await putBookRead(startId, data);
-    }
-
-    //두 번째 요청: 종료 날짜 업데이트
-    if (_endController.text !=
-            Functions.formatBookReadDate(
-                ref.watch(bookReadListProvider)[0]['book_end_date']) &&
-        (_endController.text.isNotEmpty)) {
-      int endId = bookReadList[0]['id'];
-      Map data = {
-        "book_end_date":
-            Functions.formatBookReadString(_endController.text).toString()
-      };
-
-      await putBookRead(endId, data);
-    }
+    await updateBookReadDates(
+      ref,
+      bookReadList: bookReadList,
+      startDate: _startController.text,
+      endDate: _endController.text,
+    );
 
     context.pop('BookDetailPage_getBookRead');
   }
@@ -133,15 +92,15 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                   height: 88.h,
                   margin: EdgeInsets.only(left: 24.w, right: 24.w),
                   child: Row(children: [
-                    (widget.book['book_image_url'] != null &&
-                            widget.book['book_image_url'] != '')
+                    (widget.book.bookImageUrl != null &&
+                            widget.book.bookImageUrl != '')
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(8.r),
                             child: Image.network(
                               width: 48.w,
                               height: 64.h,
                               fit: BoxFit.cover,
-                              widget.book['book_image_url'],
+                              widget.book.bookImageUrl!,
                             ),
                           )
                         : Container(
@@ -159,7 +118,7 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            widget.book['book_title'],
+                            widget.book.bookTitle,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -167,7 +126,7 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                             ),
                           ),
                           Text(
-                            widget.book['book_author'],
+                            widget.book.bookAuthor,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
