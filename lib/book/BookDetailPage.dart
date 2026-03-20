@@ -6,7 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/AuthAPI.dart';
+import '../features/auth/presentation/providers/auth_user_provider.dart'
+    as auth_feature;
 import '../features/book/presentation/providers/book_detail_provider.dart';
 import '../garden/GardenEditPage.dart';
 import '../utils/AppColors.dart';
@@ -131,7 +132,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
 
   @override
   Widget build(BuildContext context) {
-    final authAPI = AuthAPI(ref);
+    final user = ref.watch(auth_feature.authUserProvider);
     final bookDetail = ref.watch(bookDetailProvider);
 
     return WillPopScope(
@@ -144,7 +145,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
         appBar: Widgets.appBar(
           context,
           actions: [
-            (bookDetail.userNo == authAPI.user()['user_no'])
+            (bookDetail.userNo == user.userNo)
                 ? GestureDetector(
                     onTap: _moreBottomSheet,
                     child: Container(
@@ -258,7 +259,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                           ),
                         ),
                         Visibility(
-                          visible: bookDetail.userNo == authAPI.user()['user_no'],
+                          visible: bookDetail.userNo == user.userNo,
                           child: GestureDetector(
                             onTap: () async {
                               final result = await context.pushNamed('book-add',
@@ -363,7 +364,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                       color: AppColors.grey_8D),
                                 ),
                               ),
-                              bookDetail.userNo == authAPI.user()['user_no']
+                              bookDetail.userNo == user.userNo
                                   ? Column(
                                       children: [
                                         Container(

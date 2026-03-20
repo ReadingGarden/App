@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/AuthAPI.dart';
+import '../features/auth/presentation/providers/auth_user_provider.dart'
+    as auth_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
@@ -20,10 +21,8 @@ class _MyPageState extends ConsumerState<MyPage> {
   void initState() {
     super.initState();
 
-    final authAPI = AuthAPI(ref);
-
     Future.microtask(() {
-      authAPI.getUser(context);
+      auth_feature.fetchUser(ref, context);
     });
   }
 
@@ -49,7 +48,7 @@ class _MyPageState extends ConsumerState<MyPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authAPI = AuthAPI(ref);
+    final user = ref.watch(auth_feature.authUserProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -77,7 +76,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                           child: CircleAvatar(
                             radius: 30.r,
                             child: Image.asset(
-                              '${Constant.PROFILE}profile_${authAPI.user()['user_image']}.png',
+                              '${Constant.PROFILE}profile_${user.userImage}.png',
                             ),
                           ),
                         ),
@@ -87,14 +86,14 @@ class _MyPageState extends ConsumerState<MyPage> {
                             Container(
                               margin: EdgeInsets.only(bottom: 2.h),
                               child: Text(
-                                authAPI.user()['user_nick'] ?? '',
+                                user.userNick,
                                 style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
                             SizedBox(
-                                child: Text(authAPI.user()['user_email'] ?? '',
+                                child: Text(user.userEmail,
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColors.grey_8D))),
@@ -140,7 +139,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   // height: 24.h,
                                   child: Text(
-                                    authAPI.user()['garden_count'].toString(),
+                                    user.gardenCount.toString(),
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -164,9 +163,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   // height: 24.h,
                                   child: Text(
-                                    authAPI
-                                        .user()['read_book_count']
-                                        .toString(),
+                                    user.readBookCount.toString(),
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
@@ -190,9 +187,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   margin: EdgeInsets.only(top: 1.h),
                                   // height: 24.h,
                                   child: Text(
-                                    authAPI
-                                        .user()['like_book_count']
-                                        .toString(),
+                                    user.likeBookCount.toString(),
                                     style: TextStyle(
                                         fontSize: 18.sp,
                                         fontWeight: FontWeight.bold,
