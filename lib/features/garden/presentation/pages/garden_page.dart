@@ -1,1 +1,1 @@
-export '../../../../garden/GardenPage.dart';
+export 'GardenPage.dart';

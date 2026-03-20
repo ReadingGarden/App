@@ -15,11 +15,12 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../features/garden/presentation/providers/garden_provider.dart' as garden_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
+    as garden_feature;
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 class GardenPage extends ConsumerStatefulWidget {
   @override
@@ -146,7 +147,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   @override
   Widget build(BuildContext context) {
     final gardenMain = ref.watch(garden_feature.gardenMainProvider);
-    final gardenMainBookList = ref.watch(garden_feature.gardenMainBookListProvider);
+    final gardenMainBookList =
+        ref.watch(garden_feature.gardenMainBookListProvider);
 
     return Scaffold(
       body: Screenshot(
@@ -311,8 +313,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 final book = gardenMainBookList[index];
                 return GestureDetector(
                   onTap: () async {
-                    final result =
-                        await context.pushNamed('book-detail', extra: book.bookNo);
+                    final result = await context.pushNamed('book-detail',
+                        extra: book.bookNo);
                     if (result != null) {
                       garden_feature.fetchGardenList(ref);
                     }
@@ -766,7 +768,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             return (index != gardens.length)
                 ? GestureDetector(
                     onTap: () {
-                      garden_feature.updateMainGarden(ref, gardens[index].gardenNo);
+                      garden_feature.updateMainGarden(
+                          ref, gardens[index].gardenNo);
                       context.pop();
                       _scrollController.animateTo(
                         0.0, // 스크롤 초기 위치
@@ -854,7 +857,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   Widget _gardenProgress() {
-    final bookCount = ref.watch(garden_feature.gardenMainBookListProvider).length;
+    final bookCount =
+        ref.watch(garden_feature.gardenMainBookListProvider).length;
 
     double progress = bookCount / 30;
 

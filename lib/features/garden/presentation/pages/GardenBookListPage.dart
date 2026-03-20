@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/garden/presentation/providers/garden_provider.dart'
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import '../utils/AppColors.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
 
 class GardenBookListPage extends ConsumerStatefulWidget {
   GardenBookListPage({required this.garden});
@@ -34,7 +34,8 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
       appBar: Widgets.appBar(context, title: widget.garden['garden_title']),
       body: RefreshIndicator(
         onRefresh: () async {
-          await garden_feature.fetchGardenDetail(ref, widget.garden['garden_no']);
+          await garden_feature.fetchGardenDetail(
+              ref, widget.garden['garden_no']);
         },
         backgroundColor: Colors.white,
         color: AppColors.grey_8D,
@@ -70,7 +71,8 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                               final book = bookList[index];
                               return GestureDetector(
                                 onTap: () {
-                                  context.pushNamed('book-detail', extra: book.bookNo);
+                                  context.pushNamed('book-detail',
+                                      extra: book.bookNo);
                                 },
                                 child: Container(
                                   color: Colors.transparent,
