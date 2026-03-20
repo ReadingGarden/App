@@ -153,13 +153,13 @@ class Functions {
     await launchURL(url);
   }
 
-  static Future<void> shareBranchLink(String garden, int garden_no) async {
+  static Future<void> shareBranchLink(String garden, int gardenNo) async {
     BranchUniversalObject buo = BranchUniversalObject(
       canonicalIdentifier: 'flutter/branch',
       title: '$garden에 초대합니다🪴',
       contentDescription: '독서가든에서 함께 책을 읽고 기록해봐요!',
       contentMetadata: BranchContentMetaData()
-        ..addCustomMetadata('garden_no', garden_no),
+        ..addCustomMetadata('garden_no', gardenNo),
     );
 
     BranchLinkProperties linkProperties = BranchLinkProperties(
@@ -174,13 +174,13 @@ class Functions {
     }
   }
 
-  static Future<String?> createInviteLink(int garden_no) async {
+  static Future<String?> createInviteLink(int gardenNo) async {
     BranchUniversalObject buo = BranchUniversalObject(
       canonicalIdentifier: 'flutter/branch',
       title: '독서가든에 초대합니다🪴',
       contentDescription: '독서가든에서 함께 책을 읽고 기록해봐요!',
       contentMetadata: BranchContentMetaData()
-        ..addCustomMetadata('garden_no', garden_no),
+        ..addCustomMetadata('garden_no', gardenNo),
     );
 
     BranchLinkProperties linkProperties = BranchLinkProperties(
@@ -272,8 +272,7 @@ class Functions {
         widgetKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     var image = await boundary.toImage(pixelRatio: 3.0);
     ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
-    Uint8List? pngBytes =
-        byteData == null ? null : byteData.buffer.asUint8List();
+    Uint8List? pngBytes = byteData?.buffer.asUint8List();
     onCaptured(pngBytes);
   }
 }
