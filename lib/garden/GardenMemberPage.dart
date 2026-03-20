@@ -6,7 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/AuthAPI.dart';
-import '../core/api/GardenAPI.dart';
+import '../features/garden/presentation/providers/garden_provider.dart'
+    as garden_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
@@ -29,18 +30,16 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
     fToast = FToast();
     fToast.init(context);
 
-    final gardenAPI = GardenAPI(ref);
-
     Future.microtask(() {
-      gardenAPI.resetGardenMainMember();
-      gardenAPI.getGardenDetail(widget.garden_no);
+      garden_feature.fetchGardenDetail(ref, widget.garden_no);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final authAPI = AuthAPI(ref);
-    final gardenAPI = GardenAPI(ref);
+    final gardenMain = ref.watch(garden_feature.gardenMainProvider);
+    final members = ref.watch(garden_feature.gardenMainMemberListProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '멤버'),
@@ -48,9 +47,8 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
         child: Column(
           children: [
             Visibility(
-              visible: gardenAPI.gardenMainMemberList().length > 1 &&
-                  (gardenAPI.gardenMainMemberList()[0]['user_no'] ==
-                      authAPI.user()['user_no']),
+              visible: members.length > 1 &&
+                  (members[0]['user_no'] == authAPI.user()['user_no']),
               child: GestureDetector(
                 onTap: () {
                   context.pushNamed('garden-leader');
@@ -97,7 +95,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '멤버 ${gardenAPI.gardenMainMemberList().length}명',
+                    '멤버 ${members.length}명',
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   ListView(
@@ -105,8 +103,9 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: List.generate(
-                      gardenAPI.gardenMainMemberList().length,
+                      members.length,
                       (index) {
+                        final member = members[index];
                         return Container(
                           margin: EdgeInsets.only(bottom: 24.h),
                           // height: 48.h,
@@ -122,13 +121,11 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: Image.asset(
-                                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][index]['user_image']}.png',
+                                      '${Constant.PROFILE}profile_${member['user_image']}.png',
                                     ),
                                   ),
                                   Visibility(
-                                    visible:
-                                        gardenAPI.gardenMainMemberList()[index]
-                                            ['garden_leader'],
+                                    visible: member['garden_leader'],
                                     child: SvgPicture.asset(
                                       '${Constant.ASSETS_ICONS}icon_leader.svg',
                                       width: 20.r,
@@ -145,13 +142,11 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      gardenAPI.gardenMainMemberList()[index]
-                                          ['user_nick'],
+                                      member['user_nick'],
                                       style: TextStyle(fontSize: 16.sp),
                                     ),
                                     Text(
-                                      (gardenAPI.gardenMainMemberList()[index]
-                                              ['garden_leader'])
+                                      (member['garden_leader'])
                                           ? '대표 가드너'
                                           : '가드너',
                                       style: TextStyle(
@@ -170,8 +165,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                   GestureDetector(
                     onTap: () {
                       Functions.shareBranchLink(
-                          gardenAPI.gardenMain()['garden_title'],
-                          gardenAPI.gardenMain()['garden_no']);
+                          gardenMain.gardenTitle, gardenMain.gardenNo);
                     },
                     child: Container(
                       color: Colors.transparent,

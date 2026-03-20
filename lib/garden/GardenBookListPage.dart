@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/GardenAPI.dart';
+import '../features/garden/presentation/providers/garden_provider.dart'
+    as garden_feature;
 import '../utils/AppColors.dart';
 import '../core/ui/app_widgets.dart';
 
@@ -20,24 +21,20 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
   void initState() {
     super.initState();
 
-    final gardenAPI = GardenAPI(ref);
-
     Future.microtask(() {
-      gardenAPI.getGardenDetail(widget.garden['garden_no']);
+      garden_feature.fetchGardenDetail(ref, widget.garden['garden_no']);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final gardenAPI = GardenAPI(ref);
-
-    final List bookList = gardenAPI.gardenMainBookList();
+    final bookList = ref.watch(garden_feature.gardenMainBookListProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: widget.garden['garden_title']),
       body: RefreshIndicator(
         onRefresh: () async {
-          gardenAPI.getGardenDetail(widget.garden['garden_no']);
+          await garden_feature.fetchGardenDetail(ref, widget.garden['garden_no']);
         },
         backgroundColor: Colors.white,
         color: AppColors.grey_8D,
@@ -70,10 +67,10 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                             ),
                             itemCount: bookList.length,
                             itemBuilder: (context, index) {
+                              final book = bookList[index];
                               return GestureDetector(
                                 onTap: () {
-                                  context.pushNamed('book-detail',
-                                      extra: bookList[index]['book_no']);
+                                  context.pushNamed('book-detail', extra: book.bookNo);
                                 },
                                 child: Container(
                                   color: Colors.transparent,
@@ -96,15 +93,13 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                             child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(8.r),
-                                                child: (bookList[index][
-                                                            'book_image_url'] !=
-                                                        null)
+                                                child: (book.bookImageUrl
+                                                        .isNotEmpty)
                                                     ? Image.network(
                                                         width: 96.w,
                                                         height: 132.h,
                                                         fit: BoxFit.cover,
-                                                        bookList[index]
-                                                            ['book_image_url'],
+                                                        book.bookImageUrl,
                                                       )
                                                     : Container(
                                                         width: 96.w,
@@ -133,9 +128,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                                   bottomLeft:
                                                       Radius.circular(20.r),
                                                 ),
-                                                color: (bookList[index]
-                                                            ['percent'] ==
-                                                        100)
+                                                color: (book.percent == 100)
                                                     ? AppColors.black_59
                                                     : Colors.white,
                                                 boxShadow: [
@@ -147,12 +140,10 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                                           .withOpacity(0.1))
                                                 ]),
                                             child: Text(
-                                              '${bookList[index]['percent'].floor()}%',
+                                              '${book.percent.floor()}%',
                                               style: TextStyle(
                                                   fontSize: 12.sp,
-                                                  color: (bookList[index]
-                                                              ['percent'] ==
-                                                          100)
+                                                  color: (book.percent == 100)
                                                       ? Colors.white
                                                       : AppColors.black_59),
                                             ),
@@ -164,7 +155,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                           width: 96.w,
                                           height: 20.h,
                                           child: Text(
-                                            bookList[index]['book_title'],
+                                            book.bookTitle,
                                             maxLines: 1,
                                             style: TextStyle(
                                                 fontSize: 12.sp,
