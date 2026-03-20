@@ -19,7 +19,7 @@ import 'package:book_flutter/garden/GardenInvitePage.dart';
 import 'package:book_flutter/garden/GardenLeaderPage.dart';
 import 'package:book_flutter/garden/GardenMemberPage.dart';
 import 'package:book_flutter/garden/GardenPage.dart';
-import 'package:book_flutter/main.dart';
+import 'package:book_flutter/app/splash/splash_page.dart';
 import 'package:book_flutter/memo/MemoBookPage.dart';
 import 'package:book_flutter/memo/MemoDetailPage.dart';
 import 'package:book_flutter/memo/MemoPage.dart';
@@ -51,7 +51,8 @@ final GoRouter router = GoRouter(
       GoRoute(
         path: '/',
         name: 'splash',
-        builder: (BuildContext context, GoRouterState state) => SplashPage(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const SplashPage(),
       ),
       GoRoute(
         path: '/error',
