@@ -14,13 +14,17 @@ final pwdCheckErrorProvider = StateProvider<String?>((ref) => null);
 final isValidProvider = StateProvider<bool>((ref) => false);
 
 class PwdSettingPage extends ConsumerStatefulWidget {
-  const PwdSettingPage({required this.user_email, required this.isLoginPage});
+  const PwdSettingPage({
+    super.key,
+    required this.userEmail,
+    required this.isLoginPage,
+  });
 
-  final String user_email;
+  final String userEmail;
   final bool isLoginPage;
 
   @override
-  _PwdSettingPageState createState() => _PwdSettingPageState();
+  ConsumerState<PwdSettingPage> createState() => _PwdSettingPageState();
 }
 
 class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
@@ -45,18 +49,19 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
     //비밀번호 업데이트 api
     void putPwdUpdate() async {
       final data = {
-        "user_email": widget.user_email,
+        "user_email": widget.userEmail,
         "user_password": _pwdController.text
       };
 
       final response = await authService.putPwdUpdate(data);
       if (response?.statusCode == 200) {
+        if (!context.mounted) return;
         fToast.showToast(child: Widgets.toast('새로운 비밀번호가 생성되었습니다'));
         widget.isLoginPage ? context.goNamed('login') : context.pop();
       }
     }
 
-    void _validate() {
+    void validate() {
       final pwdErrorNotifier = ref.read(pwdErrorProvider.notifier);
       final pwdCheckErrorNotifier = ref.read(pwdCheckErrorProvider.notifier);
       final isValidNotifier = ref.read(isValidProvider.notifier);
@@ -110,7 +115,7 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
                               '6자 이상 12자 이하로 입력해주세요',
                               pwdErrorText,
                               pwdErrorProvider,
-                              validateFunction: _validate,
+                              validateFunction: validate,
                               isPwd: true)),
                       SizedBox(
                           child: Widgets.textfield(
@@ -120,7 +125,7 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
                               '비밀번호를 다시 입력해주세요',
                               pwdCheckErrorText,
                               pwdCheckErrorProvider,
-                              validateFunction: _validate,
+                              validateFunction: validate,
                               isPwd: true)),
                     ],
                   ),

@@ -29,6 +29,7 @@ class AuthAPI {
   //소셜 로그인 api
   void postSocialLogin(BuildContext context, Map data) async {
     final response = await authService.postLogin(data);
+    if (!context.mounted) return;
     if (response?.statusCode == 200) {
       //access,refresh 저장하고 가든 페이지로
       saveAccess(response?.data['data']['access_token']);
@@ -42,6 +43,7 @@ class AuthAPI {
   //소셜 회원가입 api
   void postSocialSignup(BuildContext context, Map data) async {
     final response = await authService.postSignup(data);
+    if (!context.mounted) return;
     if (response?.statusCode == 201) {
       //access,refresh 저장하고 회원가입 완료 페이지로
       //TODO: - 회원가입 토큰 저장
@@ -55,6 +57,7 @@ class AuthAPI {
   //프로필 조회 api
   void getUser(BuildContext context) async {
     final response = await authService.getUser();
+    if (!context.mounted) return;
     if (response?.statusCode == 200) {
       updateUser(response?.data['data']);
     } else if (response?.statusCode == 401) {
@@ -65,6 +68,7 @@ class AuthAPI {
   //프로필 변경 api
   void putUser(BuildContext context, Map data) async {
     final response = await authService.putUser(data);
+    if (!context.mounted) return;
     if (response?.statusCode == 200) {
       getUser(context);
       context.pop();

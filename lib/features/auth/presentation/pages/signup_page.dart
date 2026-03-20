@@ -19,7 +19,9 @@ final pwdCheckErrorProvider = StateProvider<String?>((ref) => null);
 
 class SignupPage extends ConsumerStatefulWidget {
   @override
-  _SignupPageState createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
+
+  const SignupPage({super.key});
 }
 
 class _SignupPageState extends ConsumerState<SignupPage> {
@@ -52,6 +54,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     };
 
     final response = await authService.postSignup(data);
+    if (!context.mounted) return;
     if (response?.statusCode == 201) {
       //access,refresh 저장하고 회원가입 완료 페이지로
       saveAccess(response?.data['data']['access_token']);
@@ -201,9 +204,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 }
 
 class SignupDonePage extends StatelessWidget {
-  final String user_nick;
+  final String userNick;
 
-  const SignupDonePage({super.key, required this.user_nick});
+  const SignupDonePage({super.key, required this.userNick});
 
   // 회원가입 완료 -> 가든 페이지로
   void singupEnd(BuildContext context) {
@@ -236,7 +239,7 @@ class SignupDonePage extends StatelessWidget {
                         children: [
                           const TextSpan(text: '반가워요, '),
                           TextSpan(
-                              text: user_nick,
+                              text: userNick,
                               style: const TextStyle(
                                   color: AppColors.primaryColor)),
                           const TextSpan(text: '님')

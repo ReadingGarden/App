@@ -6,7 +6,9 @@ import 'package:go_router/go_router.dart';
 
 class StartPage extends StatefulWidget {
   @override
-  _StartPageState createState() => _StartPageState();
+  State<StartPage> createState() => _StartPageState();
+
+  const StartPage({super.key});
 }
 
 class _StartPageState extends State<StartPage> {

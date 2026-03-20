@@ -18,7 +18,9 @@ final loginErrorProvider = StateProvider<String?>((ref) => null);
 
 class LoginPage extends ConsumerStatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
+
+  const LoginPage({super.key});
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
@@ -41,6 +43,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   //로그인 api
   void postEmailLogin(Map data) async {
     final response = await authService.postLogin(data);
+    if (!mounted) return;
     if (response?.statusCode == 200) {
       // access,refresh 저장하고 가든 페이지로
       saveAccess(response?.data['data']['access_token']);

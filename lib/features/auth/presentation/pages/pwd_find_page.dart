@@ -24,7 +24,9 @@ final authSendTextProvider = StateProvider<String>((ref) => '인증번호 전송
 
 class PwdFindPage extends ConsumerStatefulWidget {
   @override
-  _PwdFindPageState createState() => _PwdFindPageState();
+  ConsumerState<PwdFindPage> createState() => _PwdFindPageState();
+
+  const PwdFindPage({super.key});
 }
 
 class _PwdFindPageState extends ConsumerState<PwdFindPage> {
@@ -96,6 +98,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       };
 
       final response = await authService.postPwdFindCheck(data);
+      if (!context.mounted) return;
       if (response?.statusCode == 200) {
         context.goNamed('pwd-setting',
             extra: {'user_email': _emailController.text, 'isLoginPage': true});
@@ -104,7 +107,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       }
     }
 
-    void _emailValidate() {
+    void emailValidate() {
       if (!Functions.emailValidation(_emailController.text)) {
         ref.read(emailErrorProvider.notifier).state = '올바르지 않은 이메일 형식이에요';
       } else {
@@ -117,7 +120,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       }
     }
 
-    void _authValidate() {
+    void authValidate() {
       if (_authController.text.length == 5) {
         ref.read(authCheckProvider.notifier).state = true;
       }
@@ -147,7 +150,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                     SizedBox(
                         child: Widgets.textfield(ref, _emailController, '이메일',
                             '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
-                            validateFunction: _emailValidate)),
+                            validateFunction: emailValidate)),
                     (authSendBool)
                         ? Stack(
                             alignment: Alignment.bottomRight,
@@ -160,7 +163,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                                     '대소문자에 유의하여 입력해주세요',
                                     authErrorText,
                                     authErrorProvider,
-                                    validateFunction: _authValidate),
+                                    validateFunction: authValidate),
                               ),
                               Container(
                                   height: 20.h,
