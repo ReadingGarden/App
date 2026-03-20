@@ -9,11 +9,12 @@ import 'package:book_flutter/features/garden/presentation/providers/garden_provi
     as garden_feature;
 
 class GardenBookListPage extends ConsumerStatefulWidget {
-  GardenBookListPage({required this.garden});
+  const GardenBookListPage({super.key, required this.garden});
 
   final Map garden;
 
-  _GardenBookListPageState createState() => _GardenBookListPageState();
+  @override
+  ConsumerState<GardenBookListPage> createState() => _GardenBookListPageState();
 }
 
 class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {

@@ -8,7 +8,9 @@ import 'package:book_flutter/features/book/presentation/providers/book_search_pr
 
 class BookShelfPage extends ConsumerStatefulWidget {
   @override
-  _BookShelfPageState createState() => _BookShelfPageState();
+  ConsumerState<BookShelfPage> createState() => _BookShelfPageState();
+
+  const BookShelfPage({super.key});
 }
 
 class _BookShelfPageState extends ConsumerState<BookShelfPage> {

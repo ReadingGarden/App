@@ -10,7 +10,9 @@ final bookPageErrorProvider = StateProvider<String?>((ref) => null);
 
 class BookUserWritePage extends ConsumerStatefulWidget {
   @override
-  _BookUserWritePageState createState() => _BookUserWritePageState();
+  ConsumerState<BookUserWritePage> createState() => _BookUserWritePageState();
+
+  const BookUserWritePage({super.key});
 }
 
 class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {

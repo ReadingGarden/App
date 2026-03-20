@@ -14,9 +14,10 @@ final startDateErrorProvider = StateProvider<String?>((ref) => null);
 final endDateErrorProvider = StateProvider<String?>((ref) => null);
 
 class BookEditPage extends ConsumerStatefulWidget {
-  BookEditPage({super.key, required this.book});
+  const BookEditPage({super.key, required this.book});
 
-  _BookEditPageState createState() => _BookEditPageState();
+  @override
+  ConsumerState<BookEditPage> createState() => _BookEditPageState();
 
   final BookEditInputEntity book;
 }
@@ -54,6 +55,7 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
       endDate: _endController.text,
     );
 
+    if (!mounted) return;
     context.pop('BookDetailPage_getBookRead');
   }
 

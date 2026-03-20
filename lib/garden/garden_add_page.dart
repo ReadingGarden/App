@@ -16,7 +16,10 @@ final gardenAddButtonProvider = StateProvider<bool>((ref) => false);
 final gardenColorSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class GardenAddPage extends ConsumerStatefulWidget {
-  _GardenAddPageState createState() => _GardenAddPageState();
+  const GardenAddPage({super.key});
+
+  @override
+  ConsumerState<GardenAddPage> createState() => _GardenAddPageState();
 }
 
 class _GardenAddPageState extends ConsumerState<GardenAddPage> {
@@ -48,8 +51,8 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
 
     final created =
         await garden_add_feature.createGardenAndSelectMain(ref, input);
+    if (!mounted) return;
     if (created) {
-      if (!mounted) return;
       context.pushNamed('garden-add-done');
     } else {
       fToast.showToast(child: Widgets.toast('최대 5개의 가든만 만들 수 있어요'));
@@ -159,10 +162,11 @@ class GardenAddDonePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
+      if (!context.mounted) return;
       context.pop();
       context.replaceNamed('bottom-navi');
     });
-    return Scaffold(
+    return const Scaffold(
       body: Center(),
     );
   }
