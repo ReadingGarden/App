@@ -12,15 +12,15 @@ import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
-  const MemoDetailPage({required this.memo});
+  const MemoDetailPage({super.key, required this.memo});
 
   final MemoListItemEntity memo;
 
   @override
-  _MemoBookPageState createState() => _MemoBookPageState();
+  ConsumerState<MemoDetailPage> createState() => _MemoDetailPageState();
 }
 
-class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
+class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
   //메모 삭제 api
   void deleteMemo() async {
     final deleted = await memo_detail_feature.deleteMemo(ref, widget.memo.id);

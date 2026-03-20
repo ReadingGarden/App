@@ -11,8 +11,10 @@ import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MemoBookPage extends ConsumerStatefulWidget {
+  const MemoBookPage({super.key});
+
   @override
-  _MemoBookPageState createState() => _MemoBookPageState();
+  ConsumerState<MemoBookPage> createState() => _MemoBookPageState();
 }
 
 class _MemoBookPageState extends ConsumerState<MemoBookPage> {
@@ -163,7 +165,10 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                   ),
                   SvgPicture.asset(
                       '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                      color: AppColors.grey_8D,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.grey_8D,
+                        BlendMode.srcIn,
+                      ),
                       width: 20.r,
                       height: 20.r)
                 ],
