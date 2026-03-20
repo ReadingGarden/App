@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../utils/Constant.dart';
+import '../constants/app_constant.dart';
 import '../network/dio_client.dart';
 
 class MemoService {

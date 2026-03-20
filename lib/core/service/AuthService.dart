@@ -3,7 +3,7 @@ import 'dart:core';
 import 'package:book_flutter/core/network/dio_client.dart';
 import 'package:dio/dio.dart';
 
-import '../../utils/Constant.dart';
+import '../constants/app_constant.dart';
 
 class AuthService {
   final _dio = dioclent.dio;
