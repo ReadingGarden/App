@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/memo/presentation/providers/memo_book_provider.dart'
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/memo/presentation/providers/memo_book_provider.dart'
     as memo_book_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
 
 class MemoBookPage extends ConsumerStatefulWidget {
   @override

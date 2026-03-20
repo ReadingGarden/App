@@ -1,12 +1,11 @@
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
 
 class TosPage extends ConsumerStatefulWidget {
   @override

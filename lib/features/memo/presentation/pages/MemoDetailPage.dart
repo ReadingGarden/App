@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/memo/domain/entities/memo_list_item_entity.dart';
-import '../features/memo/presentation/providers/memo_detail_provider.dart'
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/memo/domain/entities/memo_list_item_entity.dart';
+import 'package:book_flutter/features/memo/presentation/providers/memo_detail_provider.dart'
     as memo_detail_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
   const MemoDetailPage({required this.memo});
@@ -113,7 +113,8 @@ class _MemoBookPageState extends ConsumerState<MemoDetailPage> {
                     child: Container(
                       margin: EdgeInsets.only(top: 20.h),
                       child: Image.network(
-                          width: 320.w, '${Constant.IMAGE_URL}${widget.memo.imageUrl}'),
+                          width: 320.w,
+                          '${Constant.IMAGE_URL}${widget.memo.imageUrl}'),
                     ),
                   ),
                   Container(

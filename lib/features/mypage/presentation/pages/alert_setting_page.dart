@@ -1,1 +1,1 @@
-export '../../../../mypage/AlertSettingPage.dart';
+export 'AlertSettingPage.dart';

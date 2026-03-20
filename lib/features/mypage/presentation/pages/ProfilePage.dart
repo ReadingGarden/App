@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/AuthAPI.dart';
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/core/api/AuthAPI.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   @override

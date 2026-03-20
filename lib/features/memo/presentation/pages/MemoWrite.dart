@@ -1,18 +1,17 @@
 import 'dart:io';
 
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/memo/domain/entities/memo_write_input_entity.dart';
+import 'package:book_flutter/features/memo/presentation/providers/memo_write_provider.dart'
+    as memo_write_feature;
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-
-import '../features/memo/domain/entities/memo_write_input_entity.dart';
-import '../features/memo/presentation/providers/memo_write_provider.dart'
-    as memo_write_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../core/ui/app_widgets.dart';
 
 class MemoWritePage extends ConsumerStatefulWidget {
   const MemoWritePage({required this.book});
@@ -206,7 +205,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                   children: [
                     Visibility(
                       visible:
-                          ref.watch(memo_write_feature.memoImageNameProvider) != null,
+                          ref.watch(memo_write_feature.memoImageNameProvider) !=
+                              null,
                       child: Stack(
                         alignment: Alignment.bottomRight,
                         children: [
@@ -246,7 +246,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                             maxLines: null,
                             style: TextStyle(fontSize: 14.sp, height: 1.7.h),
                             onChanged: (value) {
-                              memo_write_feature.updateMemoTextState(ref, value);
+                              memo_write_feature.updateMemoTextState(
+                                  ref, value);
                             },
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -351,7 +352,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
           width: 320.w,
           height: 165.h,
           fit: BoxFit.fitWidth,
-          File(ref.watch(memo_write_feature.memoImageFileProvider)?.path ?? ''));
+          File(
+              ref.watch(memo_write_feature.memoImageFileProvider)?.path ?? ''));
     }
   }
 }

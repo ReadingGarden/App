@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/AuthAPI.dart';
-import '../core/service/AuthService.dart';
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../core/storage/token_storage.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/core/api/AuthAPI.dart';
+import 'package:book_flutter/core/service/AuthService.dart';
+import 'package:book_flutter/core/storage/token_storage.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
 
 class AuthManagePage extends ConsumerStatefulWidget {
   @override

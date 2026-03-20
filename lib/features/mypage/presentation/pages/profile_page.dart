@@ -1,1 +1,1 @@
-export '../../../../mypage/ProfilePage.dart';
+export 'ProfilePage.dart';

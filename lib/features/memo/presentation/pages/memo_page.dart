@@ -1,1 +1,1 @@
-export '../../../../memo/MemoPage.dart';
+export 'MemoPage.dart';

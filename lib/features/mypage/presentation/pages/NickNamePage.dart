@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../core/api/AuthAPI.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/core/api/AuthAPI.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
 
 //닉네임 에러 메세지...
 final nicknameErrorProvider = StateProvider<String?>((ref) => null);

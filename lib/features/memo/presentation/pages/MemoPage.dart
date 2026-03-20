@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/memo/presentation/providers/memo_list_provider.dart'
+import 'package:book_flutter/features/memo/presentation/providers/memo_list_provider.dart'
     as memo_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 class MemoPage extends ConsumerStatefulWidget {
   @override
@@ -113,8 +113,8 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      final result =
-                          await context.pushNamed('memo-detail', extra: memo.toMap());
+                      final result = await context.pushNamed('memo-detail',
+                          extra: memo.toMap());
                       if (result != null) {
                         memo_feature.refreshMemoList(ref);
                       }

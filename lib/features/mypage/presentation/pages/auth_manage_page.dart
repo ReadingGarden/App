@@ -1,1 +1,1 @@
-export '../../../../mypage/AuthManagePage.dart';
+export 'AuthManagePage.dart';
