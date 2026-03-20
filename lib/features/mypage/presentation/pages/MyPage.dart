@@ -12,8 +12,10 @@ import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MyPage extends ConsumerStatefulWidget {
+  const MyPage({super.key});
+
   @override
-  _MyPageState createState() => _MyPageState();
+  ConsumerState<MyPage> createState() => _MyPageState();
 }
 
 class _MyPageState extends ConsumerState<MyPage> {
@@ -49,7 +51,6 @@ class _MyPageState extends ConsumerState<MyPage> {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('이메일이 성공적으로 전송되었습니다.')));
     } catch (error) {
-      print(error);
       if (!mounted) {
         return;
       }
@@ -246,7 +247,8 @@ class _MyPageState extends ConsumerState<MyPage> {
                     Functions.launchURL("https://forms.gle/EBuu4Vvw7C2g4LL58");
                   }),
                   Widgets.titleList('리뷰 작성하기', () {
-                    print('리뷰작성하기 페이지로');
+                    Functions.launchURL(
+                        "https://apps.apple.com/kr/app/%EB%8F%85%EC%84%9C%EA%B0%80%EB%93%A0/id6502348981");
                   }),
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),
