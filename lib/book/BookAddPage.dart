@@ -9,7 +9,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/BookService.dart';
+import '../features/book/domain/entities/book_add_done_entity.dart';
+import '../features/book/domain/entities/book_read_input_entity.dart';
+import '../features/book/presentation/providers/book_add_provider.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
@@ -18,7 +20,7 @@ import '../core/ui/app_widgets.dart';
 class BookAddPage extends ConsumerStatefulWidget {
   const BookAddPage({required this.bookRead});
 
-  final Map bookRead;
+  final BookReadInputEntity bookRead;
 
   _BookAddPageState createState() => _BookAddPageState();
 }
@@ -34,14 +36,12 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   @override
   void initState() {
     super.initState();
-    imagePath =
-        'assets/images/page_flowers/page_${widget.bookRead['book_tree']}.png';
+    imagePath = 'assets/images/page_flowers/page_${widget.bookRead.bookTree}.png';
     dragPosition = 0.0;
-    currentPage = widget.bookRead['book_current_page'];
-    dragPosition = (currentPage / widget.bookRead['book_page']);
+    currentPage = widget.bookRead.bookCurrentPage;
+    dragPosition = (currentPage / widget.bookRead.bookPage);
     _textEditingController.addListener(_validateInput);
-    _textEditingController.text =
-        widget.bookRead['book_current_page'].toString();
+    _textEditingController.text = widget.bookRead.bookCurrentPage.toString();
 
     _loadImage();
   }
@@ -55,31 +55,14 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
 
   //독서 기록 추가 api
   void postBookRead() async {
-    final data = {
-      "book_no": widget.bookRead['book_no'],
-      "book_current_page": currentPage
-    };
-
-    //책 기록이 없을 때
-    if (widget.bookRead['book_current_page'] == 0) {
-      data['book_start_date'] = DateTime.now().toString();
-    }
-    //책 다 읽었을 때
-    if (currentPage == widget.bookRead['book_page']) {
-      data['book_end_date'] = DateTime.now().toString();
-    }
-    final response = await bookService.postBookRead(data);
-    if (response?.statusCode == 201) {
-      if (currentPage == widget.bookRead['book_page']) {
-        final bookReadData = {
-          'book_title': widget.bookRead['book_title'],
-          'book_tree': widget.bookRead['book_tree'],
-          'book_start_date': widget.bookRead['book_read_list']
-              [widget.bookRead['book_read_list'].length - 1]['book_start_date'],
-          'book_end_date': DateTime.now().toString()
-        };
-
-        context.pushReplacementNamed('book-add-done', extra: bookReadData);
+    final result = await saveBookRead(
+      ref,
+      bookRead: widget.bookRead,
+      currentPage: currentPage,
+    );
+    if (result.statusCode == 201) {
+      if (result.done != null) {
+        context.pushReplacementNamed('book-add-done', extra: result.done!.toMap());
       } else {
         context.pop('fetchData');
       }
@@ -114,9 +97,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   //텍스트필드 최대 페이지 제한
   void _validateInput() {
     final int currentValue = int.tryParse(_textEditingController.text) ?? 0;
-    if (currentValue > widget.bookRead['book_page']) {
-      _textEditingController.text =
-          widget.bookRead['book_page'].toString(); // 값이 범위를 초과하면 최대값으로 설정
+    if (currentValue > widget.bookRead.bookPage) {
+      _textEditingController.text = widget.bookRead.bookPage.toString();
       _textEditingController.selection = TextSelection.fromPosition(
         TextPosition(offset: _textEditingController.text.length),
       );
@@ -126,7 +108,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Widgets.appBar(context, title: widget.bookRead['book_title']),
+        appBar: Widgets.appBar(context, title: widget.bookRead.bookTitle),
         body: Container(
           margin: EdgeInsets.only(top: 40.h),
           child: Column(
@@ -145,13 +127,12 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         final result = await pageBottomSheet(
                             context,
                             _textEditingController,
-                            widget.bookRead['book_current_page']);
+                            widget.bookRead.bookCurrentPage);
 
                         if (result != null) {
                           currentPage = result;
                           setState(() {
-                            dragPosition =
-                                (currentPage / widget.bookRead['book_page']);
+                            dragPosition = (currentPage / widget.bookRead.bookPage);
                           });
                         }
                       },
@@ -166,7 +147,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                                     decorationColor: AppColors.primaryColor,
                                     decoration: ui.TextDecoration.underline)),
                             TextSpan(
-                                text: ' / ${widget.bookRead['book_page']}p',
+                                text: ' / ${widget.bookRead.bookPage}p',
                                 style:
                                     const TextStyle(color: AppColors.grey_CA))
                           ])),
@@ -188,17 +169,16 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         child: GestureDetector(
                             onVerticalDragUpdate: (details) {
                               setState(() {
-                                dragPosition -= details.primaryDelta! /
-                                    context.size!.height;
+                                dragPosition -=
+                                    details.primaryDelta! / context.size!.height;
                                 dragPosition = dragPosition.clamp(0.0, 1.0);
-                                currentPage = (widget.bookRead['book_page'] *
-                                        dragPosition)
-                                    .toInt();
+                                currentPage =
+                                    (widget.bookRead.bookPage * dragPosition)
+                                        .toInt();
 
                                 //텍스트 필드에도 적용
                                 _textEditingController.text =
-                                    (widget.bookRead['book_page'] *
-                                            dragPosition)
+                                    (widget.bookRead.bookPage * dragPosition)
                                         .toInt()
                                         .toString();
                               });
@@ -338,7 +318,7 @@ class RevealPainter extends CustomPainter {
 class BookAddDonePage extends StatelessWidget {
   BookAddDonePage({super.key, required this.bookRead});
 
-  Map bookRead;
+  final BookAddDoneEntity bookRead;
 
   @override
   Widget build(BuildContext context) {
@@ -353,25 +333,25 @@ class BookAddDonePage extends StatelessWidget {
                         TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                     TextSpan(children: [
                       TextSpan(
-                          text: bookRead['book_tree'],
+                          text: bookRead.bookTree,
                           style:
                               const TextStyle(color: AppColors.primaryColor)),
                       TextSpan(
                           text:
-                              '${Functions.getPostpositionString(bookRead['book_tree'], '이', '가')} 다컸어요')
+                              '${Functions.getPostpositionString(bookRead.bookTree, '이', '가')} 다컸어요')
                     ])),
                 Container(
                   margin: EdgeInsets.only(top: 24.h, bottom: 20.h),
                   width: 260.r,
                   height: 260.r,
                   child: Image.asset(
-                      'assets/images/ok_flowers/ok_${bookRead['book_tree']}.png'),
+                      'assets/images/ok_flowers/ok_${bookRead.bookTree}.png'),
                 ),
                 Padding(
                   padding:
                       EdgeInsets.only(bottom: 6.h, left: 48.w, right: 48.w),
                   child: Text(
-                    bookRead['book_title'],
+                    bookRead.bookTitle,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -380,7 +360,7 @@ class BookAddDonePage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${Functions.formatBookReadDate(bookRead['book_start_date'])} - ${Functions.formatBookReadDate(bookRead['book_end_date'])}',
+                  '${Functions.formatBookReadDate(bookRead.bookStartDate)} - ${Functions.formatBookReadDate(bookRead.bookEndDate)}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: AppColors.grey_8D),
                 )

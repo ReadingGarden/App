@@ -8,6 +8,8 @@ import 'package:book_flutter/book/BookRegisterPage.dart';
 import 'package:book_flutter/book/BookSearchPage.dart';
 import 'package:book_flutter/book/BookUserWritePage.dart';
 import 'package:book_flutter/book/BookshelfPage.dart';
+import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
+import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
 import 'package:book_flutter/garden/GardenAddPage.dart';
 import 'package:book_flutter/garden/GardenBookListPage.dart';
 import 'package:book_flutter/garden/GardenEditPage.dart';
@@ -170,7 +172,7 @@ final GoRouter router = GoRouter(
                       builder: (context, state) {
                         final bookRead = state.extra as Map;
                         return BookAddPage(
-                          bookRead: bookRead,
+                          bookRead: BookReadInputEntity.fromMap(bookRead),
                         );
                       },
                       routes: [
@@ -180,7 +182,7 @@ final GoRouter router = GoRouter(
                           builder: (context, state) {
                             final bookRead = state.extra as Map;
                             return BookAddDonePage(
-                              bookRead: bookRead,
+                              bookRead: BookAddDoneEntity.fromMap(bookRead),
                             );
                           },
                         )
