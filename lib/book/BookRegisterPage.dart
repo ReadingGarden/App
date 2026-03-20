@@ -6,7 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/GardenAPI.dart';
-import '../core/service/BookService.dart';
+import '../features/book/domain/entities/book_register_input_entity.dart';
+import '../features/book/presentation/providers/book_register_provider.dart';
 import '../utils/AppColors.dart';
 import '../utils/AutoInputFormatter.dart';
 import '../utils/Constant.dart';
@@ -22,7 +23,7 @@ final dateErrorProvider = StateProvider<String?>((ref) => null);
 class BookRegisterPage extends ConsumerStatefulWidget {
   const BookRegisterPage({required this.book});
 
-  final Map book;
+  final BookRegisterInputEntity book;
 
   _BookRegisterPageState createState() => _BookRegisterPageState();
 }
@@ -57,86 +58,24 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
         Functions.formatBookReadDate(DateTime.now().toString());
   }
 
-  //책 등록 api
-  void postBook() async {
+  Future<void> submitBookRegistration() async {
     final gardenAPI = GardenAPI(ref);
+    final result = await saveBookRegistration(
+      ref,
+      book: widget.book,
+      gardens: gardenAPI.gardenList(),
+      selectedGardenIndex: ref.read(gardenSelectIndexProvider),
+      selectedFlowerIndex: ref.read(flowerSelectIndexProvider),
+      startDate: _dateController.text,
+    );
 
-    final data = {
-      "garden_no": gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
-          ['garden_no'],
-      "book_title": widget.book['title'],
-      "book_author": widget.book['author'],
-      "book_publisher": widget.book['publisher'],
-      "book_info": widget.book['description'],
-      "book_tree": Constant.FLOWER_LIST[ref.watch(flowerSelectIndexProvider)],
-      // "book_image_url": null,
-      "book_status": 0,
-      "book_page": widget.book['page']
-    };
-    //알라딘 검새으로 추가하는 것은
-    if (widget.book['isbn13'] != null) {
-      data['book_page'] = widget.book['itemPage'];
-      data['book_isbn'] = widget.book['isbn13'];
-    }
-    if (widget.book['cover'] != null) {
-      data['book_image_url'] = widget.book['cover'];
-    }
-
-    final response = await bookService.postBook(data);
-    if (response?.statusCode == 201) {
-      if (_dateController.text.isNotEmpty) {
-        postBookRead(response?.data['data']['book_no']);
-      } else {
-        context.pushReplacementNamed('book-register-done',
-            extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
-                ['garden_title']);
+    if (result.statusCode == 200 || result.statusCode == 201) {
+      if (!mounted) {
+        return;
       }
-    } else if (response?.statusCode == 403) {
+      context.pushReplacementNamed('book-register-done', extra: result.gardenTitle);
+    } else if (result.statusCode == 403) {
       fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
-    }
-  }
-
-  //책 수정 api (읽고싶어요 -> 등록)
-  void putBook() async {
-    final gardenAPI = GardenAPI(ref);
-
-    final data = {
-      "garden_no": gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
-          ['garden_no'],
-      "book_tree": Constant.FLOWER_LIST[ref.watch(flowerSelectIndexProvider)],
-      "book_status": 0,
-    };
-
-    final response = await bookService.putBook(widget.book['book_no'], data);
-    if (response?.statusCode == 200) {
-      if (_dateController.text.isNotEmpty) {
-        postBookRead(widget.book['book_no']);
-      } else {
-        context.pushReplacementNamed('book-register-done',
-            extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
-                ['garden_title']);
-      }
-    }
-  }
-
-  //독서 기록 api
-  void postBookRead(int book_no) async {
-    final gardenAPI = GardenAPI(ref);
-
-    DateTime book_start_date =
-        DateTime.parse(_dateController.text.replaceAll('.', ''));
-
-    final data = {
-      "book_no": book_no,
-      "book_start_date": book_start_date.toString(),
-      "book_current_page": 0
-    };
-
-    final response = await bookService.postBookRead(data);
-    if (response?.statusCode == 201) {
-      context.pushReplacementNamed('book-register-done',
-          extra: gardenAPI.gardenList()[ref.watch(gardenSelectIndexProvider)]
-              ['garden_title']);
     }
   }
 
@@ -166,15 +105,15 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                         padding: EdgeInsets.only(bottom: 12.h),
                         margin: EdgeInsets.only(left: 24.w, right: 24.w),
                         child: Row(children: [
-                          (widget.book['cover'] != null &&
-                                  widget.book['cover'] != '')
+                          (widget.book.cover != null &&
+                                  widget.book.cover != '')
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
                                   child: Image.network(
                                     width: 48.w,
                                     height: 64.h,
                                     fit: BoxFit.cover,
-                                    widget.book['cover'],
+                                    widget.book.cover!,
                                   ),
                                 )
                               : Container(
@@ -192,14 +131,14 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  widget.book['title'] ?? '',
+                                  widget.book.title,
                                   maxLines: 3,
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                   ),
                                 ),
                                 Text(
-                                  widget.book['author'] ?? '',
+                                  widget.book.author,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -316,11 +255,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
             margin: EdgeInsets.only(
                 left: 24.w, right: 24.w, bottom: 30.h, top: 10.h),
             child: Widgets.button('등록하기', true, () {
-              if (widget.book['book_no'] == null) {
-                postBook();
-              } else {
-                putBook();
-              }
+              submitBookRegistration();
             })));
   }
 
@@ -462,7 +397,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
 class BookRegisterDonePage extends StatelessWidget {
   BookRegisterDonePage({super.key, required this.gardenName});
 
-  String gardenName;
+  final String gardenName;
 
   @override
   Widget build(BuildContext context) {
