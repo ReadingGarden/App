@@ -4,8 +4,8 @@ import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_write_input_entity.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_write_provider.dart'
     as memo_write_feature;
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

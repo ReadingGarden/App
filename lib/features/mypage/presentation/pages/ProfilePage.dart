@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/api/AuthAPI.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   @override

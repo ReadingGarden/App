@@ -7,8 +7,8 @@ import 'package:go_router/go_router.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_book_provider.dart'
     as memo_book_feature;
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MemoBookPage extends ConsumerStatefulWidget {
   @override

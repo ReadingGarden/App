@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:book_flutter/core/api/AuthAPI.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 
 //프로필 이미지 선택 인덱스 ...
 final profileSelectIndexProvider = StateProvider<int>((ref) => 0);

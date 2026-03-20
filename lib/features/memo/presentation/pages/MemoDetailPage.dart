@@ -8,8 +8,8 @@ import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_list_item_entity.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_detail_provider.dart'
     as memo_detail_feature;
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
   const MemoDetailPage({required this.memo});
