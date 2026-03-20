@@ -10,8 +10,10 @@ import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
+  const ProfilePage({super.key});
+
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
@@ -43,7 +45,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               },
               widget: SvgPicture.asset(
                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                color: AppColors.grey_8D,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.grey_8D,
+                  BlendMode.srcIn,
+                ),
                 width: 20.r,
                 height: 20.r,
               ),
@@ -66,7 +71,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     height: 20.r,
                     child: SvgPicture.asset(
                       '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                      color: AppColors.grey_8D,
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.grey_8D,
+                        BlendMode.srcIn,
+                      ),
                       width: 20.r,
                       height: 20.r,
                     ),

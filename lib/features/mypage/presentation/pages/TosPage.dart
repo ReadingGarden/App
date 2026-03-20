@@ -8,8 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class TosPage extends ConsumerStatefulWidget {
+  const TosPage({super.key});
+
   @override
-  _TosPageState createState() => _TosPageState();
+  ConsumerState<TosPage> createState() => _TosPageState();
 }
 
 class _TosPageState extends ConsumerState<TosPage> {
@@ -30,7 +32,10 @@ class _TosPageState extends ConsumerState<TosPage> {
               },
               widget: SvgPicture.asset(
                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                color: AppColors.grey_8D,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.grey_8D,
+                  BlendMode.srcIn,
+                ),
                 width: 20.r,
                 height: 20.r,
               ),
@@ -43,7 +48,10 @@ class _TosPageState extends ConsumerState<TosPage> {
               },
               widget: SvgPicture.asset(
                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                color: AppColors.grey_8D,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.grey_8D,
+                  BlendMode.srcIn,
+                ),
                 width: 20.r,
                 height: 20.r,
               ),
@@ -56,7 +64,10 @@ class _TosPageState extends ConsumerState<TosPage> {
               },
               widget: SvgPicture.asset(
                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                color: AppColors.grey_8D,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.grey_8D,
+                  BlendMode.srcIn,
+                ),
                 width: 20.r,
                 height: 20.r,
               ),
