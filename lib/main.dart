@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:book_flutter/utils/Messaging.dart';
+import 'package:book_flutter/core/services/messaging_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/material.dart';

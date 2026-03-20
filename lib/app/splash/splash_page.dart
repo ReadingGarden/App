@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/provider/FcmTokenProvider.dart';
 import '../../core/storage/token_storage.dart';
-import '../../utils/AppColors.dart';
+import '../../core/ui/app_colors.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});

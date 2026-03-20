@@ -10,8 +10,8 @@ import '../../features/garden/presentation/providers/garden_provider.dart'
 import '../../features/garden/presentation/pages/garden_page.dart';
 import '../../features/memo/presentation/pages/memo_page.dart';
 import '../../features/mypage/presentation/pages/my_page.dart';
-import '../../utils/AppColors.dart';
-import '../../utils/Constant.dart';
+import '../../core/constants/app_constant.dart';
+import '../../core/ui/app_colors.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
