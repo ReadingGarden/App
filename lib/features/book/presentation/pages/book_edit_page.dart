@@ -1,1 +1,1 @@
-export '../../../../book/BookEditPage.dart';
+export 'BookEditPage.dart';

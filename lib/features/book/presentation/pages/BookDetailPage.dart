@@ -6,14 +6,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/auth/presentation/providers/auth_user_provider.dart'
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
-import '../features/book/presentation/providers/book_detail_provider.dart';
-import '../features/garden/presentation/pages/garden_edit_page.dart';
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/features/book/presentation/providers/book_detail_provider.dart';
+import 'package:book_flutter/features/garden/presentation/pages/garden_edit_page.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 final bookDetailAppBarColorProvider =
     StateProvider<Color>((ref) => Colors.white);

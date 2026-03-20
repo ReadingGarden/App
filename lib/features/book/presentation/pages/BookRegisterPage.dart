@@ -5,15 +5,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/book/domain/entities/book_register_input_entity.dart';
-import '../features/book/presentation/providers/book_register_provider.dart';
-import '../features/garden/presentation/providers/garden_provider.dart'
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/book/domain/entities/book_register_input_entity.dart';
+import 'package:book_flutter/features/book/presentation/providers/book_register_provider.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import '../utils/AppColors.dart';
-import '../utils/AutoInputFormatter.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/AutoInputFormatter.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 //가든 선택 인덱스 ...
 final gardenSelectIndexProvider = StateProvider<int>((ref) => 0);
@@ -80,7 +80,8 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       if (!mounted) {
         return;
       }
-      context.pushReplacementNamed('book-register-done', extra: result.gardenTitle);
+      context.pushReplacementNamed('book-register-done',
+          extra: result.gardenTitle);
     } else if (result.statusCode == 403) {
       fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
     }
@@ -112,8 +113,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                         padding: EdgeInsets.only(bottom: 12.h),
                         margin: EdgeInsets.only(left: 24.w, right: 24.w),
                         child: Row(children: [
-                          (widget.book.cover != null &&
-                                  widget.book.cover != '')
+                          (widget.book.cover != null && widget.book.cover != '')
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
                                   child: Image.network(

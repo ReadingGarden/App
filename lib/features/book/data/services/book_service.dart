@@ -130,6 +130,24 @@ class BookService {
     }
   }
 
+  Future<Response?> getBookStatusList(int status, int page) async {
+    try {
+      final response = await _authenticatedDio.get(
+        '${Constant.URL}book/status?status=$status&page=$page&page_size=10',
+      );
+      print(response.data.toString());
+      return response;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        print('Error: ${e.response?.data}');
+        print('Status code: ${e.response?.statusCode}');
+        return e.response;
+      }
+      print('Error sending request: ${e.message}');
+      return null;
+    }
+  }
+
   Future<Response?> postBookRead(Map<String, dynamic> data) async {
     try {
       final response = await _authenticatedDio.post(

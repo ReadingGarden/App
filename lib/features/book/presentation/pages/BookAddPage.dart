@@ -1,5 +1,11 @@
 import 'dart:ui' as ui;
 
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
+import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
+import 'package:book_flutter/features/book/presentation/providers/book_add_provider.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
@@ -8,14 +14,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
-import '../features/book/domain/entities/book_add_done_entity.dart';
-import '../features/book/domain/entities/book_read_input_entity.dart';
-import '../features/book/presentation/providers/book_add_provider.dart';
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
 
 class BookAddPage extends ConsumerStatefulWidget {
   const BookAddPage({required this.bookRead});
@@ -36,7 +34,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   @override
   void initState() {
     super.initState();
-    imagePath = 'assets/images/page_flowers/page_${widget.bookRead.bookTree}.png';
+    imagePath =
+        'assets/images/page_flowers/page_${widget.bookRead.bookTree}.png';
     dragPosition = 0.0;
     currentPage = widget.bookRead.bookCurrentPage;
     dragPosition = (currentPage / widget.bookRead.bookPage);
@@ -62,7 +61,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     );
     if (result.statusCode == 201) {
       if (result.done != null) {
-        context.pushReplacementNamed('book-add-done', extra: result.done!.toMap());
+        context.pushReplacementNamed('book-add-done',
+            extra: result.done!.toMap());
       } else {
         context.pop('fetchData');
       }
@@ -132,7 +132,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         if (result != null) {
                           currentPage = result;
                           setState(() {
-                            dragPosition = (currentPage / widget.bookRead.bookPage);
+                            dragPosition =
+                                (currentPage / widget.bookRead.bookPage);
                           });
                         }
                       },
@@ -169,8 +170,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         child: GestureDetector(
                             onVerticalDragUpdate: (details) {
                               setState(() {
-                                dragPosition -=
-                                    details.primaryDelta! / context.size!.height;
+                                dragPosition -= details.primaryDelta! /
+                                    context.size!.height;
                                 dragPosition = dragPosition.clamp(0.0, 1.0);
                                 currentPage =
                                     (widget.bookRead.bookPage * dragPosition)

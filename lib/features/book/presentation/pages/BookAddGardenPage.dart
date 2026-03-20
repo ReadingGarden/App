@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/book/domain/entities/book_isbn_detail_entity.dart';
-import '../features/book/presentation/providers/book_add_garden_provider.dart';
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/book/domain/entities/book_isbn_detail_entity.dart';
+import 'package:book_flutter/features/book/presentation/providers/book_add_garden_provider.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
 
 class BookAddGardenPage extends ConsumerStatefulWidget {
   const BookAddGardenPage(this.book, {required this.isbn13});
@@ -58,15 +58,18 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
 
   //책 중복 확인
   void getBookDuplication() async {
-    final statusCode =
-        await ref.read(detailIsbnProvider.notifier).checkDuplication(widget.isbn13);
+    final statusCode = await ref
+        .read(detailIsbnProvider.notifier)
+        .checkDuplication(widget.isbn13);
     if (statusCode == 200) {
-      context.pushNamed('book-register', extra: bookResult().toRegisterPayload());
+      context.pushNamed('book-register',
+          extra: bookResult().toRegisterPayload());
     } else if (statusCode == 403) {
       Widgets.baseBottomSheet(
           context, '이미 저장된 책이에요', '가든에 등록되어 있는 책이에요. 또 저장할까요?', '등록하기', () {
         context.pop();
-        context.pushNamed('book-register', extra: bookResult().toRegisterPayload());
+        context.pushNamed('book-register',
+            extra: bookResult().toRegisterPayload());
       }, cancelTitle: '그냥 나가기');
     }
   }

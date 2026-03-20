@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../domain/entities/bookshelf_book_entity.dart';
 import '../dtos/book_search_dto.dart';
 import '../services/book_service.dart';
 
@@ -19,7 +20,8 @@ class BookSearchRepository {
       return BookSearchResult(
         totalCount: response?.data['data']['totalResults'] as int? ?? 0,
         items: items
-            .map((json) => BookSearchDto(Map<String, dynamic>.from(json)).toEntity())
+            .map((json) =>
+                BookSearchDto(Map<String, dynamic>.from(json)).toEntity())
             .toList(),
       );
     }
@@ -29,6 +31,22 @@ class BookSearchRepository {
   Future<int?> fetchBookByIsbn(String isbn13) async {
     final response = await _service.getBookByIsbn(isbn13);
     return response?.statusCode;
+  }
+
+  Future<List<BookshelfBookEntity>> fetchBookshelfBooks(
+    int status,
+    int page,
+  ) async {
+    final response = await _service.getBookStatusList(status, page);
+    if (response?.statusCode == 200) {
+      final List<dynamic> items = response?.data['data']['list'] ?? [];
+      return items
+          .map((json) => BookshelfBookEntity.fromMap(
+                Map<String, dynamic>.from(json as Map),
+              ))
+          .toList();
+    }
+    return [];
   }
 }
 
@@ -41,4 +59,3 @@ class BookSearchResult {
   final int totalCount;
   final List items;
 }
-

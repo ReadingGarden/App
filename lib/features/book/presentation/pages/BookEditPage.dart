@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/book/domain/entities/book_edit_input_entity.dart';
-import '../features/book/presentation/providers/book_edit_provider.dart';
-import '../utils/AppColors.dart';
-import '../utils/AutoInputFormatter.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/book/domain/entities/book_edit_input_entity.dart';
+import 'package:book_flutter/features/book/presentation/providers/book_edit_provider.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/AutoInputFormatter.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 final startDateErrorProvider = StateProvider<String?>((ref) => null);
 final endDateErrorProvider = StateProvider<String?>((ref) => null);

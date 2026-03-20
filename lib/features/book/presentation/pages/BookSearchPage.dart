@@ -6,10 +6,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/book/presentation/providers/book_search_provider.dart';
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/book/presentation/providers/book_search_provider.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
 
 class BookSearchPage extends ConsumerStatefulWidget {
   _BookSearchPageState createState() => _BookSearchPageState();
@@ -77,8 +77,9 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
 
   //책 상세조회 isbn api
   void getDetailBook_ISBN(String isbn13) async {
-    final statusCode =
-        await ref.read(bookSearchRepositoryStateProvider).fetchBookByIsbn(isbn13);
+    final statusCode = await ref
+        .read(bookSearchRepositoryStateProvider)
+        .fetchBookByIsbn(isbn13);
     if (statusCode == 200) {
       context.pushNamed('book-add-garden', extra: {'isbn13': isbn13});
     } else if (statusCode == 401) {
