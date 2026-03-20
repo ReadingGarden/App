@@ -1,3 +1,6 @@
+import 'book_memo_summary_entity.dart';
+import 'book_read_history_entity.dart';
+
 class BookDetailEntity {
   const BookDetailEntity({
     required this.bookNo,
@@ -32,8 +35,8 @@ class BookDetailEntity {
   final String bookTree;
   final int bookCurrentPage;
   final int bookPage;
-  final List<Map<String, dynamic>> bookReadList;
-  final List<Map<String, dynamic>> memoList;
+  final List<BookReadHistoryEntity> bookReadList;
+  final List<BookMemoSummaryEntity> memoList;
 
   static const empty = BookDetailEntity(
     bookNo: null,
@@ -72,8 +75,8 @@ class BookDetailEntity {
     String? bookTree,
     int? bookCurrentPage,
     int? bookPage,
-    List<Map<String, dynamic>>? bookReadList,
-    List<Map<String, dynamic>>? memoList,
+    List<BookReadHistoryEntity>? bookReadList,
+    List<BookMemoSummaryEntity>? memoList,
   }) {
     return BookDetailEntity(
       bookNo: bookNo ?? this.bookNo,
@@ -112,9 +115,23 @@ class BookDetailEntity {
       'book_tree': bookTree,
       'book_current_page': bookCurrentPage,
       'book_page': bookPage,
-      'book_read_list': bookReadList,
-      'memo_list': memoList,
+      'book_read_list': bookReadList
+          .map((item) => {
+                'book_current_page': item.bookCurrentPage,
+                'book_created_at': item.bookCreatedAt,
+                'book_start_date': item.bookStartDate,
+                'book_end_date': item.bookEndDate,
+              })
+          .toList(),
+      'memo_list': memoList
+          .map((item) => {
+                'id': item.id,
+                'memo_content': item.memoContent,
+                'memo_created_at': item.memoCreatedAt,
+                'memo_like': item.memoLike,
+                'image_url': item.imageUrl,
+              })
+          .toList(),
     };
   }
 }
-

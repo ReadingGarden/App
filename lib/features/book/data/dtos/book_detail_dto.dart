@@ -1,4 +1,6 @@
 import '../../domain/entities/book_detail_entity.dart';
+import '../../domain/entities/book_memo_summary_entity.dart';
+import '../../domain/entities/book_read_history_entity.dart';
 
 class BookDetailDto {
   BookDetailDto(this.json);
@@ -22,10 +24,22 @@ class BookDetailDto {
       bookCurrentPage: json['book_current_page'] as int? ?? 0,
       bookPage: json['book_page'] as int? ?? 0,
       bookReadList: (json['book_read_list'] as List? ?? [])
-          .map((item) => Map<String, dynamic>.from(item as Map))
+          .map((item) => BookReadHistoryEntity(
+                bookCurrentPage:
+                    (item as Map)['book_current_page'] as int? ?? 0,
+                bookCreatedAt: item['book_created_at'] as String?,
+                bookStartDate: item['book_start_date'] as String?,
+                bookEndDate: item['book_end_date'] as String?,
+              ))
           .toList(),
       memoList: (json['memo_list'] as List? ?? [])
-          .map((item) => Map<String, dynamic>.from(item as Map))
+          .map((item) => BookMemoSummaryEntity(
+                id: (item as Map)['id'] as int? ?? 0,
+                memoContent: item['memo_content'] as String? ?? '',
+                memoCreatedAt: item['memo_created_at'] as String? ?? '',
+                memoLike: item['memo_like'] as bool? ?? false,
+                imageUrl: item['image_url'] as String?,
+              ))
           .toList(),
     );
   }

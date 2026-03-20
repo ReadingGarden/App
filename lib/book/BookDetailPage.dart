@@ -700,10 +700,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   Widget _bookReadListWidget(int index) {
     final bookDetail = ref.watch(bookDetailProvider);
     final bookReadList = bookDetail.bookReadList;
+    final history = bookReadList[index];
 
     //맨 위(독서 끝)
-    return (index == 0 &&
-            bookReadList[index]['book_end_date'] != null)
+    return (index == 0 && history.bookEndDate != null)
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -718,8 +718,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
               Padding(
                 padding: EdgeInsets.only(top: 4.h),
                 child: Text(
-                  Functions.formatDate(bookReadList[index]['book_end_date'] ??
-                      DateTime.now().toString()),
+                  Functions.formatDate(
+                      history.bookEndDate ?? DateTime.now().toString()),
                   style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
                 ),
               )
@@ -742,8 +742,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                   Padding(
                     padding: EdgeInsets.only(top: 4.h),
                     child: Text(
-                      Functions.formatDate(bookReadList[index]['book_start_date'] ??
-                          DateTime.now().toString()),
+                      Functions.formatDate(
+                          history.bookStartDate ?? DateTime.now().toString()),
                       style:
                           TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
                     ),
@@ -754,15 +754,15 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text.rich(TextSpan(children: [
                   TextSpan(
-                      text: '${bookReadList[index]['book_current_page'] ?? '0'}p',
+                      text: '${history.bookCurrentPage}p',
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   const TextSpan(text: ' 만큼 물을 주었어요')
                 ])),
                 Padding(
                   padding: EdgeInsets.only(top: 4.h),
                   child: Text(
-                    Functions.formatDate(bookReadList[index]['book_created_at'] ??
-                        DateTime.now().toString()),
+                    Functions.formatDate(
+                        history.bookCreatedAt ?? DateTime.now().toString()),
                     style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
                   ),
                 )
@@ -773,9 +773,6 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   Widget _memoList() {
     final bookDetail = ref.watch(bookDetailProvider);
     final memoList = ref.watch(bookDetailMemoListProvider);
-    // if (bookDetail['memo_list'] != null) {
-    //   memoList = bookDetail['memo_list'];
-    // }
 
     return (memoList.isNotEmpty)
         ? ListView(
@@ -785,16 +782,18 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
             children: List.generate(
               memoList.length,
               (index) {
+                final memo = memoList[index];
                 return Stack(
                   alignment: Alignment.bottomRight,
                   children: [
                     GestureDetector(
                       onTap: () async {
-                        Map data = memoList[index];
-                        data['book_no'] = widget.book_no;
-                        data['book_title'] = bookDetail.bookTitle;
-                        data['book_author'] = bookDetail.bookAuthor;
-                        data['book_image_url'] = bookDetail.bookImageUrl;
+                        final data = memo.toRoutePayload(
+                          bookNo: widget.book_no,
+                          bookTitle: bookDetail.bookTitle,
+                          bookAuthor: bookDetail.bookAuthor,
+                          bookImageUrl: bookDetail.bookImageUrl,
+                        );
 
                         final result =
                             await context.pushNamed('memo-detail', extra: data);
@@ -861,19 +860,19 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                               ],
                             ),
                             Visibility(
-                                visible: (memoList[index]['image_url'] != null),
+                                visible: memo.imageUrl != null,
                                 child: Container(
                                   margin: EdgeInsets.only(top: 10.h),
                                   child: Image.network(
                                       width: 320.w,
                                       height: 140.h,
                                       fit: BoxFit.fitWidth,
-                                      '${Constant.IMAGE_URL}${memoList[index]['image_url']}'),
+                                      '${Constant.IMAGE_URL}${memo.imageUrl}'),
                                 )),
                             Container(
                                 margin: EdgeInsets.only(top: 10.h),
                                 child: Text(
-                                  memoList[index]['memo_content'],
+                                  memo.memoContent,
                                   maxLines: 5,
                                   style: TextStyle(
                                       fontSize: 12.sp,
@@ -886,8 +885,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        Functions.formatDate(
-                                            memoList[index]['memo_created_at']),
+                                        Functions.formatDate(memo.memoCreatedAt),
                                         style: TextStyle(
                                             fontSize: 12.sp,
                                             color: AppColors.grey_8D),
@@ -901,8 +899,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                             .watch(bookDetailMemoSelectIndexListProvider)
                             .isNotEmpty)
                         ? GestureDetector(
-                            onTap: () =>
-                                _toggleMemoLike(index, memoList[index]['id']),
+                            onTap: () => _toggleMemoLike(index, memo.id),
                             child: Container(
                               alignment: Alignment.center,
                               margin:

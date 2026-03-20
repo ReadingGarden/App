@@ -45,7 +45,7 @@ class BookDetailNotifier extends StateNotifier<BookDetailEntity> {
     final memoList = detail.memoList;
     ref.read(bookDetailMemoListProvider.notifier).state = memoList;
     ref.read(bookDetailMemoSelectIndexListProvider.notifier).state = memoList
-        .map((memo) => (memo['memo_like'] as bool?) ?? false)
+        .map((memo) => memo.memoLike)
         .toList();
 
     final gardenNo = detail.gardenNo;
