@@ -4,14 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/BookService.dart';
+import '../features/book/domain/entities/book_isbn_detail_entity.dart';
+import '../features/book/presentation/providers/book_add_garden_provider.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../core/ui/app_widgets.dart';
-
-final buttonCheckProvider = StateProvider<bool>((ref) => false);
-final detailIsbnProvider = StateProvider<Map>((ref) => {});
-final bookNoProvider = StateProvider<int?>((ref) => null);
 
 class BookAddGardenPage extends ConsumerStatefulWidget {
   const BookAddGardenPage(this.book, {required this.isbn13});
@@ -27,15 +24,16 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(detailIsbnProvider.notifier).state = {};
+      ref.read(detailIsbnProvider.notifier).reset();
       ref.read(bookNoProvider.notifier).state = null;
       //책 검색에서 온...
       if (widget.isbn13 != 'null') {
         ref.read(buttonCheckProvider.notifier).state = false;
-        getDetailBook_ISBN(widget.isbn13);
+        ref.read(detailIsbnProvider.notifier).fetchBookDetail(widget.isbn13);
       } else {
         //책장(읽고싶어요)에서 온...
         ref.read(buttonCheckProvider.notifier).state = true;
+        ref.read(detailIsbnProvider.notifier).setInitialBook(widget.book!);
         ref.read(bookNoProvider.notifier).state = widget.book!['book_no'];
       }
     });
@@ -43,59 +41,38 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
 
   //책 읽고싶어요 등록 (책등록)
   void postBookStatus() async {
-    final detailIsbn = bookResult();
-
-    final data = {
-      "book_title": detailIsbn['title'],
-      "book_author": detailIsbn['author'],
-      "book_publisher": detailIsbn['publisher'],
-      "book_info": detailIsbn['description'],
-      "book_status": 2,
-      "book_page": detailIsbn['itemPage'],
-      "book_image_url": detailIsbn['cover']
-    };
-
-    final response = await bookService.postBook(data);
-    if (response?.statusCode == 201) {
-      ref.read(bookNoProvider.notifier).state =
-          response?.data['data']['book_no'];
+    final bookNo = await ref.read(detailIsbnProvider.notifier).createWishBook();
+    if (bookNo != null) {
+      ref.read(bookNoProvider.notifier).state = bookNo;
     }
   }
 
   //책 읽고싶어요 취소 (책 삭제)
   void deleteBookStatus() async {
-    final response = await bookService.deleteBook(ref.watch(bookNoProvider)!);
-    if (response?.statusCode == 200) {}
-  }
-
-  //책 상세조회 isbn api
-  void getDetailBook_ISBN(String isbn) async {
-    final response = await bookService.getDetailBook_ISBN(isbn);
-    if (response?.statusCode == 200) {
-      ref.read(detailIsbnProvider.notifier).state = response?.data['data'];
+    final bookNo = ref.watch(bookNoProvider);
+    if (bookNo == null) {
+      return;
     }
+    await ref.read(detailIsbnProvider.notifier).deleteWishBook(bookNo);
   }
 
   //책 중복 확인
   void getBookDuplication() async {
-    final response = await bookService.getBookDuplication(widget.isbn13);
-    if (response?.statusCode == 200) {
-      context.pushNamed('book-register', extra: bookResult());
-    } else if (response?.statusCode == 403) {
+    final statusCode =
+        await ref.read(detailIsbnProvider.notifier).checkDuplication(widget.isbn13);
+    if (statusCode == 200) {
+      context.pushNamed('book-register', extra: bookResult().toRegisterPayload());
+    } else if (statusCode == 403) {
       Widgets.baseBottomSheet(
           context, '이미 저장된 책이에요', '가든에 등록되어 있는 책이에요. 또 저장할까요?', '등록하기', () {
         context.pop();
-        context.pushNamed('book-register', extra: bookResult());
+        context.pushNamed('book-register', extra: bookResult().toRegisterPayload());
       }, cancelTitle: '그냥 나가기');
     }
   }
 
-  Map bookResult() {
-    Map bookResult = ref.watch(detailIsbnProvider);
-    if (widget.isbn13 == 'null') {
-      bookResult = widget.book!;
-    }
-    return bookResult;
+  BookIsbnDetailEntity bookResult() {
+    return ref.watch(detailIsbnProvider);
   }
 
   @override
@@ -126,12 +103,12 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                               ]),
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
-                                  child: (bookResult()['cover'] != null)
+                                  child: (bookResult().cover != null)
                                       ? Image.network(
                                           width: 145.w,
                                           height: 200.h,
                                           fit: BoxFit.cover,
-                                          bookResult()['cover'],
+                                          bookResult().cover!,
                                         )
                                       : Container(
                                           width: 145.w,
@@ -141,7 +118,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                             Container(
                               margin: EdgeInsets.only(top: 29.h, bottom: 6.h),
                               child: Text(
-                                bookResult()['title'] ?? '',
+                                bookResult().title,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 18.sp,
@@ -149,18 +126,18 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                               ),
                             ),
                             Text(
-                              bookResult()['author'] ?? '',
+                              bookResult().author,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             ),
                             Text(
-                              bookResult()['publisher'] ?? '',
+                              bookResult().publisher,
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             ),
                             Text(
-                              '${bookResult()['itemPage'] ?? ''}p',
+                              '${bookResult().itemPage}p',
                               style: TextStyle(
                                   fontSize: 12.sp, color: AppColors.grey_8D),
                             ),
@@ -272,9 +249,9 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                     fontSize: 12.sp, color: AppColors.grey_8D),
                               ),
                             ),
-                            (bookResult()['description'] != '')
+                            (bookResult().description != '')
                                 ? Text(
-                                    bookResult()['description'] ?? '',
+                                    bookResult().description,
                                     style: TextStyle(
                                         fontSize: 12.sp, height: 1.75.h),
                                   )
