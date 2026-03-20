@@ -53,14 +53,14 @@ List<RouteBase> get bookRoutes => [
           GoRoute(
             path: 'book-user-write',
             name: 'book-user-write',
-            builder: (context, state) => BookUserWritePage(),
+            builder: (context, state) => const BookUserWritePage(),
           ),
         ],
       ),
       GoRoute(
         path: '/bottom-navi/bookshelf',
         name: 'bookshelf',
-        builder: (context, state) => BookShelfPage(),
+        builder: (context, state) => const BookShelfPage(),
         routes: [
           GoRoute(
             path: 'book-detail',

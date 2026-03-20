@@ -52,7 +52,7 @@ List<RouteBase> get gardenRoutes => [
           GoRoute(
             path: 'garden-add',
             name: 'garden-add',
-            builder: (context, state) => GardenAddPage(),
+            builder: (context, state) => const GardenAddPage(),
             routes: [
               GoRoute(
                 path: 'garden-add-done',

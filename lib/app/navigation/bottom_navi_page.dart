@@ -28,12 +28,7 @@ class BottomNaviPage extends ConsumerWidget {
           : Colors.white,
       body: IndexedStack(
         index: currentIndex,
-        children: [
-          const GardenPage(),
-          BookShelfPage(),
-          const MemoPage(),
-          const MyPage()
-        ],
+        children: const [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
