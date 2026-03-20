@@ -1,0 +1,43 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/service/GardenService.dart';
+import '../../domain/entities/garden_main_entity.dart';
+import '../../domain/entities/garden_summary_entity.dart';
+
+final gardenRepositoryProvider = Provider<GardenRepository>((ref) {
+  return GardenRepository(gardenService);
+});
+
+class GardenRepository {
+  GardenRepository(this._service);
+
+  final GardenService _service;
+
+  Future<List<GardenSummaryEntity>> fetchGardenList() async {
+    final response = await _service.getGardenList();
+    if (response?.statusCode == 200) {
+      final List data = response?.data['data'] ?? [];
+      return data
+          .map((item) =>
+              GardenSummaryEntity.fromMap(Map<String, dynamic>.from(item as Map)))
+          .toList();
+    }
+    return [];
+  }
+
+  Future<GardenMainEntity?> fetchGardenDetail(int gardenNo) async {
+    final response = await _service.getGardenDetail(gardenNo);
+    if (response?.statusCode == 200) {
+      return GardenMainEntity.fromMap(
+        Map<String, dynamic>.from(response?.data['data'] ?? {}),
+      );
+    }
+    return null;
+  }
+
+  Future<bool> updateMainGarden(int gardenNo) async {
+    final response = await _service.putGardenMain(gardenNo);
+    return response?.statusCode == 200;
+  }
+}
+

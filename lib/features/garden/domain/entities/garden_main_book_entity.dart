@@ -1,0 +1,23 @@
+class GardenMainBookEntity {
+  const GardenMainBookEntity({
+    required this.bookNo,
+    required this.bookTitle,
+    required this.bookTree,
+    required this.percent,
+  });
+
+  final int bookNo;
+  final String bookTitle;
+  final String bookTree;
+  final double percent;
+
+  factory GardenMainBookEntity.fromMap(Map<String, dynamic> map) {
+    return GardenMainBookEntity(
+      bookNo: map['book_no'] as int? ?? 0,
+      bookTitle: map['book_title'] as String? ?? '',
+      bookTree: map['book_tree'] as String? ?? '',
+      percent: (map['percent'] as num?)?.toDouble() ?? 0,
+    );
+  }
+}
+

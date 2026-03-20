@@ -18,6 +18,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../core/api/GardenAPI.dart';
+import '../features/garden/presentation/providers/garden_provider.dart' as garden_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
@@ -46,10 +47,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     fToast = FToast();
     fToast.init(context);
 
-    final gardenAPI = GardenAPI(ref);
-
     Future.microtask(() {
-      gardenAPI.getGardenLsit();
+      garden_feature.fetchGardenList(ref);
     });
   }
 
@@ -149,7 +148,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
 
   @override
   Widget build(BuildContext context) {
-    final gardenAPI = GardenAPI(ref);
+    final gardenMain = ref.watch(garden_feature.gardenMainProvider);
+    final gardenMainBookList = ref.watch(garden_feature.gardenMainBookListProvider);
 
     return Scaffold(
       body: Screenshot(
@@ -160,12 +160,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             Stack(
               alignment: Alignment.topCenter,
               children: [
-                _gardenMain(gardenAPI),
+                _gardenMain(gardenMainBookList),
                 GestureDetector(
                   onTap: () async {
-                    _gardenMenuBottomSheet(gardenAPI);
+                    _gardenMenuBottomSheet();
                   },
-                  child: (gardenAPI.gardenMain().isNotEmpty)
+                  child: (!gardenMain.isEmpty)
                       ? Container(
                           margin: EdgeInsets.only(
                               top: 34.h, left: 24.w, right: 24.w),
@@ -199,8 +199,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                       Row(
                                         children: [
                                           Text(
-                                            gardenAPI
-                                                .gardenMain()['garden_title'],
+                                            gardenMain.gardenTitle,
                                             style: TextStyle(
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.bold,
@@ -214,7 +213,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                         ],
                                       ),
                                       Text(
-                                        gardenAPI.gardenMain()['garden_info'],
+                                        gardenMain.gardenInfo,
                                         maxLines: 1,
                                         style: TextStyle(
                                             fontSize: 12.sp,
@@ -230,7 +229,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                 child: SvgPicture.asset(
                                   '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
                                   color: Functions.gardenColor(
-                                      gardenAPI.gardenMain()['garden_color']),
+                                      gardenMain.gardenColor),
                                   width: 20.w,
                                   height: 24.h,
                                 ),
@@ -243,11 +242,11 @@ class _GardenPageState extends ConsumerState<GardenPage> {
               ],
             ),
             Visibility(
-              visible: (gardenAPI.gardenMainBookList().isEmpty),
+              visible: gardenMainBookList.isEmpty,
               child: Container(
                 alignment: Alignment.bottomCenter,
                 child: Visibility(
-                  visible: gardenAPI.gardenMainBookList().isEmpty,
+                  visible: gardenMainBookList.isEmpty,
                   child: Container(
                       alignment: Alignment.bottomCenter,
                       width: 320.w,
@@ -276,7 +275,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     );
   }
 
-  Widget _gardenMain(gardenAPI) {
+  Widget _gardenMain(gardenMainBookList) {
     return SingleChildScrollView(
       controller: _scrollController,
       child: RepaintBoundary(
@@ -292,8 +291,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   'assets/images/main_bottom_back.png',
                   fit: BoxFit.cover,
                   width: 360.w,
-                  height: getTotalScrollHeight(
-                      gardenAPI.gardenMainBookList().length),
+                  height: getTotalScrollHeight(gardenMainBookList.length),
                 ),
               ],
             ),
@@ -310,16 +308,16 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                 crossAxisSpacing: 8.w, //가로 패딩
                 crossAxisCount: 3,
               ),
-              itemCount: gardenAPI.gardenMainBookList().length,
+              itemCount: gardenMainBookList.length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
+                final book = gardenMainBookList[index];
                 return GestureDetector(
                   onTap: () async {
-                    final result = await context.pushNamed('book-detail',
-                        extra: gardenAPI.gardenMainBookList()[index]
-                            ['book_no']);
+                    final result =
+                        await context.pushNamed('book-detail', extra: book.bookNo);
                     if (result != null) {
-                      gardenAPI.getGardenLsit();
+                      garden_feature.fetchGardenList(ref);
                     }
                   },
                   child: Container(
@@ -330,7 +328,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           width: 83.w,
                           height: 90.h,
                           child: Image.asset(
-                              '${Constant.MAIN_FLOWERS}${flowerPercent(gardenAPI.gardenMainBookList()[index]['percent'])}_${gardenAPI.gardenMainBookList()[index]['book_tree']}.png'),
+                              '${Constant.MAIN_FLOWERS}${flowerPercent(book.percent)}_${book.bookTree}.png'),
                         ),
                         Container(
                             margin: EdgeInsets.only(top: 8.h),
@@ -343,8 +341,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                     width: 1.w, color: AppColors.black_59),
                                 borderRadius: BorderRadius.circular(20.r)),
                             child: Text(
-                              gardenAPI.gardenMainBookList()[index]
-                                  ["book_title"],
+                              book.bookTitle,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontSize: 10.sp, fontWeight: FontWeight.w600),
@@ -361,8 +358,9 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     );
   }
 
-  Future _gardenMenuBottomSheet(gardenAPI) {
-    gardenAPI.getGardenLsit();
+  Future _gardenMenuBottomSheet() {
+    final gardenAPI = GardenAPI(ref);
+    garden_feature.fetchGardenList(ref);
 
     return showModalBottomSheet(
       context: context,
