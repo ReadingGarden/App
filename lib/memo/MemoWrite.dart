@@ -7,24 +7,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../core/service/MemoService.dart';
+import '../features/memo/domain/entities/memo_write_input_entity.dart';
+import '../features/memo/presentation/providers/memo_write_provider.dart'
+    as memo_write_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../core/ui/app_widgets.dart';
 
-//완료 버튼 상태를 관리하는 ...
-final okButtonProvider = StateProvider<bool>((ref) => false);
-//이미지 파일 상태를 관리하는 ... (이미지 피커)
-final memoImageFileProvider = StateProvider<XFile?>((ref) => null);
-//이미지 존재 상태를 관리하는 ...
-final memoImageNameProvider = StateProvider<String?>((ref) => null);
-//수정시 기존 이미지 삭제한 경우를 관리하는 ... (이미지 네트워크 -> 갤러리)
-final memoImageUpdateProvider = StateProvider<bool>((ref) => true);
-
 class MemoWritePage extends ConsumerStatefulWidget {
   const MemoWritePage({required this.book});
 
-  final Map book;
+  final MemoWriteInputEntity book;
 
   @override
   _MemoBookPageState createState() => _MemoBookPageState();
@@ -41,116 +34,44 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     super.initState();
 
     Future.microtask(() {
-      ref.read(okButtonProvider.notifier).state = false;
-      ref.read(memoImageFileProvider.notifier).state = null;
-      ref.read(memoImageNameProvider.notifier).state = null;
-      ref.read(memoImageUpdateProvider.notifier).state = true;
-
-      //메모 정보 있을 때 (수정시)
-      if (widget.book['id'] != null) {
-        _memoController.text = widget.book['memo_content'];
-        ref.read(okButtonProvider.notifier).state = true;
-        ref.read(memoImageNameProvider.notifier).state =
-            widget.book['image_url'];
-        ref.read(memoImageUpdateProvider.notifier).state = false;
-      }
+      _memoController.text = widget.book.memoContent;
+      memo_write_feature.initializeMemoWrite(ref, widget.book);
     });
   }
 
   //메모 작성하기 api
   void postMemo({bool? isBookDetail}) async {
-    Map data = {
-      "book_no": widget.book['book_no'],
-      "memo_content": _memoController.text,
-      // "memo_quote": "" //인용
-    };
-    final response = await memoService.postMemo(data);
-    if (response?.statusCode == 201) {
-      if (ref.watch(memoImageFileProvider) != null) {
-        postMemoImage(response?.data['data']['id']);
-      } else {
-        if (widget.book['garden_no'] == null) {
-          context.pop();
-          context.pop('MemoPage_getMemoList');
-        } else {
-          context.pop('BookDetailPage_getBookRead');
-        }
-      }
+    final saved = await memo_write_feature.saveMemo(
+      ref,
+      widget.book,
+      _memoController.text,
+    );
+    if (!saved || !mounted) {
+      return;
+    }
+    if (widget.book.gardenNo == null) {
+      context.pop();
+      context.pop('MemoPage_getMemoList');
+    } else {
+      context.pop('BookDetailPage_getBookRead');
     }
   }
 
   //메모 수정하기 api
   void putMemo() async {
-    Map data = {
-      "book_no": widget.book['book_no'],
-      "memo_content": _memoController.text,
-      // "memo_quote": "" //인용
-    };
-    final response = await memoService.putMemo(widget.book['id'], data);
-    if (response?.statusCode == 200) {
-      //기존에 이미지 있는 경우
-      if (widget.book['image_url'] != null) {
-        //이미지가 선택되어 있으면
-        if (ref.watch(memoImageNameProvider) != null) {
-          //기존 이미지와 수정된 이미지가 다른 경우
-          if (ref.watch(memoImageNameProvider) != widget.book['image_url']) {
-            postMemoImage(widget.book['id']);
-            print('이미지를 변경');
-          } else {
-            //텍스트만 수정함
-            print('텍스트만 수정함');
-            context.pop();
-            context.pop('MemoPage_getMemoList');
-          }
-        } else {
-          //기존 이미지를 삭제한 경우
-          deleteMemoImage(widget.book['id']);
-          print('이미지 삭제하고 추가해라');
-        }
-        //기존에 이미지 없는 경우
-      } else {
-        //이미지를 추가함
-        if (ref.watch(memoImageNameProvider) != null) {
-          print('이미지를 추가함');
-          postMemoImage(widget.book['id']);
-        } else {
-          //텍스트만 수정함
-          print('텍스트만 수정함');
-          if (widget.book['garden_no'] == null) {
-            context.pop();
-            context.pop('MemoPage_getMemoList');
-          } else {
-            context.pop('BookDetailPage_getBookRead');
-          }
-        }
-      }
+    final saved = await memo_write_feature.saveMemo(
+      ref,
+      widget.book,
+      _memoController.text,
+    );
+    if (!saved || !mounted) {
+      return;
     }
-  }
-
-  //메모 이미지 업로드 api
-  void postMemoImage(int id) async {
-    final response = await memoService.postMemoImage(
-        id, ref.watch(memoImageFileProvider)!.path);
-    if (response?.statusCode == 201) {
-      if (widget.book['garden_no'] == null) {
-        context.pop();
-        context.pop('MemoPage_getMemoList');
-      } else {
-        context.pop('BookDetailPage_getBookRead');
-      }
-    }
-  }
-
-  //메모 이미지 삭제 api
-  void deleteMemoImage(int id) async {
-    final response = await memoService.deleteMemoImage(id);
-    if (response?.statusCode == 201) {
-      if (widget.book['garden_no'] == null) {
-        context.pop();
-        context.pop('MemoPage_getMemoList');
-      } else {
-        context.pop('BookDetailPage_getBookRead');
-      }
+    if (widget.book.gardenNo == null) {
+      context.pop();
+      context.pop('MemoPage_getMemoList');
+    } else {
+      context.pop('BookDetailPage_getBookRead');
     }
   }
 
@@ -158,8 +79,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   Future<void> _pickImage() async {
     final XFile? image =
         await _imagePicker.pickImage(source: ImageSource.gallery);
-    ref.read(memoImageFileProvider.notifier).state = image;
-    ref.read(memoImageNameProvider.notifier).state = image?.name;
+    memo_write_feature.setMemoImage(ref, image);
   }
 
   //카메라
@@ -168,14 +88,13 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
         await _imagePicker.pickImage(source: ImageSource.camera);
 
     if (photo != null) {
-      ref.read(memoImageFileProvider.notifier).state = photo;
-      ref.read(memoImageNameProvider.notifier).state = photo.name;
+      memo_write_feature.setMemoImage(ref, photo);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final okButtonBool = ref.watch(okButtonProvider);
+    final okButtonBool = ref.watch(memo_write_feature.okButtonProvider);
 
     return WillPopScope(
       onWillPop: () async {
@@ -189,12 +108,12 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       },
       child: Scaffold(
         appBar: Widgets.appBar(context,
-            title: (widget.book['id'] == null) ? '메모 작성하기' : '메모 수정하기',
+            title: (!widget.book.isEdit) ? '메모 작성하기' : '메모 수정하기',
             actions: [
               GestureDetector(
                 onTap: () {
                   if (okButtonBool) {
-                    if (widget.book['id'] == null) {
+                    if (!widget.book.isEdit) {
                       postMemo();
                     } else {
                       putMemo();
@@ -234,7 +153,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                 margin: EdgeInsets.only(left: 24.w, right: 24.w),
                 child: Row(
                   children: [
-                    (widget.book['book_image_url'] == null)
+                    (widget.book.bookImageUrl == null)
                         ? Container(
                             width: 48.w,
                             height: 64.h,
@@ -248,7 +167,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                               width: 48.w,
                               height: 64.h,
                               fit: BoxFit.cover,
-                              widget.book['book_image_url'],
+                              widget.book.bookImageUrl!,
                             ),
                           ),
                     Container(
@@ -259,13 +178,13 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            widget.book['book_title'],
+                            widget.book.bookTitle,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 16.sp),
                           ),
                           Text(
-                            widget.book['book_author'],
+                            widget.book.bookAuthor,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -286,7 +205,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                 child: Column(
                   children: [
                     Visibility(
-                      visible: ref.watch(memoImageNameProvider) != null,
+                      visible:
+                          ref.watch(memo_write_feature.memoImageNameProvider) != null,
                       child: Stack(
                         alignment: Alignment.bottomRight,
                         children: [
@@ -295,12 +215,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                               child: _image()),
                           GestureDetector(
                             onTap: () {
-                              ref.read(memoImageFileProvider.notifier).state =
-                                  null;
-                              ref.read(memoImageNameProvider.notifier).state =
-                                  null;
-                              ref.read(memoImageUpdateProvider.notifier).state =
-                                  true;
+                              memo_write_feature.clearMemoImage(ref);
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -331,13 +246,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                             maxLines: null,
                             style: TextStyle(fontSize: 14.sp, height: 1.7.h),
                             onChanged: (value) {
-                              if (value.isNotEmpty) {
-                                ref.read(okButtonProvider.notifier).state =
-                                    true;
-                              } else {
-                                ref.read(okButtonProvider.notifier).state =
-                                    false;
-                              }
+                              memo_write_feature.updateMemoTextState(ref, value);
                             },
                             decoration: const InputDecoration(
                                 border: InputBorder.none,
@@ -362,7 +271,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
             children: [
               Row(
                 children: [
-                  (ref.watch(memoImageNameProvider.notifier).state == null)
+                  (ref.watch(memo_write_feature.memoImageNameProvider) == null)
                       ? GestureDetector(
                           onTap: () => _takePhoto(),
                           child: SvgPicture.asset(
@@ -378,7 +287,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           width: 24.r,
                           height: 24.r,
                         ),
-                  (ref.watch(memoImageNameProvider.notifier).state == null)
+                  (ref.watch(memo_write_feature.memoImageNameProvider) == null)
                       ? GestureDetector(
                           onTap: () => _pickImage(),
                           child: Container(
@@ -430,19 +339,19 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   }
 
   Widget _image() {
-    if (widget.book['image_url'] != null &&
-        ref.watch(memoImageUpdateProvider) != true) {
+    if (widget.book.imageUrl != null &&
+        ref.watch(memo_write_feature.memoImageUpdateProvider) != true) {
       return Image.network(
           width: 320.w,
           height: 165.h,
           fit: BoxFit.fitWidth,
-          Constant.IMAGE_URL + widget.book['image_url']);
+          Constant.IMAGE_URL + widget.book.imageUrl!);
     } else {
       return Image.file(
           width: 320.w,
           height: 165.h,
           fit: BoxFit.fitWidth,
-          File(ref.watch(memoImageFileProvider)?.path ?? ''));
+          File(ref.watch(memo_write_feature.memoImageFileProvider)?.path ?? ''));
     }
   }
 }

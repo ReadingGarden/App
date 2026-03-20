@@ -33,4 +33,27 @@ class MemoRepository {
     final response = await _service.deleteMemo(id);
     return response?.statusCode == 200;
   }
+
+  Future<int?> createMemo(Map<String, dynamic> data) async {
+    final response = await _service.postMemo(data);
+    if (response?.statusCode == 201) {
+      return response?.data['data']['id'] as int?;
+    }
+    return null;
+  }
+
+  Future<bool> updateMemo(int id, Map<String, dynamic> data) async {
+    final response = await _service.putMemo(id, data);
+    return response?.statusCode == 200;
+  }
+
+  Future<bool> uploadMemoImage(int id, String imagePath) async {
+    final response = await _service.postMemoImage(id, imagePath);
+    return response?.statusCode == 201;
+  }
+
+  Future<bool> deleteMemoImage(int id) async {
+    final response = await _service.deleteMemoImage(id);
+    return response?.statusCode == 201;
+  }
 }

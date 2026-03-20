@@ -25,6 +25,7 @@ import 'package:book_flutter/memo/MemoDetailPage.dart';
 import 'package:book_flutter/memo/MemoPage.dart';
 import 'package:book_flutter/memo/MemoWrite.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_list_item_entity.dart';
+import 'package:book_flutter/features/memo/domain/entities/memo_write_input_entity.dart';
 import 'package:book_flutter/mypage/AlertSettingPage.dart';
 import 'package:book_flutter/mypage/AuthManagePage.dart';
 import 'package:book_flutter/mypage/MyPage.dart';
@@ -210,7 +211,11 @@ final GoRouter router = GoRouter(
                     name: 'memo-update',
                     builder: (context, state) {
                       final Map book = state.extra as Map;
-                      return MemoWritePage(book: book);
+                      return MemoWritePage(
+                        book: MemoWriteInputEntity.fromMap(
+                          book.cast<String, dynamic>(),
+                        ),
+                      );
                     },
                   ),
                 ],
@@ -230,7 +235,11 @@ final GoRouter router = GoRouter(
                     name: 'memo-write',
                     builder: (context, state) {
                       final Map book = state.extra as Map;
-                      return MemoWritePage(book: book);
+                      return MemoWritePage(
+                        book: MemoWriteInputEntity.fromMap(
+                          book.cast<String, dynamic>(),
+                        ),
+                      );
                     },
                   ),
                 ]),
