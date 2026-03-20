@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
+import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:book_flutter/core/services/social_login_service.dart';
 import 'package:book_flutter/core/provider/fcm_token_provider.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
@@ -163,14 +163,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         // CircleAvatar(
                         //   backgroundColor: AppColors.black_59,
                         //   radius: 27.5.r,
-                        //   child:
-                        //       SvgPicture.asset('assets/images/apple_logo.svg'),
+                        //   child: Assets.images.appleLogo.svg(),
                         // ),
                         CircleAvatar(
                           backgroundColor: AppColors.grey_F2,
                           radius: 27.5.r,
-                          child: SvgPicture.asset(
-                            'assets/images/google_logo.svg',
+                          child: Assets.images.googleLogo.svg(
                             width: 20.r,
                             height: 20.r,
                           ),
@@ -180,8 +178,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           child: CircleAvatar(
                             backgroundColor: const Color(0xffFFEF5E),
                             radius: 27.5.r,
-                            child: SvgPicture.asset(
-                              'assets/images/kakao_logo.svg',
+                            child: Assets.images.kakaoLogo.svg(
                               width: 20.r,
                               height: 20.r,
                             ),

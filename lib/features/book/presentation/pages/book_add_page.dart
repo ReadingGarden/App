@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:book_flutter/core/common/functions.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
@@ -26,14 +27,13 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   ui.Image? image;
   ui.Image? overlayImage;
   double dragPosition = 0.0; // From 0.0 to 1.0
-  String imagePath = 'assets/images/page_flowers/page_데이지.png';
+  late String imagePath;
   int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    imagePath =
-        'assets/images/page_flowers/page_${widget.bookRead.bookTree}.png';
+    imagePath = AppAssets.pageFlower(widget.bookRead.bookTree).path;
     dragPosition = 0.0;
     currentPage = widget.bookRead.bookCurrentPage;
     dragPosition = (currentPage / widget.bookRead.bookPage);
@@ -345,8 +345,7 @@ class BookAddDonePage extends StatelessWidget {
                   margin: EdgeInsets.only(top: 24.h, bottom: 20.h),
                   width: 260.r,
                   height: 260.r,
-                  child: Image.asset(
-                      'assets/images/ok_flowers/ok_${bookRead.bookTree}.png'),
+                  child: AppAssets.okFlower(bookRead.bookTree).image(),
                 ),
                 Padding(
                   padding:

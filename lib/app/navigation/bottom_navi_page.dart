@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../features/book/presentation/pages/bookshelf_page.dart';
 import '../../features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
 import '../../features/garden/presentation/pages/garden_page.dart';
 import '../../features/memo/presentation/pages/memo_page.dart';
 import '../../features/mypage/presentation/pages/my_page.dart';
-import '../../core/constants/app_constant.dart';
 import '../../core/ui/app_colors.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
@@ -87,8 +86,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: AppColors.black_59,
                   ),
-                  child: SvgPicture.asset(
-                    '${Constant.ASSETS_ICONS}icon_add_big.svg',
+                  child: Assets.icons.iconAddBig.svg(
                     colorFilter: const ColorFilter.mode(
                       Colors.white,
                       BlendMode.srcIn,
@@ -126,10 +124,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              currentIndex == index
-                  ? '${Constant.ASSETS_ICONS}${icon}_fill.svg'
-                  : '${Constant.ASSETS_ICONS}$icon.svg',
+            _iconAsset(index).svg(
               width: 28.r,
               height: 28.r,
               colorFilter: (index != 3)
@@ -151,5 +146,28 @@ class CustomBottomNavigationBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  SvgGenImage _iconAsset(int index) {
+    switch (index) {
+      case 0:
+        return currentIndex == index
+            ? Assets.icons.iconGardenFill
+            : Assets.icons.iconGarden;
+      case 1:
+        return currentIndex == index
+            ? Assets.icons.iconBookFill
+            : Assets.icons.iconBook;
+      case 2:
+        return currentIndex == index
+            ? Assets.icons.iconMemoFill
+            : Assets.icons.iconMemo;
+      case 3:
+        return currentIndex == index
+            ? Assets.icons.iconUserFill
+            : Assets.icons.iconUser;
+      default:
+        return Assets.icons.iconGarden;
+    }
   }
 }

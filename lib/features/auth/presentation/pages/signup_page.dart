@@ -5,6 +5,7 @@ import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/auth/data/services/auth_service.dart';
+import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -258,9 +259,7 @@ class SignupDonePage extends StatelessWidget {
                 margin: EdgeInsets.only(top: 40.h, left: 12.w),
                 width: 312.r,
                 height: 312.r,
-                child: Image.asset(
-                  'assets/images/signup.png',
-                ),
+                child: Assets.images.signup.image(),
               ),
             ],
           ),

@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/formatters/auto_input_formatter.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_register_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_register_provider.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
+import 'package:book_flutter/gen/assets.gen.dart';
 
 //가든 선택 인덱스 ...
 final gardenSelectIndexProvider = StateProvider<int>((ref) => 0);
@@ -326,8 +327,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(right: 20.w),
-                    child: SvgPicture.asset(
-                      '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
+                    child: AppAssets.iconBookmarkFull.svg(
                       width: 20.h,
                       height: 24.h,
                       colorFilter: ColorFilter.mode(
@@ -376,8 +376,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                   ? Colors.black
                                   : AppColors.grey_F2),
                           color: Colors.transparent),
-                      child: Image.asset(
-                          'assets/images/select_flowers/select_${Constant.FLOWER_LIST[index]}.png'),
+                      child: AppAssets.selectFlower(
+                        Constant.FLOWER_LIST[index],
+                      ).image(),
                     ),
                     SizedBox(
                       height: 24.h,
@@ -438,7 +439,7 @@ class BookRegisterDonePage extends StatelessWidget {
                   margin: EdgeInsets.only(top: 62.h),
                   width: 260.r,
                   height: 260.r,
-                  child: Image.asset('assets/images/book_register.png'),
+                  child: Assets.images.bookRegister.image(),
                 )
               ],
             ),

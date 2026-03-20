@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_search_provider.dart';
 
@@ -298,11 +299,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
           SizedBox(
             width: 200.r,
             height: 200.r,
-            child: Image.asset((pageViewIndex == 0)
-                ? 'assets/images/empty/empty_읽고있어요.png'
-                : (pageViewIndex == 1)
-                    ? 'assets/images/empty/empty_다읽었어요.png'
-                    : 'assets/images/empty/empty_읽고싶어요.png'),
+            child: AppAssets.emptyBookshelf(pageViewIndex).image(),
           ),
           Container(
             margin: EdgeInsets.only(top: 16.h, bottom: 6.h),

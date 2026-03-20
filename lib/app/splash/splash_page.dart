@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../gen/assets.gen.dart';
 import '../../core/provider/fcm_token_provider.dart';
 import '../../core/storage/token_storage.dart';
 import '../../core/ui/app_colors.dart';
@@ -44,8 +45,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
       body: Padding(
         padding: EdgeInsets.only(bottom: 91.h),
         child: Center(
-            child: Image.asset(
-          'assets/images/splash.png',
+            child: Assets.images.splash.image(
           width: 120.w,
           height: 156.h,
         )),

@@ -7,8 +7,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:go_router/go_router.dart';
@@ -16,9 +14,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
 
@@ -207,8 +206,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          SvgPicture.asset(
-                                            '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                                          AppAssets.iconAngleRight.svg(
                                             width: 20.r,
                                             height: 20.r,
                                           )
@@ -228,8 +226,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               ),
                               Container(
                                 margin: EdgeInsets.only(right: 20.w),
-                                child: SvgPicture.asset(
-                                  '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
+                                child: AppAssets.iconBookmarkFull.svg(
                                   colorFilter: ColorFilter.mode(
                                     Functions.gardenColor(
                                         gardenMain.gardenColor),
@@ -260,7 +257,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       color: Colors.transparent,
                       child: Stack(
                         children: [
-                          SvgPicture.asset('assets/images/image_add.svg'),
+                          AppAssets.imageAdd.svg(),
                           Container(
                             margin: EdgeInsets.only(left: 18.w, top: 10.h),
                             child: Text(
@@ -290,10 +287,9 @@ class _GardenPageState extends ConsumerState<GardenPage> {
           children: [
             Column(
               children: [
-                Image.asset('assets/images/main_top_back.png',
-                    width: 360.w, height: 200.5.w, fit: BoxFit.fitWidth),
-                Image.asset(
-                  'assets/images/main_bottom_back.png',
+                Assets.images.mainTopBack
+                    .image(width: 360.w, height: 200.5.w, fit: BoxFit.fitWidth),
+                Assets.images.mainBottomBack.image(
                   fit: BoxFit.cover,
                   width: 360.w,
                   height: getTotalScrollHeight(gardenMainBookList.length),
@@ -332,8 +328,10 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                         SizedBox(
                           width: 83.w,
                           height: 90.h,
-                          child: Image.asset(
-                              '${Constant.MAIN_FLOWERS}${flowerPercent(book.percent)}_${book.bookTree}.png'),
+                          child: AppAssets.mainFlower(
+                            flowerPercent(book.percent),
+                            book.bookTree,
+                          ).image(),
                         ),
                         Container(
                             margin: EdgeInsets.only(top: 8.h),
@@ -457,8 +455,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           Row(
                             children: [
                               _memberProfile(),
-                              SvgPicture.asset(
-                                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                              AppAssets.iconAngleRight.svg(
                                 colorFilter: const ColorFilter.mode(
                                   AppColors.grey_8D,
                                   BlendMode.srcIn,
@@ -487,8 +484,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               height: 64.r,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              child: SvgPicture.asset(
-                                '${Constant.ASSETS_ICONS}icon_photo.svg',
+                              child: AppAssets.iconPhoto.svg(
                                 width: 28.r,
                                 height: 28.r,
                               ),
@@ -519,8 +515,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               height: 64.r,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              child: SvgPicture.asset(
-                                '${Constant.ASSETS_ICONS}icon_edit.svg',
+                              child: AppAssets.iconEdit.svg(
                                 width: 28.r,
                                 height: 28.r,
                               ),
@@ -552,8 +547,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               height: 64.r,
                               decoration: const BoxDecoration(
                                   shape: BoxShape.circle, color: Colors.white),
-                              child: SvgPicture.asset(
-                                '${Constant.ASSETS_ICONS}icon_share.svg',
+                              child: AppAssets.iconShare.svg(
                                 width: 28.r,
                                 height: 28.r,
                               ),
@@ -588,8 +582,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                             style: TextStyle(
                                 fontSize: 16.sp, fontWeight: FontWeight.bold),
                           ),
-                          SvgPicture.asset(
-                            '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                          AppAssets.iconAngleRight.svg(
                             width: 20.r,
                             height: 20.r,
                           )
@@ -699,9 +692,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             height: 32.r,
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: Colors.green),
-            child: Image.asset(
-              '${Constant.PROFILE}profile_${members[0]['user_image']}.png',
-            ),
+            child: AppAssets.profileFlower(members[0]['user_image']).image(),
           ),
           (memberCount >= 2)
               ? SizedBox(
@@ -711,9 +702,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     height: 32.r,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red),
-                    child: Image.asset(
-                      '${Constant.PROFILE}profile_${members[1]['user_image']}.png',
-                    ),
+                    child: AppAssets.profileFlower(members[1]['user_image'])
+                        .image(),
                   ),
                 )
               : Container(),
@@ -725,9 +715,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     height: 32.r,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.black),
-                    child: Image.asset(
-                      '${Constant.PROFILE}profile_${members[2]['user_image']}.png',
-                    ),
+                    child: AppAssets.profileFlower(members[2]['user_image'])
+                        .image(),
                   ),
                 )
               : Container(),
@@ -739,9 +728,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     height: 32.r,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.amber),
-                    child: Image.asset(
-                      '${Constant.PROFILE}profile_${members[3]['user_image']}.png',
-                    ),
+                    child: AppAssets.profileFlower(members[3]['user_image'])
+                        .image(),
                   ),
                 )
               : Container(),
@@ -804,8 +792,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                     : null,
                                 shape: BoxShape.circle,
                                 color: Colors.white),
-                            child: SvgPicture.asset(
-                              '${Constant.ASSETS_ICONS}icon_bookmark.svg',
+                            child: AppAssets.iconBookmark.svg(
                               colorFilter: ColorFilter.mode(
                                 Functions.gardenColor(
                                     gardens[index].gardenColor),
@@ -852,8 +839,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                           height: 52.r,
                           decoration: const BoxDecoration(
                               shape: BoxShape.circle, color: Colors.white),
-                          child: SvgPicture.asset(
-                            '${Constant.ASSETS_ICONS}icon_add.svg',
+                          child: AppAssets.iconAdd.svg(
                             colorFilter: const ColorFilter.mode(
                               AppColors.grey_8D,
                               BlendMode.srcIn,

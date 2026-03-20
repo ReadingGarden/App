@@ -1,5 +1,6 @@
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,11 @@ class StartPage extends StatefulWidget {
 
 class _StartPageState extends State<StartPage> {
   final PageController _pageController = PageController();
+  final List<AssetGenImage> _startImages = [
+    Assets.images.start1,
+    Assets.images.start2,
+    Assets.images.start3,
+  ];
   final List titleList = [
     '내가 읽고 있는 책,\n독서가든에서 키워볼까?',
     '함께 심고, 함께 키우는\n우리들의 공유가든',
@@ -85,8 +91,7 @@ class _StartPageState extends State<StartPage> {
             SizedBox(
               width: 360.w,
               height: 400.h,
-              child: Image.asset(
-                'assets/images/start_${index + 1}.png',
+              child: _startImages[index].image(
                 fit: BoxFit.cover,
               ),
             ),

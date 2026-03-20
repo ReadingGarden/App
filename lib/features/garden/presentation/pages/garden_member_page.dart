@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
@@ -68,8 +67,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('대표 변경하기'),
-                            SvgPicture.asset(
-                              '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                            AppAssets.iconAngleRight.svg(
                               colorFilter: const ColorFilter.mode(
                                 AppColors.grey_8D,
                                 BlendMode.srcIn,
@@ -125,14 +123,13 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                     ),
-                                    child: Image.asset(
-                                      '${Constant.PROFILE}profile_${member['user_image']}.png',
-                                    ),
+                                    child: AppAssets.profileFlower(
+                                      member['user_image'],
+                                    ).image(),
                                   ),
                                   Visibility(
                                     visible: member['garden_leader'],
-                                    child: SvgPicture.asset(
-                                      '${Constant.ASSETS_ICONS}icon_leader.svg',
+                                    child: AppAssets.iconLeader.svg(
                                       width: 20.r,
                                       height: 20.r,
                                     ),
@@ -176,8 +173,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                       color: Colors.transparent,
                       child: Row(
                         children: [
-                          SvgPicture.asset(
-                            '${Constant.ASSETS_ICONS}icon_add.svg',
+                          AppAssets.iconAdd.svg(
                             colorFilter: const ColorFilter.mode(
                               AppColors.primaryColor,
                               BlendMode.srcIn,

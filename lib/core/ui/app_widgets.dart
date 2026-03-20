@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../gen/assets.gen.dart';
 import '../common/functions.dart';
-import '../constants/app_constant.dart';
 import 'app_colors.dart';
 
 class Widgets {
@@ -40,8 +39,7 @@ class Widgets {
         child: Container(
           alignment: Alignment.center,
           color: Colors.transparent,
-          child: SvgPicture.asset(
-            '${Constant.ASSETS_ICONS}icon_angle_left.svg',
+          child: Assets.icons.iconAngleLeft.svg(
             width: 24.r,
             height: 24.r,
           ),
