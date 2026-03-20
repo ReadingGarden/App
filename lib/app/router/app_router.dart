@@ -14,7 +14,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final GoRouter router = GoRouter(
   navigatorKey: navigatorKey,
   initialLocation: '/',
-  errorBuilder: (context, state) => ErrorPage(),
+  errorBuilder: (context, state) => const ErrorPage(),
   routes: <RouteBase>[
     GoRoute(
       path: '/',
@@ -24,7 +24,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/error',
       name: 'error',
-      builder: (context, state) => ErrorPage(),
+      builder: (context, state) => const ErrorPage(),
     ),
     GoRoute(
       path: '/bottom-navi',

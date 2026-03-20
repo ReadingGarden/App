@@ -9,24 +9,24 @@ List<RouteBase> get authRoutes => [
       GoRoute(
         path: '/start',
         name: 'start',
-        builder: (context, state) => StartPage(),
+        builder: (context, state) => const StartPage(),
         routes: [
           GoRoute(
             path: 'login',
             name: 'login',
-            builder: (context, state) => LoginPage(),
+            builder: (context, state) => const LoginPage(),
             routes: [
               GoRoute(
                 path: 'signup',
                 name: 'signup',
-                builder: (context, state) => SignupPage(),
+                builder: (context, state) => const SignupPage(),
                 routes: [
                   GoRoute(
                     path: 'signup-done',
                     name: 'signup-done',
                     builder: (context, state) {
                       final userNick = state.extra as String;
-                      return SignupDonePage(user_nick: userNick);
+                      return SignupDonePage(userNick: userNick);
                     },
                   ),
                 ],
@@ -34,7 +34,7 @@ List<RouteBase> get authRoutes => [
               GoRoute(
                 path: 'pwd-find',
                 name: 'pwd-find',
-                builder: (context, state) => PwdFindPage(),
+                builder: (context, state) => const PwdFindPage(),
                 routes: [
                   GoRoute(
                     path: 'pwd-setting',
@@ -42,7 +42,7 @@ List<RouteBase> get authRoutes => [
                     builder: (context, state) {
                       final extra = state.extra as Map<String, dynamic>;
                       return PwdSettingPage(
-                        user_email: extra['user_email'] as String,
+                        userEmail: extra['user_email'] as String,
                         isLoginPage: extra['isLoginPage'] as bool,
                       );
                     },
