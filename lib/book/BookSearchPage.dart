@@ -1,5 +1,3 @@
-import 'package:book_flutter/core/model/BookSearch.dart';
-import 'package:book_flutter/core/provider/BookSearchListNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,15 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router/go_router.dart';
 
-import '../core/service/BookService.dart';
+import '../features/book/presentation/providers/book_search_provider.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../core/ui/app_widgets.dart';
-
-final bookTotalCountProvider = StateProvider<int>((ref) => 0);
-final barcodeValueProvider = StateProvider<String>((ref) => '');
 
 class BookSearchPage extends ConsumerStatefulWidget {
   _BookSearchPageState createState() => _BookSearchPageState();
@@ -58,44 +52,36 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
       _isSearch = false;
     });
 
-    final response = await bookService.getSerachBook(query, _currentPage);
-    if (response?.statusCode == 200) {
-      final List<dynamic> bookSearchList = response?.data['data']['item'];
-      final List<BookSearch> newBookSearchList = bookSearchList
-          .map((json) => BookSearch(
-              title: json['title'],
-              author: json['author'],
-              description: json['description'],
-              isbn13: json['isbn13'],
-              cover: json['cover'],
-              publisher: json['publisher']))
-          .toList();
+    final result = await ref
+        .read(bookSearchRepositoryStateProvider)
+        .searchBooks(query, _currentPage);
 
-      ref.read(bookTotalCountProvider.notifier).state =
-          response?.data['data']['totalResults'];
+    if (result != null) {
+      ref.read(bookTotalCountProvider.notifier).state = result.totalCount;
 
-      if (newBookSearchList.isNotEmpty) {
-        ref
-            .read(bookSearchListProvider.notifier)
-            .addBookSearchList(newBookSearchList);
+      if (result.items.isNotEmpty) {
+        ref.read(bookSearchListProvider.notifier).addBookSearchList(
+              result.items.cast(),
+            );
         setState(() {
           _currentPage++;
         });
       }
-
-      setState(() {
-        _isLoading = false;
-        _isSearch = true;
-      });
     }
+
+    setState(() {
+      _isLoading = false;
+      _isSearch = true;
+    });
   }
 
   //책 상세조회 isbn api
   void getDetailBook_ISBN(String isbn13) async {
-    final response = await bookService.getDetailBook_ISBN(isbn13);
-    if (response?.statusCode == 200) {
+    final statusCode =
+        await ref.read(bookSearchRepositoryStateProvider).fetchBookByIsbn(isbn13);
+    if (statusCode == 200) {
       context.pushNamed('book-add-garden', extra: {'isbn13': isbn13});
-    } else if (response?.statusCode == 401) {
+    } else if (statusCode == 401) {
       //500에러
     } else {
       fToast.showToast(child: Widgets.toast('바코드가 등록되지 않은 책이에요'));
