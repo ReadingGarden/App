@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'utils/AppColors.dart';
+import 'core/ui/app_colors.dart';
 
 class ErrorPage extends StatelessWidget {
   @override
