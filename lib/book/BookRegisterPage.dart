@@ -5,9 +5,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/GardenAPI.dart';
 import '../features/book/domain/entities/book_register_input_entity.dart';
 import '../features/book/presentation/providers/book_register_provider.dart';
+import '../features/garden/presentation/providers/garden_provider.dart'
+    as garden_feature;
 import '../utils/AppColors.dart';
 import '../utils/AutoInputFormatter.dart';
 import '../utils/Constant.dart';
@@ -39,15 +40,14 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
     fToast = FToast();
     fToast.init(context);
 
-    final gardenAPI = GardenAPI(ref);
-
     Future.microtask(() {
+      final gardens = ref.read(garden_feature.gardenListProvider);
       ref.read(gardenSelectIndexProvider.notifier).state = 0;
       ref.read(flowerSelectIndexProvider.notifier).state = 0;
 
       // 첫 실행 시 유효한 인덱스를 선택
-      for (int i = 0; i < gardenAPI.gardenList().length; i++) {
-        if (gardenAPI.gardenList()[i]['book_count'] < 30) {
+      for (int i = 0; i < gardens.length; i++) {
+        if (gardens[i].bookCount < 30) {
           ref.read(gardenSelectIndexProvider.notifier).state = i;
           break;
         }
@@ -59,11 +59,18 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   }
 
   Future<void> submitBookRegistration() async {
-    final gardenAPI = GardenAPI(ref);
+    final gardens = ref.read(garden_feature.gardenListProvider);
     final result = await saveBookRegistration(
       ref,
       book: widget.book,
-      gardens: gardenAPI.gardenList(),
+      gardens: gardens
+          .map((garden) => {
+                'garden_no': garden.gardenNo,
+                'garden_title': garden.gardenTitle,
+                'garden_color': garden.gardenColor,
+                'book_count': garden.bookCount,
+              })
+          .toList(),
       selectedGardenIndex: ref.read(gardenSelectIndexProvider),
       selectedFlowerIndex: ref.read(flowerSelectIndexProvider),
       startDate: _dateController.text,
@@ -260,20 +267,21 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   }
 
   Widget _gardenList() {
-    final gardenAPI = GardenAPI(ref);
+    final gardens = ref.watch(garden_feature.gardenListProvider);
 
     return Container(
       margin: EdgeInsets.only(top: 16.h),
-      height: (68.h + 10.h) * gardenAPI.gardenList().length,
+      height: (68.h + 10.h) * gardens.length,
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
         children: List.generate(
-          gardenAPI.gardenList().length,
+          gardens.length,
           (index) {
+            final garden = gardens[index];
             return GestureDetector(
               onTap: () {
                 // 북 카운트가 30이 아닌 경우에만 선택 가능
-                if (gardenAPI.gardenList()[index]['book_count'] < 30) {
+                if (garden.bookCount < 30) {
                   ref.read(gardenSelectIndexProvider.notifier).state = index;
                 }
               },
@@ -292,26 +300,23 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                                 (index == ref.watch(gardenSelectIndexProvider))
                                     ? AppColors.black_59
                                     : AppColors.grey_F2),
-                        color:
-                            (gardenAPI.gardenList()[index]['book_count'] < 30)
-                                ? Colors.white
-                                : AppColors.grey_F2),
+                        color: (garden.bookCount < 30)
+                            ? Colors.white
+                            : AppColors.grey_F2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          gardenAPI.gardenList()[index]['garden_title'],
+                          garden.gardenTitle,
                           style: TextStyle(
                               fontSize: 14.sp,
-                              color: (gardenAPI.gardenList()[index]
-                                          ['book_count'] <
-                                      30)
+                              color: (garden.bookCount < 30)
                                   ? Colors.black
                                   : AppColors.grey_8D),
                         ),
                         Text(
-                          '심은 꽃 ${gardenAPI.gardenList()[index]['book_count']}/30',
+                          '심은 꽃 ${garden.bookCount}/30',
                           style: TextStyle(
                               fontSize: 12.sp, color: AppColors.grey_8D),
                         )
@@ -324,8 +329,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                       '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
                       width: 20.h,
                       height: 24.h,
-                      color: Functions.gardenColor(
-                          gardenAPI.gardenList()[index]['garden_color']),
+                      color: Functions.gardenColor(garden.gardenColor),
                     ),
                   ),
                 ],

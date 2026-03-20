@@ -5,8 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/GardenAPI.dart';
 import '../core/service/GardenService.dart';
+import '../features/garden/presentation/providers/garden_provider.dart'
+    as garden_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
@@ -47,12 +48,14 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
 
   //가든 초대 수락 api
   void postGardenInvite() async {
-    final gardenAPI = GardenAPI(ref);
     final response = await gardenService.postGardenInvite(widget.garden_no);
     if (response?.statusCode == 201) {
       print('가든 초대 수락 완료');
-      gardenAPI.putGardenMain(widget.garden_no);
+      await garden_feature.updateMainGarden(ref, widget.garden_no);
       //TODO: - 가든 메인으로 가서 리스트 다시 불러와라
+      if (!mounted) {
+        return;
+      }
       context.pop();
       context.pop();
     } else if (response?.statusCode == 403) {

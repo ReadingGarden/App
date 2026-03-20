@@ -5,7 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'book/BookshelfPage.dart';
-import 'core/api/GardenAPI.dart';
+import 'features/garden/presentation/providers/garden_provider.dart'
+    as garden_feature;
 import 'garden/GardenPage.dart';
 import 'memo/MemoPage.dart';
 import 'mypage/MyPage.dart';
@@ -20,8 +21,6 @@ class BottomNaviPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gardenAPI = GardenAPI(ref);
-
     //현재 선택된 인덱스를 watch
     final currentIndex = ref.watch(currentIndexProvider);
 
@@ -40,7 +39,7 @@ class BottomNaviPage extends ConsumerWidget {
           ref.read(currentIndexProvider.notifier).state = index;
           if (ref.read(currentIndexProvider.notifier).state == 0) {
             //가든 페이지 리프레시
-            gardenAPI.getGardenLsit();
+            garden_feature.fetchGardenList(ref);
           }
         },
       ),

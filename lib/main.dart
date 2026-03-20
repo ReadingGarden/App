@@ -14,7 +14,6 @@ import 'package:go_router/go_router.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
 import 'BottomNaviPage.dart';
-import 'core/api/GardenAPI.dart';
 import 'core/provider/FcmTokenProvider.dart';
 import 'core/service/GardenService.dart';
 import 'firebase_options.dart';
@@ -22,6 +21,8 @@ import 'utils/AppColors.dart';
 import 'utils/Functions.dart';
 import 'app/router/app_router.dart';
 import 'core/storage/token_storage.dart';
+import 'features/garden/domain/entities/garden_main_entity.dart';
+import 'features/garden/presentation/providers/garden_provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('백그라운드 수신: ${message.messageId}');
@@ -93,11 +94,13 @@ void putGardenMain(ProviderContainer container, int garden_no) async {
 void getGardenDetail(ProviderContainer container, int garden_no) async {
   final response = await gardenService.getGardenDetail(garden_no);
   if (response?.statusCode == 200) {
-    container.read(gardenMainProvider.notifier).state = response?.data['data'];
-    container.read(gardenMainBookListProvider.notifier).state =
-        response?.data['data']['book_list'];
+    final garden = GardenMainEntity.fromMap(
+      Map<String, dynamic>.from(response?.data['data'] ?? {}),
+    );
+    container.read(gardenMainProvider.notifier).state = garden;
+    container.read(gardenMainBookListProvider.notifier).state = garden.bookList;
     container.read(gardenMainMemberListProvider.notifier).state =
-        response?.data['data']['garden_members'];
+        garden.gardenMembers;
 
     navigatorKey.currentState?.pushNamed('garden');
   }
