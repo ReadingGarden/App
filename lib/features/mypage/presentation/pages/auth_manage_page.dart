@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/api/auth_api.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/features/auth/data/services/auth_service.dart';
 
@@ -56,8 +55,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
                   'isLoginPage': false
                 });
               },
-              widget: SvgPicture.asset(
-                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+              widget: AppAssets.iconAngleRight.svg(
                 colorFilter: const ColorFilter.mode(
                   AppColors.grey_8D,
                   BlendMode.srcIn,

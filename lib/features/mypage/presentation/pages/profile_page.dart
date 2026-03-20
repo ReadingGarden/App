@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/api/auth_api.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
@@ -33,9 +32,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               margin: EdgeInsets.only(bottom: 40.h),
               child: CircleAvatar(
                 radius: 60.r,
-                child: Image.asset(
-                  '${Constant.PROFILE}profile_${authAPI.user()['user_image']}.png',
-                ),
+                child: AppAssets.profileFlower(
+                  authAPI.user()['user_image'],
+                ).image(),
               ),
             ),
             _titleList(
@@ -43,8 +42,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               () {
                 context.pushNamed('profile-image');
               },
-              widget: SvgPicture.asset(
-                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+              widget: AppAssets.iconAngleRight.svg(
                 colorFilter: const ColorFilter.mode(
                   AppColors.grey_8D,
                   BlendMode.srcIn,
@@ -69,8 +67,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     margin: EdgeInsets.only(left: 8.w),
                     width: 20.r,
                     height: 20.r,
-                    child: SvgPicture.asset(
-                      '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                    child: AppAssets.iconAngleRight.svg(
                       colorFilter: const ColorFilter.mode(
                         AppColors.grey_8D,
                         BlendMode.srcIn,

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_isbn_detail_entity.dart';
@@ -174,8 +173,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                   children: [
                                     Container(
                                       alignment: Alignment.center,
-                                      child: SvgPicture.asset(
-                                        '${Constant.ASSETS_ICONS}icon_add.svg',
+                                      child: AppAssets.iconAdd.svg(
                                         colorFilter: const ColorFilter.mode(
                                           AppColors.primaryColor,
                                           BlendMode.srcIn,
@@ -219,8 +217,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                   children: [
                                     Container(
                                       alignment: Alignment.center,
-                                      child: SvgPicture.asset(
-                                        '${Constant.ASSETS_ICONS}icon_check.svg',
+                                      child: AppAssets.iconCheck.svg(
                                         colorFilter: const ColorFilter.mode(
                                           Colors.white,
                                           BlendMode.srcIn,

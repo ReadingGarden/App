@@ -1,11 +1,10 @@
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class TosPage extends ConsumerStatefulWidget {
   const TosPage({super.key});
@@ -30,8 +29,7 @@ class _TosPageState extends ConsumerState<TosPage> {
                 Functions.launchURL(
                     "https://www.notion.so/dokseogarden/825ddd95b1084d689c4275ae665510b5?pvs=4");
               },
-              widget: SvgPicture.asset(
-                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+              widget: AppAssets.iconAngleRight.svg(
                 colorFilter: const ColorFilter.mode(
                   AppColors.grey_8D,
                   BlendMode.srcIn,
@@ -46,8 +44,7 @@ class _TosPageState extends ConsumerState<TosPage> {
                 Functions.launchURL(
                     "https://www.notion.so/dokseogarden/dac7d2c7f8b241d8944a5ff957fab3ab?pvs=4");
               },
-              widget: SvgPicture.asset(
-                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+              widget: AppAssets.iconAngleRight.svg(
                 colorFilter: const ColorFilter.mode(
                   AppColors.grey_8D,
                   BlendMode.srcIn,
@@ -62,8 +59,7 @@ class _TosPageState extends ConsumerState<TosPage> {
                 Functions.launchURL(
                     "https://www.notion.so/dokseogarden/1182d8001a928098bb71c78cc5523cd4?pvs=4");
               },
-              widget: SvgPicture.asset(
-                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+              widget: AppAssets.iconAngleRight.svg(
                 colorFilter: const ColorFilter.mode(
                   AppColors.grey_8D,
                   BlendMode.srcIn,

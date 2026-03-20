@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_search_provider.dart';
@@ -168,8 +167,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                               alignment: Alignment.center,
                               width: 20.r,
                               height: 20.r,
-                              child: SvgPicture.asset(
-                                '${Constant.ASSETS_ICONS}icon_search.svg',
+                              child: AppAssets.iconSearch.svg(
                                 colorFilter: const ColorFilter.mode(
                                   AppColors.grey_8D,
                                   BlendMode.srcIn,
@@ -283,8 +281,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                                   fontSize: 16.sp,
                                                 ),
                                               ),
-                                              SvgPicture.asset(
-                                                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                                              AppAssets.iconAngleRight.svg(
                                                 colorFilter:
                                                     const ColorFilter.mode(
                                                   AppColors.grey_8D,
@@ -325,8 +322,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                                   fontSize: 16.sp,
                                                 ),
                                               ),
-                                              SvgPicture.asset(
-                                                '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                                              AppAssets.iconAngleRight.svg(
                                                 colorFilter:
                                                     const ColorFilter.mode(
                                                   AppColors.grey_8D,

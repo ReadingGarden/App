@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_list_item_entity.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_detail_provider.dart'
@@ -43,10 +43,7 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
               alignment: Alignment.center,
               width: 60.r,
               height: 60.r,
-              child: SvgPicture.asset(
-                  '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
-                  width: 24.r,
-                  height: 24.r),
+              child: AppAssets.iconEllipsis.svg(width: 24.r, height: 24.r),
             ),
           )
         ]),

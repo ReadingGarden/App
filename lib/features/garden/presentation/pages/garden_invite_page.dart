@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/garden/domain/entities/garden_main_entity.dart';
@@ -108,8 +107,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                           height: 104.r,
                           decoration: const BoxDecoration(
                               color: Colors.white, shape: BoxShape.circle),
-                          child: SvgPicture.asset(
-                            '${Constant.ASSETS_ICONS}icon_bookmark.svg',
+                          child: AppAssets.iconBookmark.svg(
                             colorFilter: ColorFilter.mode(
                               Functions.gardenColor(inviteGarden.gardenColor),
                               BlendMode.srcIn,

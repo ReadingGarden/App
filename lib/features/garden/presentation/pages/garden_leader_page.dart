@@ -1,12 +1,11 @@
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 final gardenLeaderSelectIndexProvider = StateProvider<int>((ref) => 0);
@@ -69,8 +68,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
               width: 60.r,
               height: 60.r,
               color: Colors.transparent,
-              child: SvgPicture.asset(
-                '${Constant.ASSETS_ICONS}icon_close.svg',
+              child: AppAssets.iconClose.svg(
                 width: 24.r,
                 height: 24.r,
               ),
@@ -121,11 +119,11 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                                 ),
                               ],
                             ),
-                            SvgPicture.asset(
-                              (ref.watch(gardenLeaderSelectIndexProvider) ==
-                                      member['user_no'])
-                                  ? '${Constant.ASSETS_ICONS}icon_check_select.svg'
-                                  : '${Constant.ASSETS_ICONS}icon_check_deselect.svg',
+                            ((ref.watch(gardenLeaderSelectIndexProvider) ==
+                                        member['user_no'])
+                                    ? AppAssets.iconCheckSelect
+                                    : AppAssets.iconCheckDeselect)
+                                .svg(
                               colorFilter:
                                   (ref.watch(gardenLeaderSelectIndexProvider) ==
                                           member['user_no'])

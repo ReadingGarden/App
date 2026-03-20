@@ -14,6 +14,8 @@ class AppAssets {
   static SvgGenImage get iconClose => Assets.icons.iconClose;
   static SvgGenImage get iconEdit => Assets.icons.iconEdit;
   static SvgGenImage get iconEllipsis => Assets.icons.iconEllipsis;
+  static SvgGenImage get iconKeyboardDown => Assets.icons.iconKeyboardDown;
+  static SvgGenImage get iconKeyboardUp => Assets.icons.iconKeyboardUp;
   static SvgGenImage get iconLeader => Assets.icons.iconLeader;
   static SvgGenImage get iconPhoto => Assets.icons.iconPhoto;
   static SvgGenImage get iconSearch => Assets.icons.iconSearch;
@@ -34,6 +36,10 @@ class AppAssets {
         return Assets.images.empty.emptyPng___;
     }
   }
+
+  static AssetGenImage get emptyMemo => Assets.images.empty.emptyPng__;
+
+  static AssetGenImage get emptyGardenBookList => Assets.images.empty.emptyPng;
 
   static AssetGenImage pageFlower(String flowerName) {
     switch (flowerName) {

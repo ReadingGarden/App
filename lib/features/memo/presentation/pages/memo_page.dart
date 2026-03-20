@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/features/memo/presentation/providers/memo_list_provider.dart'
     as memo_feature;
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MemoPage extends ConsumerStatefulWidget {
@@ -73,8 +73,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                 width: 60.r,
                 height: 60.r,
                 color: Colors.transparent,
-                child: SvgPicture.asset(
-                  '${Constant.ASSETS_ICONS}icon_write.svg',
+                child: AppAssets.iconWrite.svg(
                   width: 24.r,
                   height: 24.r,
                 ),
@@ -225,10 +224,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                       width: 40.r,
                       height: 40.r,
                       color: Colors.transparent,
-                      child: SvgPicture.asset(
-                        memo.memoLike
-                            ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
-                            : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
+                      child: (memo.memoLike
+                              ? AppAssets.iconStarSelect
+                              : AppAssets.iconStarDeselect)
+                          .svg(
                         colorFilter: ColorFilter.mode(
                           memo.memoLike
                               ? AppColors.starYellowColor
@@ -256,9 +255,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
       child: Column(
         children: [
           SizedBox(
-              width: 200.r,
-              height: 200.r,
-              child: Image.asset('assets/images/empty/empty_메모.png')),
+              width: 200.r, height: 200.r, child: AppAssets.emptyMemo.image()),
           Container(
             margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
             child: Text(

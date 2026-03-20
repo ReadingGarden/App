@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
@@ -151,10 +151,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                       alignment: Alignment.center,
                       width: 60.r,
                       height: 60.r,
-                      child: SvgPicture.asset(
-                          '${Constant.ASSETS_ICONS}icon_ellipsis.svg',
-                          width: 24.r,
-                          height: 24.r),
+                      child: AppAssets.iconEllipsis.svg(
+                        width: 24.r,
+                        height: 24.r,
+                      ),
                     ),
                   )
                 : Container()
@@ -207,8 +207,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         alignment: Alignment.bottomCenter,
                         height: 480.h,
                         margin: EdgeInsets.only(bottom: 20.h),
-                        child: Image.asset(
-                          'assets/images/book_flowers/book_${bookDetail.bookTree}.png',
+                        child: AppAssets.bookFlower(
+                          bookDetail.bookTree,
+                        ).image(
                           width: 360.w,
                           height: 459.h,
                         ),
@@ -281,8 +282,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                 children: [
                                   Container(
                                     alignment: Alignment.center,
-                                    child: SvgPicture.asset(
-                                      '${Constant.ASSETS_ICONS}icon_water.svg',
+                                    child: AppAssets.iconWater.svg(
                                       colorFilter: const ColorFilter.mode(
                                         Colors.white,
                                         BlendMode.srcIn,
@@ -466,8 +466,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                 },
                                                 child: Row(
                                                   children: [
-                                                    SvgPicture.asset(
-                                                      '${Constant.ASSETS_ICONS}icon_add.svg',
+                                                    AppAssets.iconAdd.svg(
                                                       colorFilter:
                                                           const ColorFilter
                                                               .mode(
@@ -918,11 +917,12 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                               width: 40.r,
                               height: 40.r,
                               color: Colors.transparent,
-                              child: SvgPicture.asset(
-                                ref.watch(bookDetailMemoSelectIndexListProvider)[
-                                        index]
-                                    ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
-                                    : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
+                              child:
+                                  (ref.watch(bookDetailMemoSelectIndexListProvider)[
+                                              index]
+                                          ? AppAssets.iconStarSelect
+                                          : AppAssets.iconStarDeselect)
+                                      .svg(
                                 colorFilter: ColorFilter.mode(
                                   ref.watch(bookDetailMemoSelectIndexListProvider)[
                                           index]

@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/features/mypage/data/services/push_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:go_router/go_router.dart';
 
@@ -131,8 +130,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(left: 8.w),
-                    child: SvgPicture.asset(
-                      '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                    child: AppAssets.iconAngleRight.svg(
                       colorFilter: const ColorFilter.mode(
                         AppColors.grey_8D,
                         BlendMode.srcIn,

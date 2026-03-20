@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:book_flutter/core/api/auth_api.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
@@ -71,9 +72,9 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                     margin: EdgeInsets.only(bottom: 20.h),
                     child: CircleAvatar(
                       radius: 60.r,
-                      child: Image.asset(
-                        '${Constant.PROFILE}profile_${Constant.FLOWER_LIST[listIndex]}.png',
-                      ),
+                      child: AppAssets.profileFlower(
+                        Constant.FLOWER_LIST[listIndex],
+                      ).image(),
                     ),
                   ),
                   Container(
@@ -143,9 +144,9 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
                                                         color:
                                                             AppColors.black_59)
                                                     : null),
-                                            child: Image.asset(
-                                              '${Constant.PROFILE}profile_${Constant.FLOWER_LIST[index]}.png',
-                                            ),
+                                            child: AppAssets.profileFlower(
+                                              Constant.FLOWER_LIST[index],
+                                            ).image(),
                                           ),
                                           Container(
                                               margin: EdgeInsets.only(top: 7.h),

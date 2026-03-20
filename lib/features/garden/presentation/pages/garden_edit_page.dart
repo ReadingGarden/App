@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/api/auth_api.dart';
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
@@ -476,8 +476,7 @@ class GardenEditBottomSheet extends ConsumerWidget {
                       ),
                       Container(
                         margin: EdgeInsets.only(right: 20.w),
-                        child: SvgPicture.asset(
-                          '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
+                        child: AppAssets.iconBookmarkFull.svg(
                           width: 20.w,
                           height: 24.h,
                           colorFilter: ColorFilter.mode(

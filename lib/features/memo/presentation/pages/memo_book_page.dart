@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_book_provider.dart'
     as memo_book_feature;
-import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MemoBookPage extends ConsumerStatefulWidget {
@@ -163,8 +162,7 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                       ),
                     ],
                   ),
-                  SvgPicture.asset(
-                      '${Constant.ASSETS_ICONS}icon_angle_right.svg',
+                  AppAssets.iconAngleRight.svg(
                       colorFilter: const ColorFilter.mode(
                         AppColors.grey_8D,
                         BlendMode.srcIn,

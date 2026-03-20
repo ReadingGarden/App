@@ -1,10 +1,6 @@
 import 'dart:ui';
 
 class Constant {
-  static const ASSETS_ICONS = 'assets/icons/';
-  static const MAIN_FLOWERS = 'assets/images/main_flowers/';
-  static const PROFILE = 'assets/images/profile/';
-
   // static const URL = 'http://172.30.1.41:8000/api/v1/';
 
   static const URL =

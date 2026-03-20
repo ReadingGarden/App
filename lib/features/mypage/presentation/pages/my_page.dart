@@ -8,7 +8,7 @@ import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
 import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
 class MyPage extends ConsumerStatefulWidget {
@@ -88,9 +88,8 @@ class _MyPageState extends ConsumerState<MyPage> {
                           margin: EdgeInsets.only(right: 14.w),
                           child: CircleAvatar(
                             radius: 30.r,
-                            child: Image.asset(
-                              '${Constant.PROFILE}profile_${user.userImage}.png',
-                            ),
+                            child:
+                                AppAssets.profileFlower(user.userImage).image(),
                           ),
                         ),
                         Column(

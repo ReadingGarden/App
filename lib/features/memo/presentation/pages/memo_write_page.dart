@@ -5,13 +5,14 @@ import 'package:book_flutter/features/memo/domain/entities/memo_write_input_enti
 import 'package:book_flutter/features/memo/presentation/providers/memo_write_provider.dart'
     as memo_write_feature;
 import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:book_flutter/gen/assets.gen.dart';
 
 class MemoWritePage extends ConsumerStatefulWidget {
   const MemoWritePage({super.key, required this.book});
@@ -227,8 +228,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(4.r)),
-                              child: SvgPicture.asset(
-                                '${Constant.ASSETS_ICONS}icon_close.svg',
+                              child: AppAssets.iconClose.svg(
                                 colorFilter: const ColorFilter.mode(
                                   AppColors.primaryColor,
                                   BlendMode.srcIn,
@@ -279,8 +279,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                   (ref.watch(memo_write_feature.memoImageNameProvider) == null)
                       ? GestureDetector(
                           onTap: () => _takePhoto(),
-                          child: SvgPicture.asset(
-                            '${Constant.ASSETS_ICONS}icon_camera.svg',
+                          child: AppAssets.iconCamera.svg(
                             colorFilter: const ColorFilter.mode(
                               AppColors.black_59,
                               BlendMode.srcIn,
@@ -289,8 +288,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                             height: 24.r,
                           ),
                         )
-                      : SvgPicture.asset(
-                          '${Constant.ASSETS_ICONS}icon_camera.svg',
+                      : AppAssets.iconCamera.svg(
                           colorFilter: const ColorFilter.mode(
                             AppColors.grey_CA,
                             BlendMode.srcIn,
@@ -304,8 +302,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           child: Container(
                             margin: EdgeInsets.only(left: 10.w),
                             color: Colors.transparent,
-                            child: SvgPicture.asset(
-                              '${Constant.ASSETS_ICONS}icon_album.svg',
+                            child: Assets.icons.iconAlbum.svg(
                               colorFilter: const ColorFilter.mode(
                                 AppColors.black_59,
                                 BlendMode.srcIn,
@@ -318,8 +315,7 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                       : Container(
                           margin: EdgeInsets.only(left: 10.w),
                           color: Colors.transparent,
-                          child: SvgPicture.asset(
-                            '${Constant.ASSETS_ICONS}icon_album.svg',
+                          child: Assets.icons.iconAlbum.svg(
                             colorFilter: const ColorFilter.mode(
                               AppColors.grey_CA,
                               BlendMode.srcIn,
@@ -339,10 +335,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                     FocusScope.of(context).requestFocus(_focusNode);
                   }
                 },
-                child: SvgPicture.asset(
-                  (!FocusScope.of(context).hasFocus)
-                      ? '${Constant.ASSETS_ICONS}icon_keyboard_up.svg'
-                      : '${Constant.ASSETS_ICONS}icon_keyboard_down.svg',
+                child: ((!FocusScope.of(context).hasFocus)
+                        ? AppAssets.iconKeyboardUp
+                        : AppAssets.iconKeyboardDown)
+                    .svg(
                   colorFilter: const ColorFilter.mode(
                     AppColors.black_59,
                     BlendMode.srcIn,
