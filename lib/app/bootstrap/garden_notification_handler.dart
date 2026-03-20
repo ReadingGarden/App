@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app/router/app_router.dart';
-import '../../core/service/GardenService.dart';
 import '../../features/garden/domain/entities/garden_main_entity.dart';
+import '../../features/garden/data/services/garden_service.dart';
 import '../../features/garden/presentation/providers/garden_provider.dart';
 
 Future<void> openGardenFromNotification(

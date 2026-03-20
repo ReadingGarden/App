@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/service/MemoService.dart';
+import '../services/memo_service.dart';
 import '../../domain/entities/memo_list_item_entity.dart';
 
 final memoRepositoryProvider = Provider<MemoRepository>((ref) {

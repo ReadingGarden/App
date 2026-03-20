@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/service/GardenService.dart';
+import '../services/garden_service.dart';
 import '../../domain/entities/garden_add_input_entity.dart';
 
 final gardenAddRepositoryProvider = Provider<GardenAddRepository>((ref) {
