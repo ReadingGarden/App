@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/provider/FcmTokenProvider.dart';
+import '../../core/provider/fcm_token_provider.dart';
 import '../../core/storage/token_storage.dart';
 import '../../core/ui/app_colors.dart';
 

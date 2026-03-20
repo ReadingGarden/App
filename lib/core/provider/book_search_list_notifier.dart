@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model/BookSearch.dart';
+import '../model/book_search.dart';
 
-// import '../model/BookSearch.dart';
+// import '../model/book_search.dart';
 
 final bookSearchListProvider =
     StateNotifierProvider<BookSearchListNotifier, List<BookSearch>>(

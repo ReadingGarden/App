@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../model/Book.dart';
+import '../model/book.dart';
 
 final bookStatusAllListProvider =
     StateNotifierProvider<BookStatusAllListNotifier, List<Book>>(

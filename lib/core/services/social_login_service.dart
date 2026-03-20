@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import '../api/AuthAPI.dart';
-import '../provider/FcmTokenProvider.dart';
+import '../api/auth_api.dart';
+import '../provider/fcm_token_provider.dart';
 
 class SocialLogin {
   static Future<void> googleLogin(WidgetRef ref, BuildContext context) async {

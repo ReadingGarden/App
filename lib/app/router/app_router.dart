@@ -1,4 +1,4 @@
-import 'package:book_flutter/ErrorPage.dart';
+import 'package:book_flutter/error_page.dart';
 import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/app/splash/splash_page.dart';
 import 'package:book_flutter/features/auth/presentation/auth_routes.dart';
