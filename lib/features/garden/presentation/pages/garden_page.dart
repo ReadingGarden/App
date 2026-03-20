@@ -23,8 +23,10 @@ import 'package:book_flutter/features/garden/presentation/providers/garden_provi
     as garden_feature;
 
 class GardenPage extends ConsumerStatefulWidget {
+  const GardenPage({super.key});
+
   @override
-  _GardenPageState createState() => _GardenPageState();
+  ConsumerState<GardenPage> createState() => _GardenPageState();
 }
 
 class _GardenPageState extends ConsumerState<GardenPage> {
@@ -69,8 +71,9 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     // });
 
     // Branch SDK Session 시작
-    FlutterBranchSdk.initSession().listen((data) {
+    FlutterBranchSdk.listSession().listen((data) {
       debugPrint('브랜치 딥링크 데이터 수신: $data');
+      if (!mounted) return;
       if (data['+clicked_branch_link']) {
         context.pushNamed('invite', extra: int.parse(data['garden_no']));
       }
@@ -227,8 +230,11 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                 margin: EdgeInsets.only(right: 20.w),
                                 child: SvgPicture.asset(
                                   '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
-                                  color: Functions.gardenColor(
-                                      gardenMain.gardenColor),
+                                  colorFilter: ColorFilter.mode(
+                                    Functions.gardenColor(
+                                        gardenMain.gardenColor),
+                                    BlendMode.srcIn,
+                                  ),
                                   width: 20.w,
                                   height: 24.h,
                                 ),
@@ -453,7 +459,10 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               _memberProfile(),
                               SvgPicture.asset(
                                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                                color: AppColors.grey_8D,
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.grey_8D,
+                                  BlendMode.srcIn,
+                                ),
                                 width: 20.r,
                                 height: 20.r,
                               ),
@@ -797,8 +806,11 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                 color: Colors.white),
                             child: SvgPicture.asset(
                               '${Constant.ASSETS_ICONS}icon_bookmark.svg',
-                              color: Functions.gardenColor(
-                                  gardens[index].gardenColor),
+                              colorFilter: ColorFilter.mode(
+                                Functions.gardenColor(
+                                    gardens[index].gardenColor),
+                                BlendMode.srcIn,
+                              ),
                               width: 28.r,
                               height: 28.r,
                             ),
@@ -842,7 +854,10 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                               shape: BoxShape.circle, color: Colors.white),
                           child: SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_add.svg',
-                            color: AppColors.grey_8D,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.grey_8D,
+                              BlendMode.srcIn,
+                            ),
                             width: 28.r,
                             height: 28.r,
                           ),

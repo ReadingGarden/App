@@ -33,6 +33,6 @@ final fcmTokenProvider = FutureProvider<String?>((ref) async {
     return fcmToken;
   } catch (error) {
     debugPrint('FCM 토큰 조회 실패: $error');
-    throw error;
+    rethrow;
   }
 });

@@ -12,7 +12,10 @@ import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_search_provider.dart';
 
 class BookSearchPage extends ConsumerStatefulWidget {
-  _BookSearchPageState createState() => _BookSearchPageState();
+  const BookSearchPage({super.key});
+
+  @override
+  ConsumerState<BookSearchPage> createState() => _BookSearchPageState();
 }
 
 class _BookSearchPageState extends ConsumerState<BookSearchPage> {
@@ -76,10 +79,11 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
   }
 
   //책 상세조회 isbn api
-  void getDetailBook_ISBN(String isbn13) async {
+  void getDetailBookIsbn(String isbn13) async {
     final statusCode = await ref
         .read(bookSearchRepositoryStateProvider)
         .fetchBookByIsbn(isbn13);
+    if (!mounted) return;
     if (statusCode == 200) {
       context.pushNamed('book-add-garden', extra: {'isbn13': isbn13});
     } else if (statusCode == 401) {
@@ -107,8 +111,9 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
 
       if (ref.watch(barcodeValueProvider).isNotEmpty &&
           ref.watch(barcodeValueProvider) != 'No barcode detected') {
-        getDetailBook_ISBN(ref.watch(barcodeValueProvider));
+        getDetailBookIsbn(ref.watch(barcodeValueProvider));
       } else {
+        if (!mounted) return;
         fToast.showToast(child: Widgets.toast('바코드가 인식되지 않았어요'));
       }
     } catch (e) {
@@ -165,7 +170,10 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                               height: 20.r,
                               child: SvgPicture.asset(
                                 '${Constant.ASSETS_ICONS}icon_search.svg',
-                                color: AppColors.grey_8D,
+                                colorFilter: const ColorFilter.mode(
+                                  AppColors.grey_8D,
+                                  BlendMode.srcIn,
+                                ),
                                 width: 20.r,
                                 height: 20.r,
                               ),
@@ -277,7 +285,11 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                               ),
                                               SvgPicture.asset(
                                                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                                                color: AppColors.grey_8D,
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  AppColors.grey_8D,
+                                                  BlendMode.srcIn,
+                                                ),
                                                 width: 20.r,
                                                 height: 20.r,
                                               )
@@ -315,7 +327,11 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                                               ),
                                               SvgPicture.asset(
                                                 '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                                                color: AppColors.grey_8D,
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                  AppColors.grey_8D,
+                                                  BlendMode.srcIn,
+                                                ),
                                                 width: 20.r,
                                                 height: 20.r,
                                               )

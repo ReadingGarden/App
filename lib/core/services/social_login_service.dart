@@ -38,6 +38,7 @@ class SocialLogin {
           "user_social_id": user.uid,
           "user_social_type": "google"
         };
+        if (!context.mounted) return;
         authAPI.postSocialLogin(context, data);
       }
     } catch (e) {
@@ -51,6 +52,7 @@ class SocialLogin {
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
         debugPrint('카카오톡 로그인 성공 액세스 토큰: ${token.accessToken}');
 
+        if (!context.mounted) return;
         _getKakaoUser(ref, context);
       } catch (error) {
         debugPrint('카카오톡 로그인 실패: $error');
@@ -62,6 +64,7 @@ class SocialLogin {
         try {
           await UserApi.instance.loginWithKakaoAccount();
           debugPrint('카카오계정 로그인 성공');
+          if (!context.mounted) return;
           _getKakaoUser(ref, context);
         } catch (error) {
           debugPrint('카카오계정 로그인 실패: $error');
@@ -71,6 +74,7 @@ class SocialLogin {
       try {
         await UserApi.instance.loginWithKakaoAccount();
         debugPrint('카카오계정 로그인 성공');
+        if (!context.mounted) return;
         _getKakaoUser(ref, context);
       } catch (error) {
         debugPrint('카카오계정 로그인 실패: $error');
@@ -98,6 +102,7 @@ class SocialLogin {
         "user_social_id": user.id.toString(),
         "user_social_type": "kakao"
       };
+      if (!context.mounted) return;
       authAPI.postSocialLogin(context, data);
     } catch (error) {
       debugPrint('카카오 사용자 정보 조회 실패: $error');

@@ -11,7 +11,7 @@ class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  _SplashPageState createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
 class _SplashPageState extends ConsumerState<SplashPage> {
@@ -25,6 +25,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     Future.delayed(const Duration(seconds: 2), () async {
       //저장된 Access 불러오기
       final accessToken = await loadAccess();
+      if (!mounted) return;
       //Access 저장 되어있으면 자동 로그인
       if (accessToken == null) {
         context.go('/start');
