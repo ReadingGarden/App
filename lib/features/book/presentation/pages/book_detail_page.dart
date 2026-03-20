@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,11 +18,12 @@ final bookDetailAppBarColorProvider =
     StateProvider<Color>((ref) => Colors.white);
 
 class BookDetailPage extends ConsumerStatefulWidget {
-  BookDetailPage({super.key, required this.book_no});
+  const BookDetailPage({super.key, required this.bookNo});
 
-  _BookDetailPageState createState() => _BookDetailPageState();
+  @override
+  ConsumerState<BookDetailPage> createState() => _BookDetailPageState();
 
-  final int book_no;
+  final int bookNo;
 }
 
 class _BookDetailPageState extends ConsumerState<BookDetailPage>
@@ -78,9 +78,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   }
 
   Future<void> _loadBookDetail() async {
-    await ref
-        .read(bookDetailProvider.notifier)
-        .fetchDetail(ref, widget.book_no);
+    await ref.read(bookDetailProvider.notifier).fetchDetail(ref, widget.bookNo);
 
     final gardenColor = ref.read(bookDetailProvider).gardenColor;
     if (gardenColor.isNotEmpty) {
@@ -93,7 +91,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   Future<void> _moveBook(int toGardenNo) async {
     final statusCode = await ref
         .read(bookDetailProvider.notifier)
-        .moveBook(ref, widget.book_no, toGardenNo);
+        .moveBook(ref, widget.bookNo, toGardenNo);
 
     if (!mounted) {
       return;
@@ -116,7 +114,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
 
   Future<void> _deleteBook() async {
     final statusCode =
-        await ref.read(bookDetailProvider.notifier).deleteBook(widget.book_no);
+        await ref.read(bookDetailProvider.notifier).deleteBook(widget.bookNo);
     if (!mounted) {
       return;
     }
@@ -135,10 +133,11 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
     final user = ref.watch(auth_feature.authUserProvider);
     final bookDetail = ref.watch(bookDetailProvider);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
         context.pop('fetchData');
-        return true;
       },
       child: Scaffold(
         backgroundColor: ref.watch(bookDetailAppBarColorProvider),
@@ -284,7 +283,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                     alignment: Alignment.center,
                                     child: SvgPicture.asset(
                                       '${Constant.ASSETS_ICONS}icon_water.svg',
-                                      color: Colors.white,
+                                      colorFilter: const ColorFilter.mode(
+                                        Colors.white,
+                                        BlendMode.srcIn,
+                                      ),
                                       width: 24.r,
                                       height: 24.r,
                                     ),
@@ -453,7 +455,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                   final data = bookDetail
                                                       .toBookAddPayload();
                                                   data['book_no'] =
-                                                      widget.book_no;
+                                                      widget.bookNo;
                                                   final result = await context
                                                       .pushNamed('memo-write',
                                                           extra: data);
@@ -466,8 +468,12 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                   children: [
                                                     SvgPicture.asset(
                                                       '${Constant.ASSETS_ICONS}icon_add.svg',
-                                                      color: AppColors
-                                                          .primaryColor,
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        AppColors.primaryColor,
+                                                        BlendMode.srcIn,
+                                                      ),
                                                       width: 16.r,
                                                       height: 16.r,
                                                     ),
@@ -571,8 +577,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
             alignment: Alignment.center,
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                  offset: Offset(0, 4),
-                  color: Color(0xff97CDBD).withOpacity(0.05),
+                  offset: const Offset(0, 4),
+                  color: const Color(0xff97CDBD).withOpacity(0.05),
                   blurRadius: 8.r)
             ]),
             child: Column(
@@ -618,8 +624,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         isScrollControlled: true,
                         context: context,
                         builder: (context) => GardenEditBottomSheet(
-                              function: (int to_garden_no) {
-                                _moveBook(to_garden_no);
+                              function: (int toGardenNo) {
+                                _moveBook(toGardenNo);
                               },
                               gardenNo: gardenNo,
                             ));
@@ -793,7 +799,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                     GestureDetector(
                       onTap: () async {
                         final data = memo.toRoutePayload(
-                          bookNo: widget.book_no,
+                          bookNo: widget.bookNo,
                           bookTitle: bookDetail.bookTitle,
                           bookAuthor: bookDetail.bookAuthor,
                           bookImageUrl: bookDetail.bookImageUrl,
@@ -917,11 +923,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                         index]
                                     ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
                                     : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
-                                color: ref.watch(
-                                            bookDetailMemoSelectIndexListProvider)[
-                                        index]
-                                    ? AppColors.starYellowColor
-                                    : AppColors.grey_CA,
+                                colorFilter: ColorFilter.mode(
+                                  ref.watch(bookDetailMemoSelectIndexListProvider)[
+                                          index]
+                                      ? AppColors.starYellowColor
+                                      : AppColors.grey_CA,
+                                  BlendMode.srcIn,
+                                ),
                                 width: 20.r,
                                 height: 20.r,
                               ),

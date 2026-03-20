@@ -22,11 +22,12 @@ final flowerSelectIndexProvider = StateProvider<int>((ref) => 0);
 final dateErrorProvider = StateProvider<String?>((ref) => null);
 
 class BookRegisterPage extends ConsumerStatefulWidget {
-  const BookRegisterPage({required this.book});
+  const BookRegisterPage({super.key, required this.book});
 
   final BookRegisterInputEntity book;
 
-  _BookRegisterPageState createState() => _BookRegisterPageState();
+  @override
+  ConsumerState<BookRegisterPage> createState() => _BookRegisterPageState();
 }
 
 class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
@@ -329,7 +330,10 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
                       '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
                       width: 20.h,
                       height: 24.h,
-                      color: Functions.gardenColor(garden.gardenColor),
+                      colorFilter: ColorFilter.mode(
+                        Functions.gardenColor(garden.gardenColor),
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ],
@@ -399,7 +403,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
 }
 
 class BookRegisterDonePage extends StatelessWidget {
-  BookRegisterDonePage({super.key, required this.gardenName});
+  const BookRegisterDonePage({super.key, required this.gardenName});
 
   final String gardenName;
 

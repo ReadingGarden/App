@@ -7,20 +7,18 @@ import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_add_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class BookAddPage extends ConsumerStatefulWidget {
-  const BookAddPage({required this.bookRead});
+  const BookAddPage({super.key, required this.bookRead});
 
   final BookReadInputEntity bookRead;
 
-  _BookAddPageState createState() => _BookAddPageState();
+  @override
+  ConsumerState<BookAddPage> createState() => _BookAddPageState();
 }
 
 class _BookAddPageState extends ConsumerState<BookAddPage> {
@@ -59,6 +57,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
       bookRead: widget.bookRead,
       currentPage: currentPage,
     );
+    if (!mounted) return;
     if (result.statusCode == 201) {
       if (result.done != null) {
         context.pushReplacementNamed('book-add-done',
@@ -88,6 +87,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     final ui.FrameInfo overlayFrameInfo = await overlayCodec.getNextFrame();
     final ui.Image overlayImage = overlayFrameInfo.image;
 
+    if (!mounted) return;
     setState(() {
       image = mainImage;
       this.overlayImage = overlayImage;
@@ -317,7 +317,7 @@ class RevealPainter extends CustomPainter {
 }
 
 class BookAddDonePage extends StatelessWidget {
-  BookAddDonePage({super.key, required this.bookRead});
+  const BookAddDonePage({super.key, required this.bookRead});
 
   final BookAddDoneEntity bookRead;
 
