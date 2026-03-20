@@ -6,6 +6,10 @@ import '../../../../core/network/dio_client.dart';
 class BookService {
   final _authenticatedDio = dioclent.authenticatedDio;
 
+  Future<Response?> getSerachBook(String query, int page) {
+    return searchBooks(query, page);
+  }
+
   Future<Response?> searchBooks(String query, int page) async {
     try {
       final response = await _authenticatedDio.get(
@@ -22,6 +26,10 @@ class BookService {
       print('Error sending request: ${e.message}');
       return null;
     }
+  }
+
+  Future<Response?> getDetailBook_ISBN(String isbn13) {
+    return getBookByIsbn(isbn13);
   }
 
   Future<Response?> getBookByIsbn(String isbn13) async {
@@ -42,6 +50,10 @@ class BookService {
     }
   }
 
+  Future<Response?> getBookDuplication(String isbn) {
+    return checkBookDuplication(isbn);
+  }
+
   Future<Response?> checkBookDuplication(String isbn) async {
     try {
       final response =
@@ -56,6 +68,10 @@ class BookService {
       print('Error sending request: ${e.message}');
       return null;
     }
+  }
+
+  Future<Response?> postBook(Map data) {
+    return createWishBook(data);
   }
 
   Future<Response?> createWishBook(Map data) async {
@@ -130,10 +146,16 @@ class BookService {
     }
   }
 
-  Future<Response?> getBookStatusList(int status, int page) async {
+  Future<Response?> getBookStatusList(
+    int status,
+    int page, {
+    int? garden_no,
+  }) async {
     try {
       final response = await _authenticatedDio.get(
-        '${Constant.URL}book/status?status=$status&page=$page&page_size=10',
+        (garden_no == null)
+            ? '${Constant.URL}book/status?status=$status&page=$page&page_size=10'
+            : '${Constant.URL}book/status?garden_no=$garden_no&status=$status&page=$page&page_size=10',
       );
       print(response.data.toString());
       return response;
@@ -186,3 +208,5 @@ class BookService {
     }
   }
 }
+
+final bookService = BookService();
