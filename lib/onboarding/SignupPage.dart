@@ -8,8 +8,8 @@ import '../core/provider/FcmTokenProvider.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Functions.dart';
-import '../utils/SharedPreferences.dart';
-import '../utils/Widgets.dart';
+import '../core/storage/token_storage.dart';
+import '../core/ui/app_widgets.dart';
 
 // 이메일 에러 메시지 상태를 관리하는 프로바이더
 final emailErrorProvider = StateProvider<String?>((ref) => null);

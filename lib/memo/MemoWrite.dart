@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 //완료 버튼 상태를 관리하는 ...
 final okButtonProvider = StateProvider<bool>((ref) => false);

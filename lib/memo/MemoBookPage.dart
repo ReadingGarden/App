@@ -9,7 +9,7 @@ import '../core/provider/BookStatusAllListNotifier.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class MemoBookPage extends ConsumerStatefulWidget {
   @override

@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 final bookTotalCountProvider = StateProvider<int>((ref) => 0);
 final barcodeValueProvider = StateProvider<String>((ref) => '');

@@ -7,7 +7,7 @@ import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/AutoInputFormatter.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 final bookReadListProvider = StateProvider<List>((ref) => []);
 final startDateErrorProvider = StateProvider<String?>((ref) => null);

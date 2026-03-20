@@ -7,18 +7,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/api/AuthAPI.dart';
-import '../core/service/BookService.dart';
-import '../core/service/GardenService.dart';
-import '../core/provider/BookDetailNotifier.dart';
-import '../core/service/MemoService.dart';
+import '../features/book/presentation/providers/book_detail_provider.dart';
 import '../garden/GardenEditPage.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
-final bookDetailMemoListProvider = StateProvider<List>((ref) => []);
-final bookDetailMemoSelectIndexListProvider = StateProvider<List>((ref) => []);
 final bookDetailAppBarColorProvider =
     StateProvider<Color>((ref) => Colors.white);
 
@@ -51,14 +46,11 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
     );
 
     Future.microtask(() {
-      ref.read(bookDetailProvider.notifier).reset();
+      ref.read(bookDetailProvider.notifier).reset(ref);
       ref.read(bookDetailAppBarColorProvider.notifier).state = Colors.white;
-      ref.read(bookDetailMemoListProvider.notifier).state = [];
-      ref.read(bookDetailMemoSelectIndexListProvider.notifier).state = [];
 
       // 색상 초기화
-      _colorTween = ColorTween(
-          begin: ref.watch(bookDetailAppBarColorProvider), end: Colors.white);
+      _colorTween = ColorTween(begin: Colors.white, end: Colors.white);
     });
 
     // 스크롤 상단바 색 변경
@@ -74,7 +66,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       ref.read(bookDetailAppBarColorProvider.notifier).state =
           updatedColor; // 색상 업데이트
     });
-    getBookRead();
+    _loadBookDetail();
   }
 
   @override
@@ -84,80 +76,57 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
     super.dispose();
   }
 
-  //독서 기록 조회 api
-  void getBookRead() async {
-    final response = await bookService.getBookRead(widget.book_no);
-    if (response?.statusCode == 200) {
-      ref
-          .read(bookDetailProvider.notifier)
-          .updateBookDetail(response?.data['data']);
+  Future<void> _loadBookDetail() async {
+    await ref.read(bookDetailProvider.notifier).fetchDetail(ref, widget.book_no);
 
-      ref.read(bookDetailMemoListProvider.notifier).state =
-          response?.data['data']['memo_list'];
-
-      for (var memo in ref.watch(bookDetailMemoListProvider)) {
-        ref
-            .read(bookDetailMemoSelectIndexListProvider.notifier)
-            .state
-            .add(memo['memo_like']);
-      }
-      getGardenDetail(response?.data['data']['garden_no']);
+    final gardenColor = ref.read(bookDetailProvider).gardenColor;
+    if (gardenColor.isNotEmpty) {
+      final backgroundColor = Functions.gardenBackColor(gardenColor);
+      ref.read(bookDetailAppBarColorProvider.notifier).state = backgroundColor;
+      _colorTween = ColorTween(begin: backgroundColor, end: Colors.white);
     }
   }
 
-  //가든 상세 조회 api
-  void getGardenDetail(int garden_no) async {
-    final response = await gardenService.getGardenDetail(garden_no);
-    if (response?.statusCode == 200) {
-      Map gardenDetail = {};
-      gardenDetail['garden_title'] = response?.data['data']['garden_title'];
-      gardenDetail['garden_color'] = response?.data['data']['garden_color'];
-      ref.read(bookDetailProvider.notifier).updateGardenDetail(gardenDetail);
-      ref.read(bookDetailAppBarColorProvider.notifier).state =
-          Functions.gardenBackColor(gardenDetail['garden_color']);
+  Future<void> _moveBook(int toGardenNo) async {
+    final statusCode = await ref
+        .read(bookDetailProvider.notifier)
+        .moveBook(ref, widget.book_no, toGardenNo);
 
-      // 색상 다시 초기화
-      _colorTween = ColorTween(
-          begin: Functions.gardenBackColor(gardenDetail['garden_color']),
-          end: Colors.white);
+    if (!mounted) {
+      return;
     }
-  }
 
-  //책 수정 (가든 옮기기) api
-  void putBook(to_garden_no) async {
-    final data = {
-      "garden_no": to_garden_no,
-    };
-
-    final response = await bookService.putBook(widget.book_no, data);
-    if (response?.statusCode == 200) {
+    if (statusCode == 200) {
       context.pop();
       fToast.showToast(child: Widgets.toast('선택한 가든으로 옮겨 심었어요'));
-      getBookRead();
-    } else if (response?.statusCode == 403) {
+      final gardenColor = ref.read(bookDetailProvider).gardenColor;
+      if (gardenColor.isNotEmpty) {
+        final backgroundColor = Functions.gardenBackColor(gardenColor);
+        ref.read(bookDetailAppBarColorProvider.notifier).state =
+            backgroundColor;
+        _colorTween = ColorTween(begin: backgroundColor, end: Colors.white);
+      }
+    } else if (statusCode == 403) {
       fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
     }
   }
 
-  //책 읽고싶어요 취소 (책 삭제)
-  void deleteBook() async {
-    final response = await bookService.deleteBook(widget.book_no);
-    if (response?.statusCode == 200) {
+  Future<void> _deleteBook() async {
+    final statusCode =
+        await ref.read(bookDetailProvider.notifier).deleteBook(widget.book_no);
+    if (!mounted) {
+      return;
+    }
+    if (statusCode == 200) {
       context.pop();
       context.replaceNamed('bottom-navi');
     }
   }
 
-  //메모 즐겨찾기 api
-  void putMemoLike(int index, int id) async {
-    final response = await memoService.putMemoLike(id);
-    if (response?.statusCode == 200) {
-      ref.read(bookDetailMemoSelectIndexListProvider.notifier).update((state) {
-        List<bool> newState = List.from(state);
-        newState[index] = !newState[index];
-        return newState;
-      });
-    }
+  Future<void> _toggleMemoLike(int index, int id) async {
+    await ref
+        .read(bookDetailProvider.notifier)
+        .toggleMemoLike(ref, index, id);
   }
 
   @override
@@ -175,7 +144,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
         appBar: Widgets.appBar(
           context,
           actions: [
-            (bookDetail['user_no'] == authAPI.user()['user_no'])
+            (bookDetail.userNo == authAPI.user()['user_no'])
                 ? GestureDetector(
                     onTap: _moreBottomSheet,
                     child: Container(
@@ -195,7 +164,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
           color: ref.watch(bookDetailAppBarColorProvider),
         ),
         body: Visibility(
-          visible: bookDetail['garden_color'] != null,
+          visible: bookDetail.hasGardenColor,
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Container(
@@ -214,11 +183,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                           children: [
                             Padding(
                               padding: EdgeInsets.only(right: 8.w),
-                              child: _borderContainer(
-                                  bookDetail['garden_title'] ?? ''),
+                              child: _borderContainer(bookDetail.gardenTitle),
                             ),
                             _borderContainer(Functions.bookStatusString(
-                                bookDetail['book_status'] ?? 0)),
+                                bookDetail.bookStatus)),
                           ],
                         ),
                       ),
@@ -226,7 +194,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         padding:
                             EdgeInsets.only(top: 10.h, left: 24.w, right: 24.w),
                         child: Text(
-                          bookDetail['book_title'] ?? '',
+                          bookDetail.bookTitle,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -240,7 +208,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         height: 480.h,
                         margin: EdgeInsets.only(bottom: 20.h),
                         child: Image.asset(
-                          'assets/images/book_flowers/book_${bookDetail['book_tree']}.png',
+                          'assets/images/book_flowers/book_${bookDetail.bookTree}.png',
                           width: 360.w,
                           height: 459.h,
                         ),
@@ -280,11 +248,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                       fontWeight: FontWeight.w600),
                                   children: [
                                     TextSpan(
-                                        text:
-                                            '${bookDetail['book_current_page']}p '),
+                                        text: '${bookDetail.bookCurrentPage}p '),
                                     TextSpan(
-                                        text:
-                                            '/ ${bookDetail['book_page'] ?? 0}p',
+                                        text: '/ ${bookDetail.bookPage}p',
                                         style: const TextStyle(
                                             color: AppColors.grey_CA))
                                   ]))
@@ -292,15 +258,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                           ),
                         ),
                         Visibility(
-                          visible: bookDetail['user_no'] ==
-                              authAPI.user()['user_no'],
+                          visible: bookDetail.userNo == authAPI.user()['user_no'],
                           child: GestureDetector(
                             onTap: () async {
-                              bookDetail['book_no'] = widget.book_no;
                               final result = await context.pushNamed('book-add',
-                                  extra: bookDetail);
+                                  extra: bookDetail.toBookAddPayload());
                               if (result != null) {
-                                getBookRead();
+                                _loadBookDetail();
                               }
                             },
                             child: Container(
@@ -359,7 +323,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                           color: AppColors.black_59
                                               .withOpacity(0.1))
                                     ]),
-                                child: (bookDetail['book_image_url'] == null)
+                                child: (bookDetail.bookImageUrl == null)
                                     ? Container()
                                     : ClipRRect(
                                         borderRadius:
@@ -368,14 +332,14 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                             width: 145.w,
                                             height: 200.h,
                                             fit: BoxFit.cover,
-                                            bookDetail['book_image_url'] ?? ''),
+                                            bookDetail.bookImageUrl ?? ''),
                                       ),
                               ),
                               Padding(
                                 padding:
                                     EdgeInsets.only(top: 30.h, bottom: 8.h),
                                 child: Text(
-                                  bookDetail['book_title'] ?? '',
+                                  bookDetail.bookTitle,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(fontSize: 18.sp),
                                 ),
@@ -383,7 +347,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                               SizedBox(
                                 height: 20.h,
                                 child: Text(
-                                  bookDetail['book_author'] ?? '',
+                                  bookDetail.bookAuthor,
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       color: AppColors.grey_8D),
@@ -393,13 +357,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                 margin: EdgeInsets.only(top: 2.h, bottom: 40.h),
                                 height: 20.h,
                                 child: Text(
-                                  bookDetail['book_publisher'] ?? '',
+                                  bookDetail.bookPublisher,
                                   style: TextStyle(
                                       fontSize: 12.sp,
                                       color: AppColors.grey_8D),
                                 ),
                               ),
-                              bookDetail['user_no'] == authAPI.user()['user_no']
+                              bookDetail.userNo == authAPI.user()['user_no']
                                   ? Column(
                                       children: [
                                         Container(
@@ -440,23 +404,16 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                 ),
                                               ),
                                               SizedBox(
-                                                height: (bookDetail[
-                                                            'book_read_list'] !=
-                                                        null)
-                                                    ? (46.h + 18.h) *
-                                                        bookDetail[
-                                                                'book_read_list']
-                                                            .length
-                                                    : 0,
-                                                child: (bookDetail[
-                                                            'book_read_list'] !=
-                                                        null)
+                                                height:
+                                                    (46.h + 18.h) *
+                                                        bookDetail.bookReadList.length,
+                                                child: (bookDetail.bookReadList
+                                                        .isNotEmpty)
                                                     ? ListView(
                                                         physics:
                                                             const NeverScrollableScrollPhysics(),
                                                         children: List.generate(
-                                                          bookDetail[
-                                                                  'book_read_list']
+                                                          bookDetail.bookReadList
                                                               .length,
                                                           (index) {
                                                             return Container(
@@ -490,15 +447,16 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                               ),
                                               GestureDetector(
                                                 onTap: () async {
-                                                  Map data = bookDetail;
+                                                  final data = bookDetail
+                                                      .toBookAddPayload();
                                                   data['book_no'] =
                                                       widget.book_no;
                                                   final result = await context
                                                       .pushNamed('memo-write',
-                                                          extra: bookDetail);
+                                                          extra: data);
 
                                                   if (result != null) {
-                                                    getBookRead();
+                                                    _loadBookDetail();
                                                   }
                                                 },
                                                 child: Row(
@@ -562,9 +520,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                   color: AppColors.grey_8D),
                                             ),
                                           ),
-                                          (bookDetail['book_info'] != '')
+                                          (bookDetail.bookInfo != '')
                                               ? Text(
-                                                  bookDetail['book_info'] ?? '',
+                                                  bookDetail.bookInfo,
                                                   style: TextStyle(
                                                       fontSize: 12.sp,
                                                       height: 1.75.h),
@@ -619,14 +577,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
               children: [
                 GestureDetector(
                   onTap: () async {
-                    Map data = ref.watch(bookDetailProvider);
-                    data['book_no'] = widget.book_no;
+                    final data = ref.watch(bookDetailProvider).toBookAddPayload();
 
                     context.pop();
                     final response =
                         await context.pushNamed('book-edit', extra: data);
                     if (response != null) {
-                      getBookRead();
+                      _loadBookDetail();
                     }
                   },
                   child: Container(
@@ -647,6 +604,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                 ),
                 GestureDetector(
                   onTap: () {
+                    final gardenNo = ref.watch(bookDetailProvider).gardenNo;
+                    if (gardenNo == null) {
+                      return;
+                    }
                     context.pop();
                     showModalBottomSheet(
                         backgroundColor: Colors.white,
@@ -654,10 +615,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         context: context,
                         builder: (context) => GardenEditBottomSheet(
                               function: (int to_garden_no) {
-                                putBook(to_garden_no);
+                                _moveBook(to_garden_no);
                               },
-                              gardenNo:
-                                  ref.watch(bookDetailProvider)['garden_no'],
+                              gardenNo: gardenNo,
                             ));
                   },
                   child: Container(
@@ -715,7 +675,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
           TextSpan(text: '도 모두 삭제되어요.'),
         ])),
         '삭제하기',
-        deleteBook);
+        _deleteBook);
   }
 
   Widget _borderContainer(String title) {
@@ -739,26 +699,26 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   //독서 기록 리스트 index별 형식
   Widget _bookReadListWidget(int index) {
     final bookDetail = ref.watch(bookDetailProvider);
+    final bookReadList = bookDetail.bookReadList;
 
     //맨 위(독서 끝)
     return (index == 0 &&
-            bookDetail['book_read_list'][index]['book_end_date'] != null)
+            bookReadList[index]['book_end_date'] != null)
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text.rich(TextSpan(children: [
                 TextSpan(
-                    text: bookDetail['book_tree'] ?? '',
+                    text: bookDetail.bookTree,
                     style: const TextStyle(fontWeight: FontWeight.bold)),
                 TextSpan(
                     text:
-                        '${Functions.getPostpositionString(bookDetail['book_tree'] ?? '', '이', '가')} 다컸어요')
+                        '${Functions.getPostpositionString(bookDetail.bookTree, '이', '가')} 다컸어요')
               ])),
               Padding(
                 padding: EdgeInsets.only(top: 4.h),
                 child: Text(
-                  Functions.formatDate(bookDetail['book_read_list'][index]
-                          ['book_end_date'] ??
+                  Functions.formatDate(bookReadList[index]['book_end_date'] ??
                       DateTime.now().toString()),
                   style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
                 ),
@@ -766,24 +726,23 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
             ],
           )
         //맨 아래(독서 시작)
-        : (index == bookDetail['book_read_list'].length - 1)
+        : (index == bookReadList.length - 1)
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text.rich(TextSpan(children: [
                     const TextSpan(text: '새로운 꽃 '),
                     TextSpan(
-                        text: bookDetail['book_tree'] ?? '',
+                        text: bookDetail.bookTree,
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(
                         text:
-                            '${Functions.getPostpositionString(bookDetail['book_tree'] ?? '', '을', '를')} 심었어요')
+                            '${Functions.getPostpositionString(bookDetail.bookTree, '을', '를')} 심었어요')
                   ])),
                   Padding(
                     padding: EdgeInsets.only(top: 4.h),
                     child: Text(
-                      Functions.formatDate(bookDetail['book_read_list'][index]
-                              ['book_start_date'] ??
+                      Functions.formatDate(bookReadList[index]['book_start_date'] ??
                           DateTime.now().toString()),
                       style:
                           TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
@@ -795,16 +754,14 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text.rich(TextSpan(children: [
                   TextSpan(
-                      text:
-                          '${bookDetail['book_read_list'][index]['book_current_page'] ?? '0'}p',
+                      text: '${bookReadList[index]['book_current_page'] ?? '0'}p',
                       style: const TextStyle(fontWeight: FontWeight.bold)),
                   const TextSpan(text: ' 만큼 물을 주었어요')
                 ])),
                 Padding(
                   padding: EdgeInsets.only(top: 4.h),
                   child: Text(
-                    Functions.formatDate(bookDetail['book_read_list'][index]
-                            ['book_created_at'] ??
+                    Functions.formatDate(bookReadList[index]['book_created_at'] ??
                         DateTime.now().toString()),
                     style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
                   ),
@@ -835,14 +792,14 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                       onTap: () async {
                         Map data = memoList[index];
                         data['book_no'] = widget.book_no;
-                        data['book_title'] = bookDetail['book_title'];
-                        data['book_author'] = bookDetail['book_author'];
-                        data['book_image_url'] = bookDetail['book_image_url'];
+                        data['book_title'] = bookDetail.bookTitle;
+                        data['book_author'] = bookDetail.bookAuthor;
+                        data['book_image_url'] = bookDetail.bookImageUrl;
 
                         final result =
                             await context.pushNamed('memo-detail', extra: data);
                         if (result != null) {
-                          getBookRead();
+                          _loadBookDetail();
                         }
                       },
                       child: Container(
@@ -859,7 +816,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                           children: [
                             Row(
                               children: [
-                                (bookDetail['book_image_url'] == null)
+                                (bookDetail.bookImageUrl == null)
                                     ? Container(
                                         width: 44.r,
                                         height: 44.r,
@@ -875,7 +832,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                           width: 44.r,
                                           height: 44.r,
                                           fit: BoxFit.cover,
-                                          bookDetail['book_image_url'],
+                                          bookDetail.bookImageUrl!,
                                         ),
                                       ),
                                 Container(
@@ -886,12 +843,12 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        bookDetail['book_title'] ?? '',
+                                        bookDetail.bookTitle,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       Text(
-                                        bookDetail['book_author'] ?? '',
+                                        bookDetail.bookAuthor,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -945,7 +902,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                             .isNotEmpty)
                         ? GestureDetector(
                             onTap: () =>
-                                putMemoLike(index, memoList[index]['id']),
+                                _toggleMemoLike(index, memoList[index]['id']),
                             child: Container(
                               alignment: Alignment.center,
                               margin:

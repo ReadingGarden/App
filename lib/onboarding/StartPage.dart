@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../utils/AppColors.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class StartPage extends StatefulWidget {
   @override

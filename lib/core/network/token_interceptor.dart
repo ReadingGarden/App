@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import '../utils/Constant.dart';
-import '../utils/SharedPreferences.dart';
+import '../../utils/Constant.dart';
+import '../storage/token_storage.dart';
 
 class TokenInterceptor extends Interceptor {
   final Dio _dio;

@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../core/api/AuthAPI.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 //프로필 이미지 선택 인덱스 ...
 final profileSelectIndexProvider = StateProvider<int>((ref) => 0);

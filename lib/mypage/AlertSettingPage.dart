@@ -10,7 +10,7 @@ import '../core/service/PushService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 //App Switch 상태를 관리하는 ...
 final appSwitchProvider = StateProvider<bool>((ref) => false);

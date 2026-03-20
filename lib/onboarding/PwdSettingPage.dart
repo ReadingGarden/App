@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/service/AuthService.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 // 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final pwdErrorProvider = StateProvider<String?>((ref) => null);

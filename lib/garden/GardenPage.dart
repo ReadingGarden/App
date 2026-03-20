@@ -21,7 +21,7 @@ import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class GardenPage extends ConsumerStatefulWidget {
   @override

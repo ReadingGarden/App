@@ -20,8 +20,8 @@ import 'core/service/GardenService.dart';
 import 'firebase_options.dart';
 import 'utils/AppColors.dart';
 import 'utils/Functions.dart';
-import 'utils/Router.dart';
-import 'utils/SharedPreferences.dart';
+import 'app/router/app_router.dart';
+import 'core/storage/token_storage.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('백그라운드 수신: ${message.messageId}');

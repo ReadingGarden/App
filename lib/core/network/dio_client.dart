@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 
-import '../utils/Router.dart';
-import 'TokenInterceptor.dart';
+import '../../app/router/app_router.dart';
+import 'token_interceptor.dart';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();

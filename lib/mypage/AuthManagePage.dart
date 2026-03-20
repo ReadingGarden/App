@@ -8,8 +8,8 @@ import '../core/api/AuthAPI.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
-import '../utils/SharedPreferences.dart';
-import '../utils/Widgets.dart';
+import '../core/storage/token_storage.dart';
+import '../core/ui/app_widgets.dart';
 
 class AuthManagePage extends ConsumerStatefulWidget {
   @override

@@ -6,9 +6,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../utils/AppColors.dart';
-import 'Constant.dart';
-import 'Functions.dart';
+import '../../utils/AppColors.dart';
+import '../../utils/Constant.dart';
+import '../../utils/Functions.dart';
 
 class Widgets {
   static appBar(BuildContext context,

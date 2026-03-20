@@ -9,9 +9,9 @@ import '../BottomNaviPage.dart';
 import '../core/provider/FcmTokenProvider.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';
-import '../utils/SharedPreferences.dart';
+import '../core/storage/token_storage.dart';
 import '../utils/SocialLogin.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 // 이메일, 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final loginErrorProvider = StateProvider<String?>((ref) => null);

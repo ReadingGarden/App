@@ -10,7 +10,7 @@ import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class GardenMemberPage extends ConsumerStatefulWidget {
   const GardenMemberPage({required this.garden_no});

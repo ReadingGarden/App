@@ -13,7 +13,7 @@ import '../core/service/BookService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class BookAddPage extends ConsumerStatefulWidget {
   const BookAddPage({required this.bookRead});

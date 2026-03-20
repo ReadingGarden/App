@@ -1,6 +1,6 @@
 import 'dart:core';
 
-import 'package:book_flutter/core/DioClient.dart';
+import 'package:book_flutter/core/network/dio_client.dart';
 import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';

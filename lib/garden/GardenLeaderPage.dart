@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import '../core/api/GardenAPI.dart';
 import '../core/service/GardenService.dart';
 import '../utils/Constant.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 final gardenLeaderSelectIndexProvider = StateProvider<int>(
     (ref) => ref.watch(gardenMainMemberListProvider)[0]['user_no']);

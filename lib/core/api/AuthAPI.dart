@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../utils/SharedPreferences.dart';
+import '../storage/token_storage.dart';
 import '../service/AuthService.dart';
 
 final userProvider = StateProvider<Map>((ref) => {});

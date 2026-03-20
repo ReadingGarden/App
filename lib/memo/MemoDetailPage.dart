@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../core/service/MemoService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
   const MemoDetailPage({required this.memo});

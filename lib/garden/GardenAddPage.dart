@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/service/GardenService.dart';
 import '../utils/Constant.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 //가든 추가하기 버튼 ...
 final gardenAddButtonProvider = StateProvider<bool>((ref) => false);

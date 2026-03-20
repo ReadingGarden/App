@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/api/GardenAPI.dart';
 import '../utils/AppColors.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class GardenBookListPage extends ConsumerStatefulWidget {
   GardenBookListPage({required this.garden});

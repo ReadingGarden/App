@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 class TosPage extends ConsumerStatefulWidget {
   @override

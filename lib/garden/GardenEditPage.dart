@@ -11,7 +11,7 @@ import '../core/service/GardenService.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-import '../utils/Widgets.dart';
+import '../core/ui/app_widgets.dart';
 
 //가든 선택 인덱스 ...
 final gardenEditSelectIndexProvider = StateProvider<int>((ref) => 0);

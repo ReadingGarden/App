@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../utils/Constant.dart';
-import '../DioClient.dart';
+import '../network/dio_client.dart';
 
 class MemoService {
   final _authenticatedDio = dioclent.authenticatedDio;
