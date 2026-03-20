@@ -11,12 +11,13 @@ import 'package:book_flutter/features/book/domain/entities/book_isbn_detail_enti
 import 'package:book_flutter/features/book/presentation/providers/book_add_garden_provider.dart';
 
 class BookAddGardenPage extends ConsumerStatefulWidget {
-  const BookAddGardenPage(this.book, {required this.isbn13});
+  const BookAddGardenPage(this.book, {super.key, required this.isbn13});
 
   final String isbn13;
   final Map? book;
 
-  _BookAddGardenPageState createState() => _BookAddGardenPageState();
+  @override
+  ConsumerState<BookAddGardenPage> createState() => _BookAddGardenPageState();
 }
 
 class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
@@ -61,6 +62,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
     final statusCode = await ref
         .read(detailIsbnProvider.notifier)
         .checkDuplication(widget.isbn13);
+    if (!mounted) return;
     if (statusCode == 200) {
       context.pushNamed('book-register',
           extra: bookResult().toRegisterPayload());
@@ -113,7 +115,7 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                           fit: BoxFit.cover,
                                           bookResult().cover!,
                                         )
-                                      : Container(
+                                      : SizedBox(
                                           width: 145.w,
                                           height: 200.h,
                                         )),
@@ -174,7 +176,10 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                       alignment: Alignment.center,
                                       child: SvgPicture.asset(
                                         '${Constant.ASSETS_ICONS}icon_add.svg',
-                                        color: AppColors.primaryColor,
+                                        colorFilter: const ColorFilter.mode(
+                                          AppColors.primaryColor,
+                                          BlendMode.srcIn,
+                                        ),
                                         width: 16.r,
                                         height: 16.r,
                                       ),
@@ -216,7 +221,10 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                                       alignment: Alignment.center,
                                       child: SvgPicture.asset(
                                         '${Constant.ASSETS_ICONS}icon_check.svg',
-                                        color: Colors.white,
+                                        colorFilter: const ColorFilter.mode(
+                                          Colors.white,
+                                          BlendMode.srcIn,
+                                        ),
                                         width: 16.r,
                                         height: 16.r,
                                       ),

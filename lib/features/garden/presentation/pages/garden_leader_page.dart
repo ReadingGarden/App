@@ -12,7 +12,10 @@ import 'package:go_router/go_router.dart';
 final gardenLeaderSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class GardenLeaderPage extends ConsumerStatefulWidget {
-  _GardenLeaderPageState createState() => _GardenLeaderPageState();
+  const GardenLeaderPage({super.key});
+
+  @override
+  ConsumerState<GardenLeaderPage> createState() => _GardenLeaderPageState();
 }
 
 class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
@@ -34,6 +37,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
 
     final statusCode =
         await garden_feature.updateGardenLeader(ref, gardenNo, userNo);
+    if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
       context.pop();
@@ -104,7 +108,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                                 Container(
                                   width: 48.r,
                                   height: 48.r,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Colors.grey),
                                 ),
@@ -122,11 +126,14 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                                       member['user_no'])
                                   ? '${Constant.ASSETS_ICONS}icon_check_select.svg'
                                   : '${Constant.ASSETS_ICONS}icon_check_deselect.svg',
-                              color:
+                              colorFilter:
                                   (ref.watch(gardenLeaderSelectIndexProvider) ==
                                           member['user_no'])
                                       ? null
-                                      : AppColors.grey_CA,
+                                      : const ColorFilter.mode(
+                                          AppColors.grey_CA,
+                                          BlendMode.srcIn,
+                                        ),
                               width: 24.r,
                               height: 24.r,
                             )

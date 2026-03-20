@@ -14,10 +14,11 @@ import 'package:book_flutter/features/garden/presentation/providers/garden_provi
     as garden_feature;
 
 class GardenInvitePage extends ConsumerStatefulWidget {
-  GardenInvitePage({required this.garden_no});
-  final int garden_no;
+  const GardenInvitePage({super.key, required this.gardenNo});
+  final int gardenNo;
 
-  _GardenInvitePageState createState() => _GardenInvitePageState();
+  @override
+  ConsumerState<GardenInvitePage> createState() => _GardenInvitePageState();
 }
 
 class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
@@ -38,13 +39,13 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
 
   //초대 가든 조회 api
   void getInviteGarden() async {
-    await garden_feature.fetchInviteGarden(ref, widget.garden_no);
+    await garden_feature.fetchInviteGarden(ref, widget.gardenNo);
   }
 
   //가든 초대 수락 api
   void postGardenInvite() async {
     final statusCode =
-        await garden_feature.acceptGardenInvite(ref, widget.garden_no);
+        await garden_feature.acceptGardenInvite(ref, widget.gardenNo);
     if (statusCode == 201) {
       if (!mounted) {
         return;
@@ -109,8 +110,10 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                               color: Colors.white, shape: BoxShape.circle),
                           child: SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_bookmark.svg',
-                            color:
-                                Functions.gardenColor(inviteGarden.gardenColor),
+                            colorFilter: ColorFilter.mode(
+                              Functions.gardenColor(inviteGarden.gardenColor),
+                              BlendMode.srcIn,
+                            ),
                             width: 56.r,
                             height: 56.r,
                           ),

@@ -15,11 +15,12 @@ import 'package:book_flutter/features/garden/presentation/providers/garden_provi
     as garden_feature;
 
 class GardenMemberPage extends ConsumerStatefulWidget {
-  const GardenMemberPage({required this.garden_no});
+  const GardenMemberPage({super.key, required this.gardenNo});
 
-  final int garden_no;
+  final int gardenNo;
 
-  _GardenMemberPageState createState() => _GardenMemberPageState();
+  @override
+  ConsumerState<GardenMemberPage> createState() => _GardenMemberPageState();
 }
 
 class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
@@ -32,7 +33,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
     fToast.init(context);
 
     Future.microtask(() {
-      garden_feature.fetchGardenDetail(ref, widget.garden_no);
+      garden_feature.fetchGardenDetail(ref, widget.gardenNo);
     });
   }
 
@@ -69,7 +70,10 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                             const Text('대표 변경하기'),
                             SvgPicture.asset(
                               '${Constant.ASSETS_ICONS}icon_angle_right.svg',
-                              color: AppColors.grey_8D,
+                              colorFilter: const ColorFilter.mode(
+                                AppColors.grey_8D,
+                                BlendMode.srcIn,
+                              ),
                               width: 20.r,
                               height: 20.r,
                             )
@@ -174,7 +178,10 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                         children: [
                           SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_add.svg',
-                            color: AppColors.primaryColor,
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.primaryColor,
+                              BlendMode.srcIn,
+                            ),
                             width: 20.r,
                             height: 20.r,
                           ),

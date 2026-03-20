@@ -21,7 +21,10 @@ final gardenEditButtonProvider = StateProvider<bool>((ref) => true);
 final gardenEditColorSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class GardenEditPage extends ConsumerStatefulWidget {
-  _GardenEditPageState createState() => _GardenEditPageState();
+  const GardenEditPage({super.key});
+
+  @override
+  ConsumerState<GardenEditPage> createState() => _GardenEditPageState();
 }
 
 class _GardenEditPageState extends ConsumerState<GardenEditPage> {
@@ -53,6 +56,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
 
     final statusCode =
         await garden_feature.deleteGarden(ref, gardenMain.gardenNo);
+    if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
       context.replaceNamed('bottom-navi');
@@ -62,14 +66,15 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   }
 
   //가든 이전 api
-  void moveToGarden(int to_garden_no) async {
+  void moveToGarden(int toGardenNo) async {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
     final statusCode = await garden_feature.moveBooksToGarden(
       ref,
       gardenMain.gardenNo,
-      to_garden_no,
+      toGardenNo,
     );
+    if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
       fToast.showToast(child: Widgets.toast('남아있는 책을 모두 옮겼어요!'));
@@ -90,6 +95,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     };
     final statusCode =
         await garden_feature.updateGarden(ref, gardenMain.gardenNo, data);
+    if (!mounted) return;
     if (statusCode == 200) {
       context.replaceNamed('bottom-navi');
     }
@@ -101,6 +107,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
 
     final statusCode =
         await garden_feature.leaveGarden(ref, gardenMain.gardenNo);
+    if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
       context.replaceNamed('bottom-navi');
@@ -135,10 +142,11 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   Widget build(BuildContext context) {
     final gardenMain = ref.watch(garden_feature.gardenMainProvider);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
         _gardenEditBottomSheet();
-        return true;
       },
       child: Scaffold(
         appBar: Widgets.appBar(context,
@@ -342,8 +350,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
               isScrollControlled: true,
               context: context,
               builder: (context) => GardenEditBottomSheet(
-                    function: (int to_garden_no) {
-                      moveToGarden(to_garden_no);
+                    function: (int toGardenNo) {
+                      moveToGarden(toGardenNo);
                     },
                     gardenNo: gardenMain.gardenNo,
                   ));
@@ -380,8 +388,11 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
 
 //가든 선택 바텀시트
 class GardenEditBottomSheet extends ConsumerWidget {
-  GardenEditBottomSheet(
-      {super.key, required this.function, required this.gardenNo});
+  const GardenEditBottomSheet({
+    super.key,
+    required this.function,
+    required this.gardenNo,
+  });
 
   final Function(int) function;
   final int gardenNo;
@@ -469,7 +480,10 @@ class GardenEditBottomSheet extends ConsumerWidget {
                           '${Constant.ASSETS_ICONS}icon_bookmark_full.svg',
                           width: 20.w,
                           height: 24.h,
-                          color: Functions.gardenColor(garden.gardenColor),
+                          colorFilter: ColorFilter.mode(
+                            Functions.gardenColor(garden.gardenColor),
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ],
