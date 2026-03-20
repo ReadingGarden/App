@@ -8,9 +8,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'BottomNaviPage.dart';
 import 'app/bootstrap/app_bootstrap.dart';
 import 'app/bootstrap/garden_notification_handler.dart';
+import 'app/navigation/bottom_navi_page.dart';
 import 'app/router/app_router.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

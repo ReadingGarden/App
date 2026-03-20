@@ -1,5 +1,5 @@
-import 'package:book_flutter/BottomNaviPage.dart';
 import 'package:book_flutter/ErrorPage.dart';
+import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/book/BookAddGardenPage.dart';
 import 'package:book_flutter/book/BookAddPage.dart';
 import 'package:book_flutter/book/BookDetailPage.dart';

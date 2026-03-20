@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../BottomNaviPage.dart';
+import '../app/navigation/bottom_navi_page.dart';
 import '../core/provider/FcmTokenProvider.dart';
 import '../core/service/AuthService.dart';
 import '../utils/AppColors.dart';

@@ -4,16 +4,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import 'book/BookshelfPage.dart';
-import 'features/garden/presentation/providers/garden_provider.dart'
+import '../../book/BookshelfPage.dart';
+import '../../features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import 'garden/GardenPage.dart';
-import 'memo/MemoPage.dart';
-import 'mypage/MyPage.dart';
-import 'utils/AppColors.dart';
-import 'utils/Constant.dart';
+import '../../garden/GardenPage.dart';
+import '../../memo/MemoPage.dart';
+import '../../mypage/MyPage.dart';
+import '../../utils/AppColors.dart';
+import '../../utils/Constant.dart';
 
-//현재 선택된 인덱스를 관리하는 ...
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 
 class BottomNaviPage extends ConsumerWidget {
@@ -21,7 +20,6 @@ class BottomNaviPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //현재 선택된 인덱스를 watch
     final currentIndex = ref.watch(currentIndexProvider);
 
     return Scaffold(
@@ -35,10 +33,8 @@ class BottomNaviPage extends ConsumerWidget {
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
         onTabSelected: (index) {
-          //선택된 인덱스를 업데이트
           ref.read(currentIndexProvider.notifier).state = index;
           if (ref.read(currentIndexProvider.notifier).state == 0) {
-            //가든 페이지 리프레시
             garden_feature.fetchGardenList(ref);
           }
         },
@@ -48,11 +44,14 @@ class BottomNaviPage extends ConsumerWidget {
 }
 
 class CustomBottomNavigationBar extends StatelessWidget {
+  const CustomBottomNavigationBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTabSelected,
+  });
+
   final int currentIndex;
   final ValueChanged<int> onTabSelected;
-
-  CustomBottomNavigationBar(
-      {required this.currentIndex, required this.onTabSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +110,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
     );
   }
 
-  Widget _buildTabItem(
-      {required int index, required String icon, required String label}) {
+  Widget _buildTabItem({
+    required int index,
+    required String icon,
+    required String label,
+  }) {
     return GestureDetector(
       onTap: () => onTabSelected(index),
       child: Container(
