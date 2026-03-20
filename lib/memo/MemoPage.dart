@@ -4,14 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/model/Memo.dart';
-import '../core/provider/MemoListNotifier.dart';
-import '../core/service/MemoService.dart';
+import '../features/memo/presentation/providers/memo_list_provider.dart'
+    as memo_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
-
-final memoSelectIndexListProvider = StateProvider<List>((ref) => []);
 
 class MemoPage extends ConsumerStatefulWidget {
   @override
@@ -20,23 +17,19 @@ class MemoPage extends ConsumerStatefulWidget {
 
 class _MemoPageState extends ConsumerState<MemoPage> {
   final ScrollController _scrollController = ScrollController();
-  int _currentPage = 1;
-  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(memoListProvider.notifier).reset();
-      ref.read(memoSelectIndexListProvider.notifier).state = [];
-      getMemoList();
+      memo_feature.refreshMemoList(ref);
     });
 
     _scrollController.addListener(() {
       // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        getMemoList(scroll: true);
+        memo_feature.fetchMemoList(ref, scroll: true);
       }
     });
   }
@@ -47,66 +40,11 @@ class _MemoPageState extends ConsumerState<MemoPage> {
     super.dispose();
   }
 
-  //메모 리스트 조회 api
-  void getMemoList({bool? scroll}) async {
-    if (_isLoading) return;
-
-    setState(() {
-      if (scroll == null) {
-        _isLoading = true;
-      }
-    });
-
-    final response = await memoService.getMemoList(_currentPage);
-    if (response?.statusCode == 200) {
-      final List<dynamic> memoList = response?.data['data']['list'];
-      final List<Memo> newMemoList = memoList
-          .map((json) => Memo(
-              id: json['id'],
-              book_no: json['book_no'],
-              book_title: json['book_title'],
-              book_author: json['book_author'],
-              book_image_url: json['book_image_url'],
-              memo_content: json['memo_content'],
-              memo_like: json['memo_like'],
-              image_url: json['image_url'],
-              memo_created_at: json['memo_created_at']))
-          .toList();
-
-      if (newMemoList.isNotEmpty) {
-        ref.read(memoListProvider.notifier).addMemoList(newMemoList);
-        setState(() {
-          _currentPage++;
-        });
-      }
-
-      for (var memo in newMemoList) {
-        ref
-            .read(memoSelectIndexListProvider.notifier)
-            .state
-            .add(memo.memo_like);
-      }
-
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  //메모 즐겨찾기 api
-  void putMemoLike(int index, int id) async {
-    final response = await memoService.putMemoLike(id);
-    if (response?.statusCode == 200) {
-      ref.read(memoSelectIndexListProvider.notifier).update((state) {
-        List<bool> newState = List.from(state);
-        newState[index] = !newState[index];
-        return newState;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final memoList = ref.watch(memo_feature.memoListStateProvider);
+    final isLoading = ref.watch(memo_feature.memoListLoadingProvider);
+
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 60.h,
@@ -125,11 +63,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
               onTap: () async {
                 final result = await context.pushNamed('memo-book');
                 if (result != null) {
-                  //메모 재로딩
-                  _currentPage = 1;
-                  ref.read(memoListProvider.notifier).reset();
-                  ref.read(memoSelectIndexListProvider.notifier).state = [];
-                  getMemoList();
+                  memo_feature.refreshMemoList(ref);
                 }
               },
               child: Container(
@@ -146,26 +80,22 @@ class _MemoPageState extends ConsumerState<MemoPage> {
             )
           ],
         ),
-        body: (_isLoading)
+        body: (isLoading && memoList.isEmpty)
             ? const Center(
                 child: CircularProgressIndicator(
                   backgroundColor: AppColors.primaryColor,
                   color: AppColors.grey_CA,
                 ),
               )
-            : (ref.watch(memoListProvider).isNotEmpty)
-                ? _memoList()
+            : (memoList.isNotEmpty)
+                ? _memoList(memoList)
                 : _memoEmpty());
   }
 
-  Widget _memoList() {
+  Widget _memoList(memoList) {
     return RefreshIndicator(
       onRefresh: () async {
-        //메모 재로딩
-        _currentPage = 1;
-        ref.read(memoListProvider.notifier).reset();
-        ref.read(memoSelectIndexListProvider.notifier).state = [];
-        getMemoList();
+        memo_feature.refreshMemoList(ref);
       },
       backgroundColor: Colors.white,
       color: AppColors.grey_8D,
@@ -174,34 +104,19 @@ class _MemoPageState extends ConsumerState<MemoPage> {
         controller: _scrollController,
         padding: EdgeInsets.symmetric(horizontal: 24.w),
         children: List.generate(
-          ref.read(memoListProvider).length,
+          memoList.length,
           (index) {
+            final memo = memoList[index];
             return GestureDetector(
-              // onTap: () async {
-              //   final result = await context.pushNamed('memo-detail',
-              //       extra: ref.read(memoListProvider)[index].toJson());
-              //   if (result != null) {
-              //     //메모 재로딩
-              //     _currentPage = 1;
-              //     ref.read(memoListProvider.notifier).reset();
-              //     ref.read(memoSelectIndexListProvider.notifier).state = [];
-              //     getMemoList();
-              //   }
-              // },
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      final result = await context.pushNamed('memo-detail',
-                          extra: ref.read(memoListProvider)[index].toJson());
+                      final result =
+                          await context.pushNamed('memo-detail', extra: memo.toMap());
                       if (result != null) {
-                        //메모 재로딩
-                        _currentPage = 1;
-                        ref.read(memoListProvider.notifier).reset();
-                        ref.read(memoSelectIndexListProvider.notifier).state =
-                            [];
-                        getMemoList();
+                        memo_feature.refreshMemoList(ref);
                       }
                     },
                     child: Container(
@@ -218,10 +133,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                         children: [
                           Row(
                             children: [
-                              (ref
-                                          .watch(memoListProvider)[index]
-                                          .book_image_url ==
-                                      null)
+                              (memo.bookImageUrl == null)
                                   ? Container(
                                       width: 44.r,
                                       height: 44.r,
@@ -236,9 +148,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                                         width: 44.r,
                                         height: 44.r,
                                         fit: BoxFit.cover,
-                                        ref
-                                            .watch(memoListProvider)[index]
-                                            .book_image_url!,
+                                        memo.bookImageUrl!,
                                       ),
                                     ),
                               Container(
@@ -248,16 +158,12 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      ref
-                                          .watch(memoListProvider)[index]
-                                          .book_title,
+                                      memo.bookTitle,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     Text(
-                                      ref
-                                          .watch(memoListProvider)[index]
-                                          .book_author,
+                                      memo.bookAuthor,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
@@ -270,22 +176,19 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                             ],
                           ),
                           Visibility(
-                              visible: (ref
-                                      .watch(memoListProvider)[index]
-                                      .image_url !=
-                                  null),
+                              visible: memo.imageUrl != null,
                               child: Container(
                                 margin: EdgeInsets.only(top: 10.h),
                                 child: Image.network(
                                     width: 320.w,
                                     height: 140.h,
                                     fit: BoxFit.fitWidth,
-                                    '${Constant.IMAGE_URL}${ref.watch(memoListProvider)[index].image_url}'),
+                                    '${Constant.IMAGE_URL}${memo.imageUrl}'),
                               )),
                           Container(
                               margin: EdgeInsets.only(top: 10.h),
                               child: Text(
-                                ref.watch(memoListProvider)[index].memo_content,
+                                memo.memoContent,
                                 maxLines: 5,
                                 style: TextStyle(
                                     fontSize: 12.sp,
@@ -299,9 +202,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    Functions.formatDate(ref
-                                        .watch(memoListProvider)[index]
-                                        .memo_created_at),
+                                    Functions.formatDate(memo.memoCreatedAt),
                                     style: TextStyle(
                                         fontSize: 12.sp,
                                         color: AppColors.grey_8D),
@@ -314,7 +215,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      putMemoLike(index, ref.watch(memoListProvider)[index].id);
+                      memo_feature.toggleMemoLike(ref, index, memo.id);
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -323,10 +224,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                       height: 40.r,
                       color: Colors.transparent,
                       child: SvgPicture.asset(
-                        ref.watch(memoSelectIndexListProvider)[index]
+                        memo.memoLike
                             ? '${Constant.ASSETS_ICONS}icon_star_select.svg'
                             : '${Constant.ASSETS_ICONS}icon_star_deselect.svg',
-                        color: ref.watch(memoSelectIndexListProvider)[index]
+                        color: memo.memoLike
                             ? AppColors.starYellowColor
                             : AppColors.grey_CA,
                         width: 20.r,
