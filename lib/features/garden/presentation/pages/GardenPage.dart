@@ -15,12 +15,12 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
+import 'package:book_flutter/core/common/functions.dart';
+import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/Constant.dart';
-import 'package:book_flutter/utils/Functions.dart';
 
 class GardenPage extends ConsumerStatefulWidget {
   @override

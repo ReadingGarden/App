@@ -1,11 +1,11 @@
 import 'dart:ui' as ui;
 
+import 'package:book_flutter/core/common/functions.dart';
+import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_add_provider.dart';
-import 'package:book_flutter/utils/AppColors.dart';
-import 'package:book_flutter/utils/Functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';

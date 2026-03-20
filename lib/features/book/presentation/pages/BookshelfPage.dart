@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_search_provider.dart';
-import 'package:book_flutter/utils/AppColors.dart';
 
 class BookShelfPage extends ConsumerStatefulWidget {
   @override
