@@ -18,10 +18,10 @@ class Messaging {
         android: AndroidInitializationSettings("@drawable/ic_notification"),
       ),
       onDidReceiveNotificationResponse: (details) {
-        print("포그라운드 클릭");
+        debugPrint('포그라운드 알림을 눌렀습니다.');
       },
       onDidReceiveBackgroundNotificationResponse: (details) {
-        print("백그라운드 클릭");
+        debugPrint('백그라운드 알림을 눌렀습니다.');
       },
     );
 
@@ -50,7 +50,7 @@ class Messaging {
                 icon: '@drawable/ic_notification'),
           ),
         );
-        print("Foreground 메시지 수신: ${message.notification!}");
+        debugPrint('포그라운드 알림 수신: ${message.notification!}');
       }
     });
   }

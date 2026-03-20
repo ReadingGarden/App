@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 // access 토큰 저장
 Future<void> saveAccess(String access) async {
@@ -23,7 +24,7 @@ Future<void> saveRefresh(String refresh) async {
 Future<String?> loadRefresh() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final refresh = prefs.getString('refresh');
-  print('REFRESH Token: $refresh');
+  debugPrint('저장된 리프레시 토큰 조회: $refresh');
   return refresh;
 }
 

@@ -26,8 +26,8 @@ class SocialLogin {
 
       final user = userCredential.user;
       if (user != null) {
-        print('User UID: ${user.uid}');
-        print('User Email: ${user.email}');
+        debugPrint('구글 로그인 성공 사용자 UID: ${user.uid}');
+        debugPrint('구글 로그인 사용자 이메일: ${user.email}');
 
         final fcmToken = await ref.read(fcmTokenProvider.future);
 
@@ -41,7 +41,7 @@ class SocialLogin {
         authAPI.postSocialLogin(context, data);
       }
     } catch (e) {
-      print('Error during Google Sign-In: $e');
+      debugPrint('구글 로그인 중 오류가 발생했습니다: $e');
     }
   }
 
@@ -49,11 +49,11 @@ class SocialLogin {
     if (await isKakaoTalkInstalled()) {
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-        print('카카오톡으로 로그인 성공 ${token.accessToken}');
+        debugPrint('카카오톡 로그인 성공 액세스 토큰: ${token.accessToken}');
 
         _getKakaoUser(ref, context);
       } catch (error) {
-        print('카카오톡으로 로그인 실패 $error');
+        debugPrint('카카오톡 로그인 실패: $error');
 
         if (error is PlatformException && error.code == 'CANCELED') {
           return;
@@ -61,19 +61,19 @@ class SocialLogin {
 
         try {
           await UserApi.instance.loginWithKakaoAccount();
-          print('카카오계정으로 로그인 성공');
+          debugPrint('카카오계정 로그인 성공');
           _getKakaoUser(ref, context);
         } catch (error) {
-          print('카카오계정으로 로그인 실패 $error');
+          debugPrint('카카오계정 로그인 실패: $error');
         }
       }
     } else {
       try {
         await UserApi.instance.loginWithKakaoAccount();
-        print('카카오계정으로 로그인 성공');
+        debugPrint('카카오계정 로그인 성공');
         _getKakaoUser(ref, context);
       } catch (error) {
-        print('카카오계정으로 로그인 실패 $error');
+        debugPrint('카카오계정 로그인 실패: $error');
       }
     }
   }
@@ -84,7 +84,7 @@ class SocialLogin {
     try {
       final user = await UserApi.instance.me();
 
-      print('사용자 정보 요청 성공'
+      debugPrint('카카오 사용자 정보 조회 성공'
           '\n회원번호: ${user.id}'
           '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
           '\n이메일: ${user.kakaoAccount?.email}');
@@ -100,7 +100,7 @@ class SocialLogin {
       };
       authAPI.postSocialLogin(context, data);
     } catch (error) {
-      print('사용자 정보 요청 실패 $error');
+      debugPrint('카카오 사용자 정보 조회 실패: $error');
     }
   }
 }

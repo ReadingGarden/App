@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../../core/constants/app_constant.dart';
 import '../../../../core/network/dio_client.dart';
@@ -15,15 +16,15 @@ class BookService {
       final response = await _authenticatedDio.get(
         '${Constant.URL}book/search?query=$query&start=$page&maxResults=30',
       );
-      print(response.data.toString());
+      debugPrint('도서 검색 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('도서 검색 실패 응답: ${e.response?.data}');
+        debugPrint('도서 검색 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('도서 검색 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -37,15 +38,15 @@ class BookService {
       final response = await _authenticatedDio.get(
         '${Constant.URL}book/detail-isbn?query=$isbn13',
       );
-      print(response.data.toString());
+      debugPrint('도서 상세 조회 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('도서 상세 조회 실패 응답: ${e.response?.data}');
+        debugPrint('도서 상세 조회 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('도서 상세 조회 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -61,11 +62,11 @@ class BookService {
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('도서 중복 확인 실패 응답: ${e.response?.data}');
+        debugPrint('도서 중복 확인 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('도서 중복 확인 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -78,15 +79,15 @@ class BookService {
     try {
       final response =
           await _authenticatedDio.post('${Constant.URL}book/', data: data);
-      print(response.data.toString());
+      debugPrint('도서 등록 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('도서 등록 실패 응답: ${e.response?.data}');
+        debugPrint('도서 등록 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('도서 등록 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -96,15 +97,15 @@ class BookService {
       final response = await _authenticatedDio.get(
         '${Constant.URL}book/read?book_no=$bookNo',
       );
-      print(response.data.toString());
+      debugPrint('독서 기록 조회 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('독서 기록 조회 실패 응답: ${e.response?.data}');
+        debugPrint('독서 기록 조회 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('독서 기록 조회 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -115,15 +116,15 @@ class BookService {
         '${Constant.URL}book/?book_no=$bookNo',
         data: data,
       );
-      print(response.data.toString());
+      debugPrint('도서 수정 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('도서 수정 실패 응답: ${e.response?.data}');
+        debugPrint('도서 수정 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('도서 수정 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -133,15 +134,15 @@ class BookService {
       final response = await _authenticatedDio.delete(
         '${Constant.URL}book/?book_no=$bookNo',
       );
-      print(response.data.toString());
+      debugPrint('도서 삭제 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('도서 삭제 실패 응답: ${e.response?.data}');
+        debugPrint('도서 삭제 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('도서 삭제 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -157,15 +158,15 @@ class BookService {
             ? '${Constant.URL}book/status?status=$status&page=$page&page_size=10'
             : '${Constant.URL}book/status?garden_no=$garden_no&status=$status&page=$page&page_size=10',
       );
-      print(response.data.toString());
+      debugPrint('도서 상태 목록 조회 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('도서 상태 목록 조회 실패 응답: ${e.response?.data}');
+        debugPrint('도서 상태 목록 조회 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('도서 상태 목록 조회 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -176,15 +177,15 @@ class BookService {
         '${Constant.URL}book/read',
         data: data,
       );
-      print(response.data.toString());
+      debugPrint('독서 기록 등록 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('독서 기록 등록 실패 응답: ${e.response?.data}');
+        debugPrint('독서 기록 등록 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('독서 기록 등록 요청 전송 실패: ${e.message}');
       return null;
     }
   }
@@ -195,15 +196,15 @@ class BookService {
         '${Constant.URL}book/read?id=$id',
         data: data,
       );
-      print(response.data.toString());
+      debugPrint('독서 기록 수정 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
-        print('Error: ${e.response?.data}');
-        print('Status code: ${e.response?.statusCode}');
+        debugPrint('독서 기록 수정 실패 응답: ${e.response?.data}');
+        debugPrint('독서 기록 수정 실패 상태 코드: ${e.response?.statusCode}');
         return e.response;
       }
-      print('Error sending request: ${e.message}');
+      debugPrint('독서 기록 수정 요청 전송 실패: ${e.message}');
       return null;
     }
   }

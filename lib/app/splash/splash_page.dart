@@ -19,7 +19,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   void initState() {
     super.initState();
     //FCM 토큰을 비동기로 가져옵니다.
-    print(ref.read(fcmTokenProvider));
+    debugPrint('스플래시에서 FCM 토큰 조회를 시작합니다: ${ref.read(fcmTokenProvider)}');
 
     // 1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () async {
@@ -32,7 +32,7 @@ class _SplashPageState extends ConsumerState<SplashPage> {
         context.go('/bottom-navi');
       }
 
-      print('ACCESS Token: $accessToken');
+      debugPrint('저장된 액세스 토큰 조회 결과: $accessToken');
     });
   }
 

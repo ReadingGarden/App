@@ -14,7 +14,7 @@ import 'app/navigation/bottom_navi_page.dart';
 import 'app/router/app_router.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('백그라운드 수신: ${message.messageId}');
+  debugPrint('백그라운드 알림 수신 메시지 ID: ${message.messageId}');
 }
 
 void main() async {
@@ -26,7 +26,7 @@ void main() async {
   //백그라운드 메세지 핸들러 등록
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    print('백그라운드에서 클릭된 알림: ${message.data}');
+    debugPrint('백그라운드에서 연 알림 데이터: ${message.data}');
 
     container.read(currentIndexProvider.notifier).state = 0;
     openGardenFromNotification(
@@ -41,7 +41,7 @@ void main() async {
   // 위젯이 providers를 읽을 수 있게 하려면 전체 애플리케이션을 "ProviderScope" 위젯으로 감싸야
   runApp(ProviderScope(
       parent: container, // 전역 컨테이너 연결,
-      child: MyApp()));
+      child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

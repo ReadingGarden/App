@@ -83,10 +83,9 @@ class Functions {
       Permission.notification
     ].request();
 
-    print('Camera permission status: ${statuses[Permission.camera]}');
-    print('Storage permission status: ${statuses[Permission.storage]}');
-    print(
-        'Notification permission status: ${statuses[Permission.notification]}');
+    debugPrint('카메라 권한 상태: ${statuses[Permission.camera]}');
+    debugPrint('저장소 권한 상태: ${statuses[Permission.storage]}');
+    debugPrint('알림 권한 상태: ${statuses[Permission.notification]}');
   }
 
   static Future<void> checkAndRequestPermissions(Function function) async {
@@ -95,7 +94,7 @@ class Functions {
       Permission.storage,
     ].request();
 
-    print(statuses);
+    debugPrint('권한 요청 결과: $statuses');
 
     if (statuses[Permission.camera]!.isGranted &&
         statuses[Permission.storage]!.isGranted) {
@@ -121,7 +120,7 @@ class Functions {
             newStatuses[Permission.storage]!.isGranted) {
           function();
         } else {
-          print('권한이 여전히 부여되지 않았습니다.');
+          debugPrint('권한이 설정 화면에서도 부여되지 않았습니다.');
         }
       } else {
         statuses = await [
@@ -134,7 +133,7 @@ class Functions {
             statuses[Permission.storage]!.isGranted) {
           function();
         } else {
-          print('권한 요청이 거부되었습니다.');
+          debugPrint('권한 요청이 거부되었습니다.');
         }
       }
     }
@@ -215,10 +214,10 @@ class Functions {
         buo: buo, linkProperties: linkProperties);
 
     if (response.success) {
-      print('Generated Branch Link: ${response.result}');
+      debugPrint('초대 링크 생성 성공: ${response.result}');
       await Functions.kakaoShare(response.result, 'garden');
     } else {
-      print('Error: ${response.errorMessage}');
+      debugPrint('초대 링크 생성 실패: ${response.errorMessage}');
     }
   }
 
@@ -254,7 +253,7 @@ class Functions {
             await ShareClient.instance.shareDefault(template: defaultFeed);
         await launchBrowserTab(uri, popupOpen: true);
       } catch (error) {
-        print(error);
+        debugPrint('카카오톡 공유 실행 실패: $error');
       }
     } else {
       try {
@@ -262,7 +261,7 @@ class Functions {
             .makeDefaultUrl(template: defaultFeed);
         await launchBrowserTab(shareUrl, popupOpen: true);
       } catch (error) {
-        print(error);
+        debugPrint('웹 공유 링크 실행 실패: $error');
       }
     }
   }

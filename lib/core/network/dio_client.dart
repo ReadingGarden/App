@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/router/app_router.dart';
@@ -26,18 +27,18 @@ class DioClient {
         DioException error, ErrorInterceptorHandler handler) {
       if (error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.receiveTimeout) {
-        print("Connection Timeout: ${error.message}");
+        debugPrint('네트워크 연결 시간 초과: ${error.message}');
         _goToErrorPage();
       } else if (error.type == DioExceptionType.badResponse) {
-        print("Bad Response: ${error.response?.statusCode}");
+        debugPrint('잘못된 서버 응답 상태 코드: ${error.response?.statusCode}');
         if (error.response?.statusCode == 500) {
           _goToErrorPage();
         }
       } else if (error.type == DioExceptionType.unknown) {
-        print("Unknown Error: ${error.message}");
+        debugPrint('알 수 없는 네트워크 오류: ${error.message}');
         _goToErrorPage();
       } else {
-        print("Dio Error: ${error.message}");
+        debugPrint('Dio 네트워크 오류: ${error.message}');
         _goToErrorPage();
       }
       handler.next(error); // 에러를 전달

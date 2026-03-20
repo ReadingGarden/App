@@ -70,12 +70,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
 
     // Branch SDK Session 시작
     FlutterBranchSdk.initSession().listen((data) {
-      print('DeepLink Data: $data');
+      debugPrint('브랜치 딥링크 데이터 수신: $data');
       if (data['+clicked_branch_link']) {
         context.pushNamed('invite', extra: int.parse(data['garden_no']));
       }
     }, onError: (error) {
-      print('Error: $error');
+      debugPrint('브랜치 딥링크 처리 실패: $error');
     });
   }
 
@@ -126,18 +126,18 @@ class _GardenPageState extends ConsumerState<GardenPage> {
           // 갤러리에 저장
           GallerySaver.saveImage(path).then((bool? success) {
             if (success != null && success) {
-              print('Screenshot saved to gallery');
+              debugPrint('가든 스크린샷을 갤러리에 저장했습니다.');
             } else {
-              print('Failed to save screenshot');
+              debugPrint('가든 스크린샷 갤러리 저장에 실패했습니다.');
             }
           }).catchError((e) {
-            print('Error saving screenshot: $e');
+            debugPrint('가든 스크린샷 저장 중 오류가 발생했습니다: $e');
           });
         } else {
-          print('Failed to capture screenshot: boundary is null');
+          debugPrint('가든 스크린샷 캡처 실패: 캡처 대상이 없습니다.');
         }
       } catch (e) {
-        print('Error capturing screenshot: $e');
+        debugPrint('가든 스크린샷 캡처 중 오류가 발생했습니다: $e');
       }
     });
     context.pop();
