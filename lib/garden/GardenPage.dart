@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 
-import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
@@ -17,7 +15,6 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../core/api/GardenAPI.dart';
 import '../features/garden/presentation/providers/garden_provider.dart' as garden_feature;
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
@@ -359,7 +356,9 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   Future _gardenMenuBottomSheet() {
-    final gardenAPI = GardenAPI(ref);
+    final gardenMain = ref.read(garden_feature.gardenMainProvider);
+    final gardenMainBookList =
+        ref.read(garden_feature.gardenMainBookListProvider);
     garden_feature.fetchGardenList(ref);
 
     return showModalBottomSheet(
@@ -396,7 +395,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                gardenAPI.gardenMain()['garden_info'],
+                                gardenMain.gardenInfo,
                                 style: TextStyle(
                                     fontSize: 18.sp,
                                     fontWeight: FontWeight.bold),
@@ -414,9 +413,9 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                   topLeft: Radius.circular(20.r),
                                   topRight: Radius.circular(20.r)),
                               color: Functions.gardenColor(
-                                  gardenAPI.gardenMain()['garden_color'])),
+                                  gardenMain.gardenColor)),
                           child: Text(
-                            gardenAPI.gardenMain()['garden_title'],
+                            gardenMain.gardenTitle,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.sp,
@@ -430,7 +429,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     onTap: () {
                       context.pop();
                       context.pushNamed('garden-member',
-                          extra: gardenAPI.gardenMain()['garden_no']);
+                          extra: gardenMain.gardenNo);
                     },
                     child: Container(
                       margin: EdgeInsets.only(bottom: 16.h),
@@ -532,14 +531,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                         onTap: () {
                           context.pop();
                           Functions.shareBranchLink(
-                              gardenAPI.gardenMain()['garden_title'],
-                              gardenAPI.gardenMain()['garden_no']);
-                          // Widgets.shareBottomSheet(
-                          //     context,
-                          //     '가든 공유하기',
-                          //     gardenAPI.gardenMain()['garden_title'],
-                          //     gardenAPI.gardenMain()['garden_no'],
-                          //     fToast);
+                              gardenMain.gardenTitle, gardenMain.gardenNo);
                         },
                         child: Column(
                           children: [
@@ -572,8 +564,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushNamed('garden-book',
-                          extra: gardenAPI.gardenMain());
+                      context.pushNamed('garden-book', extra: gardenMain.raw);
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 30.h),
@@ -595,9 +586,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       ),
                     ),
                   ),
-                  (gardenAPI.gardenMainBookList().isEmpty)
-                      ? _bookEmpty()
-                      : _bookList()
+                  (gardenMainBookList.isEmpty) ? _bookEmpty() : _bookList()
                 ],
               ),
             ),
@@ -608,21 +597,20 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   Widget _bookList() {
-    final gardenAPI = GardenAPI(ref);
+    final gardenMainBookList =
+        ref.watch(garden_feature.gardenMainBookListProvider);
 
     return ListView(
       padding: EdgeInsets.only(top: 12.h),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: List.generate(
-        gardenAPI.gardenMainBookList().length > 3
-            ? 3
-            : gardenAPI.gardenMainBookList().length,
+        gardenMainBookList.length > 3 ? 3 : gardenMainBookList.length,
         (index) {
+          final book = gardenMainBookList[index];
           return GestureDetector(
             onTap: () {
-              context.pushNamed('book-detail',
-                  extra: gardenAPI.gardenMainBookList()[index]['book_no']);
+              context.pushNamed('book-detail', extra: book.bookNo);
             },
             child: Container(
               margin: EdgeInsets.only(bottom: 8.h),
@@ -633,16 +621,14 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   color: Colors.white),
               child: Row(
                 children: [
-                  (gardenAPI.gardenMainBookList()[index]['book_image_url'] !=
-                          null)
+                  (book.bookImageUrl.isNotEmpty)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
                           child: Image.network(
                               width: 44.r,
                               height: 44.r,
                               fit: BoxFit.fitWidth,
-                              gardenAPI.gardenMainBookList()[index]
-                                  ['book_image_url']),
+                              book.bookImageUrl),
                         )
                       : Container(
                           width: 44.r,
@@ -660,12 +646,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          gardenAPI.gardenMainBookList()[index]['book_title'],
+                          book.bookTitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
-                          gardenAPI.gardenMainBookList()[index]['book_author'],
+                          book.bookAuthor,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -685,8 +671,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
 
   //가든 멤버 보기
   Widget _memberProfile() {
-    final gardenAPI = GardenAPI(ref);
-    final memberCount = gardenAPI.gardenMain()['garden_members'].length;
+    final members = ref.watch(garden_feature.gardenMainMemberListProvider);
+    final memberCount = members.length;
+
+    if (memberCount == 0) {
+      return const SizedBox.shrink();
+    }
 
     return Container(
       margin: EdgeInsets.only(right: 4.w),
@@ -699,7 +689,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: Colors.green),
             child: Image.asset(
-              '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][0]['user_image']}.png',
+              '${Constant.PROFILE}profile_${members[0]['user_image']}.png',
             ),
           ),
           (memberCount >= 2)
@@ -711,7 +701,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red),
                     child: Image.asset(
-                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][1]['user_image']}.png',
+                      '${Constant.PROFILE}profile_${members[1]['user_image']}.png',
                     ),
                   ),
                 )
@@ -725,7 +715,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.black),
                     child: Image.asset(
-                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][2]['user_image']}.png',
+                      '${Constant.PROFILE}profile_${members[2]['user_image']}.png',
                     ),
                   ),
                 )
@@ -739,7 +729,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.amber),
                     child: Image.asset(
-                      '${Constant.PROFILE}profile_${gardenAPI.gardenMain()['garden_members'][3]['user_image']}.png',
+                      '${Constant.PROFILE}profile_${members[3]['user_image']}.png',
                     ),
                   ),
                 )
@@ -761,7 +751,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   Widget _gardenList() {
-    final gardenAPI = GardenAPI(ref);
+    final gardens = ref.watch(garden_feature.gardenListProvider);
+    final gardenMain = ref.watch(garden_feature.gardenMainProvider);
 
     return SizedBox(
       height: 72.h,
@@ -770,13 +761,12 @@ class _GardenPageState extends ConsumerState<GardenPage> {
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         children: List.generate(
-          gardenAPI.gardenList().length + 1,
+          gardens.length + 1,
           (index) {
-            return (index != gardenAPI.gardenList().length)
+            return (index != gardens.length)
                 ? GestureDetector(
                     onTap: () {
-                      gardenAPI.putGardenMain(
-                          gardenAPI.gardenList()[index]['garden_no']);
+                      garden_feature.updateMainGarden(ref, gardens[index].gardenNo);
                       context.pop();
                       _scrollController.animateTo(
                         0.0, // 스크롤 초기 위치
@@ -795,9 +785,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                             width: 52.r,
                             height: 52.r,
                             decoration: BoxDecoration(
-                                border: (gardenAPI.gardenList()[index]
-                                            ['garden_no'] ==
-                                        gardenAPI.gardenMain()['garden_no'])
+                                border: (gardens[index].gardenNo ==
+                                        gardenMain.gardenNo)
                                     ? Border.all(
                                         width: 1.w, color: AppColors.black_59)
                                     : null,
@@ -805,8 +794,8 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                                 color: Colors.white),
                             child: SvgPicture.asset(
                               '${Constant.ASSETS_ICONS}icon_bookmark.svg',
-                              color: Functions.gardenColor(gardenAPI
-                                  .gardenList()[index]['garden_color']),
+                              color: Functions.gardenColor(
+                                  gardens[index].gardenColor),
                               width: 28.r,
                               height: 28.r,
                             ),
@@ -816,12 +805,11 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                             margin: EdgeInsets.only(top: 2.h),
                             height: 18.h,
                             child: Text(
-                              gardenAPI.gardenList()[index]['garden_title'],
+                              gardens[index].gardenTitle,
                               style: TextStyle(
                                   fontSize: 10.sp,
-                                  color: (gardenAPI.gardenList()[index]
-                                              ['garden_no'] ==
-                                          gardenAPI.gardenMain()['garden_no'])
+                                  color: (gardens[index].gardenNo ==
+                                          gardenMain.gardenNo)
                                       ? Colors.black
                                       : AppColors.grey_8D,
                                   overflow: TextOverflow.ellipsis),
@@ -866,8 +854,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   Widget _gardenProgress() {
-    final gardenAPI = GardenAPI(ref);
-    int bookCount = gardenAPI.gardenMainBookList().length;
+    final bookCount = ref.watch(garden_feature.gardenMainBookListProvider).length;
 
     double progress = bookCount / 30;
 
