@@ -5,15 +5,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/GardenService.dart';
-import '../features/garden/presentation/providers/garden_provider.dart'
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/garden/domain/entities/garden_main_entity.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
-
-final inviteGardenProvider = StateProvider<Map>((ref) => {});
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 class GardenInvitePage extends ConsumerStatefulWidget {
   GardenInvitePage({required this.garden_no});
@@ -32,42 +30,37 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
     fToast.init(context);
 
     Future.microtask(() {
-      ref.read(inviteGardenProvider.notifier).state = {};
+      ref.read(garden_feature.inviteGardenProvider.notifier).state =
+          GardenMainEntity.empty;
     });
     getInviteGarden();
   }
 
   //초대 가든 조회 api
   void getInviteGarden() async {
-    final response = await gardenService.getGardenDetail(widget.garden_no);
-    if (response?.statusCode == 200) {
-      print('초대 가든 조회 성공');
-      ref.read(inviteGardenProvider.notifier).state = response?.data['data'];
-    }
+    await garden_feature.fetchInviteGarden(ref, widget.garden_no);
   }
 
   //가든 초대 수락 api
   void postGardenInvite() async {
-    final response = await gardenService.postGardenInvite(widget.garden_no);
-    if (response?.statusCode == 201) {
-      print('가든 초대 수락 완료');
-      await garden_feature.updateMainGarden(ref, widget.garden_no);
-      //TODO: - 가든 메인으로 가서 리스트 다시 불러와라
+    final statusCode =
+        await garden_feature.acceptGardenInvite(ref, widget.garden_no);
+    if (statusCode == 201) {
       if (!mounted) {
         return;
       }
       context.pop();
       context.pop();
-    } else if (response?.statusCode == 403) {
+    } else if (statusCode == 403) {
       fToast.showToast(child: Widgets.toast('멤버 정원이 꽉 차서 참여할 수 없어요'));
-    } else if (response?.statusCode == 409) {
+    } else if (statusCode == 409) {
       fToast.showToast(child: Widgets.toast('이미 가입한 가든의 초대는 수락할 수 없어요'));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final inviteGarden = ref.watch(inviteGardenProvider);
+    final inviteGarden = ref.watch(garden_feature.inviteGardenProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +69,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
         scrolledUnderElevation: 0,
         leading: Container(),
       ),
-      body: (inviteGarden.isNotEmpty)
+      body: (!inviteGarden.isEmpty)
           ? Container(
               margin: EdgeInsets.only(left: 24.w, right: 24.w),
               child: Column(
@@ -116,8 +109,8 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                               color: Colors.white, shape: BoxShape.circle),
                           child: SvgPicture.asset(
                             '${Constant.ASSETS_ICONS}icon_bookmark.svg',
-                            color: Functions.gardenColor(
-                                inviteGarden['garden_color']),
+                            color:
+                                Functions.gardenColor(inviteGarden.gardenColor),
                             width: 56.r,
                             height: 56.r,
                           ),
@@ -125,7 +118,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                         Padding(
                           padding: EdgeInsets.only(top: 16.h, bottom: 6.h),
                           child: Text(
-                            inviteGarden['garden_title'],
+                            inviteGarden.gardenTitle,
                             style: TextStyle(
                                 fontSize: 24.sp,
                                 fontWeight: FontWeight.bold,
@@ -137,14 +130,14 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                           child: SizedBox(
                             width: 232.w,
                             child: Text(
-                              inviteGarden['garden_info'],
+                              inviteGarden.gardenInfo,
                               textAlign: TextAlign.center,
                               style: const TextStyle(color: AppColors.black_59),
                             ),
                           ),
                         ),
                         Text(
-                          '멤버 ${inviteGarden['garden_members'].length}/10',
+                          '멤버 ${inviteGarden.gardenMembers.length}/10',
                           style: const TextStyle(color: AppColors.grey_8D),
                         )
                       ],

@@ -5,14 +5,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/AuthAPI.dart';
-import '../core/service/GardenService.dart';
-import '../features/garden/presentation/providers/garden_provider.dart'
+import 'package:book_flutter/core/api/AuthAPI.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 //가든 선택 인덱스 ...
 final gardenEditSelectIndexProvider = StateProvider<int>((ref) => 0);
@@ -40,9 +39,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     Future.microtask(() {
       final gardenMain = ref.read(garden_feature.gardenMainProvider);
       ref.read(gardenEditButtonProvider.notifier).state = true;
-      ref.read(gardenEditColorSelectIndexProvider.notifier).state = Constant
-          .GARDEN_COLOR_LIST
-          .indexOf(gardenMain.gardenColor);
+      ref.read(gardenEditColorSelectIndexProvider.notifier).state =
+          Constant.GARDEN_COLOR_LIST.indexOf(gardenMain.gardenColor);
       ref.read(gardenEditSelectIndexProvider.notifier).state = 0;
       _titleController.text = gardenMain.gardenTitle;
       _infoController.text = gardenMain.gardenInfo;
@@ -53,11 +51,12 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   void deleteGarden() async {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
-    final response = await gardenService.deleteGarden(gardenMain.gardenNo);
-    if (response?.statusCode == 200) {
+    final statusCode =
+        await garden_feature.deleteGarden(ref, gardenMain.gardenNo);
+    if (statusCode == 200) {
       context.pop();
       context.replaceNamed('bottom-navi');
-    } else if (response?.statusCode == 403) {
+    } else if (statusCode == 403) {
       fToast.showToast(child: Widgets.toast('가든이 하나뿐이라 삭제할 수 없어요'));
     }
   }
@@ -66,13 +65,15 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   void moveToGarden(int to_garden_no) async {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
-    final response = await gardenService.moveToGarden(
-        gardenMain.gardenNo, to_garden_no);
-    if (response?.statusCode == 200) {
+    final statusCode = await garden_feature.moveBooksToGarden(
+      ref,
+      gardenMain.gardenNo,
+      to_garden_no,
+    );
+    if (statusCode == 200) {
       context.pop();
       fToast.showToast(child: Widgets.toast('남아있는 책을 모두 옮겼어요!'));
-      garden_feature.fetchGardenList(ref);
-    } else if (response?.statusCode == 403) {
+    } else if (statusCode == 403) {
       fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
     }
   }
@@ -87,9 +88,9 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
       "garden_color": Constant
           .GARDEN_COLOR_LIST[ref.watch(gardenEditColorSelectIndexProvider)]
     };
-    final response = await gardenService.putGarden(gardenMain.gardenNo, data);
-    if (response?.statusCode == 200) {
-      await garden_feature.fetchGardenDetail(ref, gardenMain.gardenNo);
+    final statusCode =
+        await garden_feature.updateGarden(ref, gardenMain.gardenNo, data);
+    if (statusCode == 200) {
       context.replaceNamed('bottom-navi');
     }
   }
@@ -98,8 +99,9 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   void byeGarden() async {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
-    final response = await gardenService.byeGarden(gardenMain.gardenNo);
-    if (response?.statusCode == 200) {
+    final statusCode =
+        await garden_feature.leaveGarden(ref, gardenMain.gardenNo);
+    if (statusCode == 200) {
       context.pop();
       context.replaceNamed('bottom-navi');
     }
@@ -252,10 +254,9 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                   ),
                   gardenMain.gardenMembers.length <= 1
                       ? GestureDetector(
-                          onTap: () =>
-                              (gardenMain.bookList.isNotEmpty)
-                                  ? _gardenDeleteBottomSheet()
-                                  : _gardenRealDeleteBottomSheet(),
+                          onTap: () => (gardenMain.bookList.isNotEmpty)
+                              ? _gardenDeleteBottomSheet()
+                              : _gardenRealDeleteBottomSheet(),
                           child: Container(
                               margin: EdgeInsets.only(left: 24.w),
                               height: 46.h,
@@ -391,8 +392,7 @@ class GardenEditBottomSheet extends ConsumerWidget {
 
     return Container(
       margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
-      height:
-          (68.h + 10.h) * gardens.length + 24.h + 20.h + 30.h,
+      height: (68.h + 10.h) * gardens.length + 24.h + 20.h + 30.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

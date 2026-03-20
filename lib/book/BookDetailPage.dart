@@ -9,7 +9,7 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
 import '../features/book/presentation/providers/book_detail_provider.dart';
-import '../garden/GardenEditPage.dart';
+import '../features/garden/presentation/pages/garden_edit_page.dart';
 import '../utils/AppColors.dart';
 import '../utils/Constant.dart';
 import '../utils/Functions.dart';
@@ -78,7 +78,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   }
 
   Future<void> _loadBookDetail() async {
-    await ref.read(bookDetailProvider.notifier).fetchDetail(ref, widget.book_no);
+    await ref
+        .read(bookDetailProvider.notifier)
+        .fetchDetail(ref, widget.book_no);
 
     final gardenColor = ref.read(bookDetailProvider).gardenColor;
     if (gardenColor.isNotEmpty) {
@@ -125,9 +127,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   }
 
   Future<void> _toggleMemoLike(int index, int id) async {
-    await ref
-        .read(bookDetailProvider.notifier)
-        .toggleMemoLike(ref, index, id);
+    await ref.read(bookDetailProvider.notifier).toggleMemoLike(ref, index, id);
   }
 
   @override
@@ -249,7 +249,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                       fontWeight: FontWeight.w600),
                                   children: [
                                     TextSpan(
-                                        text: '${bookDetail.bookCurrentPage}p '),
+                                        text:
+                                            '${bookDetail.bookCurrentPage}p '),
                                     TextSpan(
                                         text: '/ ${bookDetail.bookPage}p',
                                         style: const TextStyle(
@@ -405,30 +406,31 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                 ),
                                               ),
                                               SizedBox(
-                                                height:
-                                                    (46.h + 18.h) *
-                                                        bookDetail.bookReadList.length,
-                                                child: (bookDetail.bookReadList
-                                                        .isNotEmpty)
-                                                    ? ListView(
-                                                        physics:
-                                                            const NeverScrollableScrollPhysics(),
-                                                        children: List.generate(
-                                                          bookDetail.bookReadList
-                                                              .length,
-                                                          (index) {
-                                                            return Container(
-                                                                margin: EdgeInsets
-                                                                    .only(
+                                                height: (46.h + 18.h) *
+                                                    bookDetail
+                                                        .bookReadList.length,
+                                                child:
+                                                    (bookDetail.bookReadList
+                                                            .isNotEmpty)
+                                                        ? ListView(
+                                                            physics:
+                                                                const NeverScrollableScrollPhysics(),
+                                                            children:
+                                                                List.generate(
+                                                              bookDetail
+                                                                  .bookReadList
+                                                                  .length,
+                                                              (index) {
+                                                                return Container(
+                                                                    margin: EdgeInsets.only(
                                                                         bottom: 18
                                                                             .h),
-                                                                child:
-                                                                    _bookReadListWidget(
+                                                                    child: _bookReadListWidget(
                                                                         index));
-                                                          },
-                                                        ),
-                                                      )
-                                                    : Container(),
+                                                              },
+                                                            ),
+                                                          )
+                                                        : Container(),
                                               )
                                             ],
                                           ),
@@ -578,7 +580,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
               children: [
                 GestureDetector(
                   onTap: () async {
-                    final data = ref.watch(bookDetailProvider).toBookAddPayload();
+                    final data =
+                        ref.watch(bookDetailProvider).toBookAddPayload();
 
                     context.pop();
                     final response =
@@ -886,7 +889,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        Functions.formatDate(memo.memoCreatedAt),
+                                        Functions.formatDate(
+                                            memo.memoCreatedAt),
                                         style: TextStyle(
                                             fontSize: 12.sp,
                                             color: AppColors.grey_8D),

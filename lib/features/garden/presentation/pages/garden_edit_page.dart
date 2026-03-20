@@ -1,1 +1,1 @@
-export '../../../../garden/GardenEditPage.dart';
+export 'GardenEditPage.dart';

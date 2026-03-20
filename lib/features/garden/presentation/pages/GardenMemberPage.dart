@@ -5,13 +5,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/api/AuthAPI.dart';
-import '../features/garden/presentation/providers/garden_provider.dart'
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
+    as auth_feature;
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
-import '../utils/AppColors.dart';
-import '../utils/Constant.dart';
-import '../utils/Functions.dart';
-import '../core/ui/app_widgets.dart';
+import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/utils/Constant.dart';
+import 'package:book_flutter/utils/Functions.dart';
 
 class GardenMemberPage extends ConsumerStatefulWidget {
   const GardenMemberPage({required this.garden_no});
@@ -37,7 +38,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
 
   @override
   Widget build(BuildContext context) {
-    final authAPI = AuthAPI(ref);
+    final user = ref.watch(auth_feature.authUserProvider);
     final gardenMain = ref.watch(garden_feature.gardenMainProvider);
     final members = ref.watch(garden_feature.gardenMainMemberListProvider);
 
@@ -47,8 +48,8 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
         child: Column(
           children: [
             Visibility(
-              visible: members.length > 1 &&
-                  (members[0]['user_no'] == authAPI.user()['user_no']),
+              visible:
+                  members.length > 1 && (members[0]['user_no'] == user.userNo),
               child: GestureDetector(
                 onTap: () {
                   context.pushNamed('garden-leader');

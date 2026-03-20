@@ -1,18 +1,15 @@
 import 'package:book_flutter/utils/AppColors.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
+    as garden_feature;
+import 'package:book_flutter/utils/Constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/service/GardenService.dart';
-import '../features/garden/presentation/providers/garden_provider.dart'
-    as garden_feature;
-import '../utils/Constant.dart';
-import '../core/ui/app_widgets.dart';
-
-final gardenLeaderSelectIndexProvider = StateProvider<int>(
-    (ref) => 0);
+final gardenLeaderSelectIndexProvider = StateProvider<int>((ref) => 0);
 
 class GardenLeaderPage extends ConsumerStatefulWidget {
   _GardenLeaderPageState createState() => _GardenLeaderPageState();
@@ -35,9 +32,9 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
     final gardenNo = gardenMain.gardenNo;
     final userNo = ref.read(gardenLeaderSelectIndexProvider);
 
-    final response = await gardenService.putGardenLeader(gardenNo, userNo);
-    if (response?.statusCode == 200) {
-      await garden_feature.fetchGardenDetail(ref, gardenNo);
+    final statusCode =
+        await garden_feature.updateGardenLeader(ref, gardenNo, userNo);
+    if (statusCode == 200) {
       context.pop();
       context.pop();
     }
@@ -91,8 +88,9 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                     final member = members[index];
                     return GestureDetector(
                       onTap: () {
-                        ref.read(gardenLeaderSelectIndexProvider.notifier).state =
-                            member['user_no'] as int;
+                        ref
+                            .read(gardenLeaderSelectIndexProvider.notifier)
+                            .state = member['user_no'] as int;
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 24.h),
@@ -124,11 +122,11 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                                       member['user_no'])
                                   ? '${Constant.ASSETS_ICONS}icon_check_select.svg'
                                   : '${Constant.ASSETS_ICONS}icon_check_deselect.svg',
-                              color: (ref.watch(
-                                          gardenLeaderSelectIndexProvider) ==
-                                      member['user_no'])
-                                  ? null
-                                  : AppColors.grey_CA,
+                              color:
+                                  (ref.watch(gardenLeaderSelectIndexProvider) ==
+                                          member['user_no'])
+                                      ? null
+                                      : AppColors.grey_CA,
                               width: 24.r,
                               height: 24.r,
                             )

@@ -13,6 +13,8 @@ final gardenMainBookListProvider =
     StateProvider<List<GardenMainBookEntity>>((ref) => []);
 final gardenMainMemberListProvider =
     StateProvider<List<Map<String, dynamic>>>((ref) => []);
+final inviteGardenProvider =
+    StateProvider<GardenMainEntity>((ref) => GardenMainEntity.empty);
 
 final gardenRepositoryStateProvider = Provider<GardenRepository>((ref) {
   return ref.read(gardenRepositoryProvider);
@@ -45,4 +47,78 @@ Future<void> updateMainGarden(WidgetRef ref, int gardenNo) async {
   if (updated) {
     await fetchGardenList(ref);
   }
+}
+
+Future<int> updateGarden(
+  WidgetRef ref,
+  int gardenNo,
+  Map<String, dynamic> data,
+) async {
+  final repository = ref.read(gardenRepositoryStateProvider);
+  final statusCode = await repository.updateGarden(gardenNo, data);
+  if (statusCode == 200) {
+    await fetchGardenDetail(ref, gardenNo);
+  }
+  return statusCode;
+}
+
+Future<int> deleteGarden(WidgetRef ref, int gardenNo) async {
+  final repository = ref.read(gardenRepositoryStateProvider);
+  final statusCode = await repository.deleteGarden(gardenNo);
+  if (statusCode == 200) {
+    await fetchGardenList(ref);
+  }
+  return statusCode;
+}
+
+Future<int> moveBooksToGarden(
+  WidgetRef ref,
+  int gardenNo,
+  int toGardenNo,
+) async {
+  final repository = ref.read(gardenRepositoryStateProvider);
+  final statusCode = await repository.moveBooksToGarden(gardenNo, toGardenNo);
+  if (statusCode == 200) {
+    await fetchGardenList(ref);
+  }
+  return statusCode;
+}
+
+Future<int> leaveGarden(WidgetRef ref, int gardenNo) async {
+  final repository = ref.read(gardenRepositoryStateProvider);
+  final statusCode = await repository.leaveGarden(gardenNo);
+  if (statusCode == 200) {
+    await fetchGardenList(ref);
+  }
+  return statusCode;
+}
+
+Future<int> updateGardenLeader(
+  WidgetRef ref,
+  int gardenNo,
+  int userNo,
+) async {
+  final repository = ref.read(gardenRepositoryStateProvider);
+  final statusCode = await repository.updateGardenLeader(gardenNo, userNo);
+  if (statusCode == 200) {
+    await fetchGardenDetail(ref, gardenNo);
+  }
+  return statusCode;
+}
+
+Future<void> fetchInviteGarden(WidgetRef ref, int gardenNo) async {
+  final repository = ref.read(gardenRepositoryStateProvider);
+  final garden = await repository.fetchInviteGarden(gardenNo);
+  if (garden != null) {
+    ref.read(inviteGardenProvider.notifier).state = garden;
+  }
+}
+
+Future<int> acceptGardenInvite(WidgetRef ref, int gardenNo) async {
+  final repository = ref.read(gardenRepositoryStateProvider);
+  final statusCode = await repository.acceptGardenInvite(gardenNo);
+  if (statusCode == 201) {
+    await updateMainGarden(ref, gardenNo);
+  }
+  return statusCode;
 }
