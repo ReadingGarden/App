@@ -170,8 +170,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         child: GestureDetector(
                             onVerticalDragUpdate: (details) {
                               setState(() {
-                                dragPosition -= details.primaryDelta! /
-                                    context.size!.height;
+                                dragPosition -=
+                                    details.primaryDelta! / 304;
                                 dragPosition = dragPosition.clamp(0.0, 1.0);
                                 currentPage =
                                     (widget.bookRead.bookPage * dragPosition)
