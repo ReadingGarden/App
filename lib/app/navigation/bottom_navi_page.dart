@@ -117,6 +117,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     required String icon,
     required String label,
   }) {
+    final isSelected = currentIndex == index;
     return GestureDetector(
       onTap: () => onTabSelected(index),
       child: Container(
@@ -125,21 +126,24 @@ class CustomBottomNavigationBar extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _iconAsset(index).svg(
-              width: 28.r,
-              height: 28.r,
-              colorFilter: (index != 3)
-                  ? const ColorFilter.mode(
-                      AppColors.black_59,
-                      BlendMode.srcIn,
-                    )
-                  : null,
+            _AnimatedTabIcon(
+              isSelected: isSelected,
+              child: _iconAsset(index).svg(
+                width: 28.r,
+                height: 28.r,
+                colorFilter: (index != 3)
+                    ? const ColorFilter.mode(
+                        AppColors.black_59,
+                        BlendMode.srcIn,
+                      )
+                    : null,
+              ),
             ),
             Text(
               label,
               style: TextStyle(
                   fontSize: 10.sp,
-                  color: currentIndex == index
+                  color: isSelected
                       ? AppColors.black_59
                       : AppColors.grey_8D),
             ),
@@ -170,5 +174,59 @@ class CustomBottomNavigationBar extends StatelessWidget {
       default:
         return Assets.icons.iconGarden;
     }
+  }
+}
+
+class _AnimatedTabIcon extends StatefulWidget {
+  const _AnimatedTabIcon({
+    required this.isSelected,
+    required this.child,
+  });
+
+  final bool isSelected;
+  final Widget child;
+
+  @override
+  State<_AnimatedTabIcon> createState() => _AnimatedTabIconState();
+}
+
+class _AnimatedTabIconState extends State<_AnimatedTabIcon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _scale = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.25), weight: 50),
+      TweenSequenceItem(tween: Tween(begin: 1.25, end: 1.0), weight: 50),
+    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void didUpdateWidget(_AnimatedTabIcon oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isSelected && !oldWidget.isSelected) {
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scale,
+      child: widget.child,
+    );
   }
 }
