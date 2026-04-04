@@ -28,7 +28,8 @@ class GardenPage extends ConsumerStatefulWidget {
   ConsumerState<GardenPage> createState() => _GardenPageState();
 }
 
-class _GardenPageState extends ConsumerState<GardenPage> {
+class _GardenPageState extends ConsumerState<GardenPage>
+    with SingleTickerProviderStateMixin {
   // 스크롤 가능한 영역을 위한 GlobalKey
   final GlobalKey _scrollViewKey = GlobalKey();
   final ScrollController _scrollController = ScrollController();
@@ -36,10 +37,17 @@ class _GardenPageState extends ConsumerState<GardenPage> {
 
   late FToast fToast;
   late Stream<BranchResponse> stream;
+  late AnimationController _flowerAnimController;
+  int _prevBookCount = 0;
 
   @override
   void initState() {
     super.initState();
+    _flowerAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
     // Session 초기화
     initBranchSession();
 
@@ -49,6 +57,13 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     Future.microtask(() {
       garden_feature.fetchGardenList(ref);
     });
+  }
+
+  @override
+  void dispose() {
+    _flowerAnimController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void initBranchSession() async {
@@ -133,6 +148,11 @@ class _GardenPageState extends ConsumerState<GardenPage> {
     final gardenMain = ref.watch(garden_feature.gardenMainProvider);
     final gardenMainBookList =
         ref.watch(garden_feature.gardenMainBookListProvider);
+
+    if (gardenMainBookList.length != _prevBookCount) {
+      _prevBookCount = gardenMainBookList.length;
+      _flowerAnimController.forward(from: 0);
+    }
 
     return Scaffold(
       body: Screenshot(
@@ -295,43 +315,61 @@ class _GardenPageState extends ConsumerState<GardenPage> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 final book = gardenMainBookList[index];
-                return GestureDetector(
-                  onTap: () async {
-                    final result = await context.pushNamed('book-detail',
-                        extra: book.bookNo);
-                    if (result != null) {
-                      garden_feature.fetchGardenList(ref);
-                    }
+                final delay = (index * 0.06).clamp(0.0, 0.7);
+                final end = (delay + 0.3).clamp(0.0, 1.0);
+                final animation = CurvedAnimation(
+                  parent: _flowerAnimController,
+                  curve: Interval(delay, end, curve: Curves.easeOut),
+                );
+                return AnimatedBuilder(
+                  animation: animation,
+                  builder: (context, child) {
+                    return Opacity(
+                      opacity: animation.value,
+                      child: Transform.translate(
+                        offset: Offset(0, 20 * (1 - animation.value)),
+                        child: child,
+                      ),
+                    );
                   },
-                  child: Container(
-                    color: Colors.transparent,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: 83.w,
-                          height: 90.h,
-                          child: AppAssets.mainFlower(
-                            flowerPercent(book.percent),
-                            book.bookTree,
-                          ).image(),
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(top: 8.h),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12.w, vertical: 4.h),
-                            // height: 28.h,
-                            decoration: BoxDecoration(
-                                color: AppColors.grey_F2,
-                                border: Border.all(
-                                    width: 1.w, color: AppColors.black_59),
-                                borderRadius: BorderRadius.circular(20.r)),
-                            child: Text(
-                              book.bookTitle,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 10.sp, fontWeight: FontWeight.w600),
-                            ))
-                      ],
+                  child: GestureDetector(
+                    onTap: () async {
+                      final result = await context.pushNamed('book-detail',
+                          extra: book.bookNo);
+                      if (result != null) {
+                        garden_feature.fetchGardenList(ref);
+                      }
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 83.w,
+                            height: 90.h,
+                            child: AppAssets.mainFlower(
+                              flowerPercent(book.percent),
+                              book.bookTree,
+                            ).image(),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 8.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w, vertical: 4.h),
+                              decoration: BoxDecoration(
+                                  color: AppColors.grey_F2,
+                                  border: Border.all(
+                                      width: 1.w, color: AppColors.black_59),
+                                  borderRadius: BorderRadius.circular(20.r)),
+                              child: Text(
+                                book.bookTitle,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.w600),
+                              ))
+                        ],
+                      ),
                     ),
                   ),
                 );
