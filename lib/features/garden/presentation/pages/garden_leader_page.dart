@@ -39,6 +39,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
     if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
+      if (!mounted) return;
       context.pop();
     }
   }
@@ -107,8 +108,10 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                                   width: 48.r,
                                   height: 48.r,
                                   decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.grey),
+                                      shape: BoxShape.circle),
+                                  child: AppAssets.profileFlower(
+                                    member.userImage,
+                                  ).image(),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(left: 12.w),

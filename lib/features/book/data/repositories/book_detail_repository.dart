@@ -28,9 +28,9 @@ class BookDetailRepository {
   Future<BookDetailEntity?> fetchBookDetail(int bookNo) async {
     final response = await bookService.getBookRead(bookNo);
     if (response?.statusCode == 200) {
-      return BookDetailDto(
-        Map<String, dynamic>.from(response?.data['data'] ?? {}),
-      ).toEntity();
+      final data = Map<String, dynamic>.from(response?.data['data'] ?? {});
+      data['book_no'] ??= bookNo;
+      return BookDetailDto(data).toEntity();
     }
     return null;
   }
