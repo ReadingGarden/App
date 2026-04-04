@@ -56,16 +56,22 @@ Future<void> fetchBookshelfBooks(
   int status, {
   bool scroll = false,
 }) async {
-  if (ref.read(bookshelfLoadingProvider)) {
-    return;
+  if (ref.read(bookshelfLoadingProvider) && !scroll) {
+    ref.read(bookshelfLoadingProvider.notifier).state = false;
   }
 
   ref.read(bookshelfLoadingProvider.notifier).state = true;
 
-  final page = ref.read(bookshelfCurrentPageProvider);
+  final page = scroll ? ref.read(bookshelfCurrentPageProvider) : 1;
   final books = await ref
       .read(bookSearchRepositoryStateProvider)
       .fetchBookshelfBooks(status, page);
+
+  // 응답 도착 시 현재 탭과 요청 탭이 다르면 무시
+  if (ref.read(bookshelfPageViewIndexProvider) != status) {
+    ref.read(bookshelfLoadingProvider.notifier).state = false;
+    return;
+  }
 
   if (!scroll) {
     ref.read(bookshelfBooksProvider.notifier).reset();
