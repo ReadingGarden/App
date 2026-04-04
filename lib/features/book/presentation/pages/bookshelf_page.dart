@@ -14,13 +14,21 @@ class BookShelfPage extends ConsumerStatefulWidget {
   const BookShelfPage({super.key});
 }
 
-class _BookShelfPageState extends ConsumerState<BookShelfPage> {
+class _BookShelfPageState extends ConsumerState<BookShelfPage>
+    with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
+  late AnimationController _listAnimController;
+  int _prevBookCount = 0;
 
   @override
   void initState() {
     super.initState();
+    _listAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+
     Future.microtask(() {
       resetBookshelf(ref);
       ref.read(bookshelfPageViewIndexProvider.notifier).state = 0;
@@ -28,7 +36,6 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
     });
 
     _scrollController.addListener(() {
-      // 스크롤이 마지막에 도달했을 때 추가 데이터를 로드
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
         fetchBookshelfBooks(
@@ -42,6 +49,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
 
   @override
   void dispose() {
+    _listAnimController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -137,6 +145,11 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
     final pageViewIndex = ref.watch(bookshelfPageViewIndexProvider);
     final bookStatusList = ref.watch(bookshelfBooksProvider);
 
+    if (bookStatusList.length != _prevBookCount && bookStatusList.isNotEmpty) {
+      _prevBookCount = bookStatusList.length;
+      _listAnimController.forward(from: 0);
+    }
+
     return Center(
         child: (isLoading && bookStatusList.isEmpty)
             ? const Center(
@@ -168,7 +181,24 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                       children: List.generate(
                         bookStatusList.length,
                         (index) {
-                          return GestureDetector(
+                          final delay = (index * 0.05).clamp(0.0, 0.7);
+                          final end = (delay + 0.3).clamp(0.0, 1.0);
+                          final animation = CurvedAnimation(
+                            parent: _listAnimController,
+                            curve: Interval(delay, end, curve: Curves.easeOut),
+                          );
+                          return AnimatedBuilder(
+                            animation: animation,
+                            builder: (context, child) {
+                              return Opacity(
+                                opacity: animation.value,
+                                child: Transform.translate(
+                                  offset: Offset(0, 16 * (1 - animation.value)),
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: GestureDetector(
                             onTap: () async {
                               if (pageViewIndex == 2) {
                                 final data = {
@@ -280,6 +310,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
                                     ))
                               ],
                             ),
+                          ),
                           );
                         },
                       ),
