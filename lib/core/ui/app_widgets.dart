@@ -486,10 +486,18 @@ class Widgets {
 }
 
 class EmptyBounce extends StatefulWidget {
-  const EmptyBounce({super.key, required this.child, this.trigger});
+  const EmptyBounce({
+    super.key,
+    required this.child,
+    this.trigger,
+    this.delay,
+    this.intensity = 1.0,
+  });
 
   final Widget child;
   final Object? trigger;
+  final Duration? delay;
+  final double intensity;
 
   @override
   State<EmptyBounce> createState() => _EmptyBounceState();
@@ -511,11 +519,20 @@ class _EmptyBounceState extends State<EmptyBounce>
     _opacity = Tween(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOut),
     );
+    final i = widget.intensity;
     _scale = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 0.8, end: 1.05), weight: 60),
-      TweenSequenceItem(tween: Tween(begin: 1.05, end: 1.0), weight: 40),
+      TweenSequenceItem(
+          tween: Tween(begin: 1.0 - 0.2 * i, end: 1.0 + 0.05 * i), weight: 60),
+      TweenSequenceItem(
+          tween: Tween(begin: 1.0 + 0.05 * i, end: 1.0), weight: 40),
     ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
-    _controller.forward();
+    if (widget.delay != null) {
+      Future.delayed(widget.delay!, () {
+        if (mounted) _controller.forward();
+      });
+    } else {
+      _controller.forward();
+    }
   }
 
   @override

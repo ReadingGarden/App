@@ -183,7 +183,10 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
   }
 
   Widget _bookEmpty() {
-    return Container(
+    return EmptyBounce(
+      delay: const Duration(milliseconds: 80),
+      intensity: 1.4,
+      child: Container(
           alignment: Alignment.center,
           margin: EdgeInsets.only(top: 78.h),
           child: Column(
@@ -205,7 +208,8 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                 style: TextStyle(color: AppColors.grey_8D),
               ),
             ],
-          ));
+          )),
+    );
   }
 }
 
