@@ -2,10 +2,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+@pragma('vm:entry-point')
+void _onBackgroundNotificationResponse(NotificationResponse details) {
+  debugPrint('백그라운드 알림을 눌렀습니다.');
+}
+
 class Messaging {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  Future<void> initializeNotification(BuildContext context) async {
+  Future<void> initializeNotification() async {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -20,9 +25,8 @@ class Messaging {
       onDidReceiveNotificationResponse: (details) {
         debugPrint('포그라운드 알림을 눌렀습니다.');
       },
-      onDidReceiveBackgroundNotificationResponse: (details) {
-        debugPrint('백그라운드 알림을 눌렀습니다.');
-      },
+      onDidReceiveBackgroundNotificationResponse:
+          _onBackgroundNotificationResponse,
     );
 
     await FirebaseMessaging.instance

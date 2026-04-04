@@ -38,6 +38,10 @@ void main() async {
   // 알림 권한 요청 (iOS 전용)
   // await FirebaseMessaging.instance.requestPermission();
 
+  // 알림 초기화
+  await messaging.initializeNotification();
+  messaging.foregroundMessage();
+
   // 전역 컨테이너를 앱 루트에 연결합니다.
   runApp(UncontrolledProviderScope(
     container: container,
@@ -50,9 +54,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    messaging.initializeNotification(context);
-    messaging.foregroundMessage();
-
     return ScreenUtilInit(
       designSize: const Size(360, 800),
       minTextAdapt: true,

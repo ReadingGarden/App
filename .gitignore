@@ -46,3 +46,4 @@ app.*.map.json
 # Local planning / agent notes
 AGENTS.md
 REFACTOR_PLAN.md
+CLAUDE.md
