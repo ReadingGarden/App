@@ -38,10 +38,18 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
   @override
   Widget build(BuildContext context) {
     final bookList = ref.watch(memo_book_feature.memoBookListProvider);
+    final isLoading = ref.watch(memo_book_feature.memoBookLoadingProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '메모할 책 선택'),
-      body: (bookList.isNotEmpty)
+      body: (isLoading && bookList.isEmpty)
+          ? const Center(
+              child: CircularProgressIndicator(
+                backgroundColor: AppColors.primaryColor,
+                color: AppColors.grey_CA,
+              ),
+            )
+          : (bookList.isNotEmpty)
           ? Container(
               margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
               child: Column(
@@ -109,8 +117,13 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
         (index) {
           final book = bookList[index];
           return GestureDetector(
-            onTap: () =>
-                context.pushNamed('memo-write', extra: book.toMemoWriteMap()),
+            onTap: () async {
+              final result = await context.pushNamed('memo-write',
+                  extra: book.toMemoWriteMap());
+              if (result != null && context.mounted) {
+                context.pop(result);
+              }
+            },
             child: Container(
               height: 88.h,
               color: Colors.transparent,

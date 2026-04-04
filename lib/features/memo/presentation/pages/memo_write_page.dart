@@ -50,7 +50,6 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       return;
     }
     if (widget.book.gardenNo == null) {
-      context.pop();
       context.pop('MemoPage_getMemoList');
     } else {
       context.pop('BookDetailPage_getBookRead');
@@ -68,7 +67,6 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
       return;
     }
     if (widget.book.gardenNo == null) {
-      context.pop();
       context.pop('MemoPage_getMemoList');
     } else {
       context.pop('BookDetailPage_getBookRead');
