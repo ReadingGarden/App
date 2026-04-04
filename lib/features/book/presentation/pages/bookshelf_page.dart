@@ -158,7 +158,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
                                 ),
                               );
                             },
-                            child: GestureDetector(
+                            child: _Pressable(
                             onTap: () async {
                               if (pageViewIndex == 2) {
                                 final data = {
@@ -307,6 +307,45 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
             style: const TextStyle(color: AppColors.grey_8D),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _Pressable extends StatefulWidget {
+  const _Pressable({required this.onTap, required this.child});
+
+  final VoidCallback onTap;
+  final Widget child;
+
+  @override
+  State<_Pressable> createState() => _PressableState();
+}
+
+class _PressableState extends State<_Pressable> {
+  bool _pressed = false;
+
+  void _handleTap() {
+    setState(() => _pressed = true);
+    Future.delayed(const Duration(milliseconds: 120), () {
+      if (!mounted) return;
+      setState(() => _pressed = false);
+      Future.delayed(const Duration(milliseconds: 80), () {
+        if (!mounted) return;
+        widget.onTap();
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: AnimatedScale(
+        scale: _pressed ? 0.92 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeInOut,
+        child: widget.child,
       ),
     );
   }

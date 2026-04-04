@@ -701,14 +701,21 @@ class _GardenPageState extends ConsumerState<GardenPage>
                         color: AppColors.grey_F2,
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 6.h),
-                      width: progress * 272.w,
-                      height: 8.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(500.r),
-                        color: Colors.black,
-                      ),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0, end: progress),
+                      duration: const Duration(milliseconds: 600),
+                      curve: Curves.easeOut,
+                      builder: (context, value, _) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 6.h),
+                          width: value * 272.w,
+                          height: 8.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(500.r),
+                            color: Colors.black,
+                          ),
+                        );
+                      },
                     )
                   ],
                 )
