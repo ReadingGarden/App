@@ -184,28 +184,28 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
 
   Widget _bookEmpty() {
     return Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.only(top: 78.h),
-        child: Column(
-          children: [
-            SizedBox(
-                width: 200.r,
-                height: 200.r,
-                child: AppAssets.emptyGardenBookList.image()),
-            Container(
-              margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
-              child: Text(
-                '저장된 책이 없어요',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          alignment: Alignment.center,
+          margin: EdgeInsets.only(top: 78.h),
+          child: Column(
+            children: [
+              SizedBox(
+                  width: 200.r,
+                  height: 200.r,
+                  child: AppAssets.emptyGardenBookList.image()),
+              Container(
+                margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
+                child: Text(
+                  '저장된 책이 없어요',
+                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            const Text(
-              '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.grey_8D),
-            ),
-          ],
-        ));
+              const Text(
+                '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.grey_8D),
+              ),
+            ],
+          ));
   }
 }
 

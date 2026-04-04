@@ -7,8 +7,10 @@ import 'package:book_flutter/features/memo/presentation/providers/memo_list_prov
     as memo_feature;
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
+import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
+import 'package:book_flutter/core/ui/app_widgets.dart';
 
 class MemoPage extends ConsumerStatefulWidget {
   const MemoPage({super.key});
@@ -249,7 +251,8 @@ class _MemoPageState extends ConsumerState<MemoPage> {
   }
 
   Widget _memoEmpty() {
-    return Container(
+    final navIndex = ref.watch(currentIndexProvider);
+    return EmptyBounce(key: ValueKey(navIndex), child: Container(
       alignment: Alignment.center,
       margin: EdgeInsets.only(top: 120.h),
       child: Column(
@@ -270,6 +273,6 @@ class _MemoPageState extends ConsumerState<MemoPage> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

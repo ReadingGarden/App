@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
@@ -281,33 +282,37 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
 
   Widget _bookshelfEmpty() {
     final pageViewIndex = ref.watch(bookshelfPageViewIndexProvider);
+    final navIndex = ref.watch(currentIndexProvider);
 
-    return Container(
-      margin: EdgeInsets.only(top: 84.h),
-      child: Column(
-        children: [
-          SizedBox(
-            width: 200.r,
-            height: 200.r,
-            child: AppAssets.emptyBookshelf(pageViewIndex).image(),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
-            child: Text(
-              '저장된 책이 없어요',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+    return EmptyBounce(
+      key: ValueKey('$navIndex-$pageViewIndex'),
+      child: Container(
+        margin: EdgeInsets.only(top: 84.h),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 200.r,
+              height: 200.r,
+              child: AppAssets.emptyBookshelf(pageViewIndex).image(),
             ),
-          ),
-          Text(
-            (pageViewIndex == 0)
-                ? '지금 읽고 있는 책이 있다면 추가해주세요'
-                : (pageViewIndex == 1)
-                    ? '책을 끝까지 다 읽은 후 찾아와주세요!'
-                    : '나중에 읽고 싶은 책이 있다면\n책 추가하기에서 ‘읽고싶어요’를 눌러주세요',
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.grey_8D),
-          ),
-        ],
+            Container(
+              margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
+              child: Text(
+                '저장된 책이 없어요',
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Text(
+              (pageViewIndex == 0)
+                  ? '지금 읽고 있는 책이 있다면 추가해주세요'
+                  : (pageViewIndex == 1)
+                      ? '책을 끝까지 다 읽은 후 찾아와주세요!'
+                      : "나중에 읽고 싶은 책이 있다면\n책 추가하기에서 '읽고싶어요'를 눌러주세요",
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: AppColors.grey_8D),
+            ),
+          ],
+        ),
       ),
     );
   }

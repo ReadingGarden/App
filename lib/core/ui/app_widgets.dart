@@ -485,6 +485,65 @@ class Widgets {
   }
 }
 
+class EmptyBounce extends StatefulWidget {
+  const EmptyBounce({super.key, required this.child, this.trigger});
+
+  final Widget child;
+  final Object? trigger;
+
+  @override
+  State<EmptyBounce> createState() => _EmptyBounceState();
+}
+
+class _EmptyBounceState extends State<EmptyBounce>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+  late Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _opacity = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+    _scale = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0.8, end: 1.05), weight: 60),
+      TweenSequenceItem(tween: Tween(begin: 1.05, end: 1.0), weight: 40),
+    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _controller.forward();
+  }
+
+  @override
+  void didUpdateWidget(EmptyBounce oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.trigger != oldWidget.trigger) {
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: ScaleTransition(
+        scale: _scale,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
 class Pressable extends StatefulWidget {
   const Pressable({super.key, required this.onTap, required this.child});
 
