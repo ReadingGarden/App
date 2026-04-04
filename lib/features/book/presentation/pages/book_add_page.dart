@@ -24,9 +24,7 @@ class BookAddPage extends ConsumerStatefulWidget {
 
 class _BookAddPageState extends ConsumerState<BookAddPage> {
   final TextEditingController _textEditingController = TextEditingController();
-  ui.Image? image;
-  ui.Image? overlayImage;
-  double dragPosition = 0.0; // From 0.0 to 1.0
+  double dragPosition = 0.0;
   late String imagePath;
   int currentPage = 0;
 
@@ -39,8 +37,6 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     dragPosition = (currentPage / widget.bookRead.bookPage);
     _textEditingController.addListener(_validateInput);
     _textEditingController.text = widget.bookRead.bookCurrentPage.toString();
-
-    _loadImage();
   }
 
   @override
@@ -66,32 +62,6 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
         context.pop('fetchData');
       }
     }
-  }
-
-  Future<void> _loadImage() async {
-    // Load main image
-    final ByteData data = await rootBundle.load(imagePath);
-    final ui.Codec codec = await ui.instantiateImageCodec(
-        data.buffer.asUint8List(),
-        targetWidth: 280,
-        targetHeight: 304);
-    final ui.FrameInfo frameInfo = await codec.getNextFrame();
-    final ui.Image mainImage = frameInfo.image;
-
-    // Load overlay image
-    final ByteData overlayData = await rootBundle.load(imagePath);
-    final ui.Codec overlayCodec = await ui.instantiateImageCodec(
-        overlayData.buffer.asUint8List(),
-        targetWidth: 280,
-        targetHeight: 304);
-    final ui.FrameInfo overlayFrameInfo = await overlayCodec.getNextFrame();
-    final ui.Image overlayImage = overlayFrameInfo.image;
-
-    if (!mounted) return;
-    setState(() {
-      image = mainImage;
-      this.overlayImage = overlayImage;
-    });
   }
 
   //텍스트필드 최대 페이지 제한
@@ -184,14 +154,18 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                                         .toString();
                               });
                             },
-                            child: image == null || overlayImage == null
-                                ? Container()
-                                : CustomPaint(
-                                    size: Size(image!.width.toDouble(),
-                                        image!.height.toDouble()),
-                                    painter: RevealPainter(
-                                        dragPosition, image!, overlayImage!),
-                                  )),
+                            child: ClipRect(
+                                clipper: _BottomRevealClipper(dragPosition),
+                                child: ColorFiltered(
+                                  colorFilter: const ColorFilter.mode(
+                                      AppColors.black_59, BlendMode.srcIn),
+                                  child: Image.asset(
+                                    imagePath,
+                                    width: 280,
+                                    height: 304,
+                                  ),
+                                ),
+                              )),
                       ),
                     ],
                   ),
@@ -277,42 +251,25 @@ Future pageBottomSheet(
   );
 }
 
-class RevealPainter extends CustomPainter {
-  final double dragPosition;
-  final ui.Image image;
-  final ui.Image overlayImage;
 
-  RevealPainter(this.dragPosition, this.image, this.overlayImage);
+class _BottomRevealClipper extends CustomClipper<Rect> {
+  _BottomRevealClipper(this.revealFraction);
+
+  final double revealFraction;
 
   @override
-  void paint(Canvas canvas, Size size) {
-    // Paint object with no colorFilter for the main image
-    final paint = Paint();
-
-    final revealHeight = size.height * dragPosition;
-
-    // The source rectangle to be drawn from the image
-    final srcRect = Rect.fromLTRB(0, image.height * (1 - dragPosition),
-        image.width.toDouble(), image.height.toDouble());
-    // The destination rectangle where the image portion will be drawn
-    final dstRect =
-        Rect.fromLTWH(0, size.height - revealHeight, size.width, revealHeight);
-
-    // Draw the revealed part of the main image
-    canvas.drawImageRect(image, srcRect, dstRect, paint);
-
-    // Overlay image with black color filter
-    final overlayPaint = Paint()
-      ..colorFilter =
-          const ColorFilter.mode(AppColors.black_59, BlendMode.srcIn);
-
-    // Draw the overlay image as black
-    canvas.drawImageRect(overlayImage, srcRect, dstRect, overlayPaint);
+  Rect getClip(Size size) {
+    return Rect.fromLTRB(
+      0,
+      size.height * (1 - revealFraction),
+      size.width,
+      size.height,
+    );
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldReclip(_BottomRevealClipper oldClipper) {
+    return oldClipper.revealFraction != revealFraction;
   }
 }
 
