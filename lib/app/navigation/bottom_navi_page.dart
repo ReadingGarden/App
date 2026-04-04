@@ -54,9 +54,10 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     return Container(
-      padding: EdgeInsets.only(left: 10.w, right: 10.w),
-      height: 70.h,
+      padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: bottomPadding),
+      height: 70.h + bottomPadding,
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
