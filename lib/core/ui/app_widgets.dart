@@ -484,3 +484,42 @@ class Widgets {
     );
   }
 }
+
+class Pressable extends StatefulWidget {
+  const Pressable({super.key, required this.onTap, required this.child});
+
+  final VoidCallback onTap;
+  final Widget child;
+
+  @override
+  State<Pressable> createState() => _PressableState();
+}
+
+class _PressableState extends State<Pressable> {
+  bool _pressed = false;
+
+  void _handleTap() {
+    setState(() => _pressed = true);
+    Future.delayed(const Duration(milliseconds: 120), () {
+      if (!mounted) return;
+      setState(() => _pressed = false);
+      Future.delayed(const Duration(milliseconds: 80), () {
+        if (!mounted) return;
+        widget.onTap();
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: AnimatedScale(
+        scale: _pressed ? 0.95 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeInOut,
+        child: widget.child,
+      ),
+    );
+  }
+}

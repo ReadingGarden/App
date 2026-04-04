@@ -71,7 +71,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                             itemCount: bookList.length,
                             itemBuilder: (context, index) {
                               final book = bookList[index];
-                              return GestureDetector(
+                              return Pressable(
                                 onTap: () {
                                   context.pushNamed('book-detail',
                                       extra: book.bookNo);
@@ -208,3 +208,4 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
         ));
   }
 }
+
