@@ -106,11 +106,9 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage> {
   Widget _titleButton(String title, int index) {
     return GestureDetector(
       onTap: () {
-        resetBookshelf(ref);
-        fetchBookshelfBooks(ref, index);
-
         _pageController.animateToPage(index,
-            duration: const Duration(milliseconds: 400), curve: Curves.ease);
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut);
       },
       child: Container(
           alignment: Alignment.center,
