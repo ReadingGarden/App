@@ -736,13 +736,33 @@ class _GardenPageState extends ConsumerState<GardenPage>
                     ),
                   ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 6.h),
-                  height: 8.h,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(500.r),
-                    color: Colors.black,
-                  ),
+                Stack(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 6.h),
+                      height: 8.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(500.r),
+                        color: AppColors.grey_F2,
+                      ),
+                    ),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0.0, end: 1.0),
+                      duration: const Duration(milliseconds: 600),
+                      curve: Curves.easeOut,
+                      builder: (context, value, _) {
+                        return Container(
+                          margin: EdgeInsets.only(top: 6.h),
+                          width: value * 272.w,
+                          height: 8.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(500.r),
+                            color: Colors.black,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 )
               ],
             ));
