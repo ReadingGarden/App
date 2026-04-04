@@ -73,24 +73,14 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
       ),
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 25.w),
-            height: 36.h,
-            decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                color: AppColors.grey_F2,
-                width: 1.w,
-              )),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _titleButton('읽고있어요', 0),
-                _titleButton('다읽었어요', 1),
-                _titleButton('읽고싶어요', 2)
-              ],
-            ),
+          _TabBar(
+            pageController: _pageController,
+            currentIndex: ref.watch(bookshelfPageViewIndexProvider),
+            onTap: (index) {
+              _pageController.animateToPage(index,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut);
+            },
           ),
           Expanded(
             child: PageView.builder(
@@ -108,36 +98,6 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
           ),
         ],
       ),
-    );
-  }
-
-  Widget _titleButton(String title, int index) {
-    return GestureDetector(
-      onTap: () {
-        _pageController.animateToPage(index,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut);
-      },
-      child: Container(
-          alignment: Alignment.center,
-          width: 98.w,
-          height: 36.h,
-          decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border(
-                  bottom: BorderSide(
-                color: ref.watch(bookshelfPageViewIndexProvider) == index
-                    ? AppColors.black_59
-                    : Colors.transparent,
-                width: 2.w,
-              ))),
-          child: Text(
-            title,
-            style: (ref.watch(bookshelfPageViewIndexProvider) == index)
-                ? const TextStyle(
-                    color: AppColors.black_59, fontWeight: FontWeight.bold)
-                : const TextStyle(color: AppColors.grey_8D),
-          )),
     );
   }
 
@@ -345,6 +305,98 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
                     : '나중에 읽고 싶은 책이 있다면\n책 추가하기에서 ‘읽고싶어요’를 눌러주세요',
             textAlign: TextAlign.center,
             style: const TextStyle(color: AppColors.grey_8D),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TabBar extends StatefulWidget {
+  const _TabBar({
+    required this.pageController,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  final PageController pageController;
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  @override
+  State<_TabBar> createState() => _TabBarState();
+}
+
+class _TabBarState extends State<_TabBar> {
+  double _page = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.pageController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    widget.pageController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    setState(() {
+      _page = widget.pageController.page ?? widget.currentIndex.toDouble();
+    });
+  }
+
+  static const _labels = ['읽고있어요', '다읽었어요', '읽고싶어요'];
+
+  @override
+  Widget build(BuildContext context) {
+    final tabWidth = 98.w;
+    final rowWidth = MediaQuery.of(context).size.width - 50.w;
+    final gap = (rowWidth - tabWidth * 3) / 2;
+    final indicatorLeft = _page * (tabWidth + gap);
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25.w),
+      height: 36.h,
+      decoration: BoxDecoration(
+        border: Border(
+            bottom: BorderSide(color: AppColors.grey_F2, width: 1.w)),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            left: indicatorLeft,
+            bottom: 0,
+            child: Container(
+              width: tabWidth,
+              height: 2.h,
+              color: AppColors.black_59,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: List.generate(3, (index) {
+              final isActive = widget.currentIndex == index;
+              return GestureDetector(
+                onTap: () => widget.onTap(index),
+                child: Container(
+                  alignment: Alignment.center,
+                  width: tabWidth,
+                  height: 36.h,
+                  color: Colors.transparent,
+                  child: Text(
+                    _labels[index],
+                    style: isActive
+                        ? const TextStyle(
+                            color: AppColors.black_59,
+                            fontWeight: FontWeight.bold)
+                        : const TextStyle(color: AppColors.grey_8D),
+                  ),
+                ),
+              );
+            }),
           ),
         ],
       ),
