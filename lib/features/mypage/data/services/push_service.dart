@@ -5,7 +5,7 @@ import '../../../../core/constants/app_constant.dart';
 import '../../../../core/network/dio_client.dart';
 
 class PushService {
-  final _authenticatedDio = dioclent.authenticatedDio;
+  final _authenticatedDio = dioClient.authenticatedDio;
 
   Future<Response?> getPush() async {
     try {

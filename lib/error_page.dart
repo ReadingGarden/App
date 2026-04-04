@@ -7,7 +7,6 @@ class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key});
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(

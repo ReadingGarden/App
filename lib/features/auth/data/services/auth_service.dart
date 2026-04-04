@@ -7,8 +7,8 @@ import 'package:flutter/foundation.dart';
 import '../../../../core/constants/app_constant.dart';
 
 class AuthService {
-  final _dio = dioclent.dio;
-  final _authenticatedDio = dioclent.authenticatedDio;
+  final _dio = dioClient.dio;
+  final _authenticatedDio = dioClient.authenticatedDio;
 
   Future<Response?> postLogin(Map data) async {
     try {

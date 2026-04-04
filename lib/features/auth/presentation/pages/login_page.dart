@@ -8,10 +8,9 @@ import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:book_flutter/core/services/social_login_service.dart';
 import 'package:book_flutter/core/provider/fcm_token_provider.dart';
-import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/features/auth/data/services/auth_service.dart';
+import 'package:book_flutter/features/auth/data/repositories/auth_repository.dart';
 
 // 이메일, 비밀번호 에러 메시지 상태를 관리하는 프로바이더
 final loginErrorProvider = StateProvider<String?>((ref) => null);
@@ -42,14 +41,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   //로그인 api
   void postEmailLogin(Map data) async {
-    final response = await authService.postLogin(data);
+    final statusCode = await ref.read(authRepositoryProvider).emailLogin(data);
     if (!mounted) return;
-    if (response?.statusCode == 200) {
-      // access,refresh 저장하고 가든 페이지로
-      saveAccess(response?.data['data']['access_token']);
-      saveRefresh(response?.data['data']['refresh_token']);
+    if (statusCode == 200) {
       context.goNamed('bottom-navi');
-    } else if (response?.statusCode == 400) {
+    } else if (statusCode == 400) {
       _loginError();
     }
   }

@@ -2,8 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/repositories/book_detail_repository.dart';
 import '../../domain/entities/book_detail_entity.dart';
+import '../../domain/entities/book_memo_summary_entity.dart';
 
-final bookDetailMemoListProvider = StateProvider<List>((ref) => []);
+final bookDetailMemoListProvider =
+    StateProvider<List<BookMemoSummaryEntity>>((ref) => []);
 final bookDetailMemoSelectIndexListProvider =
     StateProvider<List<bool>>((ref) => []);
 

@@ -29,6 +29,29 @@ class AuthRepository {
     return response?.statusCode ?? 0;
   }
 
+  /// 이메일 로그인. 성공 시 토큰 저장 후 상태 코드 반환.
+  Future<int> emailLogin(Map data) async {
+    final response = await _service.postLogin(data);
+    if (response?.statusCode == 200) {
+      saveAccess(response?.data['data']['access_token']);
+      saveRefresh(response?.data['data']['refresh_token']);
+    }
+    return response?.statusCode ?? 0;
+  }
+
+  /// 이메일 회원가입. 성공 시 토큰 저장 후 닉네임 반환.
+  Future<({int statusCode, String? nick})> emailSignup(Map data) async {
+    final response = await _service.postSignup(data);
+    if (response?.statusCode == 201) {
+      saveAccess(response?.data['data']['access_token']);
+      saveRefresh(response?.data['data']['refresh_token']);
+    }
+    return (
+      statusCode: response?.statusCode ?? 0,
+      nick: response?.data?['data']?['user_nick'] as String?,
+    );
+  }
+
   /// 소셜 로그인 시도. 성공 시 토큰 저장 후 true, 400이면 회원가입 시도.
   /// 반환: {'status': 'home'|'signup'|'error', 'nick': String?}
   Future<Map<String, dynamic>> socialLogin(Map data) async {

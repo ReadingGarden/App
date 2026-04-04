@@ -52,24 +52,6 @@ class _GardenPageState extends ConsumerState<GardenPage> {
   }
 
   void initBranchSession() async {
-    // FlutterBranchSdk.init().then((_) {
-    //   // 앱 시작 시 Branch 링크 데이터 받기
-    //   FlutterBranchSdk.getLatestReferringParams().then((params) {
-    //     print("Received Branch params: $params");
-    //   });
-    // });
-
-    // // 앱 실행 시 또는 백그라운드에서 복귀할 때 딥 링크 파라미터 처리
-    // FlutterBranchSdk.getLatestReferringParams().then((params) {
-    //   print("Branch referring params: $params");
-    // });
-
-    // // 앱 실행 후 딥 링크 파라미터를 받는 다른 방법
-    // FlutterBranchSdk.getFirstReferringParams().then((params) {
-    //   print("First referring params: $params");
-    // });
-
-    // Branch SDK Session 시작
     FlutterBranchSdk.listSession().listen((data) {
       debugPrint('브랜치 딥링크 데이터 수신: $data');
       if (!mounted) return;

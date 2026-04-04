@@ -1,10 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/provider/fcm_token_provider.dart';
-import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/features/auth/data/services/auth_service.dart';
+import 'package:book_flutter/features/auth/data/repositories/auth_repository.dart';
 import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,15 +53,11 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       "user_social_type": ""
     };
 
-    final response = await authService.postSignup(data);
+    final result = await ref.read(authRepositoryProvider).emailSignup(data);
     if (!context.mounted) return;
-    if (response?.statusCode == 201) {
-      //access,refresh 저장하고 회원가입 완료 페이지로
-      saveAccess(response?.data['data']['access_token']);
-      saveRefresh(response?.data['data']['refresh_token']);
-      context.goNamed('signup-done',
-          extra: response?.data['data']['user_nick']);
-    } else if (response?.statusCode == 400) {}
+    if (result.statusCode == 201) {
+      context.goNamed('signup-done', extra: result.nick);
+    } else if (result.statusCode == 400) {}
   }
 
   void _validate() {
