@@ -138,34 +138,36 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                       )),
                       Center(
                         child: GestureDetector(
-                            onVerticalDragUpdate: (details) {
-                              setState(() {
-                                dragPosition -=
-                                    details.primaryDelta! / 304;
-                                dragPosition = dragPosition.clamp(0.0, 1.0);
-                                currentPage =
-                                    (widget.bookRead.bookPage * dragPosition)
-                                        .toInt();
-
-                                //텍스트 필드에도 적용
-                                _textEditingController.text =
-                                    (widget.bookRead.bookPage * dragPosition)
-                                        .toInt()
-                                        .toString();
-                              });
-                            },
+                          behavior: HitTestBehavior.opaque,
+                          onVerticalDragUpdate: (details) {
+                            setState(() {
+                              dragPosition -=
+                                  details.primaryDelta! / 304;
+                              dragPosition = dragPosition.clamp(0.0, 1.0);
+                              currentPage =
+                                  (widget.bookRead.bookPage * dragPosition)
+                                      .toInt();
+                              _textEditingController.text =
+                                  currentPage.toString();
+                            });
+                          },
+                          child: SizedBox(
+                            width: 280,
+                            height: 304,
                             child: ClipRect(
-                                clipper: _BottomRevealClipper(dragPosition),
-                                child: ColorFiltered(
-                                  colorFilter: const ColorFilter.mode(
-                                      AppColors.black_59, BlendMode.srcIn),
-                                  child: Image.asset(
-                                    imagePath,
-                                    width: 280,
-                                    height: 304,
-                                  ),
+                              clipper: _BottomRevealClipper(dragPosition),
+                              child: ColorFiltered(
+                                colorFilter: const ColorFilter.mode(
+                                    AppColors.black_59, BlendMode.srcIn),
+                                child: Image.asset(
+                                  imagePath,
+                                  width: 280,
+                                  height: 304,
                                 ),
-                              )),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
