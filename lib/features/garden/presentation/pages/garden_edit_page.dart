@@ -131,8 +131,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     bool leaderBool = false;
 
     for (final member in gardenMain.gardenMembers) {
-      if (member['user_no'] == user.userNo) {
-        leaderBool = member['garden_leader'];
+      if (member.userNo == user.userNo) {
+        leaderBool = member.gardenLeader;
       }
     }
     return leaderBool;

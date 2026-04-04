@@ -52,31 +52,30 @@ class AuthRepository {
     );
   }
 
-  /// 소셜 로그인 시도. 성공 시 토큰 저장 후 true, 400이면 회원가입 시도.
-  /// 반환: {'status': 'home'|'signup'|'error', 'nick': String?}
-  Future<Map<String, dynamic>> socialLogin(Map data) async {
+  /// 소셜 로그인 시도. 성공 시 토큰 저장, 400이면 회원가입 시도.
+  Future<({String status, String? nick})> socialLogin(Map data) async {
     final Response? response = await _service.postLogin(data);
     if (response?.statusCode == 200) {
       saveAccess(response?.data['data']['access_token']);
       saveRefresh(response?.data['data']['refresh_token']);
-      return {'status': 'home'};
+      return (status: 'home', nick: null);
     } else if (response?.statusCode == 400) {
       return await socialSignup(data);
     }
-    return {'status': 'error'};
+    return (status: 'error', nick: null);
   }
 
   /// 소셜 회원가입. 성공 시 토큰 저장 후 닉네임 반환.
-  Future<Map<String, dynamic>> socialSignup(Map data) async {
+  Future<({String status, String? nick})> socialSignup(Map data) async {
     final Response? response = await _service.postSignup(data);
     if (response?.statusCode == 201) {
       saveAccess(response?.data['data']['access_token']);
       saveRefresh(response?.data['data']['refresh_token']);
-      return {
-        'status': 'signup',
-        'nick': response?.data['data']['user_nick'],
-      };
+      return (
+        status: 'signup',
+        nick: response?.data['data']['user_nick'] as String?,
+      );
     }
-    return {'status': 'error'};
+    return (status: 'error', nick: null);
   }
 }

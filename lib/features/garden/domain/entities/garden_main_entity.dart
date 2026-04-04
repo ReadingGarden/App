@@ -1,4 +1,5 @@
 import 'garden_main_book_entity.dart';
+import 'garden_member_entity.dart';
 
 class GardenMainEntity {
   const GardenMainEntity({
@@ -8,7 +9,6 @@ class GardenMainEntity {
     required this.gardenColor,
     required this.bookList,
     required this.gardenMembers,
-    required this.raw,
   });
 
   final int gardenNo;
@@ -16,8 +16,7 @@ class GardenMainEntity {
   final String gardenInfo;
   final String gardenColor;
   final List<GardenMainBookEntity> bookList;
-  final List<Map<String, dynamic>> gardenMembers;
-  final Map<String, dynamic> raw;
+  final List<GardenMemberEntity> gardenMembers;
 
   static const empty = GardenMainEntity(
     gardenNo: 0,
@@ -26,7 +25,6 @@ class GardenMainEntity {
     gardenColor: '',
     bookList: [],
     gardenMembers: [],
-    raw: {},
   );
 
   bool get isEmpty => gardenNo == 0;
@@ -42,9 +40,9 @@ class GardenMainEntity {
               Map<String, dynamic>.from(item as Map)))
           .toList(),
       gardenMembers: (map['garden_members'] as List? ?? [])
-          .map((item) => Map<String, dynamic>.from(item as Map))
+          .map((item) => GardenMemberEntity.fromMap(
+              Map<String, dynamic>.from(item as Map)))
           .toList(),
-      raw: map,
     );
   }
 }

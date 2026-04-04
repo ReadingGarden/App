@@ -30,8 +30,8 @@ List<RouteBase> get gardenRoutes => [
             path: 'garden-book',
             name: 'garden-book',
             builder: (context, state) {
-              final garden = state.extra as Map;
-              return GardenBookListPage(garden: garden);
+              final gardenNo = state.extra as int;
+              return GardenBookListPage(gardenNo: gardenNo);
             },
           ),
           GoRoute(

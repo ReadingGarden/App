@@ -551,7 +551,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      context.pushNamed('garden-book', extra: gardenMain.raw);
+                      context.pushNamed('garden-book', extra: gardenMain.gardenNo);
                     },
                     child: Container(
                       margin: EdgeInsets.only(top: 30.h),
@@ -674,7 +674,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
             height: 32.r,
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: Colors.green),
-            child: AppAssets.profileFlower(members[0]['user_image']).image(),
+            child: AppAssets.profileFlower(members[0].userImage).image(),
           ),
           (memberCount >= 2)
               ? SizedBox(
@@ -684,7 +684,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     height: 32.r,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.red),
-                    child: AppAssets.profileFlower(members[1]['user_image'])
+                    child: AppAssets.profileFlower(members[1].userImage)
                         .image(),
                   ),
                 )
@@ -697,7 +697,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     height: 32.r,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.black),
-                    child: AppAssets.profileFlower(members[2]['user_image'])
+                    child: AppAssets.profileFlower(members[2].userImage)
                         .image(),
                   ),
                 )
@@ -710,7 +710,7 @@ class _GardenPageState extends ConsumerState<GardenPage> {
                     height: 32.r,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Colors.amber),
-                    child: AppAssets.profileFlower(members[3]['user_image'])
+                    child: AppAssets.profileFlower(members[3].userImage)
                         .image(),
                   ),
                 )

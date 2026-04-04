@@ -49,7 +49,7 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
           children: [
             Visibility(
               visible:
-                  members.length > 1 && (members[0]['user_no'] == user.userNo),
+                  members.length > 1 && (members[0].userNo == user.userNo),
               child: GestureDetector(
                 onTap: () {
                   context.pushNamed('garden-leader');
@@ -124,11 +124,11 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: AppAssets.profileFlower(
-                                      member['user_image'],
+                                      member.userImage,
                                     ).image(),
                                   ),
                                   Visibility(
-                                    visible: member['garden_leader'],
+                                    visible: member.gardenLeader,
                                     child: AppAssets.iconLeader.svg(
                                       width: 20.r,
                                       height: 20.r,
@@ -144,11 +144,11 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      member['user_nick'],
+                                      member.userNick,
                                       style: TextStyle(fontSize: 16.sp),
                                     ),
                                     Text(
-                                      (member['garden_leader'])
+                                      member.gardenLeader
                                           ? '대표 가드너'
                                           : '가드너',
                                       style: TextStyle(

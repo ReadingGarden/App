@@ -10,9 +10,9 @@ import 'package:book_flutter/features/garden/presentation/providers/garden_provi
     as garden_feature;
 
 class GardenBookListPage extends ConsumerStatefulWidget {
-  const GardenBookListPage({super.key, required this.garden});
+  const GardenBookListPage({super.key, required this.gardenNo});
 
-  final Map garden;
+  final int gardenNo;
 
   @override
   ConsumerState<GardenBookListPage> createState() => _GardenBookListPageState();
@@ -24,7 +24,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
     super.initState();
 
     Future.microtask(() {
-      garden_feature.fetchGardenDetail(ref, widget.garden['garden_no']);
+      garden_feature.fetchGardenDetail(ref, widget.gardenNo);
     });
   }
 
@@ -33,11 +33,11 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
     final bookList = ref.watch(garden_feature.gardenMainBookListProvider);
 
     return Scaffold(
-      appBar: Widgets.appBar(context, title: widget.garden['garden_title']),
+      appBar: Widgets.appBar(context,
+          title: ref.watch(garden_feature.gardenMainProvider).gardenTitle),
       body: RefreshIndicator(
         onRefresh: () async {
-          await garden_feature.fetchGardenDetail(
-              ref, widget.garden['garden_no']);
+          await garden_feature.fetchGardenDetail(ref, widget.gardenNo);
         },
         backgroundColor: Colors.white,
         color: AppColors.grey_8D,

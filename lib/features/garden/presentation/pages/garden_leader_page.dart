@@ -24,7 +24,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
     Future.microtask(() {
       final members = ref.read(garden_feature.gardenMainMemberListProvider);
       ref.read(gardenLeaderSelectIndexProvider.notifier).state =
-          members.isNotEmpty ? members[0]['user_no'] as int : 0;
+          members.isNotEmpty ? members[0].userNo : 0;
     });
   }
 
@@ -92,7 +92,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                       onTap: () {
                         ref
                             .read(gardenLeaderSelectIndexProvider.notifier)
-                            .state = member['user_no'] as int;
+                            .state = member.userNo;
                       },
                       child: Container(
                         margin: EdgeInsets.only(bottom: 24.h),
@@ -113,20 +113,20 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
                                 Padding(
                                   padding: EdgeInsets.only(left: 12.w),
                                   child: Text(
-                                    member['user_nick'],
+                                    member.userNick,
                                     style: TextStyle(fontSize: 16.sp),
                                   ),
                                 ),
                               ],
                             ),
                             ((ref.watch(gardenLeaderSelectIndexProvider) ==
-                                        member['user_no'])
+                                        member.userNo)
                                     ? AppAssets.iconCheckSelect
                                     : AppAssets.iconCheckDeselect)
                                 .svg(
                               colorFilter:
                                   (ref.watch(gardenLeaderSelectIndexProvider) ==
-                                          member['user_no'])
+                                          member.userNo)
                                       ? null
                                       : const ColorFilter.mode(
                                           AppColors.grey_CA,

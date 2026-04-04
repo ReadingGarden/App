@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/repositories/garden_repository.dart';
 import '../../domain/entities/garden_main_book_entity.dart';
 import '../../domain/entities/garden_main_entity.dart';
+import '../../domain/entities/garden_member_entity.dart';
 import '../../domain/entities/garden_summary_entity.dart';
 
 final gardenListProvider =
@@ -12,7 +13,7 @@ final gardenMainProvider =
 final gardenMainBookListProvider =
     StateProvider<List<GardenMainBookEntity>>((ref) => []);
 final gardenMainMemberListProvider =
-    StateProvider<List<Map<String, dynamic>>>((ref) => []);
+    StateProvider<List<GardenMemberEntity>>((ref) => []);
 final inviteGardenProvider =
     StateProvider<GardenMainEntity>((ref) => GardenMainEntity.empty);
 
