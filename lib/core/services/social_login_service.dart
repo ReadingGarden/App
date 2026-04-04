@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import '../api/auth_api.dart';
+import '../../features/auth/presentation/providers/auth_user_provider.dart'
+    as auth_feature;
 import '../provider/fcm_token_provider.dart';
 
 class SocialLogin {
   static Future<void> googleLogin(WidgetRef ref, BuildContext context) async {
-    final authAPI = AuthAPI(ref);
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication? googleAuth =
@@ -39,7 +39,7 @@ class SocialLogin {
           "user_social_type": "google"
         };
         if (!context.mounted) return;
-        authAPI.postSocialLogin(context, data);
+        auth_feature.socialLogin(ref, context, data);
       }
     } catch (e) {
       debugPrint('구글 로그인 중 오류가 발생했습니다: $e');
@@ -83,8 +83,6 @@ class SocialLogin {
   }
 
   static void _getKakaoUser(WidgetRef ref, BuildContext context) async {
-    final authAPI = AuthAPI(ref);
-
     try {
       final user = await UserApi.instance.me();
 
@@ -103,7 +101,7 @@ class SocialLogin {
         "user_social_type": "kakao"
       };
       if (!context.mounted) return;
-      authAPI.postSocialLogin(context, data);
+      auth_feature.socialLogin(ref, context, data);
     } catch (error) {
       debugPrint('카카오 사용자 정보 조회 실패: $error');
     }

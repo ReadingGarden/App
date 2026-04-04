@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:book_flutter/core/api/auth_api.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart';
 
 //닉네임 에러 메세지...
 final nicknameErrorProvider = StateProvider<String?>((ref) => null);
@@ -22,16 +22,14 @@ class _NickNamePageState extends ConsumerState<NickNamePage> {
   void initState() {
     super.initState();
 
-    final authAPI = AuthAPI(ref);
-
     Future.microtask(() {
-      _nicknameController.text = authAPI.user()['user_nick'];
+      final user = ref.read(authUserProvider);
+      _nicknameController.text = user.userNick;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final authAPI = AuthAPI(ref);
     //닉네임 텍스트 필드 에러 메세지
     final nicknameErrorText = ref.watch(nicknameErrorProvider);
 
@@ -47,7 +45,7 @@ class _NickNamePageState extends ConsumerState<NickNamePage> {
           final data = {
             "user_nick": _nicknameController.text,
           };
-          authAPI.putUser(context, data);
+          updateUser(ref, context, data);
         }),
       ),
     );

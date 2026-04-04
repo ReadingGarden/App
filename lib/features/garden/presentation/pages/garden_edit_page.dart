@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/api/auth_api.dart';
 import 'package:book_flutter/core/common/functions.dart';
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
@@ -125,13 +125,13 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
 
   //가든 리더 확인
   bool _gardenLeaderBool() {
-    final authAPI = AuthAPI(ref);
+    final user = ref.read(authUserProvider);
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
     bool leaderBool = false;
 
     for (final member in gardenMain.gardenMembers) {
-      if (member['user_no'] == authAPI.user()['user_no']) {
+      if (member['user_no'] == user.userNo) {
         leaderBool = member['garden_leader'];
       }
     }

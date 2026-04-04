@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/api/auth_api.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
@@ -38,7 +38,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
 
   @override
   Widget build(BuildContext context) {
-    final authAPI = AuthAPI(ref);
+    final user = ref.watch(authUserProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '계정 관리'),
@@ -51,7 +51,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
               '비밀번호 변경',
               () {
                 context.pushNamed('pwd-setting', extra: {
-                  'user_email': authAPI.user()['user_email'],
+                  'user_email': user.userEmail,
                   'isLoginPage': false
                 });
               },

@@ -37,3 +37,19 @@ Future<int> updateUser(
   }
   return statusCode;
 }
+
+Future<void> socialLogin(
+  WidgetRef ref,
+  BuildContext context,
+  Map data,
+) async {
+  final repository = ref.read(authRepositoryProvider);
+  final result = await repository.socialLogin(data);
+  if (!context.mounted) return;
+  switch (result['status']) {
+    case 'home':
+      context.goNamed('bottom-navi');
+    case 'signup':
+      context.goNamed('signup-done', extra: result['nick']);
+  }
+}

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/api/auth_api.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
 
@@ -18,7 +18,7 @@ class ProfilePage extends ConsumerStatefulWidget {
 class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final authAPI = AuthAPI(ref);
+    final user = ref.watch(authUserProvider);
 
     return Scaffold(
       appBar: Widgets.appBar(context, title: '프로필'),
@@ -33,7 +33,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               child: CircleAvatar(
                 radius: 60.r,
                 child: AppAssets.profileFlower(
-                  authAPI.user()['user_image'],
+                  user.userImage,
                 ).image(),
               ),
             ),
@@ -59,7 +59,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               widget: Row(
                 children: [
                   Text(
-                    authAPI.user()['user_nick'],
+                    user.userNick,
                     style: const TextStyle(color: AppColors.grey_8D),
                   ),
                   Container(
@@ -83,7 +83,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               '이메일',
               () {},
               widget: Text(
-                authAPI.user()['user_email'],
+                user.userEmail,
                 style: const TextStyle(color: AppColors.grey_8D),
               ),
             ),

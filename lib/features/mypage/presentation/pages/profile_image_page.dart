@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:book_flutter/core/api/auth_api.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart';
 import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/core/constants/app_constant.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
@@ -23,8 +23,6 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
   void initState() {
     super.initState();
 
-    // final authAPI = AuthAPI(ref);
-
     Future.microtask(() {
       ref.read(profileSelectIndexProvider.notifier).state =
           userProfileImageIndex();
@@ -33,13 +31,12 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
 
   //유저 프로필 이미지 인덱스
   int userProfileImageIndex() {
-    final authAPI = AuthAPI(ref);
-    return Constant.FLOWER_LIST.indexOf(authAPI.user()['user_image']);
+    final user = ref.read(authUserProvider);
+    return Constant.FLOWER_LIST.indexOf(user.userImage);
   }
 
   @override
   Widget build(BuildContext context) {
-    final authAPI = AuthAPI(ref);
     final listIndex = ref.watch(profileSelectIndexProvider);
 
     return PopScope(
@@ -50,7 +47,7 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
           "user_image":
               Constant.FLOWER_LIST[ref.watch(profileSelectIndexProvider)]
         };
-        authAPI.putUser(context, data);
+        updateUser(ref, context, data);
       },
       child: Scaffold(
         appBar: Widgets.appBar(context, title: '대표 프로필 변경', backFunction: () {
@@ -58,7 +55,7 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
             "user_image":
                 Constant.FLOWER_LIST[ref.watch(profileSelectIndexProvider)]
           };
-          authAPI.putUser(context, data);
+          updateUser(ref, context, data);
         }),
         body: Container(
           margin: EdgeInsets.only(top: 20.h),
