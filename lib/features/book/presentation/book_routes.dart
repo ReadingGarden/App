@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_edit_input_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
@@ -93,10 +94,27 @@ List<RouteBase> get bookRoutes => [
                   GoRoute(
                     path: 'book-add-done',
                     name: 'book-add-done',
-                    builder: (context, state) {
+                    pageBuilder: (context, state) {
                       final bookRead = state.extra as Map;
-                      return BookAddDonePage(
-                        bookRead: BookAddDoneEntity.fromMap(bookRead),
+                      return CustomTransitionPage(
+                        child: BookAddDonePage(
+                          bookRead: BookAddDoneEntity.fromMap(bookRead),
+                        ),
+                        transitionDuration: const Duration(milliseconds: 500),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: ScaleTransition(
+                              scale: Tween<double>(begin: 0.85, end: 1.0)
+                                  .animate(CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeOut,
+                              )),
+                              child: child,
+                            ),
+                          );
+                        },
                       );
                     },
                   ),
