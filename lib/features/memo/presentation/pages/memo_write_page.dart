@@ -264,8 +264,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
             ]),
           ),
         ),
-        bottomSheet: Builder(builder: (context) {
-          final keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+        bottomSheet: Builder(builder: (sheetContext) {
+          final keyboardVisible = MediaQuery.of(sheetContext).viewInsets.bottom > 0;
           final bottomSafe = keyboardVisible
               ? 0.0
               : MediaQuery.of(context).viewPadding.bottom;
