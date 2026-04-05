@@ -247,11 +247,11 @@ class _GardenPageState extends ConsumerState<GardenPage>
               ],
             ),
             Visibility(
-              visible: gardenMainBookList.isEmpty,
+              visible: gardenMainBookList.isEmpty && !gardenMain.isEmpty,
               child: Container(
                 alignment: Alignment.bottomCenter,
                 child: Visibility(
-                  visible: gardenMainBookList.isEmpty,
+                  visible: gardenMainBookList.isEmpty && !gardenMain.isEmpty,
                   child: Container(
                       alignment: Alignment.bottomCenter,
                       width: 320.w,
