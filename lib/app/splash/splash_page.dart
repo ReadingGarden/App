@@ -15,14 +15,29 @@ class SplashPage extends ConsumerStatefulWidget {
   ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends ConsumerState<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _opacity;
+  late Animation<double> _scale;
+
   @override
   void initState() {
     super.initState();
-    //FCM 토큰을 비동기로 가져옵니다.
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    _opacity = Tween(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+    _scale = Tween(begin: 0.8, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+    _controller.forward();
+
     debugPrint('스플래시에서 FCM 토큰 조회를 시작합니다: ${ref.read(fcmTokenProvider)}');
 
-    // 1초 후에 로그인 페이지로 이동
     Future.delayed(const Duration(seconds: 2), () async {
       //저장된 Access 불러오기
       final accessToken = await loadAccess();
@@ -39,16 +54,29 @@ class _SplashPageState extends ConsumerState<SplashPage> {
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.grey_F2,
       body: Padding(
         padding: EdgeInsets.only(bottom: 91.h),
         child: Center(
-            child: Assets.images.splash.image(
-          width: 120.w,
-          height: 156.h,
-        )),
+          child: FadeTransition(
+            opacity: _opacity,
+            child: ScaleTransition(
+              scale: _scale,
+              child: Assets.images.splash.image(
+                width: 120.w,
+                height: 156.h,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
