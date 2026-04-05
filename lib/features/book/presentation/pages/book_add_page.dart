@@ -194,6 +194,7 @@ Future pageBottomSheet(
     BuildContext context, TextEditingController controller, int page) {
   return showModalBottomSheet(
     isScrollControlled: true,
+    useSafeArea: true,
     context: context,
     backgroundColor: Colors.white,
     builder: (context) {
@@ -204,7 +205,7 @@ Future pageBottomSheet(
             top: 30.h,
             left: 24.w,
             right: 24.w,
-            bottom: 20.h,
+            bottom: 22.h,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
