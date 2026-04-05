@@ -147,8 +147,8 @@ class _GardenPageState extends ConsumerState<GardenPage>
     });
     context.pop();
 
-    // 플래시 효과
-    await Future.delayed(const Duration(milliseconds: 100));
+    // 바텀시트 닫기 완료 후 플래시 효과
+    await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted) return;
     setState(() => _showFlash = true);
     await Future.delayed(const Duration(milliseconds: 200));
