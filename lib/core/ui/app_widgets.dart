@@ -251,15 +251,15 @@ class Widgets {
         context: context,
         backgroundColor: Colors.white,
         builder: (context) {
-          final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
           return Container(
-            height: 268.h + bottomPadding,
             margin: EdgeInsets.only(
               top: 30.h,
               left: 24.w,
               right: 24.w,
+              bottom: 20.h,
             ),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -319,11 +319,10 @@ class Widgets {
         context: context,
         backgroundColor: Colors.white,
         builder: (context) {
-          final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
           return Container(
-            height: 268.h + bottomPadding,
-            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
+            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w, bottom: 20.h),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -372,11 +371,9 @@ class Widgets {
       backgroundColor: Colors.white,
       context: context,
       builder: (context) {
-        final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return Container(
           alignment: Alignment.topLeft,
-          margin: EdgeInsets.only(top: 30.h, left: 42.w, right: 42.w),
-          height: 206.h + bottomPadding,
+          margin: EdgeInsets.only(top: 30.h, left: 42.w, right: 42.w, bottom: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
