@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_list_item_entity.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_write_input_entity.dart';
 import 'package:book_flutter/features/memo/presentation/pages/memo_book_page.dart';
@@ -28,6 +29,7 @@ List<RouteBase> get memoRoutes => [
                 builder: (context, state) {
                   final book = state.extra as Map;
                   return MemoWritePage(
+                    key: UniqueKey(),
                     book: MemoWriteInputEntity.fromMap(
                       book.cast<String, dynamic>(),
                     ),
