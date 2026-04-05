@@ -46,7 +46,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
     super.initState();
     _flowerAnimController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 1200),
     );
 
     // Session 초기화
