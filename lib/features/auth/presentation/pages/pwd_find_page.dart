@@ -188,15 +188,13 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
           )),
         ),
         bottomNavigationBar: (authSendBool && (timeRemaining != 0))
-            ? Container(
-                margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
+            ? Widgets.bottomBar(context,
                 child: Widgets.button(
                   '다음',
                   authCheckBool,
                   () => postPwdFindCheck(context, ref),
                 ))
-            : Container(
-                margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
+            : Widgets.bottomBar(context,
                 child: Widgets.button(
                   ref.watch(authSendTextProvider),
                   authButtonBool,

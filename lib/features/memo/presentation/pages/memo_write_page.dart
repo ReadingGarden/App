@@ -264,10 +264,15 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
             ]),
           ),
         ),
-        bottomSheet: Container(
+        bottomSheet: Builder(builder: (context) {
+          final keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+          final bottomSafe = keyboardVisible
+              ? 0.0
+              : MediaQuery.of(context).viewPadding.bottom;
+          return Container(
           padding:
-              EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h, bottom: 4.h),
-          height: 38.h,
+              EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h, bottom: 4.h + bottomSafe),
+          height: 38.h + bottomSafe,
           color: AppColors.grey_F2,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -347,7 +352,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
               ),
             ],
           ),
-        ),
+        );
+        }),
       ),
     );
   }

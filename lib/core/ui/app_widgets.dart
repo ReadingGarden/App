@@ -50,6 +50,15 @@ class Widgets {
     );
   }
 
+  static Widget bottomBar(BuildContext context, {required Widget child}) {
+    final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+    return Container(
+      margin: EdgeInsets.only(left: 24.w, right: 24.w),
+      padding: EdgeInsets.only(bottom: 30.h + bottomPadding),
+      child: child,
+    );
+  }
+
   static button(
     String title,
     bool isValid,

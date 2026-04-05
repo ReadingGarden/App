@@ -39,9 +39,7 @@ class _NickNamePageState extends ConsumerState<NickNamePage> {
           margin: EdgeInsets.only(top: 10.h, left: 24.w, right: 24.w),
           child: Widgets.textfield(ref, _nicknameController, '닉네임', '',
               nicknameErrorText, nicknameErrorProvider)),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-        child: Widgets.button('저장하기', true, () {
+      bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('저장하기', true, () {
           final data = {
             "user_nick": _nicknameController.text,
           };

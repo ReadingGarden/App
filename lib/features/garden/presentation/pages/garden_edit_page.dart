@@ -292,8 +292,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-            margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
+        bottomNavigationBar: Widgets.bottomBar(context,
             child: Widgets.button('수정하기', ref.watch(gardenEditButtonProvider),
                 () => putGarden())),
       ),
