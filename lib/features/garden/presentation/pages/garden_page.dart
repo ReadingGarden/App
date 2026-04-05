@@ -854,7 +854,7 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 900),
     )..forward();
   }
 
@@ -865,7 +865,7 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
   }
 
   Widget _staggerItem(int index, Widget child) {
-    final delay = (index * 0.08).clamp(0.0, 0.6);
+    final delay = (index * 0.12).clamp(0.0, 0.6);
     final end = (delay + 0.4).clamp(0.0, 1.0);
     final animation = CurvedAnimation(
       parent: _controller,
