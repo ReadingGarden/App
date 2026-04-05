@@ -18,15 +18,11 @@ class Widgets {
       scrolledUnderElevation: 0,
       backgroundColor: (color != null) ? color : Colors.white,
       toolbarHeight: 60.h,
-      titleSpacing: 10,
-      title: Container(
-        alignment: Alignment.center,
-        width: 240.w,
-        child: Text(
-          title ?? '',
-          maxLines: 1,
-          style: TextStyle(fontSize: 16.sp),
-        ),
+      centerTitle: true,
+      title: Text(
+        title ?? '',
+        maxLines: 1,
+        style: TextStyle(fontSize: 16.sp),
       ),
       leading: GestureDetector(
         onTap: () {
