@@ -115,9 +115,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
 
-      // 플래시 효과
+      // 플래시 효과: fade in 150ms → 유지 300ms → fade out 400ms
       setState(() => _showFlash = true);
-      await Future.delayed(const Duration(milliseconds: 350));
+      await Future.delayed(const Duration(milliseconds: 450));
       if (!mounted) return;
       setState(() => _showFlash = false);
 
@@ -271,12 +271,13 @@ class _GardenPageState extends ConsumerState<GardenPage>
           ],
         ),
       ),
-      if (_showFlash)
-        AnimatedOpacity(
+      IgnorePointer(
+        child: AnimatedOpacity(
           opacity: _showFlash ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 100),
+          duration: Duration(milliseconds: _showFlash ? 150 : 400),
           child: Container(color: Colors.white),
         ),
+      ),
       ],
       ),
     );
