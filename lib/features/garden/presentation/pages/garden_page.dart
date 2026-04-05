@@ -13,6 +13,7 @@ import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
+import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
@@ -41,6 +42,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
   bool _showFlash = false;
   late AnimationController _flowerAnimController;
   int _prevBookCount = 0;
+  int _prevNavIndex = -1;
+  int _prevGardenNo = -1;
+  int _prevVisitCount = -1;
 
   @override
   void initState() {
@@ -159,9 +163,18 @@ class _GardenPageState extends ConsumerState<GardenPage>
     final gardenMain = ref.watch(garden_feature.gardenMainProvider);
     final gardenMainBookList =
         ref.watch(garden_feature.gardenMainBookListProvider);
+    final navIndex = ref.watch(currentIndexProvider);
+    final visitCount = ref.watch(garden_feature.gardenVisitCountProvider);
 
-    if (gardenMainBookList.length != _prevBookCount) {
+    if (gardenMainBookList.isNotEmpty &&
+        (gardenMainBookList.length != _prevBookCount ||
+            navIndex != _prevNavIndex ||
+            gardenMain.gardenNo != _prevGardenNo ||
+            visitCount != _prevVisitCount)) {
       _prevBookCount = gardenMainBookList.length;
+      _prevNavIndex = navIndex;
+      _prevGardenNo = gardenMain.gardenNo;
+      _prevVisitCount = visitCount;
       _flowerAnimController.forward(from: 0);
     }
 

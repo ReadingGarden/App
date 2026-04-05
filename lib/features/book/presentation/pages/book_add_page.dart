@@ -7,6 +7,7 @@ import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_add_provider.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -275,17 +276,22 @@ class _BottomRevealClipper extends CustomClipper<Rect> {
   }
 }
 
-class BookAddDonePage extends StatelessWidget {
+class BookAddDonePage extends ConsumerWidget {
   const BookAddDonePage({super.key, required this.bookRead});
 
   final BookAddDoneEntity bookRead;
 
+  void _goToGarden(BuildContext context, WidgetRef ref) {
+    ref.read(gardenVisitCountProvider.notifier).state++;
+    context.go('/bottom-navi');
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) context.go('/bottom-navi');
+        if (!didPop) _goToGarden(context, ref);
       },
       child: Scaffold(
         body: Container(
@@ -333,7 +339,7 @@ class BookAddDonePage extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('가든으로 가기', true, () {
-            context.go('/bottom-navi');
+            _goToGarden(context, ref);
             //TODO: - 자동으로 해당 가든 변경?
           }),
         )),

@@ -35,6 +35,7 @@ class BottomNaviPage extends ConsumerWidget {
           ref.read(currentIndexProvider.notifier).state = index;
           if (ref.read(currentIndexProvider.notifier).state == 0) {
             garden_feature.fetchGardenList(ref);
+            ref.read(garden_feature.gardenVisitCountProvider.notifier).state++;
           }
         },
       ),
