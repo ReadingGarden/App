@@ -220,7 +220,7 @@ Future pageBottomSheet(
             top: 30.h,
             left: 24.w,
             right: 24.w,
-            bottom: 22.h,
+            bottom: 16.h,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -231,7 +231,7 @@ Future pageBottomSheet(
                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 24.h, bottom: 30.h),
+                padding: EdgeInsets.only(top: 24.h, bottom: 16.h),
                 child: TextField(
                   controller: controller,
                   keyboardType: TextInputType.number,

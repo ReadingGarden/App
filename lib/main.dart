@@ -79,6 +79,12 @@ class MyApp extends StatelessWidget {
                 bodySmall: TextStyle(fontSize: 14.sp, color: Colors.black),
               )),
           debugShowCheckedModeBanner: false,
+          builder: (context, child) {
+            return SafeArea(
+              top: false,
+              child: child!,
+            );
+          },
           routerConfig: router,
           localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,

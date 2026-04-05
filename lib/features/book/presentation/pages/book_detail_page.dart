@@ -570,7 +570,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       context: context,
       builder: (context) {
         return Container(
-          margin: EdgeInsets.only(top: 30.h, bottom: 22.h),
+          margin: EdgeInsets.only(top: 30.h, bottom: 16.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
               children: [

@@ -52,7 +52,7 @@ class Widgets {
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     return Container(
       margin: EdgeInsets.only(left: 24.w, right: 24.w),
-      padding: EdgeInsets.only(bottom: 30.h + bottomPadding),
+      padding: EdgeInsets.only(bottom: 16.h + bottomPadding),
       child: child,
     );
   }
@@ -272,7 +272,7 @@ class Widgets {
               top: 30.h,
               left: 24.w,
               right: 24.w,
-              bottom: 22.h,
+              bottom: 16.h,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -337,7 +337,7 @@ class Widgets {
         useSafeArea: true,
         builder: (context) {
           return Container(
-            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w, bottom: 22.h),
+            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w, bottom: 16.h),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
