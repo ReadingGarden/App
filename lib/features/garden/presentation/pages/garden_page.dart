@@ -246,36 +246,13 @@ class _GardenPageState extends ConsumerState<GardenPage>
                 ),
               ],
             ),
-            Visibility(
-              visible: gardenMainBookList.isEmpty && !gardenMain.isEmpty,
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                child: Visibility(
-                  visible: gardenMainBookList.isEmpty && !gardenMain.isEmpty,
-                  child: Container(
-                      alignment: Alignment.bottomCenter,
-                      width: 320.w,
-                      height: 52.h,
-                      margin: EdgeInsets.only(bottom: 20.h),
-                      color: Colors.transparent,
-                      child: Stack(
-                        children: [
-                          AppAssets.imageAdd.svg(),
-                          Positioned(
-                            left: 18.w,
-                            top: 0,
-                            bottom: 12.h,
-                            child: Center(child: Text(
-                              '💡   + 버튼으로 새로운 책을 등록해보세요!',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 12.sp),
-                            )),
-                          ),
-                        ],
-                      )),
-                ),
+            if (gardenMainBookList.isEmpty && !gardenMain.isEmpty)
+              const Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: _FloatingBalloon(),
               ),
-            ),
           ],
         ),
       ),
@@ -768,6 +745,78 @@ class _GardenPageState extends ConsumerState<GardenPage>
                 )
               ],
             ));
+  }
+}
+
+class _FloatingBalloon extends StatefulWidget {
+  const _FloatingBalloon();
+
+  @override
+  State<_FloatingBalloon> createState() => _FloatingBalloonState();
+}
+
+class _FloatingBalloonState extends State<_FloatingBalloon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _offset;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat(reverse: true);
+    _offset = Tween(begin: 0.0, end: -8.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _offset,
+      builder: (context, child) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final balloonWidth = 312.w;
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: 20.h,
+            left: (screenWidth - balloonWidth) / 2,
+          ),
+          child: Transform.translate(
+            offset: Offset(0, _offset.value),
+            child: child,
+          ),
+        );
+      },
+      child: SizedBox(
+        width: 312.w,
+        height: 52.h,
+        child: Stack(
+          children: [
+            AppAssets.imageAdd.svg(),
+            Positioned(
+              left: 18.w,
+              top: 0,
+              bottom: 12.h,
+              child: Center(
+                child: Text(
+                  '💡   + 버튼으로 새로운 책을 등록해보세요!',
+                  style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
