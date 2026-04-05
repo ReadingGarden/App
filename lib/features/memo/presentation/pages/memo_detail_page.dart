@@ -21,6 +21,14 @@ class MemoDetailPage extends ConsumerStatefulWidget {
 }
 
 class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
+  void _openMemoEdit() async {
+    final result =
+        await context.pushNamed('memo-write', extra: widget.memo.toMap());
+    if (result != null && mounted) {
+      context.pop(result);
+    }
+  }
+
   //메모 삭제 api
   void deleteMemo() async {
     final deleted = await memo_detail_feature.deleteMemo(ref, widget.memo.id);
@@ -148,7 +156,7 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
                 GestureDetector(
                   onTap: () {
                     context.pop();
-                    context.pushNamed('memo-write', extra: widget.memo.toMap());
+                    _openMemoEdit();
                   },
                   child: Container(
                     alignment: Alignment.center,

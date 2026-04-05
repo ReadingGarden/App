@@ -182,11 +182,14 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                               visible: memo.imageUrl != null,
                               child: Container(
                                 margin: EdgeInsets.only(top: 10.h),
-                                child: Image.network(
-                                    width: 320.w,
-                                    height: 140.h,
-                                    fit: BoxFit.fitWidth,
-                                    '${Constant.IMAGE_URL}${memo.imageUrl}'),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child: Image.network(
+                                      width: 272.w,
+                                      height: 272.w,
+                                      fit: BoxFit.cover,
+                                      '${Constant.IMAGE_URL}${memo.imageUrl}'),
+                                ),
                               )),
                           Container(
                               margin: EdgeInsets.only(top: 10.h),

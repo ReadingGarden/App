@@ -33,8 +33,8 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   void initState() {
     super.initState();
 
+    _memoController.text = widget.book.memoContent;
     Future.microtask(() {
-      _memoController.text = widget.book.memoContent;
       memo_write_feature.initializeMemoWrite(ref, widget.book);
     });
   }
@@ -363,14 +363,10 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
         ref.watch(memo_write_feature.memoImageUpdateProvider) != true) {
       return Image.network(
           width: 320.w,
-          height: 165.h,
-          fit: BoxFit.fitWidth,
           Constant.IMAGE_URL + widget.book.imageUrl!);
     } else {
       return Image.file(
           width: 320.w,
-          height: 165.h,
-          fit: BoxFit.fitWidth,
           File(
               ref.watch(memo_write_feature.memoImageFileProvider)?.path ?? ''));
     }
