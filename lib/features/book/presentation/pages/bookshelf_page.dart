@@ -22,6 +22,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
   final PageController _pageController = PageController();
   late AnimationController _listAnimController;
   int _prevBookCount = 0;
+  int _prevNavIndex = -1;
 
   @override
   void initState() {
@@ -106,9 +107,12 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
   Widget _bookselfList(bool isLoading) {
     final pageViewIndex = ref.watch(bookshelfPageViewIndexProvider);
     final bookStatusList = ref.watch(bookshelfBooksProvider);
+    final navIndex = ref.watch(currentIndexProvider);
 
-    if (bookStatusList.length != _prevBookCount && bookStatusList.isNotEmpty) {
+    if (bookStatusList.isNotEmpty &&
+        (bookStatusList.length != _prevBookCount || navIndex != _prevNavIndex)) {
       _prevBookCount = bookStatusList.length;
+      _prevNavIndex = navIndex;
       _listAnimController.forward(from: 0);
     }
 

@@ -18,10 +18,18 @@ class GardenBookListPage extends ConsumerStatefulWidget {
   ConsumerState<GardenBookListPage> createState() => _GardenBookListPageState();
 }
 
-class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
+class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _listAnimController;
+  int _prevBookCount = 0;
+
   @override
   void initState() {
     super.initState();
+    _listAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
 
     Future.microtask(() {
       garden_feature.fetchGardenDetail(ref, widget.gardenNo);
@@ -29,8 +37,21 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
   }
 
   @override
+  void dispose() {
+    _listAnimController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bookList = ref.watch(garden_feature.gardenMainBookListProvider);
+
+    if (bookList.length != _prevBookCount && bookList.isNotEmpty && mounted) {
+      _prevBookCount = bookList.length;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _listAnimController.forward(from: 0);
+      });
+    }
 
     return Scaffold(
       appBar: Widgets.appBar(context,
@@ -71,7 +92,26 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                             itemCount: bookList.length,
                             itemBuilder: (context, index) {
                               final book = bookList[index];
-                              return Pressable(
+                              final delay = (index * 0.05).clamp(0.0, 0.7);
+                              final end = (delay + 0.3).clamp(0.0, 1.0);
+                              final animation = CurvedAnimation(
+                                parent: _listAnimController,
+                                curve: Interval(delay, end,
+                                    curve: Curves.easeOut),
+                              );
+                              return AnimatedBuilder(
+                                animation: animation,
+                                builder: (context, child) {
+                                  return Opacity(
+                                    opacity: animation.value,
+                                    child: Transform.translate(
+                                      offset:
+                                          Offset(0, 16 * (1 - animation.value)),
+                                      child: child,
+                                    ),
+                                  );
+                                },
+                                child: Pressable(
                                 onTap: () {
                                   context.pushNamed('book-detail',
                                       extra: book.bookNo);
@@ -169,6 +209,7 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage> {
                                     ],
                                   ),
                                 ),
+                              ),
                               );
                             },
                           ))
