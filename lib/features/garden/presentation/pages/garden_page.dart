@@ -155,7 +155,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
     if (!mounted) return;
     setState(() => _showFlash = false);
 
-    fToast.showToast(child: Widgets.toast('갤러리에 사진이 저장되었어요!'));
+    Widgets.showToast(fToast, '갤러리에 사진이 저장되었어요!');
   }
 
   @override

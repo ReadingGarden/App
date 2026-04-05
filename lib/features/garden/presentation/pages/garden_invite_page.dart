@@ -52,9 +52,9 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
       context.pop();
       context.pop();
     } else if (statusCode == 403) {
-      fToast.showToast(child: Widgets.toast('멤버 정원이 꽉 차서 참여할 수 없어요'));
+      Widgets.showToast(fToast, '멤버 정원이 꽉 차서 참여할 수 없어요');
     } else if (statusCode == 409) {
-      fToast.showToast(child: Widgets.toast('이미 가입한 가든의 초대는 수락할 수 없어요'));
+      Widgets.showToast(fToast, '이미 가입한 가든의 초대는 수락할 수 없어요');
     }
   }
 

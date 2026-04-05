@@ -88,7 +88,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
     } else if (statusCode == 401) {
       //500에러
     } else {
-      fToast.showToast(child: Widgets.toast('바코드가 등록되지 않은 책이에요'));
+      Widgets.showToast(fToast, '바코드가 등록되지 않은 책이에요');
     }
   }
 
@@ -113,7 +113,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
         getDetailBookIsbn(ref.watch(barcodeValueProvider));
       } else {
         if (!mounted) return;
-        fToast.showToast(child: Widgets.toast('바코드가 인식되지 않았어요'));
+        Widgets.showToast(fToast, '바코드가 인식되지 않았어요');
       }
     } catch (e) {
       debugPrint('바코드 스캔 중 오류가 발생했습니다: $e');

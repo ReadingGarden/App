@@ -99,7 +99,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
 
     if (statusCode == 200) {
       context.pop();
-      fToast.showToast(child: Widgets.toast('선택한 가든으로 옮겨 심었어요'));
+      Widgets.showToast(fToast, '선택한 가든으로 옮겨 심었어요');
       final gardenColor = ref.read(bookDetailProvider).gardenColor;
       if (gardenColor.isNotEmpty) {
         final backgroundColor = Functions.gardenBackColor(gardenColor);
@@ -108,7 +108,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
         _colorTween = ColorTween(begin: backgroundColor, end: Colors.white);
       }
     } else if (statusCode == 403) {
-      fToast.showToast(child: Widgets.toast('꽉 찼어요! 다른 가든을 선택해주세요'));
+      Widgets.showToast(fToast, '꽉 찼어요! 다른 가든을 선택해주세요');
     }
   }
 

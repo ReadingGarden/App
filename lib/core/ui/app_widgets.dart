@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../gen/assets.gen.dart';
@@ -200,6 +201,20 @@ class Widgets {
           ),
         ],
       ),
+    );
+  }
+
+  static void showToast(FToast fToast, String msg) {
+    fToast.showToast(
+      child: toast(msg),
+      positionedToastBuilder: (context, child) {
+        return Positioned(
+          bottom: 100.h,
+          left: 24.w,
+          right: 24.w,
+          child: child,
+        );
+      },
     );
   }
 
