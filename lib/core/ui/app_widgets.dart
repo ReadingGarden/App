@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../gen/assets.gen.dart';
 import '../common/functions.dart';
+import 'app_assets.dart';
 import 'app_colors.dart';
 
 class Widgets {
@@ -552,6 +553,84 @@ class _EmptyBounceState extends State<EmptyBounce>
       child: ScaleTransition(
         scale: _scale,
         child: widget.child,
+      ),
+    );
+  }
+}
+
+class AnimatedStar extends StatefulWidget {
+  const AnimatedStar({
+    super.key,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  @override
+  State<AnimatedStar> createState() => _AnimatedStarState();
+}
+
+class _AnimatedStarState extends State<AnimatedStar>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _scale = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.4), weight: 40),
+      TweenSequenceItem(tween: Tween(begin: 1.4, end: 0.9), weight: 30),
+      TweenSequenceItem(tween: Tween(begin: 0.9, end: 1.0), weight: 30),
+    ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+  }
+
+  @override
+  void didUpdateWidget(AnimatedStar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isSelected != oldWidget.isSelected) {
+      _controller.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(right: 10.w, bottom: 20.h),
+        width: 40.r,
+        height: 40.r,
+        color: Colors.transparent,
+        child: ScaleTransition(
+          scale: _scale,
+          child: (widget.isSelected
+                  ? AppAssets.iconStarSelect
+                  : AppAssets.iconStarDeselect)
+              .svg(
+            colorFilter: ColorFilter.mode(
+              widget.isSelected
+                  ? AppColors.starYellowColor
+                  : AppColors.grey_CA,
+              BlendMode.srcIn,
+            ),
+            width: 20.r,
+            height: 20.r,
+          ),
+        ),
       ),
     );
   }

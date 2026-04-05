@@ -216,30 +216,11 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                       ),
                     ),
                   ),
-                  GestureDetector(
+                  AnimatedStar(
+                    isSelected: memo.memoLike,
                     onTap: () {
                       memo_feature.toggleMemoLike(ref, index, memo.id);
                     },
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(right: 10.w, bottom: 20.h),
-                      width: 40.r,
-                      height: 40.r,
-                      color: Colors.transparent,
-                      child: (memo.memoLike
-                              ? AppAssets.iconStarSelect
-                              : AppAssets.iconStarDeselect)
-                          .svg(
-                        colorFilter: ColorFilter.mode(
-                          memo.memoLike
-                              ? AppColors.starYellowColor
-                              : AppColors.grey_CA,
-                          BlendMode.srcIn,
-                        ),
-                        width: 20.r,
-                        height: 20.r,
-                      ),
-                    ),
                   ),
                 ],
               ),
