@@ -282,7 +282,12 @@ class BookAddDonePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (!didPop) context.go('/bottom-navi');
+      },
+      child: Scaffold(
         body: Container(
           margin: EdgeInsets.only(top: 174.h),
           child: Center(
@@ -328,9 +333,10 @@ class BookAddDonePage extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('가든으로 가기', true, () {
-            context.replaceNamed('bottom-navi');
+            context.go('/bottom-navi');
             //TODO: - 자동으로 해당 가든 변경?
           }),
-        ));
+        )),
+    );
   }
 }
