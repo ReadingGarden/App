@@ -205,13 +205,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                       ),
                       Container(
                         alignment: Alignment.bottomCenter,
-                        height: 460.h,
+                        height: 420.h,
                         margin: EdgeInsets.only(bottom: 10.h),
                         child: AppAssets.bookFlower(
                           bookDetail.bookTree,
                         ).image(
                           width: 360.w,
-                          height: 459.h,
+                          height: 420.h,
                         ),
                       ),
                     ],
