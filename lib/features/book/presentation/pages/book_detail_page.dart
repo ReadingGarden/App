@@ -570,7 +570,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       context: context,
       builder: (context) {
         return Container(
-          margin: EdgeInsets.only(top: 30.h, bottom: 16.h),
+          margin: EdgeInsets.only(top: 20.h, bottom: 16.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
               children: [
@@ -589,7 +589,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                   child: Container(
                     alignment: Alignment.center,
                     width: 312.w,
-                    // height: 24.h,
+                    height: 26.h,
                     color: Colors.transparent,
                     child: Text(
                       '책 수정하기',
@@ -598,7 +598,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 24.h),
+                  margin: EdgeInsets.symmetric(vertical: 20.h),
                   height: 1.h,
                   color: AppColors.grey_F2,
                 ),
@@ -624,7 +624,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                   child: Container(
                     alignment: Alignment.center,
                     width: 312.w,
-                    // height: 24.h,
+                    height: 26.h,
                     color: Colors.transparent,
                     child: Text(
                       '다른 가든으로 이전',
@@ -633,7 +633,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 24.h),
+                  margin: EdgeInsets.symmetric(vertical: 20.h),
                   height: 1.h,
                   color: AppColors.grey_F2,
                 ),
@@ -645,7 +645,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                   child: Container(
                     alignment: Alignment.center,
                     width: 312.w,
-                    // height: 24.h,
+                    height: 26.h,
                     color: Colors.transparent,
                     child: Text(
                       '책 삭제하기',

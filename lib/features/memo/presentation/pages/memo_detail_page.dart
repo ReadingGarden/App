@@ -145,7 +145,7 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
       context: context,
       builder: (context) {
         return Container(
-          margin: EdgeInsets.only(top: 32.h, bottom: 16.h),
+          margin: EdgeInsets.only(top: 20.h, bottom: 16.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
               children: [
