@@ -261,13 +261,15 @@ class _GardenPageState extends ConsumerState<GardenPage>
                       child: Stack(
                         children: [
                           AppAssets.imageAdd.svg(),
-                          Container(
-                            margin: EdgeInsets.only(left: 18.w, top: 10.h),
-                            child: Text(
+                          Positioned(
+                            left: 18.w,
+                            top: 0,
+                            bottom: 12.h,
+                            child: Center(child: Text(
                               '💡   + 버튼으로 새로운 책을 등록해보세요!',
                               style: TextStyle(
                                   color: Colors.white, fontSize: 12.sp),
-                            ),
+                            )),
                           ),
                         ],
                       )),
