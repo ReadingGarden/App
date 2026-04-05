@@ -75,8 +75,7 @@ class _StartPageState extends State<StartPage> {
             )
           ],
         ),
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
+        bottomNavigationBar: Widgets.bottomBar(context,
           child: Widgets.button('시작하기', true, () => context.goNamed('login')),
         ));
   }

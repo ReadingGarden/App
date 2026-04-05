@@ -146,54 +146,53 @@ class _SignupPageState extends ConsumerState<SignupPage> {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-          height: 120.h,
-          // margin:
-          //     EdgeInsets.only(top: (pwdCheckErrorText == null) ? 117.h : 57.h),
-          child: Column(
-            children: [
-              Text.rich(
-                  textAlign: TextAlign.center,
-                  TextSpan(
-                      style:
-                          TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
-                      children: [
-                        const TextSpan(text: '이메일로 회원가입 시 '),
-                        TextSpan(
-                            text: '이용약관',
-                            style: const TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: AppColors.grey_8D),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Functions.launchURL(
-                                    "https://www.notion.so/dokseogarden/825ddd95b1084d689c4275ae665510b5?pvs=4");
-                              }),
-                        const TextSpan(
-                          text: ' 및\n',
-                        ),
-                        TextSpan(
-                            text: '개인정보수집이용',
-                            style: const TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: AppColors.grey_8D),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Functions.launchURL(
-                                    "https://www.notion.so/1182d8001a928098bb71c78cc5523cd4?pvs=21");
-                              }),
-                        const TextSpan(text: '에 동의하는 것으로 간주됩니다')
-                      ])),
-              Container(
-                margin: EdgeInsets.only(top: 24.h),
-                child: Widgets.button(
-                  '이메일로 회원가입',
-                  isValid,
-                  () => postSignup(context, ref),
-                ),
-              )
-            ],
+        bottomNavigationBar: Widgets.bottomBar(context,
+          child: SizedBox(
+            height: 120.h,
+            child: Column(
+              children: [
+                Text.rich(
+                    textAlign: TextAlign.center,
+                    TextSpan(
+                        style:
+                            TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                        children: [
+                          const TextSpan(text: '이메일로 회원가입 시 '),
+                          TextSpan(
+                              text: '이용약관',
+                              style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: AppColors.grey_8D),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Functions.launchURL(
+                                      "https://www.notion.so/dokseogarden/825ddd95b1084d689c4275ae665510b5?pvs=4");
+                                }),
+                          const TextSpan(
+                            text: ' 및\n',
+                          ),
+                          TextSpan(
+                              text: '개인정보수집이용',
+                              style: const TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: AppColors.grey_8D),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Functions.launchURL(
+                                      "https://www.notion.so/1182d8001a928098bb71c78cc5523cd4?pvs=21");
+                                }),
+                          const TextSpan(text: '에 동의하는 것으로 간주됩니다')
+                        ])),
+                Container(
+                  margin: EdgeInsets.only(top: 24.h),
+                  child: Widgets.button(
+                    '이메일로 회원가입',
+                    isValid,
+                    () => postSignup(context, ref),
+                  ),
+                )
+              ],
+            ),
           ),
         ));
   }
@@ -259,8 +258,7 @@ class SignupDonePage extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
+        bottomNavigationBar: Widgets.bottomBar(context,
           child: Widgets.button('시작하기', true, () => singupEnd(context)),
         ));
   }

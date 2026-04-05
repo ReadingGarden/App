@@ -110,10 +110,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        margin:
-            EdgeInsets.only(bottom: 30.h, left: 20.w, right: 20.w, top: 10.h),
-        child: Widgets.button('내 가든에 심기', true, () {
+      bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('내 가든에 심기', true, () {
           if (_titleController.text.isNotEmpty &&
               _authorController.text.isNotEmpty &&
               _publisherController.text.isNotEmpty &&

@@ -183,9 +183,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
             ],
           ),
         ),
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-          child: Widgets.button('저장하기', true, () {
+        bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('저장하기', true, () {
             postBookRead();
           }),
         ));
@@ -327,9 +325,7 @@ class BookAddDonePage extends StatelessWidget {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
-          child: Widgets.button('가든으로 가기', true, () {
+        bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('가든으로 가기', true, () {
             context.replaceNamed('bottom-navi');
             //TODO: - 자동으로 해당 가든 변경?
           }),

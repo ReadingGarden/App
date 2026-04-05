@@ -147,8 +147,7 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-          margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 30.h),
+      bottomNavigationBar: Widgets.bottomBar(context,
           child: Widgets.button(
               '추가하기', ref.watch(gardenAddButtonProvider), () => postGarden())),
     );

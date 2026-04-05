@@ -134,8 +134,7 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
             ),
           ),
         ),
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.only(bottom: 32.h, left: 24.w, right: 24.w),
+        bottomNavigationBar: Widgets.bottomBar(context,
           child: Widgets.button(
             '비밀번호 저장하기',
             isValid,
