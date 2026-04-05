@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:book_flutter/core/common/functions.dart';
 import 'package:book_flutter/core/ui/app_assets.dart';
 import 'package:book_flutter/core/ui/app_colors.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
@@ -24,6 +23,7 @@ class GardenMemberPage extends ConsumerStatefulWidget {
 
 class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
   late FToast fToast;
+  double _statusBarHeight = 0;
 
   @override
   void initState() {
@@ -37,14 +37,51 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_statusBarHeight == 0) {
+      _statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = ref.watch(auth_feature.authUserProvider);
     final gardenMain = ref.watch(garden_feature.gardenMainProvider);
     final members = ref.watch(garden_feature.gardenMainMemberListProvider);
 
     return Scaffold(
-      appBar: Widgets.appBar(context, title: '멤버'),
-      body: SingleChildScrollView(
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: _statusBarHeight),
+            color: Colors.white,
+            height: 60.h + _statusBarHeight,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () => context.pop(),
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 56.w,
+                    height: 60.h,
+                    color: Colors.transparent,
+                    child: AppAssets.iconAngleLeft.svg(
+                      width: 24.r,
+                      height: 24.r,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text('멤버', style: TextStyle(fontSize: 16.sp)),
+                  ),
+                ),
+                SizedBox(width: 56.w),
+              ],
+            ),
+          ),
+          Expanded(child: SingleChildScrollView(
         child: Column(
           children: [
             Visibility(
@@ -196,6 +233,8 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
             ),
           ],
         ),
+      )),
+      ],
       ),
     );
   }
