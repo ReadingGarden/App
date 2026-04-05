@@ -250,13 +250,14 @@ class Widgets {
     return showModalBottomSheet(
         context: context,
         backgroundColor: Colors.white,
+        useSafeArea: true,
         builder: (context) {
           return Container(
             margin: EdgeInsets.only(
               top: 30.h,
               left: 24.w,
               right: 24.w,
-              bottom: 20.h,
+              bottom: 22.h,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -318,9 +319,10 @@ class Widgets {
     return showModalBottomSheet(
         context: context,
         backgroundColor: Colors.white,
+        useSafeArea: true,
         builder: (context) {
           return Container(
-            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w, bottom: 20.h),
+            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w, bottom: 22.h),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
