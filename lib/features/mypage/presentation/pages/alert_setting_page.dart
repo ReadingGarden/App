@@ -87,6 +87,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                   showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.white,
+                      useSafeArea: true,
                       builder: (context) {
                         return Container(
                           margin: EdgeInsets.only(

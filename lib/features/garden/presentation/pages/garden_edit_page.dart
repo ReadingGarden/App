@@ -347,6 +347,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
           showModalBottomSheet(
               backgroundColor: Colors.white,
               isScrollControlled: true,
+              useSafeArea: true,
               context: context,
               builder: (context) => GardenEditBottomSheet(
                     function: (int toGardenNo) {

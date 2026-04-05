@@ -386,6 +386,7 @@ class Widgets {
       context, String title, String garden, int gardenNo, fToast) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
+      useSafeArea: true,
       context: context,
       builder: (context) {
         return Container(

@@ -612,6 +612,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                     showModalBottomSheet(
                         backgroundColor: Colors.white,
                         isScrollControlled: true,
+                        useSafeArea: true,
                         context: context,
                         builder: (context) => GardenEditBottomSheet(
                               function: (int toGardenNo) {
