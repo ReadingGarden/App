@@ -82,12 +82,12 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
               '알림 시각',
               () {
                 if (ref.watch(bookSwitchProvider)) {
+                  final bottomPadding =
+                      MediaQuery.of(context).viewPadding.bottom;
                   showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.white,
                       builder: (context) {
-                        final bottomPadding =
-                            MediaQuery.of(context).viewPadding.bottom;
                         return Container(
                           margin: EdgeInsets.only(
                             top: 30.h,
