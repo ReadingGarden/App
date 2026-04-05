@@ -109,10 +109,19 @@ class _GardenPageState extends ConsumerState<GardenPage>
   }
 
   // 화면 스크린샷
-  void _captureScreenshot() async {
+  void _captureScreenshot() {
+    context.pop();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+
+      // 플래시 효과
+      setState(() => _showFlash = true);
+      await Future.delayed(const Duration(milliseconds: 350));
+      if (!mounted) return;
+      setState(() => _showFlash = false);
+
       try {
-        // RepaintBoundary 사용하여 스크롤 가능한 영역을 캡처
         RenderRepaintBoundary? boundary = _scrollViewKey.currentContext
             ?.findRenderObject() as RenderRepaintBoundary?;
 
@@ -122,40 +131,21 @@ class _GardenPageState extends ConsumerState<GardenPage>
               await image.toByteData(format: ImageByteFormat.png);
           Uint8List uint8List = byteData!.buffer.asUint8List();
 
-          // 이미지 파일로 저장
           final directory = await getApplicationDocumentsDirectory();
           final path = '${directory.path}/garden.png';
           final file = File(path);
           await file.writeAsBytes(uint8List);
 
-          // 갤러리에 저장
-          GallerySaver.saveImage(path).then((bool? success) {
-            if (success != null && success) {
-              debugPrint('가든 스크린샷을 갤러리에 저장했습니다.');
-            } else {
-              debugPrint('가든 스크린샷 갤러리 저장에 실패했습니다.');
-            }
-          }).catchError((e) {
-            debugPrint('가든 스크린샷 저장 중 오류가 발생했습니다: $e');
-          });
-        } else {
-          debugPrint('가든 스크린샷 캡처 실패: 캡처 대상이 없습니다.');
+          GallerySaver.saveImage(path);
         }
       } catch (e) {
-        debugPrint('가든 스크린샷 캡처 중 오류가 발생했습니다: $e');
+        debugPrint('가든 스크린샷 캡처 중 오류: $e');
       }
+
+      if (!mounted) return;
+      fToast.init(context);
+      Widgets.showToast(fToast, '갤러리에 사진이 저장되었어요!');
     });
-    context.pop();
-
-    // 바텀시트 닫기 완료 후 플래시 효과
-    await Future.delayed(const Duration(milliseconds: 400));
-    if (!mounted) return;
-    setState(() => _showFlash = true);
-    await Future.delayed(const Duration(milliseconds: 200));
-    if (!mounted) return;
-    setState(() => _showFlash = false);
-
-    Widgets.showToast(fToast, '갤러리에 사진이 저장되었어요!');
   }
 
   @override
