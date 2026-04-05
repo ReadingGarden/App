@@ -38,6 +38,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
 
   late FToast fToast;
   late Stream<BranchResponse> stream;
+  bool _showFlash = false;
   late AnimationController _flowerAnimController;
   int _prevBookCount = 0;
 
@@ -141,6 +142,15 @@ class _GardenPageState extends ConsumerState<GardenPage>
       }
     });
     context.pop();
+
+    // 플래시 효과
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (!mounted) return;
+    setState(() => _showFlash = true);
+    await Future.delayed(const Duration(milliseconds: 200));
+    if (!mounted) return;
+    setState(() => _showFlash = false);
+
     fToast.showToast(child: Widgets.toast('갤러리에 사진이 저장되었어요!'));
   }
 
@@ -156,10 +166,12 @@ class _GardenPageState extends ConsumerState<GardenPage>
     }
 
     return Scaffold(
-      body: Screenshot(
-        controller: screenshotController,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
+      body: Stack(
+        children: [
+          Screenshot(
+            controller: screenshotController,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
           children: [
             Stack(
               alignment: Alignment.topCenter,
@@ -255,6 +267,14 @@ class _GardenPageState extends ConsumerState<GardenPage>
               ),
           ],
         ),
+      ),
+      if (_showFlash)
+        AnimatedOpacity(
+          opacity: _showFlash ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 100),
+          child: Container(color: Colors.white),
+        ),
+      ],
       ),
     );
   }
