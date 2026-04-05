@@ -566,23 +566,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   Future _moreBottomSheet() {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
+      useSafeArea: true,
       context: context,
       builder: (context) {
-        final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return Container(
-          alignment: Alignment.center,
-          height: 250.h + bottomPadding,
-          child: Container(
-            margin: EdgeInsets.only(top: 30.h, bottom: 30.h),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  offset: const Offset(0, 4),
-                  color: const Color(0xff97CDBD).withOpacity(0.05),
-                  blurRadius: 8.r)
-            ]),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          margin: EdgeInsets.only(top: 30.h, bottom: 22.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
                   onTap: () async {
@@ -665,7 +655,6 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                 )
               ],
             ),
-          ),
         );
       },
     );

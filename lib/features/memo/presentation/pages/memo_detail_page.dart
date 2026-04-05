@@ -141,17 +141,13 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
   Future _moreBottomSheet() {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
+      useSafeArea: true,
       context: context,
       builder: (context) {
-        final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return Container(
-          alignment: Alignment.center,
-          height: 157.h + bottomPadding,
-          child: Container(
-            margin: EdgeInsets.only(top: 32.h, bottom: 32.h),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          margin: EdgeInsets.only(top: 32.h, bottom: 22.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -196,7 +192,6 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
                 )
               ],
             ),
-          ),
         );
       },
     );
