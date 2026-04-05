@@ -209,7 +209,7 @@ class Widgets {
       child: toast(msg),
       positionedToastBuilder: (context, child) {
         return Positioned(
-          bottom: 70.h,
+          bottom: 100.h,
           left: 24.w,
           right: 24.w,
           child: child,
