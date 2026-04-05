@@ -205,8 +205,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                       ),
                       Container(
                         alignment: Alignment.bottomCenter,
-                        height: 480.h,
-                        margin: EdgeInsets.only(bottom: 20.h),
+                        height: 460.h,
+                        margin: EdgeInsets.only(bottom: 10.h),
                         child: AppAssets.bookFlower(
                           bookDetail.bookTree,
                         ).image(
