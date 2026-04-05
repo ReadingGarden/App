@@ -28,6 +28,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   double dragPosition = 0.0;
   late String imagePath;
   int currentPage = 0;
+  bool _isDragging = false;
 
   @override
   void initState() {
@@ -129,7 +130,11 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
               ),
               Column(
                 children: [
-                  Stack(
+                  AnimatedScale(
+                    scale: _isDragging ? 0.92 : 1.0,
+                    duration: const Duration(milliseconds: 150),
+                    curve: Curves.easeOut,
+                    child: Stack(
                     children: [
                       Center(
                           child: Image.asset(
@@ -140,6 +145,15 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                       Center(
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
+                          onVerticalDragStart: (_) {
+                            setState(() => _isDragging = true);
+                          },
+                          onVerticalDragEnd: (_) {
+                            setState(() => _isDragging = false);
+                          },
+                          onVerticalDragCancel: () {
+                            setState(() => _isDragging = false);
+                          },
                           onVerticalDragUpdate: (details) {
                             setState(() {
                               dragPosition -=
@@ -171,7 +185,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         ),
                       ),
                     ],
-                  ),
+                  )),
                   Padding(
                     padding: EdgeInsets.only(top: 26.h),
                     child: const Text(
