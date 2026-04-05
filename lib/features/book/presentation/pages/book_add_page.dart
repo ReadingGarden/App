@@ -197,10 +197,13 @@ Future pageBottomSheet(
     context: context,
     backgroundColor: Colors.white,
     builder: (context) {
+      final bottomPadding = MediaQuery.of(context).viewInsets.bottom > 0
+          ? 0.0
+          : MediaQuery.of(context).viewPadding.bottom;
       return Padding(
         padding: MediaQuery.of(context).viewInsets,
         child: Container(
-          height: 236.h,
+          height: 236.h + bottomPadding,
           margin: EdgeInsets.only(
             top: 30.h,
             left: 24.w,

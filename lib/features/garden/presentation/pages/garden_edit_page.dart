@@ -400,9 +400,10 @@ class GardenEditBottomSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gardens = ref.watch(garden_feature.gardenListProvider);
 
+    final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     return Container(
       margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
-      height: (68.h + 10.h) * gardens.length + 24.h + 20.h + 30.h,
+      height: (68.h + 10.h) * gardens.length + 24.h + 20.h + 30.h + bottomPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

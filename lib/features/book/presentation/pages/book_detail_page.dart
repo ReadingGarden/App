@@ -568,9 +568,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       backgroundColor: Colors.white,
       context: context,
       builder: (context) {
+        final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return Container(
           alignment: Alignment.center,
-          height: 250.h,
+          height: 250.h + bottomPadding,
           child: Container(
             margin: EdgeInsets.only(top: 30.h, bottom: 30.h),
             alignment: Alignment.center,

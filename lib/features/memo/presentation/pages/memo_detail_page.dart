@@ -135,9 +135,10 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
       backgroundColor: Colors.white,
       context: context,
       builder: (context) {
+        final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
         return Container(
           alignment: Alignment.center,
-          height: 157.h,
+          height: 157.h + bottomPadding,
           child: Container(
             margin: EdgeInsets.only(top: 32.h, bottom: 32.h),
             alignment: Alignment.center,

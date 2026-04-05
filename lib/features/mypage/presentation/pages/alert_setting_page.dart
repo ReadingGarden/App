@@ -86,13 +86,15 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                       context: context,
                       backgroundColor: Colors.white,
                       builder: (context) {
+                        final bottomPadding =
+                            MediaQuery.of(context).viewPadding.bottom;
                         return Container(
                           margin: EdgeInsets.only(
                             top: 30.h,
                             left: 24.w,
                             right: 24.w,
                           ),
-                          height: 342.h,
+                          height: 342.h + bottomPadding,
                           child: Column(
                             children: [
                               Container(
