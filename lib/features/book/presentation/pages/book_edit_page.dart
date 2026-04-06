@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -98,11 +99,11 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                             widget.book.bookImageUrl != '')
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(8.r),
-                            child: Image.network(
+                            child: CachedNetworkImage(
+                              imageUrl: widget.book.bookImageUrl!,
                               width: 48.w,
                               height: 64.h,
                               fit: BoxFit.cover,
-                              widget.book.bookImageUrl!,
                             ),
                           )
                         : Container(

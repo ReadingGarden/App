@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -372,11 +373,11 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8.r),
-                            child: Image.network(
+                            child: CachedNetworkImage(
+                              imageUrl: bookSearchList[index].cover,
                               width: 48.w,
                               height: 64.h,
                               fit: BoxFit.cover,
-                              bookSearchList[index].cover,
                             ),
                           ),
                           SizedBox(

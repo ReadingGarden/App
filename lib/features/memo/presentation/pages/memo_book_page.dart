@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -143,11 +144,11 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                             )
                           : ClipRRect(
                               borderRadius: BorderRadius.circular(8.r),
-                              child: Image.network(
+                              child: CachedNetworkImage(
+                                imageUrl: book.bookImageUrl!,
                                 width: 48.w,
                                 height: 64.h,
                                 fit: BoxFit.cover,
-                                book.bookImageUrl!,
                               ),
                             ),
                       Container(

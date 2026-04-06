@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -211,12 +212,12 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
                                           child: (bookStatusList[index]
                                                       .bookImageUrl !=
                                                   null)
-                                              ? Image.network(
+                                              ? CachedNetworkImage(
+                                                  imageUrl: bookStatusList[index]
+                                                      .bookImageUrl!,
                                                   width: 96.w,
                                                   height: 132.h,
                                                   fit: BoxFit.cover,
-                                                  bookStatusList[index]
-                                                      .bookImageUrl!,
                                                 )
                                               : Container(
                                                   width: 96.w,

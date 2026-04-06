@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
@@ -440,11 +441,11 @@ class _GardenPageState extends ConsumerState<GardenPage>
                   (book.bookImageUrl.isNotEmpty)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
-                          child: Image.network(
+                          child: CachedNetworkImage(
+                              imageUrl: book.bookImageUrl,
                               width: 44.r,
                               height: 44.r,
-                              fit: BoxFit.fitWidth,
-                              book.bookImageUrl),
+                              fit: BoxFit.fitWidth),
                         )
                       : Container(
                           width: 44.r,
