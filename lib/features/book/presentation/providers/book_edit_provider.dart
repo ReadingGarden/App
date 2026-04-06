@@ -34,6 +34,7 @@ Future<void> updateBookReadDates(
   final lastHistory = bookReadList.last;
 
   if (startDate.isNotEmpty &&
+      lastHistory.bookStartDate != null &&
       startDate != Functions.formatBookReadDate(lastHistory.bookStartDate!)) {
     await repository.updateBookRead(lastHistory.id, {
       'book_start_date': Functions.formatBookReadString(startDate).toString(),
