@@ -52,6 +52,7 @@ Future<void> toggleMemoLike(WidgetRef ref, int index, int id) async {
   }
 
   final current = [...ref.read(memoListStateProvider)];
+  if (index >= current.length) return;
   current[index] = current[index].copyWith(memoLike: !current[index].memoLike);
   ref.read(memoListStateProvider.notifier).state = current;
 }
