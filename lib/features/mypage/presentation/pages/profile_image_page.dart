@@ -32,7 +32,8 @@ class _ProfileImagePageState extends ConsumerState<ProfileImagePage> {
   //유저 프로필 이미지 인덱스
   int userProfileImageIndex() {
     final user = ref.read(authUserProvider);
-    return Constant.FLOWER_LIST.indexOf(user.userImage);
+    final index = Constant.FLOWER_LIST.indexOf(user.userImage);
+    return index < 0 ? 0 : index;
   }
 
   @override

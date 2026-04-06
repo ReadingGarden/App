@@ -56,11 +56,13 @@ class Functions {
 
   static Color gardenColor(String color) {
     int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
+    if (colorIndex < 0) colorIndex = 0;
     return Constant.GARDEN_COLOR_SET_LIST[colorIndex];
   }
 
   static Color gardenBackColor(String color) {
     int colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(color);
+    if (colorIndex < 0) colorIndex = 0;
     return Constant.GARDEN_BACK_COLOR_SET_LIST[colorIndex];
   }
 

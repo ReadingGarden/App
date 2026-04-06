@@ -42,8 +42,9 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     Future.microtask(() {
       final gardenMain = ref.read(garden_feature.gardenMainProvider);
       ref.read(gardenEditButtonProvider.notifier).state = true;
+      final colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(gardenMain.gardenColor);
       ref.read(gardenEditColorSelectIndexProvider.notifier).state =
-          Constant.GARDEN_COLOR_LIST.indexOf(gardenMain.gardenColor);
+          colorIndex < 0 ? 0 : colorIndex;
       ref.read(gardenEditSelectIndexProvider.notifier).state = 0;
       _titleController.text = gardenMain.gardenTitle;
       _infoController.text = gardenMain.gardenInfo;
