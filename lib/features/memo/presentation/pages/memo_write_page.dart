@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_write_input_entity.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_write_provider.dart'
@@ -162,11 +163,11 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
                           )
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(8.r),
-                            child: Image.network(
+                            child: CachedNetworkImage(
+                              imageUrl: widget.book.bookImageUrl!,
                               width: 48.w,
                               height: 64.h,
                               fit: BoxFit.cover,
-                              widget.book.bookImageUrl!,
                             ),
                           ),
                     Container(
@@ -361,9 +362,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   Widget _image() {
     if (widget.book.imageUrl != null &&
         ref.watch(memo_write_feature.memoImageUpdateProvider) != true) {
-      return Image.network(
-          width: 320.w,
-          Constant.IMAGE_URL + widget.book.imageUrl!);
+      return CachedNetworkImage(
+          imageUrl: Constant.IMAGE_URL + widget.book.imageUrl!,
+          width: 320.w);
     } else {
       return Image.file(
           width: 320.w,

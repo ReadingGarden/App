@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -147,11 +148,11 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                                     )
                                   : ClipRRect(
                                       borderRadius: BorderRadius.circular(8.r),
-                                      child: Image.network(
+                                      child: CachedNetworkImage(
+                                        imageUrl: memo.bookImageUrl!,
                                         width: 44.r,
                                         height: 44.r,
                                         fit: BoxFit.cover,
-                                        memo.bookImageUrl!,
                                       ),
                                     ),
                               Container(
@@ -184,11 +185,11 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                                 margin: EdgeInsets.only(top: 10.h),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
-                                  child: Image.network(
+                                  child: CachedNetworkImage(
+                                      imageUrl: '${Constant.IMAGE_URL}${memo.imageUrl}',
                                       width: 272.w,
                                       height: 272.w,
-                                      fit: BoxFit.cover,
-                                      '${Constant.IMAGE_URL}${memo.imageUrl}'),
+                                      fit: BoxFit.cover),
                                 ),
                               )),
                           Container(

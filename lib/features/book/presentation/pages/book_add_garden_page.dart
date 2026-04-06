@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -108,11 +109,11 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),
                                   child: (bookResult().cover != null)
-                                      ? Image.network(
+                                      ? CachedNetworkImage(
+                                          imageUrl: bookResult().cover!,
                                           width: 145.w,
                                           height: 200.h,
                                           fit: BoxFit.cover,
-                                          bookResult().cover!,
                                         )
                                       : SizedBox(
                                           width: 145.w,

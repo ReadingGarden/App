@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -139,11 +140,11 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
                                                     BorderRadius.circular(8.r),
                                                 child: (book.bookImageUrl
                                                         .isNotEmpty)
-                                                    ? Image.network(
+                                                    ? CachedNetworkImage(
+                                                        imageUrl: book.bookImageUrl,
                                                         width: 96.w,
                                                         height: 132.h,
                                                         fit: BoxFit.cover,
-                                                        book.bookImageUrl,
                                                       )
                                                     : Container(
                                                         width: 96.w,
