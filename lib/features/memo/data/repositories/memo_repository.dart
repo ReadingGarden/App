@@ -12,16 +12,21 @@ class MemoRepository {
 
   final MemoService _service;
 
-  Future<List<MemoListItemEntity>> fetchMemoList(int page) async {
+  Future<MemoPageResult> fetchMemoList(int page) async {
     final response = await _service.getMemoList(page);
     if (response?.statusCode == 200) {
-      final List<dynamic> memoList = response?.data['data']['list'] ?? [];
-      return memoList
-          .map((item) => MemoListItemEntity.fromJson(
-              Map<String, dynamic>.from(item as Map)))
-          .toList();
+      final data = response?.data['data'];
+      final List<dynamic> memoList = data['list'] ?? [];
+      return MemoPageResult(
+        memos: memoList
+            .map((item) => MemoListItemEntity.fromJson(
+                Map<String, dynamic>.from(item as Map)))
+            .toList(),
+        currentPage: data['current_page'] as int? ?? 1,
+        maxPage: data['max_page'] as int? ?? 1,
+      );
     }
-    return [];
+    return MemoPageResult(memos: [], currentPage: 1, maxPage: 1);
   }
 
   Future<bool> toggleMemoLike(int id) async {
@@ -56,4 +61,16 @@ class MemoRepository {
     final response = await _service.deleteMemoImage(id);
     return response?.statusCode == 201;
   }
+}
+
+class MemoPageResult {
+  const MemoPageResult({
+    required this.memos,
+    required this.currentPage,
+    required this.maxPage,
+  });
+
+  final List<MemoListItemEntity> memos;
+  final int currentPage;
+  final int maxPage;
 }
