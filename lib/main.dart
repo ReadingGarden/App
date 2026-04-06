@@ -35,11 +35,11 @@ void main() async {
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     logger.d('백그라운드에서 연 알림 데이터: ${message.data}');
 
-    container.read(currentIndexProvider.notifier).state = 0;
-    openGardenFromNotification(
-      container,
-      int.tryParse(message.data["garden_no"] ?? '') ?? 0,
-    );
+    final gardenNo = int.tryParse(message.data["garden_no"] ?? '');
+    if (gardenNo != null) {
+      container.read(currentIndexProvider.notifier).state = 0;
+      openGardenFromNotification(container, gardenNo);
+    }
   });
 
   // 알림 권한 요청 (iOS 전용)
