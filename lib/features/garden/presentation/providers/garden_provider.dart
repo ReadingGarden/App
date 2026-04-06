@@ -7,6 +7,7 @@ import '../../domain/entities/garden_member_entity.dart';
 import '../../domain/entities/garden_summary_entity.dart';
 
 final gardenVisitCountProvider = StateProvider<int>((ref) => 0);
+final gardenNavigateToProvider = StateProvider<int?>((ref) => null);
 
 final gardenListProvider =
     StateProvider<List<GardenSummaryEntity>>((ref) => []);

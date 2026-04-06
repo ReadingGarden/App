@@ -1,3 +1,4 @@
+import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,6 +84,7 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       if (!mounted) {
         return;
       }
+      ref.read(garden_feature.gardenNavigateToProvider.notifier).state = result.gardenNo;
       context.pushReplacementNamed('book-register-done',
           extra: result.gardenTitle);
     } else if (result.statusCode == 403) {
@@ -401,13 +403,24 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   }
 }
 
-class BookRegisterDonePage extends StatelessWidget {
+class BookRegisterDonePage extends ConsumerWidget {
   const BookRegisterDonePage({super.key, required this.gardenName});
 
   final String gardenName;
 
+  void _goToGarden(BuildContext context, WidgetRef ref) async {
+    ref.read(currentIndexProvider.notifier).state = 0;
+    ref.read(garden_feature.gardenVisitCountProvider.notifier).state++;
+    final targetGardenNo = ref.read(garden_feature.gardenNavigateToProvider);
+    if (targetGardenNo != null) {
+      await garden_feature.updateMainGarden(ref, targetGardenNo);
+      ref.read(garden_feature.gardenNavigateToProvider.notifier).state = null;
+    }
+    context.go('/bottom-navi');
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
         body: Container(
           margin: EdgeInsets.only(top: 142.h),
@@ -444,8 +457,7 @@ class BookRegisterDonePage extends StatelessWidget {
           ),
         ),
         bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('가든으로 가기', true, () {
-            context.replaceNamed('bottom-navi');
-            //TODO: - 자동으로 해당 가든 변경?
+            _goToGarden(context, ref);
           }),
         ));
   }

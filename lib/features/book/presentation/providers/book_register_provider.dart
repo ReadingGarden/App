@@ -13,10 +13,12 @@ class BookRegisterSaveResult {
   const BookRegisterSaveResult({
     required this.statusCode,
     required this.gardenTitle,
+    required this.gardenNo,
   });
 
   final int? statusCode;
   final String gardenTitle;
+  final int gardenNo;
 }
 
 Future<BookRegisterSaveResult> saveBookRegistration(
@@ -78,5 +80,6 @@ Future<BookRegisterSaveResult> saveBookRegistration(
   return BookRegisterSaveResult(
     statusCode: statusCode,
     gardenTitle: gardenTitle,
+    gardenNo: selectedGarden['garden_no'] as int? ?? 0,
   );
 }
