@@ -22,6 +22,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
   final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
   late AnimationController _listAnimController;
+  int _prevBookCount = 0;
 
   @override
   void initState() {
@@ -108,7 +109,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
     final bookStatusList = ref.watch(bookshelfBooksProvider);
     final navIndex = ref.watch(currentIndexProvider);
 
-    if (bookStatusList.isNotEmpty) {
+    if (bookStatusList.isNotEmpty && bookStatusList.length != _prevBookCount) {
+      _prevBookCount = bookStatusList.length;
       _listAnimController.forward(from: 0);
     }
 

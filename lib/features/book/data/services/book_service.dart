@@ -155,8 +155,8 @@ class BookService {
     try {
       final response = await _authenticatedDio.get(
         (garden_no == null)
-            ? '${Constant.URL}book/status?status=$status&page=$page&page_size=10'
-            : '${Constant.URL}book/status?garden_no=$garden_no&status=$status&page=$page&page_size=10',
+            ? '${Constant.URL}book/status?status=$status&page=$page&page_size=24'
+            : '${Constant.URL}book/status?garden_no=$garden_no&status=$status&page=$page&page_size=24',
       );
       logger.d('도서 상태 목록 조회 응답: ${response.data}');
       return response;
