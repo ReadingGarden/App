@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -96,21 +95,11 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
     ref.read(barcodeValueProvider.notifier).state = '';
 
     try {
-      // 바코드 스캔
-      final barcode = await FlutterBarcodeScanner.scanBarcode(
-        '#6BA676', // 스캔 후 배경색
-        'Cancel', // 취소 버튼 텍스트
-        true, // 플래시 여부
-        ScanMode.BARCODE, // 스캔 모드: 바코드, QR코드 등
-      );
+      final barcode = await context.pushNamed<String>('barcode-scan');
 
-      // 바코드 결과 처리
-      ref.read(barcodeValueProvider.notifier).state =
-          barcode != '-1' ? barcode : 'No barcode detected';
-
-      if (ref.watch(barcodeValueProvider).isNotEmpty &&
-          ref.watch(barcodeValueProvider) != 'No barcode detected') {
-        getDetailBookIsbn(ref.watch(barcodeValueProvider));
+      if (barcode != null && barcode.isNotEmpty) {
+        ref.read(barcodeValueProvider.notifier).state = barcode;
+        getDetailBookIsbn(barcode);
       } else {
         if (!mounted) return;
         Widgets.showToast(fToast, '바코드가 인식되지 않았어요');

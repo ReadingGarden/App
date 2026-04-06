@@ -8,6 +8,7 @@ import 'package:book_flutter/features/book/presentation/pages/book_add_page.dart
 import 'package:book_flutter/features/book/presentation/pages/book_detail_page.dart';
 import 'package:book_flutter/features/book/presentation/pages/book_edit_page.dart';
 import 'package:book_flutter/features/book/presentation/pages/book_register_page.dart';
+import 'package:book_flutter/features/book/presentation/pages/barcode_scan_page.dart';
 import 'package:book_flutter/features/book/presentation/pages/book_search_page.dart';
 import 'package:book_flutter/features/book/presentation/pages/book_user_write_page.dart';
 import 'package:book_flutter/features/book/presentation/pages/bookshelf_page.dart';
@@ -19,6 +20,11 @@ List<RouteBase> get bookRoutes => [
         name: 'book-serach',
         builder: (context, state) => const BookSearchPage(),
         routes: [
+          GoRoute(
+            path: 'barcode-scan',
+            name: 'barcode-scan',
+            builder: (context, state) => const BarcodeScanPage(),
+          ),
           GoRoute(
             path: 'book-add-garden',
             name: 'book-add-garden',
