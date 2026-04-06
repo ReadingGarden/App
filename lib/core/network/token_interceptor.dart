@@ -1,7 +1,9 @@
 import 'package:book_flutter/core/logger.dart';
 import 'package:dio/dio.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/shared/constants/app_constant.dart';
+import '../../app/router/app_router.dart';
 import '../storage/token_storage.dart';
 
 class TokenInterceptor extends Interceptor {
@@ -35,7 +37,11 @@ class TokenInterceptor extends Interceptor {
         return handler.resolve(cloneRequest);
       } catch (e) {
         logger.e('토큰 재발급에 실패했습니다: $e');
-        //토큰 갱신 실패시 에러 처리 (로그아웃 등)
+        await removeLoginInfo();
+        final context = navigatorKey.currentContext;
+        if (context != null) {
+          GoRouter.of(context).goNamed('start');
+        }
         handler.next(err);
       }
     } else {
