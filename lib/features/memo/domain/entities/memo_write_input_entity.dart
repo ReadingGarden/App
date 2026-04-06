@@ -8,13 +8,13 @@ abstract class MemoWriteInputEntity with _$MemoWriteInputEntity {
   const MemoWriteInputEntity._();
 
   const factory MemoWriteInputEntity({
-    required int bookNo,
-    required String bookTitle,
-    required String bookAuthor,
-    required String? bookImageUrl,
-    required String memoContent,
-    required String? imageUrl,
-    required int? gardenNo,
+    @Default(0) int bookNo,
+    @Default('') String bookTitle,
+    @Default('') String bookAuthor,
+    String? bookImageUrl,
+    @Default('') String memoContent,
+    String? imageUrl,
+    int? gardenNo,
     int? id,
   }) = _MemoWriteInputEntity;
 

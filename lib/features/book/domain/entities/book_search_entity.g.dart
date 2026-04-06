@@ -8,12 +8,12 @@ part of 'book_search_entity.dart';
 
 _BookSearchEntity _$BookSearchEntityFromJson(Map<String, dynamic> json) =>
     _BookSearchEntity(
-      title: json['title'] as String,
-      author: json['author'] as String,
-      description: json['description'] as String,
-      isbn13: json['isbn13'] as String,
-      cover: json['cover'] as String,
-      publisher: json['publisher'] as String,
+      title: json['title'] as String? ?? '',
+      author: json['author'] as String? ?? '',
+      description: json['description'] as String? ?? '',
+      isbn13: json['isbn13'] as String? ?? '',
+      cover: json['cover'] as String? ?? '',
+      publisher: json['publisher'] as String? ?? '',
     );
 
 Map<String, dynamic> _$BookSearchEntityToJson(_BookSearchEntity instance) =>

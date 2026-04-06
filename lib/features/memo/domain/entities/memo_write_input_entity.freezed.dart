@@ -216,14 +216,14 @@ return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl
 @JsonSerializable()
 
 class _MemoWriteInputEntity extends MemoWriteInputEntity {
-  const _MemoWriteInputEntity({required this.bookNo, required this.bookTitle, required this.bookAuthor, required this.bookImageUrl, required this.memoContent, required this.imageUrl, required this.gardenNo, this.id}): super._();
+  const _MemoWriteInputEntity({this.bookNo = 0, this.bookTitle = '', this.bookAuthor = '', this.bookImageUrl, this.memoContent = '', this.imageUrl, this.gardenNo, this.id}): super._();
   factory _MemoWriteInputEntity.fromJson(Map<String, dynamic> json) => _$MemoWriteInputEntityFromJson(json);
 
-@override final  int bookNo;
-@override final  String bookTitle;
-@override final  String bookAuthor;
+@override@JsonKey() final  int bookNo;
+@override@JsonKey() final  String bookTitle;
+@override@JsonKey() final  String bookAuthor;
 @override final  String? bookImageUrl;
-@override final  String memoContent;
+@override@JsonKey() final  String memoContent;
 @override final  String? imageUrl;
 @override final  int? gardenNo;
 @override final  int? id;

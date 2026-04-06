@@ -6,12 +6,12 @@ part 'book_search_entity.g.dart';
 @freezed
 abstract class BookSearchEntity with _$BookSearchEntity {
   const factory BookSearchEntity({
-    required String title,
-    required String author,
-    required String description,
-    required String isbn13,
-    required String cover,
-    required String publisher,
+    @Default('') String title,
+    @Default('') String author,
+    @Default('') String description,
+    @Default('') String isbn13,
+    @Default('') String cover,
+    @Default('') String publisher,
   }) = _BookSearchEntity;
 
   factory BookSearchEntity.fromJson(Map<String, dynamic> json) =>

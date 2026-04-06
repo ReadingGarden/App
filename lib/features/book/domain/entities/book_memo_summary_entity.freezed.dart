@@ -213,13 +213,13 @@ return $default(_that.id,_that.memoContent,_that.memoCreatedAt,_that.memoLike,_t
 @JsonSerializable()
 
 class _BookMemoSummaryEntity extends BookMemoSummaryEntity {
-  const _BookMemoSummaryEntity({required this.id, required this.memoContent, required this.memoCreatedAt, required this.memoLike, required this.imageUrl}): super._();
+  const _BookMemoSummaryEntity({this.id = 0, this.memoContent = '', this.memoCreatedAt = '', this.memoLike = false, this.imageUrl}): super._();
   factory _BookMemoSummaryEntity.fromJson(Map<String, dynamic> json) => _$BookMemoSummaryEntityFromJson(json);
 
-@override final  int id;
-@override final  String memoContent;
-@override final  String memoCreatedAt;
-@override final  bool memoLike;
+@override@JsonKey() final  int id;
+@override@JsonKey() final  String memoContent;
+@override@JsonKey() final  String memoCreatedAt;
+@override@JsonKey() final  bool memoLike;
 @override final  String? imageUrl;
 
 /// Create a copy of BookMemoSummaryEntity

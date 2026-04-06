@@ -212,13 +212,13 @@ return $default(_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEnd
 @JsonSerializable()
 
 class _BookAddDoneEntity implements BookAddDoneEntity {
-  const _BookAddDoneEntity({required this.bookTitle, required this.bookTree, required this.bookStartDate, required this.bookEndDate});
+  const _BookAddDoneEntity({this.bookTitle = '', this.bookTree = '', this.bookStartDate = '', this.bookEndDate = ''});
   factory _BookAddDoneEntity.fromJson(Map<String, dynamic> json) => _$BookAddDoneEntityFromJson(json);
 
-@override final  String bookTitle;
-@override final  String bookTree;
-@override final  String bookStartDate;
-@override final  String bookEndDate;
+@override@JsonKey() final  String bookTitle;
+@override@JsonKey() final  String bookTree;
+@override@JsonKey() final  String bookStartDate;
+@override@JsonKey() final  String bookEndDate;
 
 /// Create a copy of BookAddDoneEntity
 /// with the given fields replaced by the non-null parameter values.

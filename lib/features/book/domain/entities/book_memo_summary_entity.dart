@@ -8,11 +8,11 @@ abstract class BookMemoSummaryEntity with _$BookMemoSummaryEntity {
   const BookMemoSummaryEntity._();
 
   const factory BookMemoSummaryEntity({
-    required int id,
-    required String memoContent,
-    required String memoCreatedAt,
-    required bool memoLike,
-    required String? imageUrl,
+    @Default(0) int id,
+    @Default('') String memoContent,
+    @Default('') String memoCreatedAt,
+    @Default(false) bool memoLike,
+    String? imageUrl,
   }) = _BookMemoSummaryEntity;
 
   factory BookMemoSummaryEntity.fromJson(Map<String, dynamic> json) =>

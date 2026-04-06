@@ -11,22 +11,22 @@ abstract class BookDetailEntity with _$BookDetailEntity {
   const BookDetailEntity._();
 
   const factory BookDetailEntity({
-    required int? bookNo,
-    required int? userNo,
-    required int? gardenNo,
-    required String gardenTitle,
-    required String gardenColor,
-    required int bookStatus,
-    required String bookTitle,
-    required String bookAuthor,
-    required String bookPublisher,
-    required String bookInfo,
-    required String? bookImageUrl,
-    required String bookTree,
-    required int bookCurrentPage,
-    required int bookPage,
-    required List<BookReadHistoryEntity> bookReadList,
-    required List<BookMemoSummaryEntity> memoList,
+    int? bookNo,
+    int? userNo,
+    int? gardenNo,
+    @Default('') String gardenTitle,
+    @Default('') String gardenColor,
+    @Default(0) int bookStatus,
+    @Default('') String bookTitle,
+    @Default('') String bookAuthor,
+    @Default('') String bookPublisher,
+    @Default('') String bookInfo,
+    String? bookImageUrl,
+    @Default('') String bookTree,
+    @Default(0) int bookCurrentPage,
+    @Default(0) int bookPage,
+    @Default([]) List<BookReadHistoryEntity> bookReadList,
+    @Default([]) List<BookMemoSummaryEntity> memoList,
   }) = _BookDetailEntity;
 
   factory BookDetailEntity.fromJson(Map<String, dynamic> json) =>

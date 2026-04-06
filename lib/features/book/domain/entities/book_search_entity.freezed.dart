@@ -214,15 +214,15 @@ return $default(_that.title,_that.author,_that.description,_that.isbn13,_that.co
 @JsonSerializable()
 
 class _BookSearchEntity implements BookSearchEntity {
-  const _BookSearchEntity({required this.title, required this.author, required this.description, required this.isbn13, required this.cover, required this.publisher});
+  const _BookSearchEntity({this.title = '', this.author = '', this.description = '', this.isbn13 = '', this.cover = '', this.publisher = ''});
   factory _BookSearchEntity.fromJson(Map<String, dynamic> json) => _$BookSearchEntityFromJson(json);
 
-@override final  String title;
-@override final  String author;
-@override final  String description;
-@override final  String isbn13;
-@override final  String cover;
-@override final  String publisher;
+@override@JsonKey() final  String title;
+@override@JsonKey() final  String author;
+@override@JsonKey() final  String description;
+@override@JsonKey() final  String isbn13;
+@override@JsonKey() final  String cover;
+@override@JsonKey() final  String publisher;
 
 /// Create a copy of BookSearchEntity
 /// with the given fields replaced by the non-null parameter values.

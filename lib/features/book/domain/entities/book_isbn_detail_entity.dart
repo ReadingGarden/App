@@ -8,13 +8,13 @@ abstract class BookIsbnDetailEntity with _$BookIsbnDetailEntity {
   const BookIsbnDetailEntity._();
 
   const factory BookIsbnDetailEntity({
-    required String title,
-    required String author,
-    required String description,
-    required String isbn13,
-    required String? cover,
-    required String publisher,
-    @JsonKey(name: 'itemPage') required int itemPage,
+    @Default('') String title,
+    @Default('') String author,
+    @Default('') String description,
+    @Default('') String isbn13,
+    String? cover,
+    @Default('') String publisher,
+    @JsonKey(name: 'itemPage') @Default(0) int itemPage,
     int? bookNo,
   }) = _BookIsbnDetailEntity;
 

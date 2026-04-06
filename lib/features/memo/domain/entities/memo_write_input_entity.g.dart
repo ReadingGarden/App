@@ -9,11 +9,11 @@ part of 'memo_write_input_entity.dart';
 _MemoWriteInputEntity _$MemoWriteInputEntityFromJson(
   Map<String, dynamic> json,
 ) => _MemoWriteInputEntity(
-  bookNo: (json['book_no'] as num).toInt(),
-  bookTitle: json['book_title'] as String,
-  bookAuthor: json['book_author'] as String,
+  bookNo: (json['book_no'] as num?)?.toInt() ?? 0,
+  bookTitle: json['book_title'] as String? ?? '',
+  bookAuthor: json['book_author'] as String? ?? '',
   bookImageUrl: json['book_image_url'] as String?,
-  memoContent: json['memo_content'] as String,
+  memoContent: json['memo_content'] as String? ?? '',
   imageUrl: json['image_url'] as String?,
   gardenNo: (json['garden_no'] as num?)?.toInt(),
   id: (json['id'] as num?)?.toInt(),

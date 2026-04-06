@@ -216,15 +216,15 @@ return $default(_that.title,_that.author,_that.description,_that.isbn13,_that.co
 @JsonSerializable()
 
 class _BookIsbnDetailEntity extends BookIsbnDetailEntity {
-  const _BookIsbnDetailEntity({required this.title, required this.author, required this.description, required this.isbn13, required this.cover, required this.publisher, @JsonKey(name: 'itemPage') required this.itemPage, this.bookNo}): super._();
+  const _BookIsbnDetailEntity({this.title = '', this.author = '', this.description = '', this.isbn13 = '', this.cover, this.publisher = '', @JsonKey(name: 'itemPage') this.itemPage = 0, this.bookNo}): super._();
   factory _BookIsbnDetailEntity.fromJson(Map<String, dynamic> json) => _$BookIsbnDetailEntityFromJson(json);
 
-@override final  String title;
-@override final  String author;
-@override final  String description;
-@override final  String isbn13;
+@override@JsonKey() final  String title;
+@override@JsonKey() final  String author;
+@override@JsonKey() final  String description;
+@override@JsonKey() final  String isbn13;
 @override final  String? cover;
-@override final  String publisher;
+@override@JsonKey() final  String publisher;
 @override@JsonKey(name: 'itemPage') final  int itemPage;
 @override final  int? bookNo;
 

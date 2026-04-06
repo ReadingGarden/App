@@ -6,10 +6,10 @@ part 'book_add_done_entity.g.dart';
 @freezed
 abstract class BookAddDoneEntity with _$BookAddDoneEntity {
   const factory BookAddDoneEntity({
-    required String bookTitle,
-    required String bookTree,
-    required String bookStartDate,
-    required String bookEndDate,
+    @Default('') String bookTitle,
+    @Default('') String bookTree,
+    @Default('') String bookStartDate,
+    @Default('') String bookEndDate,
   }) = _BookAddDoneEntity;
 
   factory BookAddDoneEntity.fromJson(Map<String, dynamic> json) =>

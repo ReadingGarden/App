@@ -9,13 +9,13 @@ part of 'book_isbn_detail_entity.dart';
 _BookIsbnDetailEntity _$BookIsbnDetailEntityFromJson(
   Map<String, dynamic> json,
 ) => _BookIsbnDetailEntity(
-  title: json['title'] as String,
-  author: json['author'] as String,
-  description: json['description'] as String,
-  isbn13: json['isbn13'] as String,
+  title: json['title'] as String? ?? '',
+  author: json['author'] as String? ?? '',
+  description: json['description'] as String? ?? '',
+  isbn13: json['isbn13'] as String? ?? '',
   cover: json['cover'] as String?,
-  publisher: json['publisher'] as String,
-  itemPage: (json['itemPage'] as num).toInt(),
+  publisher: json['publisher'] as String? ?? '',
+  itemPage: (json['itemPage'] as num?)?.toInt() ?? 0,
   bookNo: (json['book_no'] as num?)?.toInt(),
 );
 

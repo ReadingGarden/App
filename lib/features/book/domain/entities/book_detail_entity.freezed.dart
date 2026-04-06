@@ -224,32 +224,32 @@ return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that
 @JsonSerializable()
 
 class _BookDetailEntity extends BookDetailEntity {
-  const _BookDetailEntity({required this.bookNo, required this.userNo, required this.gardenNo, required this.gardenTitle, required this.gardenColor, required this.bookStatus, required this.bookTitle, required this.bookAuthor, required this.bookPublisher, required this.bookInfo, required this.bookImageUrl, required this.bookTree, required this.bookCurrentPage, required this.bookPage, required final  List<BookReadHistoryEntity> bookReadList, required final  List<BookMemoSummaryEntity> memoList}): _bookReadList = bookReadList,_memoList = memoList,super._();
+  const _BookDetailEntity({this.bookNo, this.userNo, this.gardenNo, this.gardenTitle = '', this.gardenColor = '', this.bookStatus = 0, this.bookTitle = '', this.bookAuthor = '', this.bookPublisher = '', this.bookInfo = '', this.bookImageUrl, this.bookTree = '', this.bookCurrentPage = 0, this.bookPage = 0, final  List<BookReadHistoryEntity> bookReadList = const [], final  List<BookMemoSummaryEntity> memoList = const []}): _bookReadList = bookReadList,_memoList = memoList,super._();
   factory _BookDetailEntity.fromJson(Map<String, dynamic> json) => _$BookDetailEntityFromJson(json);
 
 @override final  int? bookNo;
 @override final  int? userNo;
 @override final  int? gardenNo;
-@override final  String gardenTitle;
-@override final  String gardenColor;
-@override final  int bookStatus;
-@override final  String bookTitle;
-@override final  String bookAuthor;
-@override final  String bookPublisher;
-@override final  String bookInfo;
+@override@JsonKey() final  String gardenTitle;
+@override@JsonKey() final  String gardenColor;
+@override@JsonKey() final  int bookStatus;
+@override@JsonKey() final  String bookTitle;
+@override@JsonKey() final  String bookAuthor;
+@override@JsonKey() final  String bookPublisher;
+@override@JsonKey() final  String bookInfo;
 @override final  String? bookImageUrl;
-@override final  String bookTree;
-@override final  int bookCurrentPage;
-@override final  int bookPage;
+@override@JsonKey() final  String bookTree;
+@override@JsonKey() final  int bookCurrentPage;
+@override@JsonKey() final  int bookPage;
  final  List<BookReadHistoryEntity> _bookReadList;
-@override List<BookReadHistoryEntity> get bookReadList {
+@override@JsonKey() List<BookReadHistoryEntity> get bookReadList {
   if (_bookReadList is EqualUnmodifiableListView) return _bookReadList;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_bookReadList);
 }
 
  final  List<BookMemoSummaryEntity> _memoList;
-@override List<BookMemoSummaryEntity> get memoList {
+@override@JsonKey() List<BookMemoSummaryEntity> get memoList {
   if (_memoList is EqualUnmodifiableListView) return _memoList;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_memoList);

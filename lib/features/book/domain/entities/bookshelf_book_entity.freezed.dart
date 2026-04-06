@@ -219,19 +219,19 @@ return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookPublishe
 @JsonSerializable()
 
 class _BookshelfBookEntity implements BookshelfBookEntity {
-  const _BookshelfBookEntity({required this.bookNo, required this.bookTitle, required this.bookAuthor, required this.bookPublisher, required this.bookInfo, required this.bookImageUrl, required this.bookTree, required this.bookStatus, required this.percent, required this.bookPage, required this.gardenNo});
+  const _BookshelfBookEntity({this.bookNo = 0, this.bookTitle = '', this.bookAuthor = '', this.bookPublisher = '', this.bookInfo = '', this.bookImageUrl, this.bookTree, this.bookStatus = 0, this.percent = 0, this.bookPage = 0, this.gardenNo});
   factory _BookshelfBookEntity.fromJson(Map<String, dynamic> json) => _$BookshelfBookEntityFromJson(json);
 
-@override final  int bookNo;
-@override final  String bookTitle;
-@override final  String bookAuthor;
-@override final  String bookPublisher;
-@override final  String bookInfo;
+@override@JsonKey() final  int bookNo;
+@override@JsonKey() final  String bookTitle;
+@override@JsonKey() final  String bookAuthor;
+@override@JsonKey() final  String bookPublisher;
+@override@JsonKey() final  String bookInfo;
 @override final  String? bookImageUrl;
 @override final  String? bookTree;
-@override final  int bookStatus;
-@override final  double percent;
-@override final  int bookPage;
+@override@JsonKey() final  int bookStatus;
+@override@JsonKey() final  double percent;
+@override@JsonKey() final  int bookPage;
 @override final  int? gardenNo;
 
 /// Create a copy of BookshelfBookEntity

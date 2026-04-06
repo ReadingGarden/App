@@ -8,16 +8,16 @@ part of 'bookshelf_book_entity.dart';
 
 _BookshelfBookEntity _$BookshelfBookEntityFromJson(Map<String, dynamic> json) =>
     _BookshelfBookEntity(
-      bookNo: (json['book_no'] as num).toInt(),
-      bookTitle: json['book_title'] as String,
-      bookAuthor: json['book_author'] as String,
-      bookPublisher: json['book_publisher'] as String,
-      bookInfo: json['book_info'] as String,
+      bookNo: (json['book_no'] as num?)?.toInt() ?? 0,
+      bookTitle: json['book_title'] as String? ?? '',
+      bookAuthor: json['book_author'] as String? ?? '',
+      bookPublisher: json['book_publisher'] as String? ?? '',
+      bookInfo: json['book_info'] as String? ?? '',
       bookImageUrl: json['book_image_url'] as String?,
       bookTree: json['book_tree'] as String?,
-      bookStatus: (json['book_status'] as num).toInt(),
-      percent: (json['percent'] as num).toDouble(),
-      bookPage: (json['book_page'] as num).toInt(),
+      bookStatus: (json['book_status'] as num?)?.toInt() ?? 0,
+      percent: (json['percent'] as num?)?.toDouble() ?? 0,
+      bookPage: (json['book_page'] as num?)?.toInt() ?? 0,
       gardenNo: (json['garden_no'] as num?)?.toInt(),
     );
 

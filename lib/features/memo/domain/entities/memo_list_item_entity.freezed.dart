@@ -217,18 +217,18 @@ return $default(_that.id,_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.boo
 @JsonSerializable()
 
 class _MemoListItemEntity implements MemoListItemEntity {
-  const _MemoListItemEntity({required this.id, required this.bookNo, required this.bookTitle, required this.bookAuthor, required this.bookImageUrl, required this.memoContent, required this.memoLike, required this.imageUrl, required this.memoCreatedAt});
+  const _MemoListItemEntity({this.id = 0, this.bookNo = 0, this.bookTitle = '', this.bookAuthor = '', this.bookImageUrl, this.memoContent = '', this.memoLike = false, this.imageUrl, this.memoCreatedAt = ''});
   factory _MemoListItemEntity.fromJson(Map<String, dynamic> json) => _$MemoListItemEntityFromJson(json);
 
-@override final  int id;
-@override final  int bookNo;
-@override final  String bookTitle;
-@override final  String bookAuthor;
+@override@JsonKey() final  int id;
+@override@JsonKey() final  int bookNo;
+@override@JsonKey() final  String bookTitle;
+@override@JsonKey() final  String bookAuthor;
 @override final  String? bookImageUrl;
-@override final  String memoContent;
-@override final  bool memoLike;
+@override@JsonKey() final  String memoContent;
+@override@JsonKey() final  bool memoLike;
 @override final  String? imageUrl;
-@override final  String memoCreatedAt;
+@override@JsonKey() final  String memoCreatedAt;
 
 /// Create a copy of MemoListItemEntity
 /// with the given fields replaced by the non-null parameter values.

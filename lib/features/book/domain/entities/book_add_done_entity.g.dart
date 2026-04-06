@@ -8,10 +8,10 @@ part of 'book_add_done_entity.dart';
 
 _BookAddDoneEntity _$BookAddDoneEntityFromJson(Map<String, dynamic> json) =>
     _BookAddDoneEntity(
-      bookTitle: json['book_title'] as String,
-      bookTree: json['book_tree'] as String,
-      bookStartDate: json['book_start_date'] as String,
-      bookEndDate: json['book_end_date'] as String,
+      bookTitle: json['book_title'] as String? ?? '',
+      bookTree: json['book_tree'] as String? ?? '',
+      bookStartDate: json['book_start_date'] as String? ?? '',
+      bookEndDate: json['book_end_date'] as String? ?? '',
     );
 
 Map<String, dynamic> _$BookAddDoneEntityToJson(_BookAddDoneEntity instance) =>

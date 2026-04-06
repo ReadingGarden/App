@@ -6,17 +6,17 @@ part 'bookshelf_book_entity.g.dart';
 @freezed
 abstract class BookshelfBookEntity with _$BookshelfBookEntity {
   const factory BookshelfBookEntity({
-    required int bookNo,
-    required String bookTitle,
-    required String bookAuthor,
-    required String bookPublisher,
-    required String bookInfo,
-    required String? bookImageUrl,
-    required String? bookTree,
-    required int bookStatus,
-    required double percent,
-    required int bookPage,
-    required int? gardenNo,
+    @Default(0) int bookNo,
+    @Default('') String bookTitle,
+    @Default('') String bookAuthor,
+    @Default('') String bookPublisher,
+    @Default('') String bookInfo,
+    String? bookImageUrl,
+    String? bookTree,
+    @Default(0) int bookStatus,
+    @Default(0) double percent,
+    @Default(0) int bookPage,
+    int? gardenNo,
   }) = _BookshelfBookEntity;
 
   factory BookshelfBookEntity.fromJson(Map<String, dynamic> json) =>

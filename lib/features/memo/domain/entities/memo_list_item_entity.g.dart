@@ -8,15 +8,15 @@ part of 'memo_list_item_entity.dart';
 
 _MemoListItemEntity _$MemoListItemEntityFromJson(Map<String, dynamic> json) =>
     _MemoListItemEntity(
-      id: (json['id'] as num).toInt(),
-      bookNo: (json['book_no'] as num).toInt(),
-      bookTitle: json['book_title'] as String,
-      bookAuthor: json['book_author'] as String,
+      id: (json['id'] as num?)?.toInt() ?? 0,
+      bookNo: (json['book_no'] as num?)?.toInt() ?? 0,
+      bookTitle: json['book_title'] as String? ?? '',
+      bookAuthor: json['book_author'] as String? ?? '',
       bookImageUrl: json['book_image_url'] as String?,
-      memoContent: json['memo_content'] as String,
-      memoLike: json['memo_like'] as bool,
+      memoContent: json['memo_content'] as String? ?? '',
+      memoLike: json['memo_like'] as bool? ?? false,
       imageUrl: json['image_url'] as String?,
-      memoCreatedAt: json['memo_created_at'] as String,
+      memoCreatedAt: json['memo_created_at'] as String? ?? '',
     );
 
 Map<String, dynamic> _$MemoListItemEntityToJson(_MemoListItemEntity instance) =>

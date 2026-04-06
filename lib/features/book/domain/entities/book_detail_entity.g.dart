@@ -11,23 +11,33 @@ _BookDetailEntity _$BookDetailEntityFromJson(Map<String, dynamic> json) =>
       bookNo: (json['book_no'] as num?)?.toInt(),
       userNo: (json['user_no'] as num?)?.toInt(),
       gardenNo: (json['garden_no'] as num?)?.toInt(),
-      gardenTitle: json['garden_title'] as String,
-      gardenColor: json['garden_color'] as String,
-      bookStatus: (json['book_status'] as num).toInt(),
-      bookTitle: json['book_title'] as String,
-      bookAuthor: json['book_author'] as String,
-      bookPublisher: json['book_publisher'] as String,
-      bookInfo: json['book_info'] as String,
+      gardenTitle: json['garden_title'] as String? ?? '',
+      gardenColor: json['garden_color'] as String? ?? '',
+      bookStatus: (json['book_status'] as num?)?.toInt() ?? 0,
+      bookTitle: json['book_title'] as String? ?? '',
+      bookAuthor: json['book_author'] as String? ?? '',
+      bookPublisher: json['book_publisher'] as String? ?? '',
+      bookInfo: json['book_info'] as String? ?? '',
       bookImageUrl: json['book_image_url'] as String?,
-      bookTree: json['book_tree'] as String,
-      bookCurrentPage: (json['book_current_page'] as num).toInt(),
-      bookPage: (json['book_page'] as num).toInt(),
-      bookReadList: (json['book_read_list'] as List<dynamic>)
-          .map((e) => BookReadHistoryEntity.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      memoList: (json['memo_list'] as List<dynamic>)
-          .map((e) => BookMemoSummaryEntity.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      bookTree: json['book_tree'] as String? ?? '',
+      bookCurrentPage: (json['book_current_page'] as num?)?.toInt() ?? 0,
+      bookPage: (json['book_page'] as num?)?.toInt() ?? 0,
+      bookReadList:
+          (json['book_read_list'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    BookReadHistoryEntity.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
+      memoList:
+          (json['memo_list'] as List<dynamic>?)
+              ?.map(
+                (e) =>
+                    BookMemoSummaryEntity.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$BookDetailEntityToJson(_BookDetailEntity instance) =>
