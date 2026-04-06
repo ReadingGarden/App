@@ -16,7 +16,9 @@ class TokenInterceptor extends Interceptor {
       RequestOptions options, RequestInterceptorHandler handler) async {
     //요청 전에 토큰을 헤더에 추가
     final accessToken = await loadAccess();
-    options.headers['Authorization'] = 'Bearer $accessToken';
+    if (accessToken != null) {
+      options.headers['Authorization'] = 'Bearer $accessToken';
+    }
     handler.next(options);
   }
 
