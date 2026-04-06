@@ -24,7 +24,9 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/error',
       name: 'error',
-      builder: (context, state) => const ErrorPage(),
+      builder: (context, state) => ErrorPage(
+        errorType: state.extra as ErrorType? ?? ErrorType.server,
+      ),
     ),
     GoRoute(
       path: '/bottom-navi',
