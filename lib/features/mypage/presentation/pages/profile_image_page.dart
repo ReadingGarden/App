@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:book_flutter/core/ui/app_assets.dart';
+import 'package:book_flutter/shared/theme/app_assets.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
+import 'package:book_flutter/shared/constants/app_constant.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 
 //프로필 이미지 선택 인덱스 ...
 final profileSelectIndexProvider = StateProvider<int>((ref) => 0);

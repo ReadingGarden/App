@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/constants/app_constant.dart';
+import 'package:book_flutter/shared/constants/app_constant.dart';
 import '../../data/repositories/book_register_repository.dart';
 import '../../domain/entities/book_register_input_entity.dart';
 

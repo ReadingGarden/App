@@ -4,7 +4,7 @@ import 'package:book_flutter/core/network/dio_client.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../../core/constants/app_constant.dart';
+import 'package:book_flutter/shared/constants/app_constant.dart';
 
 class AuthService {
   final _dio = dioClient.dio;

@@ -1,7 +1,7 @@
-import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/state/timer_notifier.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
+import 'package:book_flutter/features/auth/presentation/providers/timer_notifier.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/auth/data/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

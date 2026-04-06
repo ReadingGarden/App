@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/ui/app_widgets.dart';
-import '../../../../core/constants/app_constant.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
+import 'package:book_flutter/shared/constants/app_constant.dart';
 import '../../domain/entities/garden_add_input_entity.dart';
 import '../providers/garden_add_provider.dart' as garden_add_feature;
 

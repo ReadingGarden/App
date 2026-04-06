@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:book_flutter/core/ui/app_colors.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 
 class ErrorPage extends StatelessWidget {
   const ErrorPage({super.key});

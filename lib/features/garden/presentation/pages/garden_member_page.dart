@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/ui/app_assets.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
+import 'package:book_flutter/shared/theme/app_assets.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
