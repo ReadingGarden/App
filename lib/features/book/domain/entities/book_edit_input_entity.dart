@@ -1,23 +1,17 @@
-class BookEditInputEntity {
-  const BookEditInputEntity({
-    required this.bookNo,
-    required this.bookTitle,
-    required this.bookAuthor,
-    required this.bookImageUrl,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int bookNo;
-  final String bookTitle;
-  final String bookAuthor;
-  final String? bookImageUrl;
+part 'book_edit_input_entity.freezed.dart';
+part 'book_edit_input_entity.g.dart';
 
-  factory BookEditInputEntity.fromMap(Map map) {
-    return BookEditInputEntity(
-      bookNo: map['book_no'] as int? ?? 0,
-      bookTitle: map['book_title'] as String? ?? '',
-      bookAuthor: map['book_author'] as String? ?? '',
-      bookImageUrl: map['book_image_url'] as String?,
-    );
-  }
+@freezed
+abstract class BookEditInputEntity with _$BookEditInputEntity {
+  const factory BookEditInputEntity({
+    required int bookNo,
+    required String bookTitle,
+    required String bookAuthor,
+    required String? bookImageUrl,
+  }) = _BookEditInputEntity;
+
+  factory BookEditInputEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookEditInputEntityFromJson(json);
 }
-

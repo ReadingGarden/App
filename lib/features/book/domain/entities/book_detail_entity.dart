@@ -1,44 +1,41 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
 import 'book_memo_summary_entity.dart';
 import 'book_read_history_entity.dart';
 
-class BookDetailEntity {
-  const BookDetailEntity({
-    required this.bookNo,
-    required this.userNo,
-    required this.gardenNo,
-    required this.gardenTitle,
-    required this.gardenColor,
-    required this.bookStatus,
-    required this.bookTitle,
-    required this.bookAuthor,
-    required this.bookPublisher,
-    required this.bookInfo,
-    required this.bookImageUrl,
-    required this.bookTree,
-    required this.bookCurrentPage,
-    required this.bookPage,
-    required this.bookReadList,
-    required this.memoList,
-  });
+part 'book_detail_entity.freezed.dart';
+part 'book_detail_entity.g.dart';
 
-  final int? bookNo;
-  final int? userNo;
-  final int? gardenNo;
-  final String gardenTitle;
-  final String gardenColor;
-  final int bookStatus;
-  final String bookTitle;
-  final String bookAuthor;
-  final String bookPublisher;
-  final String bookInfo;
-  final String? bookImageUrl;
-  final String bookTree;
-  final int bookCurrentPage;
-  final int bookPage;
-  final List<BookReadHistoryEntity> bookReadList;
-  final List<BookMemoSummaryEntity> memoList;
+@freezed
+abstract class BookDetailEntity with _$BookDetailEntity {
+  const BookDetailEntity._();
 
-  static const empty = BookDetailEntity(
+  const factory BookDetailEntity({
+    required int? bookNo,
+    required int? userNo,
+    required int? gardenNo,
+    required String gardenTitle,
+    required String gardenColor,
+    required int bookStatus,
+    required String bookTitle,
+    required String bookAuthor,
+    required String bookPublisher,
+    required String bookInfo,
+    required String? bookImageUrl,
+    required String bookTree,
+    required int bookCurrentPage,
+    required int bookPage,
+    required List<BookReadHistoryEntity> bookReadList,
+    required List<BookMemoSummaryEntity> memoList,
+  }) = _BookDetailEntity;
+
+  factory BookDetailEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookDetailEntityFromJson(json);
+
+  // NOTE: The previous manual copyWith had a `clearBookImageUrl` parameter.
+  // With freezed, use copyWith(bookImageUrl: null) directly since the field is nullable.
+
+  static final empty = BookDetailEntity(
     bookNo: null,
     userNo: null,
     gardenNo: null,
@@ -58,46 +55,6 @@ class BookDetailEntity {
   );
 
   bool get hasGardenColor => gardenColor.isNotEmpty;
-
-  BookDetailEntity copyWith({
-    int? bookNo,
-    int? userNo,
-    int? gardenNo,
-    String? gardenTitle,
-    String? gardenColor,
-    int? bookStatus,
-    String? bookTitle,
-    String? bookAuthor,
-    String? bookPublisher,
-    String? bookInfo,
-    String? bookImageUrl,
-    bool clearBookImageUrl = false,
-    String? bookTree,
-    int? bookCurrentPage,
-    int? bookPage,
-    List<BookReadHistoryEntity>? bookReadList,
-    List<BookMemoSummaryEntity>? memoList,
-  }) {
-    return BookDetailEntity(
-      bookNo: bookNo ?? this.bookNo,
-      userNo: userNo ?? this.userNo,
-      gardenNo: gardenNo ?? this.gardenNo,
-      gardenTitle: gardenTitle ?? this.gardenTitle,
-      gardenColor: gardenColor ?? this.gardenColor,
-      bookStatus: bookStatus ?? this.bookStatus,
-      bookTitle: bookTitle ?? this.bookTitle,
-      bookAuthor: bookAuthor ?? this.bookAuthor,
-      bookPublisher: bookPublisher ?? this.bookPublisher,
-      bookInfo: bookInfo ?? this.bookInfo,
-      bookImageUrl:
-          clearBookImageUrl ? null : (bookImageUrl ?? this.bookImageUrl),
-      bookTree: bookTree ?? this.bookTree,
-      bookCurrentPage: bookCurrentPage ?? this.bookCurrentPage,
-      bookPage: bookPage ?? this.bookPage,
-      bookReadList: bookReadList ?? this.bookReadList,
-      memoList: memoList ?? this.memoList,
-    );
-  }
 
   Map<String, dynamic> toBookAddPayload() {
     return {

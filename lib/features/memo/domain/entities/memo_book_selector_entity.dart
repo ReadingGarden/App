@@ -1,27 +1,22 @@
-class MemoBookSelectorEntity {
-  const MemoBookSelectorEntity({
-    required this.bookNo,
-    required this.bookTitle,
-    required this.bookAuthor,
-    required this.bookImageUrl,
-    required this.gardenNo,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int bookNo;
-  final String bookTitle;
-  final String bookAuthor;
-  final String? bookImageUrl;
-  final int? gardenNo;
+part 'memo_book_selector_entity.freezed.dart';
+part 'memo_book_selector_entity.g.dart';
 
-  factory MemoBookSelectorEntity.fromMap(Map<String, dynamic> map) {
-    return MemoBookSelectorEntity(
-      bookNo: map['book_no'] as int? ?? 0,
-      bookTitle: map['book_title'] as String? ?? '',
-      bookAuthor: map['book_author'] as String? ?? '',
-      bookImageUrl: map['book_image_url'] as String?,
-      gardenNo: map['garden_no'] as int?,
-    );
-  }
+@freezed
+abstract class MemoBookSelectorEntity with _$MemoBookSelectorEntity {
+  const MemoBookSelectorEntity._();
+
+  const factory MemoBookSelectorEntity({
+    required int bookNo,
+    required String bookTitle,
+    required String bookAuthor,
+    required String? bookImageUrl,
+    required int? gardenNo,
+  }) = _MemoBookSelectorEntity;
+
+  factory MemoBookSelectorEntity.fromJson(Map<String, dynamic> json) =>
+      _$MemoBookSelectorEntityFromJson(json);
 
   Map<String, dynamic> toMemoWriteMap() {
     return {

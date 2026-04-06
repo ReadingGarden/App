@@ -1,28 +1,19 @@
-class GardenMainBookEntity {
-  const GardenMainBookEntity({
-    required this.bookNo,
-    required this.bookTitle,
-    required this.bookAuthor,
-    required this.bookImageUrl,
-    required this.bookTree,
-    required this.percent,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int bookNo;
-  final String bookTitle;
-  final String bookAuthor;
-  final String bookImageUrl;
-  final String bookTree;
-  final double percent;
+part 'garden_main_book_entity.freezed.dart';
+part 'garden_main_book_entity.g.dart';
 
-  factory GardenMainBookEntity.fromMap(Map<String, dynamic> map) {
-    return GardenMainBookEntity(
-      bookNo: map['book_no'] as int? ?? 0,
-      bookTitle: map['book_title'] as String? ?? '',
-      bookAuthor: map['book_author'] as String? ?? '',
-      bookImageUrl: map['book_image_url'] as String? ?? '',
-      bookTree: map['book_tree'] as String? ?? '',
-      percent: (map['percent'] as num?)?.toDouble() ?? 0,
-    );
-  }
+@freezed
+abstract class GardenMainBookEntity with _$GardenMainBookEntity {
+  const factory GardenMainBookEntity({
+    @Default(0) int bookNo,
+    @Default('') String bookTitle,
+    @Default('') String bookAuthor,
+    @Default('') String bookImageUrl,
+    @Default('') String bookTree,
+    @Default(0) double percent,
+  }) = _GardenMainBookEntity;
+
+  factory GardenMainBookEntity.fromJson(Map<String, dynamic> json) =>
+      _$GardenMainBookEntityFromJson(json);
 }

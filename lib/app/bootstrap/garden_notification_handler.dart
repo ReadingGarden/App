@@ -19,7 +19,7 @@ Future<void> openGardenFromNotification(
     return;
   }
 
-  final garden = GardenMainEntity.fromMap(
+  final garden = GardenMainEntity.fromJson(
     Map<String, dynamic>.from(detail?.data['data'] ?? {}),
   );
   container.read(gardenMainProvider.notifier).state = garden;

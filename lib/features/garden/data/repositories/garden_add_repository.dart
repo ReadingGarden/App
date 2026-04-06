@@ -13,7 +13,7 @@ class GardenAddRepository {
   final GardenService _service;
 
   Future<int?> createGarden(GardenAddInputEntity input) async {
-    final response = await _service.postGarden(input.toMap());
+    final response = await _service.postGarden(input.toJson());
     if (response?.statusCode == 201) {
       return response?.data['data']['garden_no'] as int?;
     }

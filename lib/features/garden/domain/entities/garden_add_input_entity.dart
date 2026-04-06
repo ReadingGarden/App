@@ -1,19 +1,16 @@
-class GardenAddInputEntity {
-  const GardenAddInputEntity({
-    required this.gardenTitle,
-    required this.gardenInfo,
-    required this.gardenColor,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String gardenTitle;
-  final String gardenInfo;
-  final String gardenColor;
+part 'garden_add_input_entity.freezed.dart';
+part 'garden_add_input_entity.g.dart';
 
-  Map<String, dynamic> toMap() {
-    return {
-      'garden_title': gardenTitle,
-      'garden_info': gardenInfo,
-      'garden_color': gardenColor,
-    };
-  }
+@freezed
+abstract class GardenAddInputEntity with _$GardenAddInputEntity {
+  const factory GardenAddInputEntity({
+    @Default('') String gardenTitle,
+    @Default('') String gardenInfo,
+    @Default('') String gardenColor,
+  }) = _GardenAddInputEntity;
+
+  factory GardenAddInputEntity.fromJson(Map<String, dynamic> json) =>
+      _$GardenAddInputEntityFromJson(json);
 }

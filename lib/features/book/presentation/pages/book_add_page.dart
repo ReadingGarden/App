@@ -59,7 +59,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     if (result.statusCode == 201) {
       if (result.done != null) {
         context.pushReplacementNamed('book-add-done',
-            extra: result.done!.toMap());
+            extra: result.done!.toJson());
       } else {
         context.pop('fetchData');
       }

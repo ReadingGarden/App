@@ -39,9 +39,10 @@ List<RouteBase> get bookRoutes => [
                 path: 'book-register',
                 name: 'book-register',
                 builder: (context, state) {
-                  final book = state.extra as Map;
+                  final book =
+                      Map<String, dynamic>.from(state.extra as Map);
                   return BookRegisterPage(
-                    book: BookRegisterInputEntity.fromMap(book),
+                    book: BookRegisterInputEntity.fromJson(book),
                   );
                 },
                 routes: [
@@ -81,9 +82,10 @@ List<RouteBase> get bookRoutes => [
                 path: 'book-edit',
                 name: 'book-edit',
                 builder: (context, state) {
-                  final book = state.extra as Map;
+                  final book =
+                      Map<String, dynamic>.from(state.extra as Map);
                   return BookEditPage(
-                    book: BookEditInputEntity.fromMap(book),
+                    book: BookEditInputEntity.fromJson(book),
                   );
                 },
               ),
@@ -91,9 +93,9 @@ List<RouteBase> get bookRoutes => [
                 path: 'book-add',
                 name: 'book-add',
                 builder: (context, state) {
-                  final bookRead = state.extra as Map;
+                  final bookRead = state.extra as Map<String, dynamic>;
                   return BookAddPage(
-                    bookRead: BookReadInputEntity.fromMap(bookRead),
+                    bookRead: BookReadInputEntity.fromJson(bookRead),
                   );
                 },
                 routes: [
@@ -101,10 +103,10 @@ List<RouteBase> get bookRoutes => [
                     path: 'book-add-done',
                     name: 'book-add-done',
                     pageBuilder: (context, state) {
-                      final bookRead = state.extra as Map;
+                      final bookRead = state.extra as Map<String, dynamic>;
                       return CustomTransitionPage(
                         child: BookAddDonePage(
-                          bookRead: BookAddDoneEntity.fromMap(bookRead),
+                          bookRead: BookAddDoneEntity.fromJson(bookRead),
                         ),
                         transitionDuration: const Duration(milliseconds: 300),
                         transitionsBuilder:

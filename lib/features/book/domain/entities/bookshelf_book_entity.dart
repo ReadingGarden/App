@@ -1,59 +1,24 @@
-class BookshelfBookEntity {
-  const BookshelfBookEntity({
-    required this.bookNo,
-    required this.bookTitle,
-    required this.bookAuthor,
-    required this.bookPublisher,
-    required this.bookInfo,
-    required this.bookImageUrl,
-    required this.bookTree,
-    required this.bookStatus,
-    required this.percent,
-    required this.bookPage,
-    required this.gardenNo,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int bookNo;
-  final String bookTitle;
-  final String bookAuthor;
-  final String bookPublisher;
-  final String bookInfo;
-  final String? bookImageUrl;
-  final String? bookTree;
-  final int bookStatus;
-  final double percent;
-  final int bookPage;
-  final int? gardenNo;
+part 'bookshelf_book_entity.freezed.dart';
+part 'bookshelf_book_entity.g.dart';
 
-  factory BookshelfBookEntity.fromMap(Map<String, dynamic> map) {
-    return BookshelfBookEntity(
-      bookNo: map['book_no'] as int? ?? 0,
-      bookTitle: map['book_title'] as String? ?? '',
-      bookAuthor: map['book_author'] as String? ?? '',
-      bookPublisher: map['book_publisher'] as String? ?? '',
-      bookInfo: map['book_info'] as String? ?? '',
-      bookImageUrl: map['book_image_url'] as String?,
-      bookTree: map['book_tree'] as String?,
-      bookStatus: map['book_status'] as int? ?? 0,
-      percent: (map['percent'] as num?)?.toDouble() ?? 0,
-      bookPage: map['book_page'] as int? ?? 0,
-      gardenNo: map['garden_no'] as int?,
-    );
-  }
+@freezed
+abstract class BookshelfBookEntity with _$BookshelfBookEntity {
+  const factory BookshelfBookEntity({
+    required int bookNo,
+    required String bookTitle,
+    required String bookAuthor,
+    required String bookPublisher,
+    required String bookInfo,
+    required String? bookImageUrl,
+    required String? bookTree,
+    required int bookStatus,
+    required double percent,
+    required int bookPage,
+    required int? gardenNo,
+  }) = _BookshelfBookEntity;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'book_no': bookNo,
-      'book_title': bookTitle,
-      'book_author': bookAuthor,
-      'book_publisher': bookPublisher,
-      'book_info': bookInfo,
-      'book_image_url': bookImageUrl,
-      'book_tree': bookTree,
-      'book_status': bookStatus,
-      'percent': percent,
-      'book_page': bookPage,
-      'garden_no': gardenNo,
-    };
-  }
+  factory BookshelfBookEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookshelfBookEntityFromJson(json);
 }

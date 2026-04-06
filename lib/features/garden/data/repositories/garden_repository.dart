@@ -18,7 +18,7 @@ class GardenRepository {
     if (response?.statusCode == 200) {
       final List data = response?.data['data'] ?? [];
       return data
-          .map((item) => GardenSummaryEntity.fromMap(
+          .map((item) => GardenSummaryEntity.fromJson(
               Map<String, dynamic>.from(item as Map)))
           .toList();
     }
@@ -28,7 +28,7 @@ class GardenRepository {
   Future<GardenMainEntity?> fetchGardenDetail(int gardenNo) async {
     final response = await _service.getGardenDetail(gardenNo);
     if (response?.statusCode == 200) {
-      return GardenMainEntity.fromMap(
+      return GardenMainEntity.fromJson(
         Map<String, dynamic>.from(response?.data['data'] ?? {}),
       );
     }

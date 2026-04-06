@@ -1,43 +1,26 @@
-class UserEntity {
-  const UserEntity({
-    required this.userNo,
-    required this.userNick,
-    required this.userEmail,
-    required this.userImage,
-    required this.gardenCount,
-    required this.readBookCount,
-    required this.likeBookCount,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int userNo;
-  final String userNick;
-  final String userEmail;
-  final String userImage;
-  final int gardenCount;
-  final int readBookCount;
-  final int likeBookCount;
+part 'user_entity.freezed.dart';
+part 'user_entity.g.dart';
 
-  static const empty = UserEntity(
-    userNo: 0,
-    userNick: '',
-    userEmail: '',
-    userImage: '',
-    gardenCount: 0,
-    readBookCount: 0,
-    likeBookCount: 0,
-  );
+@freezed
+abstract class UserEntity with _$UserEntity {
+  const UserEntity._();
+
+  const factory UserEntity({
+    @Default(0) int userNo,
+    @Default('') String userNick,
+    @Default('') String userEmail,
+    @Default('') String userImage,
+    @Default(0) int gardenCount,
+    @Default(0) int readBookCount,
+    @Default(0) int likeBookCount,
+  }) = _UserEntity;
+
+  factory UserEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserEntityFromJson(json);
+
+  static final empty = UserEntity();
 
   bool get isEmpty => userNo == 0;
-
-  factory UserEntity.fromMap(Map<String, dynamic> map) {
-    return UserEntity(
-      userNo: map['user_no'] as int? ?? 0,
-      userNick: map['user_nick'] as String? ?? '',
-      userEmail: map['user_email'] as String? ?? '',
-      userImage: map['user_image'] as String? ?? '',
-      gardenCount: map['garden_count'] as int? ?? 0,
-      readBookCount: map['read_book_count'] as int? ?? 0,
-      likeBookCount: map['like_book_count'] as int? ?? 0,
-    );
-  }
 }

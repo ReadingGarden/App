@@ -1,25 +1,27 @@
-class BookIsbnDetailEntity {
-  const BookIsbnDetailEntity({
-    required this.title,
-    required this.author,
-    required this.description,
-    required this.isbn13,
-    required this.cover,
-    required this.publisher,
-    required this.itemPage,
-    this.bookNo,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String title;
-  final String author;
-  final String description;
-  final String isbn13;
-  final String? cover;
-  final String publisher;
-  final int itemPage;
-  final int? bookNo;
+part 'book_isbn_detail_entity.freezed.dart';
+part 'book_isbn_detail_entity.g.dart';
 
-  static const empty = BookIsbnDetailEntity(
+@freezed
+abstract class BookIsbnDetailEntity with _$BookIsbnDetailEntity {
+  const BookIsbnDetailEntity._();
+
+  const factory BookIsbnDetailEntity({
+    required String title,
+    required String author,
+    required String description,
+    required String isbn13,
+    required String? cover,
+    required String publisher,
+    @JsonKey(name: 'itemPage') required int itemPage,
+    int? bookNo,
+  }) = _BookIsbnDetailEntity;
+
+  factory BookIsbnDetailEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookIsbnDetailEntityFromJson(json);
+
+  static final empty = BookIsbnDetailEntity(
     title: '',
     author: '',
     description: '',
@@ -44,4 +46,3 @@ class BookIsbnDetailEntity {
     };
   }
 }
-

@@ -17,7 +17,7 @@ class MemoRepository {
     if (response?.statusCode == 200) {
       final List<dynamic> memoList = response?.data['data']['list'] ?? [];
       return memoList
-          .map((item) => MemoListItemEntity.fromMap(
+          .map((item) => MemoListItemEntity.fromJson(
               Map<String, dynamic>.from(item as Map)))
           .toList();
     }

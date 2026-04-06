@@ -1,17 +1,22 @@
-class BookMemoSummaryEntity {
-  const BookMemoSummaryEntity({
-    required this.id,
-    required this.memoContent,
-    required this.memoCreatedAt,
-    required this.memoLike,
-    required this.imageUrl,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int id;
-  final String memoContent;
-  final String memoCreatedAt;
-  final bool memoLike;
-  final String? imageUrl;
+part 'book_memo_summary_entity.freezed.dart';
+part 'book_memo_summary_entity.g.dart';
+
+@freezed
+abstract class BookMemoSummaryEntity with _$BookMemoSummaryEntity {
+  const BookMemoSummaryEntity._();
+
+  const factory BookMemoSummaryEntity({
+    required int id,
+    required String memoContent,
+    required String memoCreatedAt,
+    required bool memoLike,
+    required String? imageUrl,
+  }) = _BookMemoSummaryEntity;
+
+  factory BookMemoSummaryEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookMemoSummaryEntityFromJson(json);
 
   Map<String, dynamic> toRoutePayload({
     required int bookNo,
@@ -32,4 +37,3 @@ class BookMemoSummaryEntity {
     };
   }
 }
-

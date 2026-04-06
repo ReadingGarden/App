@@ -118,7 +118,7 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                   GestureDetector(
                     onTap: () async {
                       final result = await context.pushNamed('memo-detail',
-                          extra: memo.toMap());
+                          extra: memo.toJson());
                       if (result != null) {
                         memo_feature.refreshMemoList(ref);
                       }

@@ -1,12 +1,16 @@
-class BookEditHistoryEntity {
-  const BookEditHistoryEntity({
-    required this.id,
-    required this.bookStartDate,
-    required this.bookEndDate,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int id;
-  final String? bookStartDate;
-  final String? bookEndDate;
+part 'book_edit_history_entity.freezed.dart';
+part 'book_edit_history_entity.g.dart';
+
+@freezed
+abstract class BookEditHistoryEntity with _$BookEditHistoryEntity {
+  const factory BookEditHistoryEntity({
+    required int id,
+    required String? bookStartDate,
+    required String? bookEndDate,
+  }) = _BookEditHistoryEntity;
+
+  factory BookEditHistoryEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookEditHistoryEntityFromJson(json);
 }
-

@@ -1,35 +1,21 @@
-class BookRegisterInputEntity {
-  const BookRegisterInputEntity({
-    required this.title,
-    required this.author,
-    required this.description,
-    required this.isbn13,
-    required this.cover,
-    required this.publisher,
-    required this.itemPage,
-    required this.bookNo,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String title;
-  final String author;
-  final String description;
-  final String isbn13;
-  final String? cover;
-  final String publisher;
-  final int itemPage;
-  final int? bookNo;
+part 'book_register_input_entity.freezed.dart';
+part 'book_register_input_entity.g.dart';
 
-  factory BookRegisterInputEntity.fromMap(Map map) {
-    return BookRegisterInputEntity(
-      title: map['title'] as String? ?? '',
-      author: map['author'] as String? ?? '',
-      description: map['description'] as String? ?? '',
-      isbn13: map['isbn13'] as String? ?? '',
-      cover: map['cover'] as String?,
-      publisher: map['publisher'] as String? ?? '',
-      itemPage: map['itemPage'] as int? ?? map['page'] as int? ?? 0,
-      bookNo: map['book_no'] as int?,
-    );
-  }
+@freezed
+abstract class BookRegisterInputEntity with _$BookRegisterInputEntity {
+  const factory BookRegisterInputEntity({
+    required String title,
+    required String author,
+    required String description,
+    required String isbn13,
+    required String? cover,
+    required String publisher,
+    @JsonKey(name: 'itemPage') required int itemPage,
+    required int? bookNo,
+  }) = _BookRegisterInputEntity;
+
+  factory BookRegisterInputEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookRegisterInputEntityFromJson(json);
 }
-

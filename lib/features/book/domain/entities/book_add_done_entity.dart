@@ -1,32 +1,17 @@
-class BookAddDoneEntity {
-  const BookAddDoneEntity({
-    required this.bookTitle,
-    required this.bookTree,
-    required this.bookStartDate,
-    required this.bookEndDate,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String bookTitle;
-  final String bookTree;
-  final String bookStartDate;
-  final String bookEndDate;
+part 'book_add_done_entity.freezed.dart';
+part 'book_add_done_entity.g.dart';
 
-  factory BookAddDoneEntity.fromMap(Map map) {
-    return BookAddDoneEntity(
-      bookTitle: map['book_title'] as String? ?? '',
-      bookTree: map['book_tree'] as String? ?? '',
-      bookStartDate: map['book_start_date'] as String? ?? '',
-      bookEndDate: map['book_end_date'] as String? ?? '',
-    );
-  }
+@freezed
+abstract class BookAddDoneEntity with _$BookAddDoneEntity {
+  const factory BookAddDoneEntity({
+    required String bookTitle,
+    required String bookTree,
+    required String bookStartDate,
+    required String bookEndDate,
+  }) = _BookAddDoneEntity;
 
-  Map<String, dynamic> toMap() {
-    return {
-      'book_title': bookTitle,
-      'book_tree': bookTree,
-      'book_start_date': bookStartDate,
-      'book_end_date': bookEndDate,
-    };
-  }
+  factory BookAddDoneEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookAddDoneEntityFromJson(json);
 }
-

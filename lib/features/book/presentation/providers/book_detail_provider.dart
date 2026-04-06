@@ -25,8 +25,8 @@ class BookDetailNotifier extends StateNotifier<BookDetailEntity> {
 
   void updateGardenDetail(Map<String, String> gardenDetail) {
     state = state.copyWith(
-      gardenTitle: gardenDetail['garden_title'],
-      gardenColor: gardenDetail['garden_color'],
+      gardenTitle: gardenDetail['garden_title'] ?? '',
+      gardenColor: gardenDetail['garden_color'] ?? '',
     );
   }
 

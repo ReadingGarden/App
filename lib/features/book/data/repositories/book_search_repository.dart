@@ -41,7 +41,7 @@ class BookSearchRepository {
     if (response?.statusCode == 200) {
       final List<dynamic> items = response?.data['data']['list'] ?? [];
       return items
-          .map((json) => BookshelfBookEntity.fromMap(
+          .map((json) => BookshelfBookEntity.fromJson(
                 Map<String, dynamic>.from(json as Map),
               ))
           .toList();

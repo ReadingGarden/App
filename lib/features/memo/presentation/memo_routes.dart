@@ -19,7 +19,7 @@ List<RouteBase> get memoRoutes => [
             builder: (context, state) {
               final memo = state.extra as Map;
               return MemoDetailPage(
-                memo: MemoListItemEntity.fromMap(memo.cast<String, dynamic>()),
+                memo: MemoListItemEntity.fromJson(memo.cast<String, dynamic>()),
               );
             },
             routes: [
@@ -30,7 +30,7 @@ List<RouteBase> get memoRoutes => [
                   final book = state.extra as Map;
                   return MemoWritePage(
                     key: UniqueKey(),
-                    book: MemoWriteInputEntity.fromMap(
+                    book: MemoWriteInputEntity.fromJson(
                       book.cast<String, dynamic>(),
                     ),
                   );
@@ -49,7 +49,7 @@ List<RouteBase> get memoRoutes => [
                 builder: (context, state) {
                   final book = state.extra as Map;
                   return MemoWritePage(
-                    book: MemoWriteInputEntity.fromMap(
+                    book: MemoWriteInputEntity.fromJson(
                       book.cast<String, dynamic>(),
                     ),
                   );

@@ -1,22 +1,17 @@
-class GardenMemberEntity {
-  const GardenMemberEntity({
-    required this.userNo,
-    required this.userNick,
-    required this.userImage,
-    required this.gardenLeader,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int userNo;
-  final String userNick;
-  final String userImage;
-  final bool gardenLeader;
+part 'garden_member_entity.freezed.dart';
+part 'garden_member_entity.g.dart';
 
-  factory GardenMemberEntity.fromMap(Map<String, dynamic> map) {
-    return GardenMemberEntity(
-      userNo: map['user_no'] as int? ?? 0,
-      userNick: map['user_nick'] as String? ?? '',
-      userImage: map['user_image'] as String? ?? '',
-      gardenLeader: map['garden_leader'] as bool? ?? false,
-    );
-  }
+@freezed
+abstract class GardenMemberEntity with _$GardenMemberEntity {
+  const factory GardenMemberEntity({
+    @Default(0) int userNo,
+    @Default('') String userNick,
+    @Default('') String userImage,
+    @Default(false) bool gardenLeader,
+  }) = _GardenMemberEntity;
+
+  factory GardenMemberEntity.fromJson(Map<String, dynamic> json) =>
+      _$GardenMemberEntityFromJson(json);
 }

@@ -24,7 +24,7 @@ class MemoDetailPage extends ConsumerStatefulWidget {
 class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
   void _openMemoEdit() async {
     final result =
-        await context.pushNamed('memo-update', extra: widget.memo.toMap());
+        await context.pushNamed('memo-update', extra: widget.memo.toJson());
     if (result != null && mounted) {
       context.pop(result);
     }

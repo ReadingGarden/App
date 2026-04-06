@@ -17,7 +17,7 @@ class AuthRepository {
   Future<UserEntity?> fetchUser() async {
     final response = await _service.getUser();
     if (response?.statusCode == 200) {
-      return UserEntity.fromMap(
+      return UserEntity.fromJson(
         Map<String, dynamic>.from(response?.data['data'] ?? {}),
       );
     }

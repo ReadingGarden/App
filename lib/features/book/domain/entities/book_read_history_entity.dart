@@ -1,14 +1,17 @@
-class BookReadHistoryEntity {
-  const BookReadHistoryEntity({
-    required this.bookCurrentPage,
-    required this.bookCreatedAt,
-    required this.bookStartDate,
-    required this.bookEndDate,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final int bookCurrentPage;
-  final String? bookCreatedAt;
-  final String? bookStartDate;
-  final String? bookEndDate;
+part 'book_read_history_entity.freezed.dart';
+part 'book_read_history_entity.g.dart';
+
+@freezed
+abstract class BookReadHistoryEntity with _$BookReadHistoryEntity {
+  const factory BookReadHistoryEntity({
+    required int bookCurrentPage,
+    required String? bookCreatedAt,
+    required String? bookStartDate,
+    required String? bookEndDate,
+  }) = _BookReadHistoryEntity;
+
+  factory BookReadHistoryEntity.fromJson(Map<String, dynamic> json) =>
+      _$BookReadHistoryEntityFromJson(json);
 }
-
