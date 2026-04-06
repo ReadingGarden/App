@@ -222,7 +222,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         boxShadow: [
                           BoxShadow(
                               offset: const Offset(0, -4),
-                              color: Colors.black.withOpacity(0.08),
+                              color: Colors.black.withValues(alpha: 0.08),
                               blurRadius: 16.r)
                         ],
                         borderRadius: BorderRadius.only(
@@ -325,7 +325,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                           offset: const Offset(0, 4),
                                           blurRadius: 16.r,
                                           color: AppColors.black_59
-                                              .withOpacity(0.1))
+                                              .withValues(alpha: 0.1))
                                     ]),
                                 child: (bookDetail.bookImageUrl == null)
                                     ? Container()
@@ -383,7 +383,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                     blurRadius: 8.r,
                                                     color:
                                                         const Color(0xff97CD8D)
-                                                            .withOpacity(0.05))
+                                                            .withValues(alpha: 0.05))
                                               ],
                                               border: Border.all(
                                                   color: AppColors.grey_F2),
@@ -501,7 +501,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                 offset: const Offset(0, 4),
                                                 blurRadius: 8.r,
                                                 color: const Color(0xff97CD8D)
-                                                    .withOpacity(0.05))
+                                                    .withValues(alpha: 0.05))
                                           ],
                                           border: Border.all(
                                               color: AppColors.grey_F2),

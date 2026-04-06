@@ -203,7 +203,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
                                             offset: const Offset(0, 4),
                                             blurRadius: 16.r,
                                             color: AppColors.black_59
-                                                .withOpacity(0.1))
+                                                .withValues(alpha: 0.1))
                                       ]),
                                       child: ClipRRect(
                                           borderRadius:
@@ -249,7 +249,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
                                                   offset: const Offset(0, 4),
                                                   blurRadius: 16.r,
                                                   color: AppColors.black_59
-                                                      .withOpacity(0.1))
+                                                      .withValues(alpha: 0.1))
                                             ]),
                                         child: Text(
                                           '${bookStatusList[index].percent.floor()}%',

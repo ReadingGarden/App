@@ -125,7 +125,7 @@ class _MyPageState extends ConsumerState<MyPage> {
                           boxShadow: [
                             BoxShadow(
                                 color:
-                                    AppColors.shadowGreyColor.withOpacity(0.05),
+                                    AppColors.shadowGreyColor.withValues(alpha: 0.05),
                                 offset: const Offset(4, 4),
                                 blurRadius: 8.r)
                           ],
