@@ -59,8 +59,6 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     if (!mounted) return;
     if (result.statusCode == 201) {
       if (result.done != null) {
-        ref.read(gardenNavigateToProvider.notifier).state =
-            ref.read(gardenMainProvider).gardenNo;
         context.pushReplacementNamed('book-add-done',
             extra: result.done!.toJson());
       } else {

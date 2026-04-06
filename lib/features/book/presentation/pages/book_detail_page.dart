@@ -14,6 +14,7 @@ import 'package:book_flutter/features/auth/presentation/providers/auth_user_prov
     as auth_feature;
 import 'package:book_flutter/features/book/presentation/providers/book_detail_provider.dart';
 import 'package:book_flutter/features/garden/presentation/pages/garden_edit_page.dart';
+import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart';
 
 final bookDetailAppBarColorProvider =
     StateProvider<Color>((ref) => Colors.white);
@@ -264,6 +265,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                           visible: bookDetail.userNo == user.userNo,
                           child: GestureDetector(
                             onTap: () async {
+                              ref.read(gardenNavigateToProvider.notifier).state =
+                                  bookDetail.gardenNo;
                               final result = await context.pushNamed('book-add',
                                   extra: bookDetail.toBookAddPayload());
                               if (result != null) {
