@@ -57,9 +57,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     if (!context.mounted) return;
     if (result.statusCode == 201) {
       context.goNamed('signup-done', extra: result.nick);
-    } else if (result.statusCode == 400) {
-      ref.read(emailErrorProvider.notifier).state = '이미 가입된 이메일이에요';
-    }
+    } else if (result.statusCode == 400) {}
   }
 
   void _validate() {
