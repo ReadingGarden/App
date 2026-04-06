@@ -33,8 +33,11 @@ class AuthRepository {
   Future<int> emailLogin(Map data) async {
     final response = await _service.postLogin(data);
     if (response?.statusCode == 200) {
-      saveAccess(response?.data['data']['access_token']);
-      saveRefresh(response?.data['data']['refresh_token']);
+      final token = response?.data?['data'];
+      if (token != null) {
+        saveAccess(token['access_token']);
+        saveRefresh(token['refresh_token']);
+      }
     }
     return response?.statusCode ?? 0;
   }
@@ -43,8 +46,11 @@ class AuthRepository {
   Future<({int statusCode, String? nick})> emailSignup(Map data) async {
     final response = await _service.postSignup(data);
     if (response?.statusCode == 201) {
-      saveAccess(response?.data['data']['access_token']);
-      saveRefresh(response?.data['data']['refresh_token']);
+      final token = response?.data?['data'];
+      if (token != null) {
+        saveAccess(token['access_token']);
+        saveRefresh(token['refresh_token']);
+      }
     }
     return (
       statusCode: response?.statusCode ?? 0,
@@ -56,8 +62,11 @@ class AuthRepository {
   Future<({String status, String? nick})> socialLogin(Map data) async {
     final Response? response = await _service.postLogin(data);
     if (response?.statusCode == 200) {
-      saveAccess(response?.data['data']['access_token']);
-      saveRefresh(response?.data['data']['refresh_token']);
+      final token = response?.data?['data'];
+      if (token != null) {
+        saveAccess(token['access_token']);
+        saveRefresh(token['refresh_token']);
+      }
       return (status: 'home', nick: null);
     } else if (response?.statusCode == 400) {
       return await socialSignup(data);
@@ -69,11 +78,14 @@ class AuthRepository {
   Future<({String status, String? nick})> socialSignup(Map data) async {
     final Response? response = await _service.postSignup(data);
     if (response?.statusCode == 201) {
-      saveAccess(response?.data['data']['access_token']);
-      saveRefresh(response?.data['data']['refresh_token']);
+      final token = response?.data?['data'];
+      if (token != null) {
+        saveAccess(token['access_token']);
+        saveRefresh(token['refresh_token']);
+      }
       return (
         status: 'signup',
-        nick: response?.data['data']['user_nick'] as String?,
+        nick: token?['user_nick'] as String?,
       );
     }
     return (status: 'error', nick: null);
