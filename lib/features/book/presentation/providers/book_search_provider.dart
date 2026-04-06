@@ -9,6 +9,7 @@ final barcodeValueProvider = StateProvider<String>((ref) => '');
 final bookshelfPageViewIndexProvider = StateProvider<int>((ref) => 0);
 final bookshelfLoadingProvider = StateProvider<bool>((ref) => false);
 final bookshelfCurrentPageProvider = StateProvider<int>((ref) => 1);
+final bookshelfHasMoreProvider = StateProvider<bool>((ref) => true);
 
 final bookSearchListProvider =
     StateNotifierProvider<BookSearchListNotifier, List<BookSearchEntity>>(
@@ -56,14 +57,20 @@ Future<void> fetchBookshelfBooks(
   int status, {
   bool scroll = false,
 }) async {
+  if (scroll && !ref.read(bookshelfHasMoreProvider)) return;
+
   if (ref.read(bookshelfLoadingProvider) && !scroll) {
     ref.read(bookshelfLoadingProvider.notifier).state = false;
   }
 
   ref.read(bookshelfLoadingProvider.notifier).state = true;
 
+  if (!scroll) {
+    ref.read(bookshelfHasMoreProvider.notifier).state = true;
+  }
+
   final page = scroll ? ref.read(bookshelfCurrentPageProvider) : 1;
-  final books = await ref
+  final result = await ref
       .read(bookSearchRepositoryStateProvider)
       .fetchBookshelfBooks(status, page);
 
@@ -77,9 +84,13 @@ Future<void> fetchBookshelfBooks(
     ref.read(bookshelfBooksProvider.notifier).reset();
   }
 
-  if (books.isNotEmpty) {
-    ref.read(bookshelfBooksProvider.notifier).addBooks(books);
+  if (result.books.isNotEmpty) {
+    ref.read(bookshelfBooksProvider.notifier).addBooks(result.books);
     ref.read(bookshelfCurrentPageProvider.notifier).state = page + 1;
+  }
+
+  if (result.currentPage >= result.maxPage) {
+    ref.read(bookshelfHasMoreProvider.notifier).state = false;
   }
 
   ref.read(bookshelfLoadingProvider.notifier).state = false;
@@ -88,4 +99,5 @@ Future<void> fetchBookshelfBooks(
 void resetBookshelf(WidgetRef ref) {
   ref.read(bookshelfBooksProvider.notifier).reset();
   ref.read(bookshelfCurrentPageProvider.notifier).state = 1;
+  ref.read(bookshelfHasMoreProvider.notifier).state = true;
 }

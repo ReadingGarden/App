@@ -33,21 +33,38 @@ class BookSearchRepository {
     return response?.statusCode;
   }
 
-  Future<List<BookshelfBookEntity>> fetchBookshelfBooks(
+  Future<BookshelfPageResult> fetchBookshelfBooks(
     int status,
     int page,
   ) async {
     final response = await _service.getBookStatusList(status, page);
     if (response?.statusCode == 200) {
-      final List<dynamic> items = response?.data['data']['list'] ?? [];
-      return items
-          .map((json) => BookshelfBookEntity.fromJson(
-                Map<String, dynamic>.from(json as Map),
-              ))
-          .toList();
+      final data = response?.data['data'];
+      final List<dynamic> items = data['list'] ?? [];
+      return BookshelfPageResult(
+        books: items
+            .map((json) => BookshelfBookEntity.fromJson(
+                  Map<String, dynamic>.from(json as Map),
+                ))
+            .toList(),
+        currentPage: data['current_page'] as int? ?? 1,
+        maxPage: data['max_page'] as int? ?? 1,
+      );
     }
-    return [];
+    return BookshelfPageResult(books: [], currentPage: 1, maxPage: 1);
   }
+}
+
+class BookshelfPageResult {
+  const BookshelfPageResult({
+    required this.books,
+    required this.currentPage,
+    required this.maxPage,
+  });
+
+  final List<BookshelfBookEntity> books;
+  final int currentPage;
+  final int maxPage;
 }
 
 class BookSearchResult {
