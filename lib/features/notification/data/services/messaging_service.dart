@@ -54,7 +54,7 @@ class Messaging {
                 icon: '@drawable/ic_notification'),
           ),
         );
-        logger.d('포그라운드 알림 수신: ${message.notification!}');
+        logger.d('포그라운드 알림 수신: ${message.notification}');
       }
     });
   }

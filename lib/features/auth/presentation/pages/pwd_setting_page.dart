@@ -41,6 +41,13 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
   }
 
   @override
+  void dispose() {
+    _pwdController.dispose();
+    _pwdCheckController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final pwdErrorText = ref.watch(pwdErrorProvider);
     final pwdCheckErrorText = ref.watch(pwdCheckErrorProvider);

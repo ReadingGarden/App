@@ -46,6 +46,13 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
     fToast.init(context);
   }
 
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   //책 검색 api
   void getSearchBook(String query) async {
     if (_isLoading) return;

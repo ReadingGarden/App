@@ -39,6 +39,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _pwdController.dispose();
+    super.dispose();
+  }
+
   //로그인 api
   void postEmailLogin(Map data) async {
     final statusCode = await ref.read(authRepositoryProvider).emailLogin(data);

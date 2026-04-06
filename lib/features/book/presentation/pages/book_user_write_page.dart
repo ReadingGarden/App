@@ -29,6 +29,15 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
     });
   }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _authorController.dispose();
+    _publisherController.dispose();
+    _pageController.dispose();
+    super.dispose();
+  }
+
   //총 페이지 입력 에러
   void _pageErrorValid() {
     if (int.tryParse(_pageController.text) == null) {

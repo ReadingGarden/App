@@ -51,6 +51,13 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _infoController.dispose();
+    super.dispose();
+  }
+
   //가든 삭제 api
   void deleteGarden() async {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);

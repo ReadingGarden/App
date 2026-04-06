@@ -46,6 +46,13 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _startController.dispose();
+    _endController.dispose();
+    super.dispose();
+  }
+
   //수정하기 버튼
   void _bookReadEdit() async {
     final bookReadList = ref.watch(bookReadListProvider);

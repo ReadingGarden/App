@@ -57,6 +57,13 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
   }
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _authController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // 이메일 텍스트 필드 에러 메세지 상태 구독
     final emailErrorText = ref.watch(emailErrorProvider);

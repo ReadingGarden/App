@@ -37,7 +37,9 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     imagePath = AppAssets.pageFlower(widget.bookRead.bookTree).path;
     dragPosition = 0.0;
     currentPage = widget.bookRead.bookCurrentPage;
-    dragPosition = (currentPage / widget.bookRead.bookPage);
+    dragPosition = widget.bookRead.bookPage > 0
+        ? (currentPage / widget.bookRead.bookPage)
+        : 0.0;
     _textEditingController.addListener(_validateInput);
     _textEditingController.text = widget.bookRead.bookCurrentPage.toString();
   }
@@ -105,8 +107,9 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         if (result != null) {
                           currentPage = result;
                           setState(() {
-                            dragPosition =
-                                (currentPage / widget.bookRead.bookPage);
+                            dragPosition = widget.bookRead.bookPage > 0
+                                ? (currentPage / widget.bookRead.bookPage)
+                                : 0.0;
                           });
                         }
                       },

@@ -37,6 +37,12 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bookList = ref.watch(memo_book_feature.memoBookListProvider);
     final isLoading = ref.watch(memo_book_feature.memoBookLoadingProvider);

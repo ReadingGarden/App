@@ -40,6 +40,13 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
     });
   }
 
+  @override
+  void dispose() {
+    _memoController.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   //메모 작성하기 api
   void postMemo({bool? isBookDetail}) async {
     final saved = await memo_write_feature.saveMemo(

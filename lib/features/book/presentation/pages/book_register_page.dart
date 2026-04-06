@@ -62,6 +62,12 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
         Functions.formatBookReadDate(DateTime.now().toString());
   }
 
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
+  }
+
   Future<void> submitBookRegistration() async {
     final gardens = ref.read(garden_feature.gardenListProvider);
     final result = await saveBookRegistration(

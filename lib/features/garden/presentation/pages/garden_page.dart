@@ -134,7 +134,8 @@ class _GardenPageState extends ConsumerState<GardenPage>
           var image = await boundary.toImage(pixelRatio: 3.0);
           ByteData? byteData =
               await image.toByteData(format: ImageByteFormat.png);
-          Uint8List uint8List = byteData!.buffer.asUint8List();
+          if (byteData == null) return;
+          Uint8List uint8List = byteData.buffer.asUint8List();
 
           final directory = await getApplicationDocumentsDirectory();
           final path = '${directory.path}/garden.png';

@@ -39,6 +39,13 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
     });
   }
 
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _infoController.dispose();
+    super.dispose();
+  }
+
   //가든 추가 api
   void postGarden() async {
     final input = GardenAddInputEntity(

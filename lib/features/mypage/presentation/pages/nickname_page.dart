@@ -29,6 +29,12 @@ class _NickNamePageState extends ConsumerState<NickNamePage> {
   }
 
   @override
+  void dispose() {
+    _nicknameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //닉네임 텍스트 필드 에러 메세지
     final nicknameErrorText = ref.watch(nicknameErrorProvider);

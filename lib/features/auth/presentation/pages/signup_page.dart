@@ -41,6 +41,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _pwdController.dispose();
+    _pwdCheckController.dispose();
+    super.dispose();
+  }
+
   void postSignup(BuildContext context, WidgetRef ref) async {
     // FCM 토큰을 비동기적으로 가져오기
     final fcmToken = await ref.read(fcmTokenProvider.future);
