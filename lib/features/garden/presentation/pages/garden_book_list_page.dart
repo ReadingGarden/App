@@ -113,9 +113,12 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
                                   );
                                 },
                                 child: Pressable(
-                                onTap: () {
-                                  context.pushNamed('book-detail',
+                                onTap: () async {
+                                  await context.pushNamed('book-detail',
                                       extra: book.bookNo);
+                                  if (mounted) {
+                                    _listAnimController.forward(from: 0);
+                                  }
                                 },
                                 child: Container(
                                   color: Colors.transparent,
