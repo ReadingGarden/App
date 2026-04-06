@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../gen/assets.gen.dart';
-import '../../core/network/connectivity_provider.dart';
 import '../../features/book/presentation/pages/bookshelf_page.dart';
 import '../../features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
@@ -21,38 +20,14 @@ class BottomNaviPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(currentIndexProvider);
-    final isOnline = ref.watch(connectivityProvider).valueOrNull ?? true;
 
     return Scaffold(
       backgroundColor: (ref.read(currentIndexProvider.notifier).state == 0)
           ? const Color(0xffA4BC8A)
           : Colors.white,
-      body: Column(
-        children: [
-          if (!isOnline)
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).viewPadding.top + 4.h,
-                bottom: 8.h,
-              ),
-              color: AppColors.grey_8D,
-              child: Text(
-                '인터넷 연결이 끊겼습니다',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 13.sp,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          Expanded(
-            child: IndexedStack(
-              index: currentIndex,
-              children: const [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
-            ),
-          ),
-        ],
+      body: IndexedStack(
+        index: currentIndex,
+        children: const [GardenPage(), BookShelfPage(), MemoPage(), MyPage()],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,

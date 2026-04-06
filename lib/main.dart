@@ -4,6 +4,8 @@ import 'package:book_flutter/core/logger.dart';
 import 'package:book_flutter/features/notification/data/services/messaging_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+import 'package:book_flutter/core/network/connectivity_provider.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -56,11 +58,11 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ScreenUtilInit(
       designSize: const Size(360, 800),
       minTextAdapt: true,
@@ -81,9 +83,34 @@ class MyApp extends StatelessWidget {
               )),
           debugShowCheckedModeBanner: false,
           builder: (context, child) {
+            final isOnline =
+                ref.watch(connectivityProvider).valueOrNull ?? true;
             return SafeArea(
               top: false,
-              child: child!,
+              child: Column(
+                children: [
+                  if (!isOnline)
+                    Material(
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).viewPadding.top + 4.h,
+                          bottom: 8.h,
+                        ),
+                        color: AppColors.grey_8D,
+                        child: Text(
+                          '인터넷 연결이 끊겼습니다',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  Expanded(child: child!),
+                ],
+              ),
             );
           },
           routerConfig: router,
