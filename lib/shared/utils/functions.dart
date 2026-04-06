@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:book_flutter/core/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -83,9 +84,9 @@ class Functions {
       Permission.notification
     ].request();
 
-    debugPrint('카메라 권한 상태: ${statuses[Permission.camera]}');
-    debugPrint('저장소 권한 상태: ${statuses[Permission.storage]}');
-    debugPrint('알림 권한 상태: ${statuses[Permission.notification]}');
+    logger.d('카메라 권한 상태: ${statuses[Permission.camera]}');
+    logger.d('저장소 권한 상태: ${statuses[Permission.storage]}');
+    logger.d('알림 권한 상태: ${statuses[Permission.notification]}');
   }
 
   static Future<void> checkAndRequestPermissions(Function function) async {
@@ -94,7 +95,7 @@ class Functions {
       Permission.storage,
     ].request();
 
-    debugPrint('권한 요청 결과: $statuses');
+    logger.d('권한 요청 결과: $statuses');
 
     if (statuses[Permission.camera]!.isGranted &&
         statuses[Permission.storage]!.isGranted) {
@@ -120,7 +121,7 @@ class Functions {
             newStatuses[Permission.storage]!.isGranted) {
           function();
         } else {
-          debugPrint('권한이 설정 화면에서도 부여되지 않았습니다.');
+          logger.w('권한이 설정 화면에서도 부여되지 않았습니다.');
         }
       } else {
         statuses = await [
@@ -133,7 +134,7 @@ class Functions {
             statuses[Permission.storage]!.isGranted) {
           function();
         } else {
-          debugPrint('권한 요청이 거부되었습니다.');
+          logger.w('권한 요청이 거부되었습니다.');
         }
       }
     }
@@ -214,10 +215,10 @@ class Functions {
         buo: buo, linkProperties: linkProperties);
 
     if (response.success) {
-      debugPrint('초대 링크 생성 성공: ${response.result}');
+      logger.d('초대 링크 생성 성공: ${response.result}');
       await Functions.kakaoShare(response.result, 'garden');
     } else {
-      debugPrint('초대 링크 생성 실패: ${response.errorMessage}');
+      logger.e('초대 링크 생성 실패: ${response.errorMessage}');
     }
   }
 
@@ -253,7 +254,7 @@ class Functions {
             await ShareClient.instance.shareDefault(template: defaultFeed);
         await launchBrowserTab(uri, popupOpen: true);
       } catch (error) {
-        debugPrint('카카오톡 공유 실행 실패: $error');
+        logger.e('카카오톡 공유 실행 실패: $error');
       }
     } else {
       try {
@@ -261,7 +262,7 @@ class Functions {
             .makeDefaultUrl(template: defaultFeed);
         await launchBrowserTab(shareUrl, popupOpen: true);
       } catch (error) {
-        debugPrint('웹 공유 링크 실행 실패: $error');
+        logger.e('웹 공유 링크 실행 실패: $error');
       }
     }
   }

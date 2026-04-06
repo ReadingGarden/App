@@ -1,5 +1,5 @@
+import 'package:book_flutter/core/logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// FCM 토큰을 가져오는 FutureProvider
@@ -29,10 +29,10 @@ final fcmTokenProvider = FutureProvider<String?>((ref) async {
       throw Exception('FCM Token is null');
     }
 
-    debugPrint('FCM 토큰 발급 완료: $fcmToken');
+    logger.d('FCM 토큰 발급 완료: $fcmToken');
     return fcmToken;
   } catch (error) {
-    debugPrint('FCM 토큰 조회 실패: $error');
+    logger.e('FCM 토큰 조회 실패: $error');
     rethrow;
   }
 });

@@ -1,3 +1,4 @@
+import 'package:book_flutter/core/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -106,7 +107,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
         Widgets.showToast(fToast, '바코드가 인식되지 않았어요');
       }
     } catch (e) {
-      debugPrint('바코드 스캔 중 오류가 발생했습니다: $e');
+      logger.e('바코드 스캔 중 오류가 발생했습니다: $e');
     }
   }
 

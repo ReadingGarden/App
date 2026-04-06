@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 
+import 'package:book_flutter/core/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -75,13 +76,13 @@ class _GardenPageState extends ConsumerState<GardenPage>
 
   void initBranchSession() async {
     FlutterBranchSdk.listSession().listen((data) {
-      debugPrint('브랜치 딥링크 데이터 수신: $data');
+      logger.d('브랜치 딥링크 데이터 수신: $data');
       if (!mounted) return;
       if (data['+clicked_branch_link']) {
         context.pushNamed('invite', extra: int.parse(data['garden_no']));
       }
     }, onError: (error) {
-      debugPrint('브랜치 딥링크 처리 실패: $error');
+      logger.e('브랜치 딥링크 처리 실패: $error');
     });
   }
 
@@ -140,7 +141,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
           GallerySaver.saveImage(path);
         }
       } catch (e) {
-        debugPrint('가든 스크린샷 캡처 중 오류: $e');
+        logger.e('가든 스크린샷 캡처 중 오류: $e');
       }
 
       if (!mounted) return;

@@ -1,3 +1,4 @@
+import 'package:book_flutter/core/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,7 +37,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
     );
     _controller.forward();
 
-    debugPrint('스플래시에서 FCM 토큰 조회를 시작합니다: ${ref.read(fcmTokenProvider)}');
+    logger.d('스플래시에서 FCM 토큰 조회를 시작합니다: ${ref.read(fcmTokenProvider)}');
 
     Future.delayed(const Duration(seconds: 2), () async {
       //저장된 Access 불러오기
@@ -49,7 +50,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
         context.go('/bottom-navi');
       }
 
-      debugPrint('저장된 액세스 토큰 조회 결과: $accessToken');
+      logger.d('저장된 액세스 토큰 조회 결과: $accessToken');
     });
   }
 

@@ -1,5 +1,5 @@
+import 'package:book_flutter/core/logger.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:book_flutter/shared/constants/app_constant.dart';
 import '../storage/token_storage.dart';
@@ -22,7 +22,7 @@ class TokenInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     //401 Unauthorized 응답 처리
     if (err.response?.statusCode == 401) {
-      debugPrint('액세스 토큰 만료로 재발급을 시도합니다: $err');
+      logger.w('액세스 토큰 만료로 재발급을 시도합니다: $err');
       try {
         //토큰 갱신
         final newToken = await _getRefreshToken();
@@ -34,7 +34,7 @@ class TokenInterceptor extends Interceptor {
         final cloneRequest = await _dio.fetch(options);
         return handler.resolve(cloneRequest);
       } catch (e) {
-        debugPrint('토큰 재발급에 실패했습니다: $e');
+        logger.e('토큰 재발급에 실패했습니다: $e');
         //토큰 갱신 실패시 에러 처리 (로그아웃 등)
         handler.next(err);
       }
@@ -47,7 +47,7 @@ class TokenInterceptor extends Interceptor {
     final refreshToken = await loadRefresh();
     final response = await _dio.post('${Constant.URL}auth/refresh',
         data: {'refresh_token': refreshToken});
-    debugPrint('토큰 재발급 응답: ${response.data}');
+    logger.d('토큰 재발급 응답: ${response.data}');
 
     if (response.statusCode == 200) {
       final newAccessToken = response.data['data'];

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:book_flutter/core/logger.dart';
 import 'package:book_flutter/features/notification/data/services/messaging_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -15,7 +16,7 @@ import 'app/navigation/bottom_navi_page.dart';
 import 'app/router/app_router.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  debugPrint('백그라운드 알림 수신 메시지 ID: ${message.messageId}');
+  logger.d('백그라운드 알림 수신 메시지 ID: ${message.messageId}');
 }
 
 void main() async {
@@ -32,7 +33,7 @@ void main() async {
   //백그라운드 메세지 핸들러 등록
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-    debugPrint('백그라운드에서 연 알림 데이터: ${message.data}');
+    logger.d('백그라운드에서 연 알림 데이터: ${message.data}');
 
     container.read(currentIndexProvider.notifier).state = 0;
     openGardenFromNotification(

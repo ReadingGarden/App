@@ -1,10 +1,11 @@
+import 'package:book_flutter/core/logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 @pragma('vm:entry-point')
 void _onBackgroundNotificationResponse(NotificationResponse details) {
-  debugPrint('백그라운드 알림을 눌렀습니다.');
+  logger.d('백그라운드 알림을 눌렀습니다.');
 }
 
 class Messaging {
@@ -23,7 +24,7 @@ class Messaging {
         android: AndroidInitializationSettings("@drawable/ic_notification"),
       ),
       onDidReceiveNotificationResponse: (details) {
-        debugPrint('포그라운드 알림을 눌렀습니다.');
+        logger.d('포그라운드 알림을 눌렀습니다.');
       },
       onDidReceiveBackgroundNotificationResponse:
           _onBackgroundNotificationResponse,
@@ -54,7 +55,7 @@ class Messaging {
                 icon: '@drawable/ic_notification'),
           ),
         );
-        debugPrint('포그라운드 알림 수신: ${message.notification!}');
+        logger.d('포그라운드 알림 수신: ${message.notification!}');
       }
     });
   }

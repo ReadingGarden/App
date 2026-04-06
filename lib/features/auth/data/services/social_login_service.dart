@@ -1,3 +1,4 @@
+import 'package:book_flutter/core/logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,8 +27,8 @@ class SocialLogin {
 
       final user = userCredential.user;
       if (user != null) {
-        debugPrint('구글 로그인 성공 사용자 UID: ${user.uid}');
-        debugPrint('구글 로그인 사용자 이메일: ${user.email}');
+        logger.i('구글 로그인 성공 사용자 UID: ${user.uid}');
+        logger.i('구글 로그인 사용자 이메일: ${user.email}');
 
         final fcmToken = await ref.read(fcmTokenProvider.future);
 
@@ -42,7 +43,7 @@ class SocialLogin {
         auth_feature.socialLogin(ref, context, data);
       }
     } catch (e) {
-      debugPrint('구글 로그인 중 오류가 발생했습니다: $e');
+      logger.e('구글 로그인 중 오류가 발생했습니다: $e');
     }
   }
 
@@ -50,12 +51,12 @@ class SocialLogin {
     if (await isKakaoTalkInstalled()) {
       try {
         OAuthToken token = await UserApi.instance.loginWithKakaoTalk();
-        debugPrint('카카오톡 로그인 성공 액세스 토큰: ${token.accessToken}');
+        logger.i('카카오톡 로그인 성공 액세스 토큰: ${token.accessToken}');
 
         if (!context.mounted) return;
         _getKakaoUser(ref, context);
       } catch (error) {
-        debugPrint('카카오톡 로그인 실패: $error');
+        logger.e('카카오톡 로그인 실패: $error');
 
         if (error is PlatformException && error.code == 'CANCELED') {
           return;
@@ -63,21 +64,21 @@ class SocialLogin {
 
         try {
           await UserApi.instance.loginWithKakaoAccount();
-          debugPrint('카카오계정 로그인 성공');
+          logger.i('카카오계정 로그인 성공');
           if (!context.mounted) return;
           _getKakaoUser(ref, context);
         } catch (error) {
-          debugPrint('카카오계정 로그인 실패: $error');
+          logger.e('카카오계정 로그인 실패: $error');
         }
       }
     } else {
       try {
         await UserApi.instance.loginWithKakaoAccount();
-        debugPrint('카카오계정 로그인 성공');
+        logger.i('카카오계정 로그인 성공');
         if (!context.mounted) return;
         _getKakaoUser(ref, context);
       } catch (error) {
-        debugPrint('카카오계정 로그인 실패: $error');
+        logger.e('카카오계정 로그인 실패: $error');
       }
     }
   }
@@ -86,7 +87,7 @@ class SocialLogin {
     try {
       final user = await UserApi.instance.me();
 
-      debugPrint('카카오 사용자 정보 조회 성공'
+      logger.i('카카오 사용자 정보 조회 성공'
           '\n회원번호: ${user.id}'
           '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
           '\n이메일: ${user.kakaoAccount?.email}');
@@ -103,7 +104,7 @@ class SocialLogin {
       if (!context.mounted) return;
       auth_feature.socialLogin(ref, context, data);
     } catch (error) {
-      debugPrint('카카오 사용자 정보 조회 실패: $error');
+      logger.e('카카오 사용자 정보 조회 실패: $error');
     }
   }
 }
