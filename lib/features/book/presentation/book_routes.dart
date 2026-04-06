@@ -49,9 +49,22 @@ List<RouteBase> get bookRoutes => [
                   GoRoute(
                     path: 'book-register-done',
                     name: 'book-register-done',
-                    builder: (context, state) {
+                    pageBuilder: (context, state) {
                       final gardenName = state.extra as String;
-                      return BookRegisterDonePage(gardenName: gardenName);
+                      return CustomTransitionPage(
+                        child: BookRegisterDonePage(gardenName: gardenName),
+                        transitionDuration: const Duration(milliseconds: 300),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeIn,
+                            ),
+                            child: child,
+                          );
+                        },
+                      );
                     },
                   ),
                 ],
