@@ -38,7 +38,7 @@ void main() async {
     container.read(currentIndexProvider.notifier).state = 0;
     openGardenFromNotification(
       container,
-      int.parse(message.data["garden_no"]),
+      int.tryParse(message.data["garden_no"] ?? '') ?? 0,
     );
   });
 

@@ -79,7 +79,10 @@ class _GardenPageState extends ConsumerState<GardenPage>
       logger.d('브랜치 딥링크 데이터 수신: $data');
       if (!mounted) return;
       if (data['+clicked_branch_link']) {
-        context.pushNamed('invite', extra: int.parse(data['garden_no']));
+        final gardenNo = int.tryParse('${data['garden_no']}');
+        if (gardenNo != null) {
+          context.pushNamed('invite', extra: gardenNo);
+        }
       }
     }, onError: (error) {
       logger.e('브랜치 딥링크 처리 실패: $error');

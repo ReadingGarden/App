@@ -257,8 +257,8 @@ Future pageBottomSheet(
                 ),
               ),
               Widgets.button('확인', true, () {
-                int page = int.parse(controller.text);
-                context.pop(page);
+                final page = int.tryParse(controller.text);
+                if (page != null) context.pop(page);
               }),
             ],
           ),
