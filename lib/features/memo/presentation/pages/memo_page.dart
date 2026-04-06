@@ -179,19 +179,18 @@ class _MemoPageState extends ConsumerState<MemoPage> {
                               )
                             ],
                           ),
-                          Visibility(
-                              visible: memo.imageUrl != null,
-                              child: Container(
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  child: CachedNetworkImage(
-                                      imageUrl: '${Constant.IMAGE_URL}${memo.imageUrl}',
-                                      width: 272.w,
-                                      height: 272.w,
-                                      fit: BoxFit.cover),
-                                ),
-                              )),
+                          if (memo.imageUrl != null)
+                            Container(
+                              margin: EdgeInsets.only(top: 10.h),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: CachedNetworkImage(
+                                    imageUrl: '${Constant.IMAGE_URL}${memo.imageUrl}',
+                                    width: 272.w,
+                                    height: 272.w,
+                                    fit: BoxFit.cover),
+                              ),
+                            ),
                           Container(
                               margin: EdgeInsets.only(top: 10.h),
                               child: Text(

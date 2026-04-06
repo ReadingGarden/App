@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -40,7 +41,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
   final ScreenshotController screenshotController = ScreenshotController();
 
   late FToast fToast;
-  late Stream<BranchResponse> stream;
+  StreamSubscription? _branchSubscription;
   bool _showFlash = false;
   late AnimationController _flowerAnimController;
   int _prevBookCount = 0;
@@ -69,13 +70,14 @@ class _GardenPageState extends ConsumerState<GardenPage>
 
   @override
   void dispose() {
+    _branchSubscription?.cancel();
     _flowerAnimController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
 
   void initBranchSession() async {
-    FlutterBranchSdk.listSession().listen((data) {
+    _branchSubscription = FlutterBranchSdk.listSession().listen((data) {
       logger.d('브랜치 딥링크 데이터 수신: $data');
       if (!mounted) return;
       if (data['+clicked_branch_link']) {

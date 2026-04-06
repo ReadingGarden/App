@@ -161,16 +161,26 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
   }
 }
 
-class GardenAddDonePage extends StatelessWidget {
+class GardenAddDonePage extends StatefulWidget {
   const GardenAddDonePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<GardenAddDonePage> createState() => _GardenAddDonePageState();
+}
+
+class _GardenAddDonePageState extends State<GardenAddDonePage> {
+  @override
+  void initState() {
+    super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      if (!context.mounted) return;
+      if (!mounted) return;
       context.pop();
       context.replaceNamed('bottom-navi');
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(),
     );

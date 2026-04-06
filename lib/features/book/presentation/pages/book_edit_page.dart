@@ -33,14 +33,14 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
     fetchBookReadList(ref, widget.book.bookNo).then((_) {
       final bookReadList = ref.read(bookReadListProvider);
       if (bookReadList.isNotEmpty) {
-        _startController.text = Functions.formatBookReadDate(
-          bookReadList.last.bookStartDate!,
-        );
+        final startDate = bookReadList.last.bookStartDate;
+        if (startDate != null) {
+          _startController.text = Functions.formatBookReadDate(startDate);
+        }
 
-        if (bookReadList.first.bookEndDate != null) {
-          _endController.text = Functions.formatBookReadDate(
-            bookReadList.first.bookEndDate!,
-          );
+        final endDate = bookReadList.first.bookEndDate;
+        if (endDate != null) {
+          _endController.text = Functions.formatBookReadDate(endDate);
         }
       }
     });
@@ -55,7 +55,7 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
 
   //수정하기 버튼
   void _bookReadEdit() async {
-    final bookReadList = ref.watch(bookReadListProvider);
+    final bookReadList = ref.read(bookReadListProvider);
     await updateBookReadDates(
       ref,
       bookReadList: bookReadList,

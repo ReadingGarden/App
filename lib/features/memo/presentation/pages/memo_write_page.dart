@@ -373,10 +373,9 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
           imageUrl: Constant.IMAGE_URL + widget.book.imageUrl!,
           width: 320.w);
     } else {
-      return Image.file(
-          width: 320.w,
-          File(
-              ref.watch(memo_write_feature.memoImageFileProvider)?.path ?? ''));
+      final file = ref.watch(memo_write_feature.memoImageFileProvider);
+      if (file == null) return const SizedBox.shrink();
+      return Image.file(File(file.path), width: 320.w);
     }
   }
 }

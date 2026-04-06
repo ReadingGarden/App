@@ -114,15 +114,13 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
               margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 100.h),
               child: Column(
                 children: [
-                  Visibility(
-                    visible: widget.memo.imageUrl != null,
-                    child: Container(
+                  if (widget.memo.imageUrl != null)
+                    Container(
                       margin: EdgeInsets.only(top: 20.h),
                       child: CachedNetworkImage(
                           imageUrl: '${Constant.IMAGE_URL}${widget.memo.imageUrl}',
                           width: 320.w),
                     ),
-                  ),
                   Container(
                     alignment: Alignment.topLeft,
                     margin: EdgeInsets.only(top: 20.h),
