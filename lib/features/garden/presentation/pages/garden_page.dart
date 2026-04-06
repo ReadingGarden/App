@@ -807,16 +807,14 @@ class _FloatingBalloonState extends State<_FloatingBalloon>
     return AnimatedBuilder(
       animation: _offset,
       builder: (context, child) {
-        final screenWidth = MediaQuery.of(context).size.width;
-        final balloonWidth = 312.w;
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: 20.h,
-            left: (screenWidth - balloonWidth) / 2,
-          ),
-          child: Transform.translate(
-            offset: Offset(0, _offset.value),
-            child: child,
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 20.h),
+            child: Transform.translate(
+              offset: Offset(7.w, _offset.value),
+              child: child,
+            ),
           ),
         );
       },
