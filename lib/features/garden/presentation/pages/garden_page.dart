@@ -10,7 +10,7 @@ import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:gallery_saver/gallery_saver.dart';
+import 'package:gal/gal.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -138,7 +138,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
           final file = File(path);
           await file.writeAsBytes(uint8List);
 
-          GallerySaver.saveImage(path);
+          await Gal.putImage(path);
         }
       } catch (e) {
         logger.e('가든 스크린샷 캡처 중 오류: $e');
