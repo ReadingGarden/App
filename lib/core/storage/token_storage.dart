@@ -35,9 +35,8 @@ Future<void> removeLoginInfo() async {
   await prefs.remove('refresh');
 }
 
-// 모든 정보 지우기
+// 모든 정보 지우기 (탈퇴 시)
 Future<void> removeLocalStorage() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.remove('access');
-  await prefs.remove('refresh');
+  await prefs.clear();
 }
