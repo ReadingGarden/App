@@ -6,10 +6,10 @@ import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/gen/assets.gen.dart';
-import 'package:book_flutter/core/services/social_login_service.dart';
-import 'package:book_flutter/core/provider/fcm_token_provider.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/features/auth/data/services/social_login_service.dart';
+import 'package:book_flutter/features/notification/data/fcm_token_provider.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/auth/data/repositories/auth_repository.dart';
 
 // 이메일, 비밀번호 에러 메시지 상태를 관리하는 프로바이더

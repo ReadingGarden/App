@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import '../../features/auth/presentation/providers/auth_user_provider.dart'
+import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
-import '../provider/fcm_token_provider.dart';
+import 'package:book_flutter/features/notification/data/fcm_token_provider.dart';
 
 class SocialLogin {
   static Future<void> googleLogin(WidgetRef ref, BuildContext context) async {

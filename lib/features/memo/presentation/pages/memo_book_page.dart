@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/ui/app_assets.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/shared/theme/app_assets.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_book_provider.dart'
     as memo_book_feature;
-import 'package:book_flutter/core/ui/app_colors.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 
 class MemoBookPage extends ConsumerStatefulWidget {
   const MemoBookPage({super.key});

@@ -14,10 +14,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
-import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/ui/app_assets.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
+import 'package:book_flutter/shared/theme/app_assets.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:book_flutter/features/garden/domain/entities/garden_main_entity.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'

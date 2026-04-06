@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart';
-import 'package:book_flutter/core/ui/app_assets.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
+import 'package:book_flutter/shared/theme/app_assets.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/features/auth/data/services/auth_service.dart';
 
 class AuthManagePage extends ConsumerStatefulWidget {

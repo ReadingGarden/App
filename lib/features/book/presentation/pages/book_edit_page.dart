@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/formatters/auto_input_formatter.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
+import 'package:book_flutter/shared/utils/auto_input_formatter.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_edit_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_edit_provider.dart';
 

@@ -10,7 +10,7 @@ import '../../features/garden/presentation/providers/garden_provider.dart'
 import '../../features/garden/presentation/pages/garden_page.dart';
 import '../../features/memo/presentation/pages/memo_page.dart';
 import '../../features/mypage/presentation/pages/my_page.dart';
-import '../../core/ui/app_colors.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 
 final currentIndexProvider = StateProvider<int>((ref) => 0);
 

@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
-import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/provider/fcm_token_provider.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
+import 'package:book_flutter/features/notification/data/fcm_token_provider.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/auth/data/repositories/auth_repository.dart';
 import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:flutter/material.dart';

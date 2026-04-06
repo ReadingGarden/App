@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../gen/assets.gen.dart';
-import '../../core/provider/fcm_token_provider.dart';
-import '../../core/storage/token_storage.dart';
-import '../../core/ui/app_colors.dart';
+import 'package:book_flutter/features/notification/data/fcm_token_provider.dart';
+import 'package:book_flutter/core/storage/token_storage.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});

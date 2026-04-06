@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/common/functions.dart';
-import 'package:book_flutter/core/constants/app_constant.dart';
-import 'package:book_flutter/core/formatters/auto_input_formatter.dart';
-import 'package:book_flutter/core/ui/app_assets.dart';
-import 'package:book_flutter/core/ui/app_colors.dart';
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
+import 'package:book_flutter/shared/constants/app_constant.dart';
+import 'package:book_flutter/shared/utils/auto_input_formatter.dart';
+import 'package:book_flutter/shared/theme/app_assets.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_register_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_register_provider.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'

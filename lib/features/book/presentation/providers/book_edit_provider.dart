@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/common/functions.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
 import '../../data/repositories/book_edit_repository.dart';
 import '../../domain/entities/book_edit_history_entity.dart';
 

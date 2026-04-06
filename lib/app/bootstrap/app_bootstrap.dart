@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import '../../core/common/functions.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
 import '../../firebase_options.dart';
 
 Future<void> bootstrapApplication() async {

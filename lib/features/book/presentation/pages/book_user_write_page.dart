@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:book_flutter/core/ui/app_widgets.dart';
+import 'package:book_flutter/shared/widgets/app_widgets.dart';
 
 //총 페이지 입력 에러 상태 ...
 final bookPageErrorProvider = StateProvider<String?>((ref) => null);

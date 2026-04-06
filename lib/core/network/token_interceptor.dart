@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import '../constants/app_constant.dart';
+import 'package:book_flutter/shared/constants/app_constant.dart';
 import '../storage/token_storage.dart';
 
 class TokenInterceptor extends Interceptor {

@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../gen/assets.gen.dart';
-import '../common/functions.dart';
-import 'app_assets.dart';
-import 'app_colors.dart';
+import 'package:book_flutter/gen/assets.gen.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
+import 'package:book_flutter/shared/theme/app_assets.dart';
+import 'package:book_flutter/shared/theme/app_colors.dart';
 
 class Widgets {
   static appBar(BuildContext context,
