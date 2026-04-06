@@ -407,14 +407,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                   ],
                                                 ),
                                               ),
-                                              SizedBox(
-                                                height: (46.h + 18.h) *
-                                                    bookDetail
-                                                        .bookReadList.length,
-                                                child:
-                                                    (bookDetail.bookReadList
+                                              (bookDetail.bookReadList
                                                             .isNotEmpty)
                                                         ? ListView(
+                                                            shrinkWrap: true,
                                                             physics:
                                                                 const NeverScrollableScrollPhysics(),
                                                             children:
@@ -432,8 +428,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                               },
                                                             ),
                                                           )
-                                                        : Container(),
-                                              )
+                                                        : Container()
                                             ],
                                           ),
                                         ),
