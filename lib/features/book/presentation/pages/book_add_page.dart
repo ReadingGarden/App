@@ -7,6 +7,7 @@ import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_add_provider.dart';
+import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -58,6 +59,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     if (!mounted) return;
     if (result.statusCode == 201) {
       if (result.done != null) {
+        ref.read(gardenNavigateToProvider.notifier).state =
+            ref.read(gardenMainProvider).gardenNo;
         context.pushReplacementNamed('book-add-done',
             extra: result.done!.toJson());
       } else {
@@ -295,8 +298,14 @@ class BookAddDonePage extends ConsumerWidget {
 
   final BookAddDoneEntity bookRead;
 
-  void _goToGarden(BuildContext context, WidgetRef ref) {
+  void _goToGarden(BuildContext context, WidgetRef ref) async {
+    ref.read(currentIndexProvider.notifier).state = 0;
     ref.read(gardenVisitCountProvider.notifier).state++;
+    final targetGardenNo = ref.read(gardenNavigateToProvider);
+    if (targetGardenNo != null) {
+      await updateMainGarden(ref, targetGardenNo);
+      ref.read(gardenNavigateToProvider.notifier).state = null;
+    }
     context.go('/bottom-navi');
   }
 
