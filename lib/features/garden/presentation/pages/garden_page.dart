@@ -918,7 +918,7 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
     final gardenMain = widget.gardenMain;
 
     return SizedBox(
-      height: 730.h,
+      height: MediaQuery.of(context).size.height * 0.85,
       child: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Container(
