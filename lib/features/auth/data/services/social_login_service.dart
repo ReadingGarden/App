@@ -11,6 +11,19 @@ import 'package:book_flutter/features/auth/presentation/providers/auth_user_prov
 import 'package:book_flutter/features/notification/data/fcm_token_provider.dart';
 
 class SocialLogin {
+  /// 모든 소셜 로그인 세션 해제 (로그아웃/탈퇴 시 호출)
+  static Future<void> signOutAll() async {
+    try {
+      await GoogleSignIn().signOut();
+    } catch (_) {}
+    try {
+      await UserApi.instance.logout();
+    } catch (_) {}
+    try {
+      await FirebaseAuth.instance.signOut();
+    } catch (_) {}
+  }
+
   static Future<void> googleLogin(WidgetRef ref, BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();

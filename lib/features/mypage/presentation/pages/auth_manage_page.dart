@@ -9,6 +9,7 @@ import 'package:book_flutter/shared/theme/app_assets.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/features/auth/data/services/auth_service.dart';
+import 'package:book_flutter/features/auth/data/services/social_login_service.dart';
 
 class AuthManagePage extends ConsumerStatefulWidget {
   const AuthManagePage({super.key});
@@ -22,6 +23,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
     final response = await authService.postLogout();
     if (response?.statusCode == 200 && mounted) {
       Navigator.of(context).pop();
+      await SocialLogin.signOutAll();
       removeLoginInfo();
       context.goNamed('start');
     }
@@ -31,6 +33,7 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
     final response = await authService.deleteUser();
     if (response?.statusCode == 200 && mounted) {
       Navigator.of(context).pop();
+      await SocialLogin.signOutAll();
       removeLocalStorage();
       context.goNamed('start');
     }
