@@ -120,7 +120,9 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
             onTap: () async {
               final result = await context.pushNamed('memo-write',
                   extra: book.toMemoWriteMap());
-              if (result != null && context.mounted) {
+              if (!context.mounted) return;
+              if (result != null) {
+                // ignore: use_build_context_synchronously
                 context.pop(result);
               }
             },
