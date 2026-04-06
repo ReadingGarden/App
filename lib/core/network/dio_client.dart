@@ -55,8 +55,9 @@ class DioClient {
   }
 
   void _goToErrorPage(ErrorType errorType) {
-    final context = GoRouter.of(navigatorKey.currentContext!);
-    context.pushReplacementNamed('error', extra: errorType);
+    final context = navigatorKey.currentContext;
+    if (context == null) return;
+    GoRouter.of(context).pushReplacementNamed('error', extra: errorType);
   }
 }
 
