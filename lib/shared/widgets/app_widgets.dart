@@ -207,7 +207,7 @@ class Widgets {
   static void showToast(FToast fToast, String msg) {
     fToast.showToast(
       child: toast(msg),
-      positionedToastBuilder: (context, child) {
+      positionedToastBuilder: (context, child, gravity) {
         return Positioned(
           bottom: 100.h,
           left: 24.w,
