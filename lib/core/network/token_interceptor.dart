@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:book_flutter/core/logger.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +10,7 @@ import '../storage/token_storage.dart';
 
 class TokenInterceptor extends Interceptor {
   final Dio _dio;
+  Completer<String>? _refreshCompleter;
 
   TokenInterceptor(this._dio);
 
@@ -28,7 +31,7 @@ class TokenInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       logger.w('액세스 토큰 만료로 재발급을 시도합니다: $err');
       try {
-        //토큰 갱신
+        //토큰 갱신 (동시 요청 시 첫 번째만 실제 갱신)
         final newToken = await _getRefreshToken();
 
         //요청에 새 토큰을 추가하고 다시 시도
@@ -52,18 +55,31 @@ class TokenInterceptor extends Interceptor {
   }
 
   Future<String> _getRefreshToken() async {
-    final refreshToken = await loadRefresh();
-    final response = await _dio.post('${Constant.URL}auth/refresh',
-        data: {'refresh_token': refreshToken});
-    logger.d('토큰 재발급 응답: ${response.data}');
+    // 이미 갱신 중이면 결과를 공유
+    if (_refreshCompleter != null) {
+      return _refreshCompleter!.future;
+    }
 
-    if (response.statusCode == 200) {
-      final newAccessToken = response.data['data'];
-      //새 토큰을 저장
-      await saveAccess(newAccessToken);
-      return newAccessToken;
-    } else {
-      throw Exception('Failed to refresh token');
+    _refreshCompleter = Completer<String>();
+    try {
+      final refreshToken = await loadRefresh();
+      final response = await _dio.post('${Constant.URL}auth/refresh',
+          data: {'refresh_token': refreshToken});
+      logger.d('토큰 재발급 응답: ${response.data}');
+
+      if (response.statusCode == 200) {
+        final newAccessToken = response.data['data'];
+        await saveAccess(newAccessToken);
+        _refreshCompleter!.complete(newAccessToken);
+        return newAccessToken;
+      } else {
+        throw Exception('Failed to refresh token');
+      }
+    } catch (e) {
+      _refreshCompleter!.completeError(e);
+      rethrow;
+    } finally {
+      _refreshCompleter = null;
     }
   }
 }
