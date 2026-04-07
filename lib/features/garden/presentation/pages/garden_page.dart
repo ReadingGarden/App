@@ -820,18 +820,19 @@ class _FloatingBalloonState extends State<_FloatingBalloon>
           child: Padding(
             padding: EdgeInsets.only(bottom: 20.h),
             child: Transform.translate(
-              offset: Offset(7.w, _offset.value),
+              offset: Offset(0, _offset.value),
               child: child,
             ),
           ),
         );
       },
-      child: SizedBox(
-        width: 312.w,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 40.w),
+        child: SizedBox(
         height: 52.h,
         child: Stack(
           children: [
-            AppAssets.imageAdd.svg(),
+            AppAssets.imageAdd.svg(width: double.infinity, fit: BoxFit.fill),
             Positioned(
               left: 18.w,
               top: 0,
@@ -844,6 +845,7 @@ class _FloatingBalloonState extends State<_FloatingBalloon>
               ),
             ),
           ],
+        ),
         ),
       ),
     );
