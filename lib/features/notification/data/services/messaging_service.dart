@@ -11,30 +11,34 @@ class Messaging {
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   Future<void> initializeNotification() async {
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(const AndroidNotificationChannel(
-            'high_importance_channel', 'high_importance_notification',
-            importance: Importance.max));
+    try {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(const AndroidNotificationChannel(
+              'high_importance_channel', 'high_importance_notification',
+              importance: Importance.max));
 
-    await flutterLocalNotificationsPlugin.initialize(
-      const InitializationSettings(
-        android: AndroidInitializationSettings("@drawable/ic_notification"),
-      ),
-      onDidReceiveNotificationResponse: (details) {
-        logger.d('포그라운드 알림을 눌렀습니다.');
-      },
-      onDidReceiveBackgroundNotificationResponse:
-          _onBackgroundNotificationResponse,
-    );
+      await flutterLocalNotificationsPlugin.initialize(
+        const InitializationSettings(
+          android: AndroidInitializationSettings("@mipmap/ic_launcher"),
+        ),
+        onDidReceiveNotificationResponse: (details) {
+          logger.d('포그라운드 알림을 눌렀습니다.');
+        },
+        onDidReceiveBackgroundNotificationResponse:
+            _onBackgroundNotificationResponse,
+      );
 
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+      await FirebaseMessaging.instance
+          .setForegroundNotificationPresentationOptions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    } catch (e) {
+      logger.e('알림 초기화 실패: $e');
+    }
   }
 
   void foregroundMessage() {
