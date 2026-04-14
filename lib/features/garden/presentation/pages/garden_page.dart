@@ -293,6 +293,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
 
   Widget _gardenMain(gardenMainBookList) {
     return SingleChildScrollView(
+      physics: const ClampingScrollPhysics(),
       controller: _scrollController,
       child: RepaintBoundary(
         key: _scrollViewKey,
