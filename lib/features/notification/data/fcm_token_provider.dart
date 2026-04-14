@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:book_flutter/core/logger.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,22 +7,29 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// FCM 토큰을 가져오는 FutureProvider
 final fcmTokenProvider = FutureProvider<String?>((ref) async {
   try {
-    //FirebaseMessaging 인스턴스 생성
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // APNS 권한 요청 (iOS)
-    // await messaging.requestPermission(
-    //   alert: true,
-    //   badge: true,
-    //   sound: true,
-    // );
-    //APNS 토큰 가져오기 (iOS 전용)
-    // String? apnsToken = await messaging.getAPNSToken();
-    // if (apnsToken != null) {
-    //   print('APNS Token: $apnsToken');
-    // } else {
-    //   print('Failed to retrieve APNS token');
-    // }
+    // iOS에서는 APNS 토큰이 설정될 때까지 대기 필요
+    if (Platform.isIOS) {
+      await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+
+      // APNS 토큰이 설정될 때까지 재시도
+      String? apnsToken;
+      for (int i = 0; i < 5; i++) {
+        apnsToken = await messaging.getAPNSToken();
+        if (apnsToken != null) break;
+        await Future.delayed(const Duration(seconds: 1));
+      }
+
+      if (apnsToken == null) {
+        logger.e('APNS 토큰을 가져올 수 없습니다.');
+        return null;
+      }
+    }
 
     // FCM 토큰 가져오기
     String? fcmToken = await messaging.getToken();
