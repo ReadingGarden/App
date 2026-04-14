@@ -292,6 +292,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
   }
 
   Widget _gardenMain(gardenMainBookList) {
+    final bottomNavHeight = 70.h + MediaQuery.of(context).viewPadding.bottom;
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
       controller: _scrollController,
@@ -307,7 +308,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
                 Assets.images.mainBottomBack.image(
                   fit: BoxFit.cover,
                   width: 360.w,
-                  height: getTotalScrollHeight(gardenMainBookList.length),
+                  height: getTotalScrollHeight(gardenMainBookList.length) + bottomNavHeight,
                 ),
               ],
             ),
