@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,10 +8,15 @@ import '../services/auth_service.dart';
 import '../../domain/entities/user_entity.dart';
 
 void _trackCompleteRegistration(String method) {
-  final event = BranchEvent.standardEvent(BranchStandardEvent.COMPLETE_REGISTRATION)
-    ..eventDescription = '회원가입 완료'
-    ..addCustomData('method', method);
-  FlutterBranchSdk.trackContent(branchEvent: event);
+  // Branch — 초대 링크 전환율 측정용
+  final branchEvent =
+      BranchEvent.standardEvent(BranchStandardEvent.COMPLETE_REGISTRATION)
+        ..eventDescription = '회원가입 완료'
+        ..addCustomData('method', method);
+  FlutterBranchSdk.trackContent(branchEvent: branchEvent);
+
+  // Firebase — 가입 수단별 사용자 분석용
+  FirebaseAnalytics.instance.logSignUp(signUpMethod: method);
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

@@ -6,13 +6,19 @@ import 'package:book_flutter/features/book/presentation/book_routes.dart';
 import 'package:book_flutter/features/garden/presentation/garden_routes.dart';
 import 'package:book_flutter/features/memo/presentation/memo_routes.dart';
 import 'package:book_flutter/features/mypage/presentation/mypage_routes.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
+final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+final FirebaseAnalyticsObserver analyticsObserver =
+    FirebaseAnalyticsObserver(analytics: analytics);
+
 final GoRouter router = GoRouter(
   navigatorKey: navigatorKey,
+  observers: [analyticsObserver],
   initialLocation: '/',
   errorBuilder: (context, state) => const ErrorPage(),
   routes: <RouteBase>[

@@ -9,6 +9,7 @@ import 'package:book_flutter/features/book/domain/entities/book_read_input_entit
 import 'package:book_flutter/features/book/presentation/providers/book_add_provider.dart';
 import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,6 +62,13 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
     if (!mounted) return;
     if (result.statusCode == 201) {
       if (result.done != null) {
+        FirebaseAnalytics.instance.logEvent(
+          name: 'book_completed',
+          parameters: {
+            'book_title': widget.bookRead.bookTitle,
+            'book_pages': widget.bookRead.bookPage,
+          },
+        );
         context.pushReplacementNamed('book-add-done',
             extra: result.done!.toJson());
       } else {

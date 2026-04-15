@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:book_flutter/shared/constants/app_constant.dart';
@@ -53,17 +54,29 @@ Future<BookRegisterSaveResult> saveBookRegistration(
 
   int? statusCode;
   int? bookNo = book.bookNo;
+  bool isNewBook = false;
 
   if (bookNo == null) {
     final result = await repository.createBook(bookData);
     statusCode = result.statusCode;
     bookNo = result.bookNo;
+    isNewBook = statusCode == 201;
   } else {
     statusCode = await repository.updateBook(bookNo, {
       'garden_no': selectedGarden['garden_no'],
       'book_tree': Constant.FLOWER_LIST[selectedFlowerIndex],
       'book_status': 0,
     });
+  }
+
+  if (isNewBook) {
+    FirebaseAnalytics.instance.logEvent(
+      name: 'book_added',
+      parameters: {
+        'garden_no': selectedGarden['garden_no'] as int? ?? 0,
+        'flower': Constant.FLOWER_LIST[selectedFlowerIndex],
+      },
+    );
   }
 
   if ((statusCode == 200 || statusCode == 201) &&

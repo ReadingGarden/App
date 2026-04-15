@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/repositories/garden_add_repository.dart';
@@ -22,6 +23,11 @@ Future<bool> createGardenAndSelectMain(
   if (gardenNo == null) {
     return false;
   }
+
+  FirebaseAnalytics.instance.logEvent(
+    name: 'garden_created',
+    parameters: {'garden_no': gardenNo},
+  );
 
   final updated = await repository.updateMainGarden(gardenNo);
   if (updated) {
