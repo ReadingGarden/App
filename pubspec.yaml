@@ -74,6 +74,7 @@ dependencies:
   json_annotation: ^4.11.0
   logger: ^2.7.0
   gal: ^2.3.2
+  in_app_review: ^2.0.9
 
 dev_dependencies:
   flutter_test:

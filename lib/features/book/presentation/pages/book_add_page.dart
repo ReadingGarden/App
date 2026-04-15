@@ -6,6 +6,7 @@ import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
+import 'package:book_flutter/core/review/in_app_review_helper.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_add_provider.dart';
 import 'package:book_flutter/app/navigation/bottom_navi_page.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart';
@@ -69,6 +70,8 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
             'book_pages': widget.bookRead.bookPage,
           },
         );
+        // 완독한 긍정적 순간에 인앱 리뷰 프롬프트 시도
+        InAppReviewHelper.maybeRequestAfterBookCompleted();
         context.pushReplacementNamed('book-add-done',
             extra: result.done!.toJson());
       } else {
