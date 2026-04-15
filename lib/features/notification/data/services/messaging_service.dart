@@ -22,6 +22,12 @@ class Messaging {
       await flutterLocalNotificationsPlugin.initialize(
         const InitializationSettings(
           android: AndroidInitializationSettings("@mipmap/ic_launcher"),
+          iOS: DarwinInitializationSettings(
+            // 권한은 fcm_token_provider에서 이미 요청하므로 여기서는 중복 요청 방지
+            requestAlertPermission: false,
+            requestBadgePermission: false,
+            requestSoundPermission: false,
+          ),
         ),
         onDidReceiveNotificationResponse: (details) {
           logger.d('포그라운드 알림을 눌렀습니다.');
@@ -56,6 +62,11 @@ class Messaging {
                 importance: Importance.max,
                 priority: Priority.high,
                 icon: '@drawable/ic_notification'),
+            iOS: DarwinNotificationDetails(
+              presentAlert: true,
+              presentBadge: true,
+              presentSound: true,
+            ),
           ),
         );
         logger.d('포그라운드 알림 수신: ${message.notification}');
