@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
@@ -215,9 +216,11 @@ class _MyPageState extends ConsumerState<MyPage> {
                   Widgets.titleList('의견 보내기', () {
                     Functions.launchURL("https://forms.gle/EBuu4Vvw7C2g4LL58");
                   }),
-                  Widgets.titleList('리뷰 작성하기', () {
-                    Functions.launchURL(
-                        "https://apps.apple.com/kr/app/%EB%8F%85%EC%84%9C%EA%B0%80%EB%93%A0/id6502348981");
+                  Widgets.titleList('리뷰 작성하기', () async {
+                    final review = InAppReview.instance;
+                    if (await review.isAvailable()) {
+                      await review.requestReview();
+                    }
                   }),
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),
