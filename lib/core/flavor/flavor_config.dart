@@ -15,7 +15,7 @@ class FlavorConfig {
   static String get baseUrl {
     switch (_flavor) {
       case Flavor.dev:
-        return 'http://138.2.32.107';
+        return 'http://138.2.32.107:8080';
       case Flavor.prod:
         return 'https://readinggarden.duckdns.org';
     }
