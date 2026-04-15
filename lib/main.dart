@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:book_flutter/core/flavor/flavor_config.dart';
 import 'package:book_flutter/core/logger.dart';
 import 'package:book_flutter/features/notification/data/services/messaging_service.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -36,8 +37,14 @@ Future<void> _requestTrackingPermission() async {
   logger.d('ATT 권한 결과: $result');
 }
 
-void main() async {
+/// 공용 앱 실행 로직.
+///
+/// `main_dev.dart`, `main_prod.dart`, 그리고 기본 `main()` 모두 Flavor만
+/// 세팅한 뒤 이 함수를 호출한다.
+Future<void> runMainApp() async {
   await bootstrapApplication();
+
+  logger.i('앱 실행 flavor: ${FlavorConfig.flavor.name}');
 
   // Flutter/Dart 에러를 Crashlytics로 자동 전송
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -90,9 +97,6 @@ void main() async {
     logger.e('브랜치 딥링크 처리 실패: $error');
   });
 
-  // 알림 권한 요청 (iOS 전용)
-  // await FirebaseMessaging.instance.requestPermission();
-
   // 알림 초기화
   await messaging.initializeNotification();
   messaging.foregroundMessage();
@@ -107,6 +111,12 @@ void main() async {
     container: container,
     child: const MyApp(),
   ));
+}
+
+/// 기본 진입점 — `flutter run`으로 실행 시 prod flavor로 동작.
+void main() async {
+  FlavorConfig.setFlavor(Flavor.prod);
+  await runMainApp();
 }
 
 class MyApp extends ConsumerWidget {

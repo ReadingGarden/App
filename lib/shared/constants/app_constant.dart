@@ -1,11 +1,12 @@
 import 'dart:ui';
 
-class Constant {
-  // static const URL = 'http://172.30.1.41:8000/api/v1/';
+import 'package:book_flutter/core/flavor/flavor_config.dart';
 
-  static const BASE_URL = 'https://readinggarden.duckdns.org';
-  static const URL = '$BASE_URL/api/v1/';
-  static const IMAGE_URL = '$BASE_URL/api/images/';
+class Constant {
+  // Flavor에 따라 동적으로 결정되는 URL들
+  static String get BASE_URL => FlavorConfig.baseUrl;
+  static String get URL => '$BASE_URL/api/v1/';
+  static String get IMAGE_URL => '$BASE_URL/api/images/';
 
   static const FLOWER_LIST = ['데이지', '튤립', '장미', '팬지', '수선화'];
 
