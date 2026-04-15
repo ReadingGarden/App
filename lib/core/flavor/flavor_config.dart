@@ -15,8 +15,7 @@ class FlavorConfig {
   static String get baseUrl {
     switch (_flavor) {
       case Flavor.dev:
-        // TODO: 실제 dev 서버 URL로 교체
-        return 'https://readinggarden-dev.duckdns.org';
+        return 'http://138.2.32.107';
       case Flavor.prod:
         return 'https://readinggarden.duckdns.org';
     }
