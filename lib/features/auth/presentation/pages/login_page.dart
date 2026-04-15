@@ -29,7 +29,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _pwdController = TextEditingController();
 
   late FToast fToast;
-  String? test;
 
   @override
   void initState() {
@@ -61,12 +60,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   //로그인 에러
   void _loginError() {
-    // TODO - 에러 노티파이어 하나로 합치기
-    final emailErrorNotifier = ref.read(loginErrorProvider.notifier);
-    final pwdErrorNotifier = ref.read(loginErrorProvider.notifier);
-
-    emailErrorNotifier.state = '등록되지 않은 로그인 정보입니다';
-    pwdErrorNotifier.state = '등록되지 않은 로그인 정보입니다';
+    ref.read(loginErrorProvider.notifier).state = '등록되지 않은 로그인 정보입니다';
   }
 
   @override

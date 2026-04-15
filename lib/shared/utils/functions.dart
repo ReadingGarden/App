@@ -145,10 +145,6 @@ class Functions {
     }
   }
 
-  static Future<void> launchURLTest(String url) async {
-    await launchURL(url);
-  }
-
   static Future<void> shareBranchLink(String garden, int gardenNo) async {
     BranchUniversalObject buo = BranchUniversalObject(
       canonicalIdentifier: 'flutter/branch',
