@@ -9,15 +9,9 @@ final fcmTokenProvider = FutureProvider<String?>((ref) async {
   try {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    // iOS에서는 APNS 토큰이 설정될 때까지 대기 필요
+    // iOS는 권한 허용 직후 APNS 등록이 비동기로 이뤄지므로 토큰 준비될 때까지 대기
+    // (권한 요청은 앱 시작 시 Functions.requestPermissions()에서 이미 수행)
     if (Platform.isIOS) {
-      await messaging.requestPermission(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
-
-      // APNS 토큰이 설정될 때까지 재시도
       String? apnsToken;
       for (int i = 0; i < 5; i++) {
         apnsToken = await messaging.getAPNSToken();
