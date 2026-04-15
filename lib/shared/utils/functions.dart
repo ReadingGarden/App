@@ -80,15 +80,8 @@ class Functions {
   }
 
   static Future<void> requestPermissions() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.camera,
-      Permission.storage,
-      Permission.notification
-    ].request();
-
-    logger.d('카메라 권한 상태: ${statuses[Permission.camera]}');
-    logger.d('저장소 권한 상태: ${statuses[Permission.storage]}');
-    logger.d('알림 권한 상태: ${statuses[Permission.notification]}');
+    final status = await Permission.notification.request();
+    logger.d('알림 권한 상태: $status');
   }
 
   static Future<void> checkAndRequestPermissions(Function function) async {
