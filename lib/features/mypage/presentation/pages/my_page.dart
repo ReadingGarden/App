@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -32,31 +31,6 @@ class _MyPageState extends ConsumerState<MyPage> {
         context.go('/start');
       }
     });
-  }
-
-  //메일 보내기
-  Future<void> sendEmail() async {
-    final Email email = Email(
-      body: "",
-      subject: "ㅇㅇ",
-      recipients: ["dokseogardenapp@gmail.com"],
-      isHTML: false,
-    );
-
-    try {
-      await FlutterEmailSender.send(email);
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('이메일이 성공적으로 전송되었습니다.')));
-    } catch (error) {
-      if (!mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('이메일 전송 중 오류가 발생했습니다: $error')));
-    }
   }
 
   @override
@@ -238,10 +212,6 @@ class _MyPageState extends ConsumerState<MyPage> {
                     Functions.launchURL(
                         "https://www.notion.so/dokseogarden/1082d8001a9280f58ea8ea9916edbfea?v=b441041520b3422691c9f0d9cb091474&pvs=4");
                   }),
-                  // Widgets.titleList('1:1 문의하기', () {
-                  //   Functions.launchURLTest();
-
-                  // }),
                   Widgets.titleList('의견 보내기', () {
                     Functions.launchURL("https://forms.gle/EBuu4Vvw7C2g4LL58");
                   }),
