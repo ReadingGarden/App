@@ -162,6 +162,7 @@ class Functions {
         buo: buo, linkProperties: linkProperties);
 
     if (response.success) {
+      _trackInviteEvent(buo, gardenNo);
       Share.share(response.result.toString());
     }
   }
@@ -183,9 +184,18 @@ class Functions {
         buo: buo, linkProperties: linkProperties);
 
     if (response.success) {
+      _trackInviteEvent(buo, gardenNo);
       return response.result.toString();
     }
     return null;
+  }
+
+  /// 초대 링크 생성 시 Branch INVITE 이벤트 기록
+  static void _trackInviteEvent(BranchUniversalObject buo, int gardenNo) {
+    final event = BranchEvent.standardEvent(BranchStandardEvent.INVITE)
+      ..eventDescription = '가든 초대 링크 생성'
+      ..addCustomData('garden_no', gardenNo.toString());
+    FlutterBranchSdk.trackContent(buo: [buo], branchEvent: event);
   }
 
   static Future<void> createBranchLink2() async {

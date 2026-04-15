@@ -1,9 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/storage/token_storage.dart';
 import '../services/auth_service.dart';
 import '../../domain/entities/user_entity.dart';
+
+void _trackCompleteRegistration(String method) {
+  final event = BranchEvent.standardEvent(BranchStandardEvent.COMPLETE_REGISTRATION)
+    ..eventDescription = '회원가입 완료'
+    ..addCustomData('method', method);
+  FlutterBranchSdk.trackContent(branchEvent: event);
+}
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(authService);
@@ -51,6 +59,7 @@ class AuthRepository {
         saveAccess(token['access_token']);
         saveRefresh(token['refresh_token']);
       }
+      _trackCompleteRegistration('email');
     }
     return (
       statusCode: response?.statusCode ?? 0,
@@ -83,6 +92,8 @@ class AuthRepository {
         saveAccess(token['access_token']);
         saveRefresh(token['refresh_token']);
       }
+      final socialType = data['user_social_type']?.toString() ?? 'social';
+      _trackCompleteRegistration(socialType);
       return (
         status: 'signup',
         nick: token?['user_nick'] as String?,

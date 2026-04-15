@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -46,6 +47,11 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
     final statusCode =
         await garden_feature.acceptGardenInvite(ref, widget.gardenNo);
     if (statusCode == 201) {
+      // 초대 수락으로 가든에 실제 합류한 순간
+      final event = BranchEvent.customEvent('garden_joined')
+        ..addCustomData('garden_no', widget.gardenNo.toString());
+      FlutterBranchSdk.trackContent(branchEvent: event);
+
       if (!mounted) {
         return;
       }
