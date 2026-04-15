@@ -51,16 +51,6 @@
 				<string>com.googleusercontent.apps.494928162578-g1tcfssv21evd9ei162st7r11dc3q65v</string>
 			</array>
 		</dict>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>io.Branch.Branchsters</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>branchsters</string>
-			</array>
-		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
@@ -89,7 +79,6 @@
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
