@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
-// import Firebase
+import Firebase
+import FirebaseMessaging
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -8,17 +9,17 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    //  FirebaseApp.configure()
-    //     UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
-    //     application.registerForRemoteNotifications()
+    FirebaseApp.configure()
+    UNUserNotificationCenter.current().delegate = self
+    application.registerForRemoteNotifications()
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  // override func application(
-  //       _ application: UIApplication,
-  //       didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
-  //   ) {
-  //       Messaging.messaging().apnsToken = deviceToken
-  //   }
+  override func application(
+    _ application: UIApplication,
+    didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+  ) {
+    Messaging.messaging().apnsToken = deviceToken
+  }
 }
