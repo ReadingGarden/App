@@ -44,6 +44,18 @@ void main() async {
     }
   });
 
+  // 완전 종료 상태에서 알림 탭으로 앱 실행 시 처리
+  FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+    if (message == null) return;
+    logger.d('종료 상태에서 연 알림 데이터: ${message.data}');
+
+    final gardenNo = int.tryParse(message.data["garden_no"] ?? '');
+    if (gardenNo != null) {
+      container.read(currentIndexProvider.notifier).state = 0;
+      openGardenFromNotification(container, gardenNo);
+    }
+  });
+
   // 알림 권한 요청 (iOS 전용)
   // await FirebaseMessaging.instance.requestPermission();
 
