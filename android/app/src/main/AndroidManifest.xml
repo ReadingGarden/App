@@ -76,6 +76,9 @@
             android:name="io.branch.sdk.BranchKey"
             android:value="key_live_dvl8wi8dSGBZT8EKkkKVpkanEDjoxIAF" />
         <meta-data
+            android:name="io.branch.sdk.BranchKey.test"
+            android:value="key_test_nzh9vf5lHTEYJZBOheJSkblhCBejqHDK" />
+        <meta-data
             android:name="io.branch.sdk.TestMode"
             android:value="false" />
     
