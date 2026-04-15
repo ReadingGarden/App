@@ -3,10 +3,8 @@ import 'dart:ui';
 class Constant {
   // static const URL = 'http://172.30.1.41:8000/api/v1/';
 
-  static const URL =
-      'https://ec2-43-203-248-188.ap-northeast-2.compute.amazonaws.com/api/v1/';
-  static const IMAGE_URL =
-      'https://ec2-43-203-248-188.ap-northeast-2.compute.amazonaws.com/api/images/';
+  static const URL = 'https://readinggarden.duckdns.org/api/v1/';
+  static const IMAGE_URL = 'https://readinggarden.duckdns.org/api/images/';
 
   static const FLOWER_LIST = ['데이지', '튤립', '장미', '팬지', '수선화'];
 
