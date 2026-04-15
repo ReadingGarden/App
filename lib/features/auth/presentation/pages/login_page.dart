@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -154,21 +156,30 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   thickness: 1,
                   color: AppColors.grey_F2,
                 ),
-                GestureDetector(
-                  onTap: () => SocialLogin.googleLogin(ref, context),
-                  child: Container(
-                    margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween, iOS
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        //iOS
-                        // CircleAvatar(
-                        //   backgroundColor: AppColors.black_59,
-                        //   radius: 27.5.r,
-                        //   child: Assets.images.appleLogo.svg(),
-                        // ),
-                        CircleAvatar(
+                Container(
+                  margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (Platform.isIOS)
+                        GestureDetector(
+                          onTap: () => SocialLogin.appleLogin(ref, context),
+                          child: CircleAvatar(
+                            backgroundColor: AppColors.black_59,
+                            radius: 27.5.r,
+                            child: Assets.images.appleLogo.svg(
+                              width: 24.r,
+                              height: 24.r,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          ),
+                        ),
+                      GestureDetector(
+                        onTap: () => SocialLogin.googleLogin(ref, context),
+                        child: CircleAvatar(
                           backgroundColor: AppColors.grey_F2,
                           radius: 27.5.r,
                           child: Assets.images.googleLogo.svg(
@@ -176,19 +187,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             height: 20.r,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () => SocialLogin.kakaoLogin(ref, context),
-                          child: CircleAvatar(
-                            backgroundColor: const Color(0xffFFEF5E),
-                            radius: 27.5.r,
-                            child: Assets.images.kakaoLogo.svg(
-                              width: 20.r,
-                              height: 20.r,
-                            ),
+                      ),
+                      GestureDetector(
+                        onTap: () => SocialLogin.kakaoLogin(ref, context),
+                        child: CircleAvatar(
+                          backgroundColor: const Color(0xffFFEF5E),
+                          radius: 27.5.r,
+                          child: Assets.images.kakaoLogo.svg(
+                            width: 20.r,
+                            height: 20.r,
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

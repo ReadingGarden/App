@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:book_flutter/core/logger.dart';
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
@@ -96,6 +101,66 @@ class SocialLogin {
         logger.e('카카오계정 로그인 실패: $error');
       }
     }
+  }
+
+  static Future<void> appleLogin(WidgetRef ref, BuildContext context) async {
+    try {
+      final rawNonce = _generateNonce();
+      final nonce = _sha256ofString(rawNonce);
+
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
+
+      final oauthCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      final user = userCredential.user;
+
+      if (user != null) {
+        logger.i('애플 로그인 성공 사용자 UID: ${user.uid}');
+        logger.i('애플 로그인 사용자 이메일: ${user.email}');
+
+        final fcmToken = await ref.read(fcmTokenProvider.future);
+
+        final data = {
+          "user_email": user.email ?? appleCredential.email ?? '',
+          "user_password": "",
+          "user_fcm": fcmToken ?? '',
+          "user_social_id": user.uid,
+          "user_social_type": "apple"
+        };
+        if (!context.mounted) return;
+        auth_feature.socialLogin(ref, context, data);
+      }
+    } on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code == AuthorizationErrorCode.canceled) return;
+      logger.e('애플 로그인 실패: ${e.code} - ${e.message}');
+    } catch (e) {
+      logger.e('애플 로그인 중 오류가 발생했습니다: $e');
+    }
+  }
+
+  static String _generateNonce([int length = 32]) {
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+  static String _sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    return sha256.convert(bytes).toString();
   }
 
   static void _getKakaoUser(WidgetRef ref, BuildContext context) async {
