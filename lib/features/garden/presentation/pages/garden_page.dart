@@ -7,7 +7,6 @@ import 'package:book_flutter/core/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -41,7 +40,6 @@ class _GardenPageState extends ConsumerState<GardenPage>
   final ScreenshotController screenshotController = ScreenshotController();
 
   late FToast fToast;
-  StreamSubscription? _branchSubscription;
   bool _showFlash = false;
   late AnimationController _flowerAnimController;
   int _prevBookCount = 0;
@@ -57,9 +55,6 @@ class _GardenPageState extends ConsumerState<GardenPage>
       duration: const Duration(milliseconds: 1200),
     );
 
-    // Session 초기화
-    initBranchSession();
-
     fToast = FToast();
     fToast.init(context);
 
@@ -70,25 +65,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
 
   @override
   void dispose() {
-    _branchSubscription?.cancel();
     _flowerAnimController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void initBranchSession() async {
-    _branchSubscription = FlutterBranchSdk.listSession().listen((data) {
-      logger.d('브랜치 딥링크 데이터 수신: $data');
-      if (!mounted) return;
-      if (data['+clicked_branch_link']) {
-        final gardenNo = int.tryParse('${data['garden_no']}');
-        if (gardenNo != null) {
-          context.pushNamed('invite', extra: gardenNo);
-        }
-      }
-    }, onError: (error) {
-      logger.e('브랜치 딥링크 처리 실패: $error');
-    });
   }
 
   //꽃 퍼센트 분류

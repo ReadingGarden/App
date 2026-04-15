@@ -5,6 +5,7 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:book_flutter/core/logger.dart';
 import 'package:book_flutter/features/notification/data/services/messaging_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 
 import 'package:book_flutter/core/network/connectivity_provider.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
@@ -67,6 +68,18 @@ void main() async {
       container.read(currentIndexProvider.notifier).state = 0;
       openGardenFromNotification(container, gardenNo);
     }
+  });
+
+  // Branch 딥링크 리스너 (초대 링크)
+  // 모든 진입 상태(cold start / background / 로그인 전)에서 수신하도록 최상위에 등록
+  FlutterBranchSdk.listSession().listen((data) {
+    logger.d('브랜치 딥링크 데이터 수신: $data');
+    if (data['+clicked_branch_link'] != true) return;
+    final gardenNo = int.tryParse('${data['garden_no']}');
+    if (gardenNo == null) return;
+    router.pushNamed('invite', extra: gardenNo);
+  }, onError: (error) {
+    logger.e('브랜치 딥링크 처리 실패: $error');
   });
 
   // 알림 권한 요청 (iOS 전용)
