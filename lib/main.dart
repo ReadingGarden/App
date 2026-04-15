@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:book_flutter/core/logger.dart';
 import 'package:book_flutter/features/notification/data/services/messaging_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -19,6 +21,17 @@ import 'app/router/app_router.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   logger.d('백그라운드 알림 수신 메시지 ID: ${message.messageId}');
+}
+
+Future<void> _requestTrackingPermission() async {
+  // 이미 권한 결정된 상태면 재요청 불필요
+  final status = await AppTrackingTransparency.trackingAuthorizationStatus;
+  if (status != TrackingStatus.notDetermined) return;
+
+  // 권한 팝업이 시스템 준비되기 전에 뜨면 자동 거부되므로 약간 대기
+  await Future.delayed(const Duration(milliseconds: 300));
+  final result = await AppTrackingTransparency.requestTrackingAuthorization();
+  logger.d('ATT 권한 결과: $result');
 }
 
 void main() async {
@@ -62,6 +75,11 @@ void main() async {
   // 알림 초기화
   await messaging.initializeNotification();
   messaging.foregroundMessage();
+
+  // iOS 앱 추적 투명성 권한 요청 (Branch 초대 링크 추적용)
+  if (Platform.isIOS) {
+    await _requestTrackingPermission();
+  }
 
   // 전역 컨테이너를 앱 루트에 연결합니다.
   runApp(UncontrolledProviderScope(
