@@ -189,7 +189,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   Functions.launchURL(
-                                      "https://www.notion.so/1182d8001a928098bb71c78cc5523cd4?pvs=21");
+                                      "https://www.notion.so/dokseogarden/1182d8001a928098bb71c78cc5523cd4?pvs=4");
                                 }),
                           const TextSpan(text: '에 동의하는 것으로 간주됩니다')
                         ])),
