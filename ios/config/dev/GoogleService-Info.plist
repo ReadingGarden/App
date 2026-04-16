@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>494928162578-7g0pe211bg4nfumb9t5lf5pj3tdcrkpd.apps.googleusercontent.com</string>
+	<string>494928162578-ce98tg7uotjibvrei1sq5aqdldnaql39.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.494928162578-7g0pe211bg4nfumb9t5lf5pj3tdcrkpd</string>
+	<string>com.googleusercontent.apps.494928162578-ce98tg7uotjibvrei1sq5aqdldnaql39</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>494928162578-cgnqocrfi0qpma6h6ohjb8gn27fmjk22.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.dokseogarden</string>
+	<string>com.dokseogarden.dev</string>
 	<key>PROJECT_ID</key>
 	<string>dokseogarden-68c26</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:494928162578:ios:aab4c6e5e3cdd31907cdcb</string>
+	<string>1:494928162578:ios:984855cfd0c3f2c707cdcb</string>
 </dict>
 </plist>
