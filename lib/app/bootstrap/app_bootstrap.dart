@@ -15,8 +15,8 @@ Future<void> bootstrapApplication() async {
   );
 
   await Functions.requestPermissions();
-  // dev flavor에서는 Branch TEST 키를 사용하도록 init
-  await FlutterBranchSdk.init(useTestKey: FlavorConfig.isDev);
+  // Branch 초기화 (dev/prod 키 분리는 Info.plist, AndroidManifest.xml에서 설정)
+  await FlutterBranchSdk.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

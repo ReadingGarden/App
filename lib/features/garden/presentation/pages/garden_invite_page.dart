@@ -50,7 +50,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
       // 초대 수락으로 가든에 실제 합류한 순간
       final event = BranchEvent.customEvent('garden_joined')
         ..addCustomData('garden_no', widget.gardenNo.toString());
-      FlutterBranchSdk.trackContent(branchEvent: event);
+      FlutterBranchSdk.trackContentWithoutBuo(branchEvent: event);
 
       if (!mounted) {
         return;

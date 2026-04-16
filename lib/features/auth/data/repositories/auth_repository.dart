@@ -13,7 +13,7 @@ void _trackCompleteRegistration(String method) {
       BranchEvent.standardEvent(BranchStandardEvent.COMPLETE_REGISTRATION)
         ..eventDescription = '회원가입 완료'
         ..addCustomData('method', method);
-  FlutterBranchSdk.trackContent(branchEvent: branchEvent);
+  FlutterBranchSdk.trackContentWithoutBuo(branchEvent: branchEvent);
 
   // Firebase — 가입 수단별 사용자 분석용
   FirebaseAnalytics.instance.logSignUp(signUpMethod: method);
