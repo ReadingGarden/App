@@ -1,9 +1,9 @@
+import 'package:book_flutter/core/logger.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 
-import 'package:book_flutter/core/flavor/flavor_config.dart';
 import 'package:book_flutter/shared/utils/functions.dart';
 import '../../firebase_options.dart';
 
@@ -15,9 +15,19 @@ Future<void> bootstrapApplication() async {
   );
 
   await Functions.requestPermissions();
-  // Branch 초기화 (dev/prod 키 분리는 Info.plist, AndroidManifest.xml에서 설정)
-  await FlutterBranchSdk.init();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (_) {}
+
+  try {
+    await FlutterBranchSdk.init().timeout(
+      const Duration(seconds: 5),
+      onTimeout: () => logger.w('Branch init 타임아웃'),
+    );
+  } catch (e) {
+    logger.e('Branch init 실패: $e');
+  }
 }

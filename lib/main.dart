@@ -48,11 +48,14 @@ Future<void> runMainApp() async {
   logger.i('앱 실행 flavor: ${FlavorConfig.flavor.name}');
 
   // Flutter/Dart 에러를 Crashlytics로 자동 전송
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // (디버그 모드에서는 비활성화 — JIT PAC 크래시 방지)
+  if (const bool.fromEnvironment('dart.vm.product')) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

@@ -146,25 +146,39 @@ class Functions {
   }
 
   static Future<void> shareBranchLink(String garden, int gardenNo) async {
-    BranchUniversalObject buo = BranchUniversalObject(
-      canonicalIdentifier: 'flutter/branch',
-      title: '$garden에 초대합니다🪴',
-      contentDescription: '독서가든에서 함께 책을 읽고 기록해봐요!',
-      contentMetadata: BranchContentMetaData()
-        ..addCustomMetadata('garden_no', gardenNo),
-    );
+    // bottom sheet pop 애니메이션 완료 대기 후 실행
+    await Future.delayed(const Duration(milliseconds: 300));
 
-    BranchLinkProperties linkProperties = BranchLinkProperties(
-      feature: 'sharing',
-    );
+    try {
+      BranchUniversalObject buo = BranchUniversalObject(
+        canonicalIdentifier: 'flutter/branch',
+        title: '$garden에 초대합니다🪴',
+        contentDescription: '독서가든에서 함께 책을 읽고 기록해봐요!',
+        contentMetadata: BranchContentMetaData()
+          ..addCustomMetadata('garden_no', gardenNo),
+      );
 
-    BranchResponse response = await FlutterBranchSdk.getShortUrl(
-        buo: buo, linkProperties: linkProperties);
+      BranchLinkProperties linkProperties = BranchLinkProperties(
+        feature: 'sharing',
+      );
 
-    if (response.success) {
-      _trackInviteEvent(buo, gardenNo);
-      Share.share(response.result.toString());
+      BranchResponse response = await FlutterBranchSdk.getShortUrl(
+          buo: buo, linkProperties: linkProperties);
+
+      if (response.success) {
+        _trackInviteEvent(buo, gardenNo);
+        await Share.share(response.result.toString(),
+            sharePositionOrigin: const Rect.fromLTWH(0, 0, 1, 1));
+        return;
+      }
+    } catch (e) {
+      logger.e('Branch 링크 생성 실패: $e');
     }
+
+    // Branch 실패 시 폴백 URL
+    await Share.share(
+        '$garden에 초대합니다🪴\n독서가든에서 함께 책을 읽고 기록해봐요!\nhttps://dokseogarden.app.link?garden_no=$gardenNo',
+        sharePositionOrigin: const Rect.fromLTWH(0, 0, 1, 1));
   }
 
   static Future<String?> createInviteLink(int gardenNo) async {
