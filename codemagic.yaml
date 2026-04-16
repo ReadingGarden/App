@@ -34,12 +34,12 @@ workflows:
     name: iOS Production Release
     max_build_duration: 60
     instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: App Store Connect
     environment:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.dokseogarden
-      groups:
-        - app_store_credentials
       flutter: stable
       cocoapods: default
     triggering:
