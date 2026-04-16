@@ -7,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 import 'package:intl/intl.dart';
 import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -80,8 +83,19 @@ class Functions {
   }
 
   static Future<void> requestPermissions() async {
-    final status = await Permission.notification.request();
-    logger.d('알림 권한 상태: $status');
+    // iOS: FirebaseMessaging.requestPermission()이 APNS 등록까지 처리
+    // Android 13+: permission_handler로 POST_NOTIFICATIONS 요청
+    if (Platform.isIOS) {
+      final settings = await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      logger.d('iOS 알림 권한 상태: ${settings.authorizationStatus}');
+    } else {
+      final status = await Permission.notification.request();
+      logger.d('Android 알림 권한 상태: $status');
+    }
   }
 
   static Future<void> checkAndRequestPermissions(Function function) async {

@@ -14,13 +14,13 @@ Future<void> bootstrapApplication() async {
     nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda',
   );
 
-  await Functions.requestPermissions();
-
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
   } catch (_) {}
+
+  await Functions.requestPermissions();
 
   try {
     await FlutterBranchSdk.init().timeout(
