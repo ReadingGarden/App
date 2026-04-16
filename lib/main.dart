@@ -22,9 +22,27 @@ import 'app/bootstrap/app_bootstrap.dart';
 import 'app/bootstrap/garden_notification_handler.dart';
 import 'app/navigation/bottom_navi_page.dart';
 import 'app/router/app_router.dart';
+import 'core/storage/token_storage.dart';
+import 'features/auth/data/repositories/auth_repository.dart';
+import 'features/notification/data/fcm_token_provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   logger.d('백그라운드 알림 수신 메시지 ID: ${message.messageId}');
+}
+
+void _updateFcmTokenOnServer(ProviderContainer container) async {
+  try {
+    final accessToken = await loadAccess();
+    if (accessToken == null) return; // 로그인 안 된 상태면 스킵
+
+    final fcmToken = await container.read(fcmTokenProvider.future);
+    if (fcmToken == null) return;
+
+    await container.read(authRepositoryProvider).updateUser({'user_fcm': fcmToken});
+    logger.d('FCM 토큰 서버 업데이트 완료: $fcmToken');
+  } catch (e) {
+    logger.e('FCM 토큰 업데이트 실패: $e');
+  }
 }
 
 Future<void> _requestTrackingPermission() async {
@@ -109,6 +127,9 @@ Future<void> runMainApp() async {
   if (Platform.isIOS) {
     await _requestTrackingPermission();
   }
+
+  // 앱 시작 시 FCM 토큰 서버 업데이트 (자동 로그인 시에도 토큰 갱신)
+  _updateFcmTokenOnServer(container);
 
   // 전역 컨테이너를 앱 루트에 연결합니다.
   runApp(UncontrolledProviderScope(

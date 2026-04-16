@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../gen/assets.gen.dart';
 import 'package:book_flutter/features/notification/data/fcm_token_provider.dart';
+import 'package:book_flutter/features/auth/data/repositories/auth_repository.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
 
