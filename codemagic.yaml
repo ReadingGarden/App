@@ -57,6 +57,8 @@ workflows:
         - pattern: stable
           include: true
     scripts:
+      - name: Set up prod GoogleService-Info.plist
+        script: cp ios/config/prod/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
       - name: Get Flutter packages
         script: flutter pub get
       - name: Install CocoaPods
