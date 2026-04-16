@@ -10,6 +10,10 @@ workflows:
         - google_play_credentials
       flutter: stable
       java: 17
+    cache:
+      cache_paths:
+        - $FLUTTER_ROOT/.pub-cache
+        - $HOME/.gradle/caches
     triggering:
       events:
         - push
@@ -42,6 +46,10 @@ workflows:
         bundle_identifier: com.dokseogarden
       flutter: stable
       cocoapods: default
+    cache:
+      cache_paths:
+        - $FLUTTER_ROOT/.pub-cache
+        - $HOME/Library/Caches/CocoaPods
     triggering:
       events:
         - push
