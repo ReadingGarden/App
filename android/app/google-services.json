@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "494928162578",
     "project_id": "dokseogarden-68c26",
-    "storage_bucket": "dokseogarden-68c26.appspot.com"
+    "storage_bucket": "dokseogarden-68c26.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,52 @@
           "package_name": "com.dokseogarden"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "494928162578-cgnqocrfi0qpma6h6ohjb8gn27fmjk22.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dokseogarden",
+            "certificate_hash": "20afda2a2ecd27917140b0d48df0a965d67e0489"
+          }
+        },
+        {
+          "client_id": "494928162578-d6baiar4j7r15fdmm68qiod1dp5k67ff.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dokseogarden",
+            "certificate_hash": "28ca30a899e00479c5ea7f2ed518c7be2f634195"
+          }
+        },
+        {
+          "client_id": "494928162578-hauvbchhrd2eo257v6tctfp1uhm8j8u1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dokseogarden",
+            "certificate_hash": "856aac5d1a0c8a3f23cb597e5467c9094aec3f8e"
+          }
+        },
+        {
+          "client_id": "494928162578-nh1fipnehbfvp7iqseuth7dvrnu28qq0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dokseogarden",
+            "certificate_hash": "9bf9b62af7ad6eed44c799aa18ebca3954facb30"
+          }
+        },
+        {
+          "client_id": "494928162578-phgnl2ukc6rq4j9snnnfb1kihfgmi47f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dokseogarden",
+            "certificate_hash": "45d959e19a53448cbbb5d17ff33e08c174a0b967"
+          }
+        },
+        {
+          "client_id": "494928162578-stiigonuu1gktfj3oud33l1g18hmd278.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCjL8YI1zyMx4Vb4BQh9w_XbGd7vHb3Dsw"
@@ -20,7 +65,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494928162578-stiigonuu1gktfj3oud33l1g18hmd278.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "494928162578-7g0pe211bg4nfumb9t5lf5pj3tdcrkpd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dokseogarden"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494928162578:android:d5c6d90c7e26d0e107cdcb",
+        "android_client_info": {
+          "package_name": "com.dokseogarden.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "494928162578-stiigonuu1gktfj3oud33l1g18hmd278.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjL8YI1zyMx4Vb4BQh9w_XbGd7vHb3Dsw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "494928162578-stiigonuu1gktfj3oud33l1g18hmd278.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "494928162578-7g0pe211bg4nfumb9t5lf5pj3tdcrkpd.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dokseogarden"
+              }
+            }
+          ]
         }
       }
     }
