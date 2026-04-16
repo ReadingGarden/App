@@ -29,6 +29,13 @@ def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
+// Codemagic CI 환경변수 폴백
+if (System.getenv('CM_KEYSTORE_PATH')) {
+    keystoreProperties['storeFile'] = System.getenv('CM_KEYSTORE_PATH')
+    keystoreProperties['storePassword'] = System.getenv('CM_KEYSTORE_PASSWORD')
+    keystoreProperties['keyAlias'] = System.getenv('CM_KEY_ALIAS')
+    keystoreProperties['keyPassword'] = System.getenv('CM_KEY_PASSWORD')
+}
 
 android {
     namespace "com.dokseogarden"
