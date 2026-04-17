@@ -75,6 +75,8 @@ Future<void> runMainApp() async {
     };
   }
 
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   if (Platform.isAndroid) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
