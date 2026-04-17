@@ -177,7 +177,7 @@ class MyApp extends ConsumerWidget {
                 ref.watch(connectivityProvider).valueOrNull ?? true;
             return SafeArea(
               top: false,
-              bottom: !Platform.isIOS,
+              bottom: false,
               child: Column(
                 children: [
                   if (!isOnline)
