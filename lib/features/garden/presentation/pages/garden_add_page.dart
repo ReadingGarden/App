@@ -61,7 +61,7 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
     if (created) {
       context.pushNamed('garden-add-done');
     } else {
-      Widgets.showToast(fToast, '최대 5개의 가든만 만들 수 있어요');
+      Widgets.showWarningToast(context, '최대 5개의 가든만 만들 수 있어요');
     }
   }
 

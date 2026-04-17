@@ -1,7 +1,8 @@
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/gen/assets.gen.dart';
@@ -204,48 +205,48 @@ class Widgets {
     );
   }
 
-  static void showToast(FToast fToast, String msg) {
-    fToast.showToast(
-      child: toast(msg),
-      positionedToastBuilder: (context, child, gravity) {
-        return Positioned(
-          bottom: 100.h,
-          left: 24.w,
-          right: 24.w,
-          child: child,
-        );
-      },
-    );
-  }
-
-  static void showErrorToast(FToast fToast, [String? msg]) {
-    fToast.showToast(
-      child: toast(msg ?? '잠시 후 다시 시도해주세요', color: AppColors.errorRedColor),
-      positionedToastBuilder: (context, child, gravity) {
-        return Positioned(
-          bottom: 100.h,
-          left: 24.w,
-          right: 24.w,
-          child: child,
-        );
-      },
-    );
-  }
-
-  static toast(String msg, {Color color = AppColors.black_59}) {
-    return Container(
-      width: 312.w,
-      height: 40.h,
-      padding: EdgeInsets.only(left: 18.w, top: 10.h, bottom: 10.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
-        color: color,
+  static void showErrorToast(BuildContext context, [String? msg]) {
+    CherryToast.error(
+      title: Text(
+        msg ?? '잠시 후 다시 시도해주세요',
+        style: TextStyle(fontSize: 14.sp),
       ),
-      child: Text(
+      toastPosition: Position.top,
+      animationType: AnimationType.fromLeft,
+    ).show(context);
+  }
+
+  static void showSuccessToast(BuildContext context, String msg) {
+    CherryToast.success(
+      title: Text(
         msg,
-        style: TextStyle(fontSize: 14.sp, color: Colors.white),
+        style: TextStyle(fontSize: 14.sp),
       ),
-    );
+      toastPosition: Position.top,
+      animationType: AnimationType.fromLeft,
+    ).show(context);
+  }
+
+  static void showWarningToast(BuildContext context, String msg) {
+    CherryToast.warning(
+      title: Text(
+        msg,
+        style: TextStyle(fontSize: 14.sp),
+      ),
+      toastPosition: Position.top,
+      animationType: AnimationType.fromLeft,
+    ).show(context);
+  }
+
+  static void showInfoToast(BuildContext context, String msg) {
+    CherryToast.info(
+      title: Text(
+        msg,
+        style: TextStyle(fontSize: 14.sp),
+      ),
+      toastPosition: Position.top,
+      animationType: AnimationType.fromLeft,
+    ).show(context);
   }
 
   static Widget titleList(String title, Function function, {Widget? widget}) {
@@ -397,7 +398,7 @@ class Widgets {
   }
 
   static Future shareBottomSheet(
-      context, String title, String garden, int gardenNo, fToast) {
+      context, String title, String garden, int gardenNo) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
       useSafeArea: true,

@@ -78,7 +78,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
         });
       }
     } else {
-      if (mounted) Widgets.showErrorToast(fToast, '검색에 실패했어요');
+      if (mounted) Widgets.showErrorToast(context, '검색에 실패했어요');
     }
 
     setState(() {
@@ -96,9 +96,9 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
     if (statusCode == 200) {
       context.pushNamed('book-add-garden', extra: {'isbn13': isbn13});
     } else if (statusCode == 0) {
-      Widgets.showErrorToast(fToast);
+      Widgets.showErrorToast(context);
     } else {
-      Widgets.showToast(fToast, '바코드가 등록되지 않은 책이에요');
+      Widgets.showInfoToast(context, '바코드가 등록되지 않은 책이에요');
     }
   }
 
@@ -113,7 +113,7 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
         getDetailBookIsbn(barcode);
       } else {
         if (!mounted) return;
-        Widgets.showToast(fToast, '바코드가 인식되지 않았어요');
+        Widgets.showWarningToast(context, '바코드가 인식되지 않았어요');
       }
     } catch (e) {
       logger.e('바코드 스캔 중 오류가 발생했습니다: $e');

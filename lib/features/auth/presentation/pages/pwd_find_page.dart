@@ -89,7 +89,7 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
       final response = await authService.postPwdFind(data);
       if (!mounted) return;
       if (response?.statusCode == 200) {
-        Widgets.showToast(fToast, '인증번호가 발송되었습니다');
+        Widgets.showSuccessToast(context, '인증번호가 발송되었습니다');
         ref.read(authSendProvider.notifier).state = true;
         ref.read(timerProvider.notifier).resetTimer();
         timerNotifier.startTimer();

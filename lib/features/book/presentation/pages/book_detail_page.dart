@@ -84,7 +84,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
 
     final bookDetail = ref.read(bookDetailProvider);
     if (bookDetail.bookNo == 0 && mounted) {
-      Widgets.showErrorToast(fToast, '책 정보를 불러오지 못했어요');
+      Widgets.showErrorToast(context, '책 정보를 불러오지 못했어요');
       return;
     }
 
@@ -107,7 +107,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
 
     if (statusCode == 200) {
       context.pop();
-      Widgets.showToast(fToast, '선택한 가든으로 옮겨 심었어요');
+      Widgets.showSuccessToast(context, '선택한 가든으로 옮겨 심었어요');
       final gardenColor = ref.read(bookDetailProvider).gardenColor;
       if (gardenColor.isNotEmpty) {
         final backgroundColor = Functions.gardenBackColor(gardenColor);
@@ -116,9 +116,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
         _colorTween = ColorTween(begin: backgroundColor, end: Colors.white);
       }
     } else if (statusCode == 403) {
-      Widgets.showToast(fToast, '꽉 찼어요! 다른 가든을 선택해주세요');
+      Widgets.showWarningToast(context, '꽉 찼어요! 다른 가든을 선택해주세요');
     } else {
-      Widgets.showErrorToast(fToast);
+      Widgets.showErrorToast(context);
     }
   }
 
@@ -132,7 +132,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       context.pop();
       context.replaceNamed('bottom-navi');
     } else {
-      Widgets.showErrorToast(fToast, '삭제에 실패했어요');
+      Widgets.showErrorToast(context, '삭제에 실패했어요');
     }
   }
 

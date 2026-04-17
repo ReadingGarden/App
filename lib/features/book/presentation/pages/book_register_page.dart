@@ -94,9 +94,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       context.pushReplacementNamed('book-register-done',
           extra: result.gardenTitle);
     } else if (result.statusCode == 403) {
-      Widgets.showToast(fToast, '꽉 찼어요! 다른 가든을 선택해주세요');
+      Widgets.showWarningToast(context, '꽉 찼어요! 다른 가든을 선택해주세요');
     } else {
-      Widgets.showErrorToast(fToast, '책 등록에 실패했어요');
+      Widgets.showErrorToast(context, '책 등록에 실패했어요');
     }
   }
 

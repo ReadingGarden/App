@@ -48,7 +48,7 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
       context.pop();
       context.pop('MemoPage_getMemoList');
     } else {
-      Widgets.showErrorToast(fToast, '메모 삭제에 실패했어요');
+      Widgets.showErrorToast(context, '메모 삭제에 실패했어요');
     }
   }
 

@@ -130,8 +130,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
       }
 
       if (!mounted) return;
-      fToast.init(context);
-      Widgets.showToast(fToast, '갤러리에 사진이 저장되었어요!');
+      Widgets.showSuccessToast(context, '갤러리에 사진이 저장되었어요!');
     });
   }
 

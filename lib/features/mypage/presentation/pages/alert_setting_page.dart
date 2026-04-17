@@ -56,7 +56,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
       ref.read(timeProvider.notifier).state =
           DateTime.parse(response?.data['data']['push_time']);
     } else {
-      if (mounted) Widgets.showErrorToast(fToast, '알림 설정을 불러오지 못했어요');
+      if (mounted) Widgets.showErrorToast(context, '알림 설정을 불러오지 못했어요');
     }
   }
 
@@ -64,7 +64,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
   void putPush(Map data) async {
     final response = await pushService.putPush(data);
     if (response?.statusCode != 200 && mounted) {
-      Widgets.showErrorToast(fToast, '알림 설정 변경에 실패했어요');
+      Widgets.showErrorToast(context, '알림 설정 변경에 실패했어요');
     }
   }
 
