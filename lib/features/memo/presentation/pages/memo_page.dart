@@ -106,7 +106,10 @@ class _MemoPageState extends ConsumerState<MemoPage> {
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         controller: _scrollController,
-        padding: EdgeInsets.symmetric(horizontal: 24.w),
+        padding: EdgeInsets.only(
+            left: 24.w,
+            right: 24.w,
+            bottom: 110.h + MediaQuery.of(context).viewPadding.bottom),
         children: List.generate(
           memoList.length,
           (index) {

@@ -135,8 +135,12 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
                     child: GridView(
                       physics: const AlwaysScrollableScrollPhysics(),
                       controller: _scrollController,
-                      padding:
-                          EdgeInsets.only(left: 24.w, right: 24.w, top: 24.h),
+                      padding: EdgeInsets.only(
+                          left: 24.w,
+                          right: 24.w,
+                          top: 24.h,
+                          bottom: 110.h +
+                              MediaQuery.of(context).viewPadding.bottom),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         childAspectRatio:
                             MediaQuery.of(context).size.aspectRatio / 0.85,

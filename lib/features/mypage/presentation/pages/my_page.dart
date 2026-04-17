@@ -48,6 +48,8 @@ class _MyPageState extends ConsumerState<MyPage> {
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
+        padding: EdgeInsets.only(
+            bottom: 110.h + MediaQuery.of(context).viewPadding.bottom),
         child: Container(
           margin: EdgeInsets.only(top: 30.h, bottom: 24.h),
           child: Column(
