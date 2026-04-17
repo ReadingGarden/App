@@ -248,11 +248,11 @@ class _GardenPageState extends ConsumerState<GardenPage>
               ],
             ),
             if (gardenMainBookList.isEmpty && !gardenMain.isEmpty)
-              const Positioned(
+              Positioned(
                 left: 0,
                 right: 0,
-                bottom: 0,
-                child: _FloatingBalloon(),
+                bottom: 70.h + MediaQuery.of(context).viewPadding.bottom,
+                child: const _FloatingBalloon(),
               ),
           ],
         ),
