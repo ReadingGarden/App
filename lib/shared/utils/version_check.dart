@@ -70,7 +70,7 @@ Future<void> showForceUpdateSheet(BuildContext context) async {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '업데이트 안내',
+                '앱 업데이트가 필요해요',
                 style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
               Container(
