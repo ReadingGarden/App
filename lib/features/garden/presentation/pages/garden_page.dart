@@ -174,7 +174,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
                   child: (!gardenMain.isEmpty)
                       ? Container(
                           margin: EdgeInsets.only(
-                              top: 34.h, left: 24.w, right: 24.w),
+                              top: MediaQuery.of(context).viewPadding.top + 8.h, left: 24.w, right: 24.w),
                           color: Colors.transparent,
                           child: Stack(
                             alignment: Alignment.topRight,
