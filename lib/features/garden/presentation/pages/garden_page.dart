@@ -251,7 +251,8 @@ class _GardenPageState extends ConsumerState<GardenPage>
               Positioned(
                 left: 0,
                 right: 0,
-                bottom: 70.h + MediaQuery.of(context).viewPadding.bottom,
+                bottom: (Platform.isIOS ? 90.h : 70.h) +
+                    MediaQuery.of(context).viewPadding.bottom,
                 child: const _FloatingBalloon(),
               ),
           ],
