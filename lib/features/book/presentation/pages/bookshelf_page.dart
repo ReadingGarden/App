@@ -54,6 +54,7 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
   void dispose() {
     _listAnimController.dispose();
     _scrollController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
