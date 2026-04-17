@@ -53,8 +53,9 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
       ref.read(bookSwitchProvider.notifier).state =
           response?.data['data']['push_book_ok'];
 
+      final pushTime = response?.data['data']['push_time'];
       ref.read(timeProvider.notifier).state =
-          DateTime.parse(response?.data['data']['push_time']);
+          pushTime != null ? DateTime.parse(pushTime) : DateTime.now();
     } else {
       if (mounted) Widgets.showErrorToast(context, '알림 설정을 불러오지 못했어요');
     }
