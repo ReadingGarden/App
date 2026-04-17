@@ -6,9 +6,9 @@ import 'package:dio/dio.dart';
 class AppService {
   final _dio = dioClient.dio;
 
-  Future<Response?> getMinVersion() async {
+  Future<Response?> getMinVersion(String platform) async {
     try {
-      final response = await _dio.get('${Constant.URL}app/version');
+      final response = await _dio.get('${Constant.URL}app/version?platform=$platform');
       logger.d('앱 버전 조회 응답: ${response.data}');
       return response;
     } on DioException catch (e) {

@@ -26,10 +26,13 @@ bool _isVersionLower(String current, String min) {
 /// 업데이트 필요 시 true 반환.
 Future<bool> checkForceUpdate(BuildContext context) async {
   try {
-    final response = await appService.getMinVersion();
+    final platform = Platform.isIOS ? 'ios' : 'android';
+    final response = await appService.getMinVersion(platform);
     if (response == null || response.statusCode != 200) return false;
 
-    final minVersion = response.data['data']['min_version'] as String?;
+    final data = response.data['data'];
+    final minVersion = data['min_supported_version'] as String?;
+    final storeUrl = data['store_url'] as String?;
     if (minVersion == null) return false;
 
     final packageInfo = await PackageInfo.fromPlatform();
@@ -39,7 +42,7 @@ Future<bool> checkForceUpdate(BuildContext context) async {
 
     if (_isVersionLower(currentVersion, minVersion)) {
       if (!context.mounted) return true;
-      await showForceUpdateSheet(context);
+      await showForceUpdateSheet(context, storeUrl);
       return true;
     }
   } catch (e) {
@@ -48,7 +51,7 @@ Future<bool> checkForceUpdate(BuildContext context) async {
   return false;
 }
 
-Future<void> showForceUpdateSheet(BuildContext context) async {
+Future<void> showForceUpdateSheet(BuildContext context, String? storeUrl) async {
   await showModalBottomSheet(
     context: context,
     backgroundColor: Colors.white,
@@ -81,10 +84,9 @@ Future<void> showForceUpdateSheet(BuildContext context) async {
                 ),
               ),
               Widgets.button('업데이트', true, () {
-                final url = Platform.isIOS
-                    ? 'https://apps.apple.com/app/id<APP_ID>'
-                    : 'https://play.google.com/store/apps/details?id=com.dokseogarden';
-                launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                if (storeUrl != null) {
+                  launchUrl(Uri.parse(storeUrl), mode: LaunchMode.externalApplication);
+                }
               }),
             ],
           ),
