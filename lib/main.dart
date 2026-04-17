@@ -75,10 +75,12 @@ Future<void> runMainApp() async {
     };
   }
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.transparent,
-  ));
+  if (Platform.isAndroid) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+    ));
+  }
 
   // ProviderContainer 생성
   final container = ProviderContainer();
@@ -173,6 +175,7 @@ class MyApp extends ConsumerWidget {
                 ref.watch(connectivityProvider).valueOrNull ?? true;
             return SafeArea(
               top: false,
+              bottom: false,
               child: Column(
                 children: [
                   if (!isOnline)
