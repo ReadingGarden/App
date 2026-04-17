@@ -9,6 +9,7 @@ import 'package:book_flutter/features/notification/data/fcm_token_provider.dart'
 import 'package:book_flutter/features/auth/data/repositories/auth_repository.dart';
 import 'package:book_flutter/core/storage/token_storage.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/utils/version_check.dart';
 
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
@@ -41,6 +42,12 @@ class _SplashPageState extends ConsumerState<SplashPage>
     logger.d('스플래시에서 FCM 토큰 조회를 시작합니다: ${ref.read(fcmTokenProvider)}');
 
     Future.delayed(const Duration(seconds: 2), () async {
+      if (!mounted) return;
+
+      // 강제 업데이트 체크
+      final needsUpdate = await checkForceUpdate(context);
+      if (needsUpdate) return;
+
       //저장된 Access 불러오기
       final accessToken = await loadAccess();
       if (!mounted) return;
