@@ -11,6 +11,7 @@ import 'package:book_flutter/features/memo/presentation/providers/memo_detail_pr
     as memo_detail_feature;
 import 'package:book_flutter/shared/constants/app_constant.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
   const MemoDetailPage({super.key, required this.memo});
@@ -22,6 +23,15 @@ class MemoDetailPage extends ConsumerStatefulWidget {
 }
 
 class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
+  late FToast fToast;
+
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast.init(context);
+  }
+
   void _openMemoEdit() async {
     final result =
         await context.pushNamed('memo-update', extra: widget.memo.toJson());
@@ -33,10 +43,12 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
   //메모 삭제 api
   void deleteMemo() async {
     final deleted = await memo_detail_feature.deleteMemo(ref, widget.memo.id);
+    if (!mounted) return;
     if (deleted) {
-      if (!mounted) return;
       context.pop();
       context.pop('MemoPage_getMemoList');
+    } else {
+      Widgets.showErrorToast(fToast, '메모 삭제에 실패했어요');
     }
   }
 

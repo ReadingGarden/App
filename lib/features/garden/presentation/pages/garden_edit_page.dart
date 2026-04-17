@@ -70,6 +70,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
       context.replaceNamed('bottom-navi');
     } else if (statusCode == 403) {
       Widgets.showToast(fToast, '가든이 하나뿐이라 삭제할 수 없어요');
+    } else {
+      Widgets.showErrorToast(fToast, '가든 삭제에 실패했어요');
     }
   }
 
@@ -88,6 +90,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
       Widgets.showToast(fToast, '남아있는 책을 모두 옮겼어요!');
     } else if (statusCode == 403) {
       Widgets.showToast(fToast, '꽉 찼어요! 다른 가든을 선택해주세요');
+    } else {
+      Widgets.showErrorToast(fToast);
     }
   }
 
@@ -106,6 +110,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     if (!mounted) return;
     if (statusCode == 200) {
       context.replaceNamed('bottom-navi');
+    } else {
+      Widgets.showErrorToast(fToast, '가든 수정에 실패했어요');
     }
   }
 
@@ -119,6 +125,8 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     if (statusCode == 200) {
       context.pop();
       context.replaceNamed('bottom-navi');
+    } else {
+      Widgets.showErrorToast(fToast, '가든 탈퇴에 실패했어요');
     }
   }
 

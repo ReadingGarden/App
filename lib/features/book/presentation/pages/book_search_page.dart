@@ -77,6 +77,8 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
           _currentPage++;
         });
       }
+    } else {
+      if (mounted) Widgets.showErrorToast(fToast, '검색에 실패했어요');
     }
 
     setState(() {
@@ -93,8 +95,8 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
     if (!mounted) return;
     if (statusCode == 200) {
       context.pushNamed('book-add-garden', extra: {'isbn13': isbn13});
-    } else if (statusCode == 401) {
-      //500에러
+    } else if (statusCode == 0) {
+      Widgets.showErrorToast(fToast);
     } else {
       Widgets.showToast(fToast, '바코드가 등록되지 않은 책이에요');
     }

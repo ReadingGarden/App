@@ -218,14 +218,28 @@ class Widgets {
     );
   }
 
-  static toast(String msg) {
+  static void showErrorToast(FToast fToast, [String? msg]) {
+    fToast.showToast(
+      child: toast(msg ?? '잠시 후 다시 시도해주세요', color: AppColors.errorRedColor),
+      positionedToastBuilder: (context, child, gravity) {
+        return Positioned(
+          bottom: 100.h,
+          left: 24.w,
+          right: 24.w,
+          child: child,
+        );
+      },
+    );
+  }
+
+  static toast(String msg, {Color color = AppColors.black_59}) {
     return Container(
       width: 312.w,
       height: 40.h,
       padding: EdgeInsets.only(left: 18.w, top: 10.h, bottom: 10.h),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: AppColors.black_59,
+        color: color,
       ),
       child: Text(
         msg,

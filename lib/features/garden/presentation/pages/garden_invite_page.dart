@@ -40,6 +40,9 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
   //초대 가든 조회 api
   void getInviteGarden() async {
     await garden_feature.fetchInviteGarden(ref, widget.gardenNo);
+    if (mounted && ref.read(garden_feature.inviteGardenProvider).isEmpty) {
+      Widgets.showErrorToast(fToast, '초대 정보를 불러오지 못했어요');
+    }
   }
 
   //가든 초대 수락 api
@@ -61,6 +64,8 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
       Widgets.showToast(fToast, '멤버 정원이 꽉 차서 참여할 수 없어요');
     } else if (statusCode == 409) {
       Widgets.showToast(fToast, '이미 가입한 가든의 초대는 수락할 수 없어요');
+    } else {
+      Widgets.showErrorToast(fToast);
     }
   }
 

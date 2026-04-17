@@ -82,7 +82,13 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   Future<void> _loadBookDetail() async {
     await ref.read(bookDetailProvider.notifier).fetchDetail(ref, widget.bookNo);
 
-    final gardenColor = ref.read(bookDetailProvider).gardenColor;
+    final bookDetail = ref.read(bookDetailProvider);
+    if (bookDetail.bookNo == 0 && mounted) {
+      Widgets.showErrorToast(fToast, '책 정보를 불러오지 못했어요');
+      return;
+    }
+
+    final gardenColor = bookDetail.gardenColor;
     if (gardenColor.isNotEmpty) {
       final backgroundColor = Functions.gardenBackColor(gardenColor);
       ref.read(bookDetailAppBarColorProvider.notifier).state = backgroundColor;
@@ -111,6 +117,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       }
     } else if (statusCode == 403) {
       Widgets.showToast(fToast, '꽉 찼어요! 다른 가든을 선택해주세요');
+    } else {
+      Widgets.showErrorToast(fToast);
     }
   }
 
@@ -123,6 +131,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
     if (statusCode == 200) {
       context.pop();
       context.replaceNamed('bottom-navi');
+    } else {
+      Widgets.showErrorToast(fToast, '삭제에 실패했어요');
     }
   }
 

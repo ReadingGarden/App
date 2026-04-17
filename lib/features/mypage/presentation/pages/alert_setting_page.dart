@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 //App Switch 상태를 관리하는 ...
@@ -27,9 +28,13 @@ class AlertSettingPage extends ConsumerStatefulWidget {
 }
 
 class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
+  late FToast fToast;
+
   @override
   void initState() {
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
     Future.microtask(() {
       ref.read(appSwitchProvider.notifier).state = false;
       ref.read(bookSwitchProvider.notifier).state = false;
@@ -50,12 +55,17 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
 
       ref.read(timeProvider.notifier).state =
           DateTime.parse(response?.data['data']['push_time']);
+    } else {
+      if (mounted) Widgets.showErrorToast(fToast, '알림 설정을 불러오지 못했어요');
     }
   }
 
   //푸시 알림 수정 api
   void putPush(Map data) async {
-    await pushService.putPush(data);
+    final response = await pushService.putPush(data);
+    if (response?.statusCode != 200 && mounted) {
+      Widgets.showErrorToast(fToast, '알림 설정 변경에 실패했어요');
+    }
   }
 
   @override
