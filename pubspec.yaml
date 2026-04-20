@@ -92,6 +92,14 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   freezed: ^3.2.5
   json_serializable: ^6.13.1
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  ios: true
+  android: false
+  image_path: "assets/icons/app_icon.png"
+  remove_alpha_ios: true
+  background_color_ios: "#f2f2f2"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
