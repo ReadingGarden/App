@@ -130,7 +130,10 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
               'author': _authorController.text,
               'publisher': _publisherController.text,
               'description': '',
-              'page': _pageController.text
+              'isbn13': '',
+              'cover': null,
+              'itemPage': int.tryParse(_pageController.text) ?? 0,
+              'book_no': null,
             });
           } else {
             // context.pushNamed('book-register', extra: {});
