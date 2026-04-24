@@ -47,10 +47,11 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
         _titleController.text.isEmpty ? '제목은 필수예요' : null;
   }
 
-  //총 페이지 입력 에러 (빈칸 허용, 숫자 아닌 값만 에러)
+  //총 페이지 입력 에러
   void _pageErrorValid() {
-    if (_pageController.text.isNotEmpty &&
-        int.tryParse(_pageController.text) == null) {
+    if (_pageController.text.isEmpty) {
+      ref.read(bookPageErrorProvider.notifier).state = '페이지 수는 필수예요';
+    } else if (int.tryParse(_pageController.text) == null) {
       ref.read(bookPageErrorProvider.notifier).state = '숫자를 입력해주세요';
     } else {
       ref.read(bookPageErrorProvider.notifier).state = null;
@@ -126,6 +127,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
       ),
       bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('내 가든에 심기', true, () {
           _titleErrorValid();
+          _pageErrorValid();
           if (ref.read(bookTitleErrorProvider) == null &&
               ref.read(bookPageErrorProvider) == null) {
             context.pushNamed('book-register', extra: {
