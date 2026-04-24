@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 
+//책 제목 입력 에러 상태 ...
+final bookTitleErrorProvider = StateProvider<String?>((ref) => null);
 //총 페이지 입력 에러 상태 ...
 final bookPageErrorProvider = StateProvider<String?>((ref) => null);
 
@@ -25,6 +27,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
   void initState() {
     super.initState();
     Future.microtask(() {
+      ref.read(bookTitleErrorProvider.notifier).state = null;
       ref.read(bookPageErrorProvider.notifier).state = null;
     });
   }
@@ -38,9 +41,16 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
     super.dispose();
   }
 
-  //총 페이지 입력 에러
+  //책 제목 입력 에러
+  void _titleErrorValid() {
+    ref.read(bookTitleErrorProvider.notifier).state =
+        _titleController.text.isEmpty ? '제목은 필수예요' : null;
+  }
+
+  //총 페이지 입력 에러 (빈칸 허용, 숫자 아닌 값만 에러)
   void _pageErrorValid() {
-    if (int.tryParse(_pageController.text) == null) {
+    if (_pageController.text.isNotEmpty &&
+        int.tryParse(_pageController.text) == null) {
       ref.read(bookPageErrorProvider.notifier).state = '숫자를 입력해주세요';
     } else {
       ref.read(bookPageErrorProvider.notifier).state = null;
@@ -55,27 +65,24 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
           child: Container(
-            margin: REdgeInsets.only(bottom: 20.h),
+            margin: REdgeInsets.only(top: 20.h, bottom: 20.h),
             child: Column(children: [
               Container(
                 margin: EdgeInsets.only(bottom: 8.h),
-                padding: EdgeInsets.only(
-                    left: 24.w, right: 24.w, bottom: 12.h, top: 6.h),
+                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
                 alignment: Alignment.center,
                 child: Widgets.textfield(
                     ref,
                     _titleController,
                     '책 제목',
                     '제목을 입력해주세요',
-                    null,
-                    StateProvider(
-                      (ref) => null,
-                    )),
+                    ref.watch(bookTitleErrorProvider),
+                    bookTitleErrorProvider,
+                    validateFunction: _titleErrorValid),
               ),
               Container(
                 margin: EdgeInsets.only(bottom: 8.h),
-                padding: EdgeInsets.only(
-                    left: 24.w, right: 24.w, bottom: 12.h, top: 6.h),
+                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
                 alignment: Alignment.center,
                 child: Widgets.textfield(
                     ref,
@@ -89,8 +96,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
               ),
               Container(
                 margin: EdgeInsets.only(bottom: 8.h),
-                padding: EdgeInsets.only(
-                    left: 24.w, right: 24.w, bottom: 12.h, top: 6.h),
+                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
                 alignment: Alignment.center,
                 child: Widgets.textfield(
                     ref,
@@ -103,8 +109,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
                     )),
               ),
               Container(
-                padding: EdgeInsets.only(
-                    left: 24.w, right: 24.w, bottom: 12.h, top: 6.h),
+                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
                 alignment: Alignment.center,
                 child: Widgets.textfield(
                     ref,
@@ -120,11 +125,9 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
         ),
       ),
       bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('내 가든에 심기', true, () {
-          if (_titleController.text.isNotEmpty &&
-              _authorController.text.isNotEmpty &&
-              _publisherController.text.isNotEmpty &&
-              _pageController.text.isNotEmpty &&
-              ref.watch(bookPageErrorProvider) == null) {
+          _titleErrorValid();
+          if (ref.read(bookTitleErrorProvider) == null &&
+              ref.read(bookPageErrorProvider) == null) {
             context.pushNamed('book-register', extra: {
               'title': _titleController.text,
               'author': _authorController.text,
@@ -135,10 +138,7 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
               'itemPage': int.tryParse(_pageController.text) ?? 0,
               'book_no': null,
             });
-          } else {
-            // context.pushNamed('book-register', extra: {});
           }
-          // postBook();
         }),
       ),
     );

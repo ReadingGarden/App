@@ -160,11 +160,11 @@ class Widgets {
             style: TextStyle(fontSize: 16.sp),
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
-              counter: (label == '가든 소개' ||
+              counterText: (label == '가든 소개' ||
                       label == '가든 이름' ||
                       label == '총 페이지' ||
                       label == '닉네임')
-                  ? Container()
+                  ? ''
                   : null,
               fillColor: AppColors.grey_FA,
               filled: true,
