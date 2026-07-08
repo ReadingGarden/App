@@ -62,7 +62,7 @@ workflows:
       - name: Get Flutter packages
         script: flutter pub get
       - name: Install CocoaPods
-        script: cd ios && pod install
+        script: cd ios && pod install --repo-update
       - name: Set up code signing
         script: xcode-project use-profiles
       - name: Build IPA
