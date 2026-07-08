@@ -381,8 +381,62 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                       color: AppColors.grey_8D),
                                 ),
                               ),
-                              bookDetail.userNo == user.userNo
-                                  ? Column(
+                              if (bookDetail.userNo != user.userNo)
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 40.h),
+                                  padding: EdgeInsets.only(
+                                      left: 24.w,
+                                      right: 24.w,
+                                      top: 20.h,
+                                      bottom: 20.h),
+                                  decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                            offset: const Offset(0, 4),
+                                            blurRadius: 8.r,
+                                            color: const Color(0xff97CD8D)
+                                                .withValues(alpha: 0.05))
+                                      ],
+                                      border:
+                                          Border.all(color: AppColors.grey_F2),
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      color: Colors.white),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(bottom: 8.h),
+                                        height: 22.h,
+                                        child: Text(
+                                          '책 소개',
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: AppColors.grey_8D),
+                                        ),
+                                      ),
+                                      (bookDetail.bookInfo != '')
+                                          ? Text(
+                                              bookDetail.bookInfo,
+                                              style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  height: 1.75.h),
+                                            )
+                                          : Container(
+                                              alignment: Alignment.center,
+                                              margin: EdgeInsets.only(
+                                                  top: 8.h, bottom: 8.h),
+                                              child: Text(
+                                                  '소개글이 등록되지 않은 책이에요',
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color:
+                                                          AppColors.grey_8D)),
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                              Column(
                                       children: [
                                         Container(
                                           padding: EdgeInsets.only(
@@ -459,7 +513,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
-                                              GestureDetector(
+                                              if (bookDetail.userNo ==
+                                                  user.userNo)
+                                                GestureDetector(
                                                 onTap: () async {
                                                   final data = bookDetail
                                                       .toBookAddPayload();
@@ -502,61 +558,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                         ),
                                         _memoList()
                                       ],
-                                    )
-                                  : Container(
-                                      padding: EdgeInsets.only(
-                                          left: 24.w,
-                                          right: 24.w,
-                                          top: 20.h,
-                                          bottom: 20.h),
-                                      decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                                offset: const Offset(0, 4),
-                                                blurRadius: 8.r,
-                                                color: const Color(0xff97CD8D)
-                                                    .withValues(alpha: 0.05))
-                                          ],
-                                          border: Border.all(
-                                              color: AppColors.grey_F2),
-                                          borderRadius:
-                                              BorderRadius.circular(20.r),
-                                          color: Colors.white),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            margin:
-                                                EdgeInsets.only(bottom: 8.h),
-                                            height: 22.h,
-                                            child: Text(
-                                              '책 소개',
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color: AppColors.grey_8D),
-                                            ),
-                                          ),
-                                          (bookDetail.bookInfo != '')
-                                              ? Text(
-                                                  bookDetail.bookInfo,
-                                                  style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      height: 1.75.h),
-                                                )
-                                              : Container(
-                                                  alignment: Alignment.center,
-                                                  margin: EdgeInsets.only(
-                                                      top: 8.h, bottom: 8.h),
-                                                  child: Text(
-                                                      '소개글이 등록되지 않은 책이에요',
-                                                      style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          color: AppColors
-                                                              .grey_8D)),
-                                                ),
-                                        ],
-                                      )),
+                                    ),
                             ],
                           ),
                         ),
