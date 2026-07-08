@@ -417,7 +417,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                       ),
                                       (bookDetail.bookInfo != '')
                                           ? Text(
-                                              bookDetail.bookInfo,
+                                              Functions.cleanBookInfo(
+                                                  bookDetail.bookInfo),
                                               style: TextStyle(
                                                   fontSize: 12.sp,
                                                   height: 1.75.h),

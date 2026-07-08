@@ -296,6 +296,33 @@ class Functions {
     }
   }
 
+  /// 외부 도서 API가 넘긴 소개글에 섞여 있는 HTML 태그·엔티티를 정제
+  static String cleanBookInfo(String raw) {
+    if (raw.isEmpty) return raw;
+    var text = raw;
+    text = text.replaceAll(RegExp(r'<br\s*/?>', caseSensitive: false), '\n');
+    text = text.replaceAll(RegExp(r'<[^>]+>'), '');
+    const namedEntities = {
+      '&amp;': '&',
+      '&lt;': '<',
+      '&gt;': '>',
+      '&quot;': '"',
+      '&apos;': "'",
+      '&nbsp;': ' ',
+      '&middot;': '·',
+    };
+    namedEntities.forEach((k, v) => text = text.replaceAll(k, v));
+    text = text.replaceAllMapped(RegExp(r'&#(\d+);'), (m) {
+      final code = int.tryParse(m.group(1)!);
+      return code != null ? String.fromCharCode(code) : m.group(0)!;
+    });
+    text = text.replaceAllMapped(RegExp(r'&#[xX]([0-9a-fA-F]+);'), (m) {
+      final code = int.tryParse(m.group(1)!, radix: 16);
+      return code != null ? String.fromCharCode(code) : m.group(0)!;
+    });
+    return text.trim();
+  }
+
   static Future<void> captureWidget(
       GlobalKey widgetKey, Function(Uint8List?) onCaptured) async {
     RenderRepaintBoundary boundary =

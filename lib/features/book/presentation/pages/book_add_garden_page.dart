@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:book_flutter/shared/theme/app_assets.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:book_flutter/shared/utils/functions.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/book/domain/entities/book_isbn_detail_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_add_garden_provider.dart';
@@ -260,7 +261,8 @@ class _BookAddGardenPageState extends ConsumerState<BookAddGardenPage> {
                             ),
                             (bookResult().description != '')
                                 ? Text(
-                                    bookResult().description,
+                                    Functions.cleanBookInfo(
+                                        bookResult().description),
                                     style: TextStyle(
                                         fontSize: 12.sp, height: 1.75.h),
                                   )
