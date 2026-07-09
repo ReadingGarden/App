@@ -8,7 +8,7 @@ workflows:
         - keystore_reference
       groups:
         - google_play_credentials
-      flutter: 3.41.3
+      flutter: 3.41.7
       java: 17
     cache:
       cache_paths:
@@ -44,7 +44,7 @@ workflows:
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.dokseogarden
-      flutter: 3.41.3
+      flutter: 3.41.7
       cocoapods: default
     cache:
       cache_paths:
