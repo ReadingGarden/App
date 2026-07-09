@@ -145,6 +145,12 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
     final user = ref.watch(auth_feature.authUserProvider);
     final bookDetail = ref.watch(bookDetailProvider);
 
+    // 다른 사람 책일 때 표시할 책 주인 멤버 (가든 멤버 목록에서 user_no로 조회)
+    final gardenMembers = ref.watch(gardenMainMemberListProvider);
+    final ownerMatches =
+        gardenMembers.where((m) => m.userNo == bookDetail.userNo);
+    final bookOwner = ownerMatches.isEmpty ? null : ownerMatches.first;
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
@@ -462,7 +468,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                           child: Column(
                                             children: [
                                               if (bookDetail.userNo !=
-                                                  user.userNo)
+                                                  user.userNo) ...[
                                                 Row(
                                                   children: [
                                                     Text(
@@ -474,6 +480,39 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                     ),
                                                   ],
                                                 ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 16.h),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 36.r,
+                                                        height: 36.r,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                        ),
+                                                        child: AppAssets
+                                                                .profileFlower(
+                                                          bookOwner
+                                                                  ?.userImage ??
+                                                              '',
+                                                        ).image(),
+                                                      ),
+                                                      SizedBox(width: 8.w),
+                                                      Text(
+                                                        bookOwner?.userNick ??
+                                                            '',
+                                                        style: TextStyle(
+                                                            fontSize: 14.sp,
+                                                            fontWeight:
+                                                                FontWeight.w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
                                               Padding(
                                                 padding: EdgeInsets.only(
                                                     top: bookDetail.userNo !=
