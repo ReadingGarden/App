@@ -12,8 +12,9 @@ workflows:
       java: 17
     cache:
       cache_paths:
-        - $FLUTTER_ROOT/.pub-cache
+        - $HOME/.pub-cache
         - $HOME/.gradle/caches
+        - $HOME/.gradle/wrapper
     triggering:
       events:
         - push
@@ -48,8 +49,9 @@ workflows:
       cocoapods: default
     cache:
       cache_paths:
-        - $FLUTTER_ROOT/.pub-cache
+        - $HOME/.pub-cache
         - $HOME/Library/Caches/CocoaPods
+        - ios/Pods
     triggering:
       events:
         - push
@@ -60,14 +62,12 @@ workflows:
       - name: Set up prod GoogleService-Info.plist
         script: cp ios/config/prod/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
       - name: Get Flutter packages
-        script: |
-          flutter clean
-          flutter pub get
+        script: flutter pub get
       - name: Install CocoaPods
         script: |
           cd ios
-          rm -f Podfile.lock
-          pod install --repo-update
+          # 캐시된 Pods로 빠르게 시도, 스펙 불일치 등으로 실패하면 repo 갱신 후 재시도
+          pod install || pod install --repo-update
       - name: Set up code signing
         script: xcode-project use-profiles
       - name: Build IPA
