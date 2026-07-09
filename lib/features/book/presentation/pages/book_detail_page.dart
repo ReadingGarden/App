@@ -461,8 +461,25 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                               color: Colors.white),
                                           child: Column(
                                             children: [
+                                              if (bookDetail.userNo !=
+                                                  user.userNo)
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      '이 책을 심은 사람',
+                                                      style: TextStyle(
+                                                          fontSize: 12.sp,
+                                                          color: AppColors
+                                                              .grey_8D),
+                                                    ),
+                                                  ],
+                                                ),
                                               Padding(
                                                 padding: EdgeInsets.only(
+                                                    top: bookDetail.userNo !=
+                                                            user.userNo
+                                                        ? 16.h
+                                                        : 0,
                                                     bottom: 18.h),
                                                 child: Row(
                                                   children: [
@@ -785,6 +802,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   Widget _memoList() {
     final bookDetail = ref.watch(bookDetailProvider);
     final memoList = ref.watch(bookDetailMemoListProvider);
+    final user = ref.watch(auth_feature.authUserProvider);
 
     return (memoList.isNotEmpty)
         ? ListView(
@@ -805,6 +823,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                           bookTitle: bookDetail.bookTitle,
                           bookAuthor: bookDetail.bookAuthor,
                           bookImageUrl: bookDetail.bookImageUrl,
+                          isMine: bookDetail.userNo == user.userNo,
                         );
 
                         final result =
@@ -912,9 +931,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         ),
                       ),
                     ),
-                    (ref
-                            .watch(bookDetailMemoSelectIndexListProvider)
-                            .isNotEmpty)
+                    (bookDetail.userNo == user.userNo &&
+                            ref
+                                .watch(bookDetailMemoSelectIndexListProvider)
+                                .isNotEmpty)
                         ? AnimatedStar(
                             isSelected: ref.watch(
                                 bookDetailMemoSelectIndexListProvider)[index],

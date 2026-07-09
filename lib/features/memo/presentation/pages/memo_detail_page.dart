@@ -14,9 +14,12 @@ import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MemoDetailPage extends ConsumerStatefulWidget {
-  const MemoDetailPage({super.key, required this.memo});
+  const MemoDetailPage({super.key, required this.memo, this.isMine = true});
 
   final MemoListItemEntity memo;
+
+  /// 내 메모일 때만 수정/삭제 가능. 공유가든에서 남의 메모면 false.
+  final bool isMine;
 
   @override
   ConsumerState<MemoDetailPage> createState() => _MemoDetailPageState();
@@ -56,17 +59,18 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: Widgets.appBar(context, actions: [
-          GestureDetector(
-            onTap: () {
-              _moreBottomSheet();
-            },
-            child: Container(
-              alignment: Alignment.center,
-              width: 60.r,
-              height: 60.r,
-              child: AppAssets.iconEllipsis.svg(width: 24.r, height: 24.r),
-            ),
-          )
+          if (widget.isMine)
+            GestureDetector(
+              onTap: () {
+                _moreBottomSheet();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                width: 60.r,
+                height: 60.r,
+                child: AppAssets.iconEllipsis.svg(width: 24.r, height: 24.r),
+              ),
+            )
         ]),
         body: SingleChildScrollView(
           child: Column(children: [

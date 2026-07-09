@@ -20,6 +20,7 @@ List<RouteBase> get memoRoutes => [
               final memo = state.extra as Map;
               return MemoDetailPage(
                 memo: MemoListItemEntity.fromJson(memo.cast<String, dynamic>()),
+                isMine: memo['is_mine'] as bool? ?? true,
               );
             },
             routes: [

@@ -23,6 +23,7 @@ abstract class BookMemoSummaryEntity with _$BookMemoSummaryEntity {
     required String bookTitle,
     required String bookAuthor,
     required String? bookImageUrl,
+    bool isMine = true,
   }) {
     return {
       'id': id,
@@ -34,6 +35,7 @@ abstract class BookMemoSummaryEntity with _$BookMemoSummaryEntity {
       'book_title': bookTitle,
       'book_author': bookAuthor,
       'book_image_url': bookImageUrl,
+      'is_mine': isMine,
     };
   }
 }
