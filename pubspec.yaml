@@ -124,6 +124,7 @@ flutter:
     - assets/images/ok_flowers/
     - assets/images/page_flowers/
     - assets/images/select_flowers/
+    - assets/images/flower_icons/
     - assets/images/profile/
     - assets/images/empty/
   #   - images/a_dot_burr.jpeg

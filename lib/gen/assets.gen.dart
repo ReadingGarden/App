@@ -17,6 +17,9 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/app_icon.png
+  AssetGenImage get appIcon => const AssetGenImage('assets/icons/app_icon.png');
+
   /// File path: assets/icons/icon_add.svg
   SvgGenImage get iconAdd => const SvgGenImage('assets/icons/icon_add.svg');
 
@@ -117,7 +120,8 @@ class $AssetsIconsGen {
   SvgGenImage get iconWrite => const SvgGenImage('assets/icons/icon_write.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [
+  List<dynamic> get values => [
+    appIcon,
     iconAdd,
     iconAddBig,
     iconAlbum,
@@ -171,6 +175,9 @@ class $AssetsImagesGen {
 
   /// Directory path: assets/images/empty
   $AssetsImagesEmptyGen get empty => const $AssetsImagesEmptyGen();
+
+  /// Directory path: assets/images/flower_icons
+  $AssetsImagesFlowerIconsGen get flowerIcons => const $AssetsImagesFlowerIconsGen();
 
   /// File path: assets/images/google_logo.svg
   SvgGenImage get googleLogo => const SvgGenImage('assets/images/google_logo.svg');
@@ -277,6 +284,28 @@ class $AssetsImagesEmptyGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [emptyPng, emptyPng_, emptyPng__, emptyPng___, emptyPng____];
+}
+
+class $AssetsImagesFlowerIconsGen {
+  const $AssetsImagesFlowerIconsGen();
+
+  /// File path: assets/images/flower_icons/flower_데이지.svg
+  SvgGenImage get flowerSvg => const SvgGenImage('assets/images/flower_icons/flower_데이지.svg');
+
+  /// File path: assets/images/flower_icons/flower_수선화.svg
+  SvgGenImage get flowerSvg_ => const SvgGenImage('assets/images/flower_icons/flower_수선화.svg');
+
+  /// File path: assets/images/flower_icons/flower_장미.svg
+  SvgGenImage get flowerSvg__ => const SvgGenImage('assets/images/flower_icons/flower_장미.svg');
+
+  /// File path: assets/images/flower_icons/flower_튤립.svg
+  SvgGenImage get flowerSvg___ => const SvgGenImage('assets/images/flower_icons/flower_튤립.svg');
+
+  /// File path: assets/images/flower_icons/flower_팬지.svg
+  SvgGenImage get flowerSvg____ => const SvgGenImage('assets/images/flower_icons/flower_팬지.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [flowerSvg, flowerSvg_, flowerSvg__, flowerSvg___, flowerSvg____];
 }
 
 class $AssetsImagesMainFlowersGen {

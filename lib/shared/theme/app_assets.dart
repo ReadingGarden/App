@@ -109,6 +109,23 @@ class AppAssets {
     }
   }
 
+  static SvgGenImage flowerIcon(String flowerName) {
+    switch (flowerName) {
+      case '데이지':
+        return Assets.images.flowerIcons.flowerSvg;
+      case '수선화':
+        return Assets.images.flowerIcons.flowerSvg_;
+      case '장미':
+        return Assets.images.flowerIcons.flowerSvg__;
+      case '튤립':
+        return Assets.images.flowerIcons.flowerSvg___;
+      case '팬지':
+        return Assets.images.flowerIcons.flowerSvg____;
+      default:
+        return Assets.images.flowerIcons.flowerSvg;
+    }
+  }
+
   static AssetGenImage profileFlower(String flowerName) {
     switch (flowerName) {
       case '데이지':
