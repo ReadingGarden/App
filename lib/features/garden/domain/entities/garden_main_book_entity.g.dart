@@ -15,6 +15,7 @@ _GardenMainBookEntity _$GardenMainBookEntityFromJson(
   bookImageUrl: json['book_image_url'] as String? ?? '',
   bookTree: json['book_tree'] as String? ?? '',
   percent: (json['percent'] as num?)?.toDouble() ?? 0,
+  userNo: (json['user_no'] as num?)?.toInt() ?? 0,
 );
 
 Map<String, dynamic> _$GardenMainBookEntityToJson(
@@ -26,4 +27,5 @@ Map<String, dynamic> _$GardenMainBookEntityToJson(
   'book_image_url': instance.bookImageUrl,
   'book_tree': instance.bookTree,
   'percent': instance.percent,
+  'user_no': instance.userNo,
 };

@@ -22,6 +22,7 @@ import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/gen/assets.gen.dart';
 import 'package:book_flutter/features/garden/domain/entities/garden_main_entity.dart';
+import 'package:book_flutter/features/garden/domain/entities/garden_main_book_entity.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart'
     as garden_feature;
 
@@ -80,6 +81,19 @@ class _GardenPageState extends ConsumerState<GardenPage>
       return 3;
     }
     return 4;
+  }
+
+  // 책 주인의 프로필 꽃 이름 (칩 꽃 아이콘 색상 매칭용)
+  // 개인 가든: 멤버 1명(본인) → 본인 프로필 / 공유 가든: 책 주인 멤버의 프로필
+  String _ownerFlowerName(GardenMainBookEntity book) {
+    final members = ref.read(garden_feature.gardenMainMemberListProvider);
+    if (members.isEmpty) return book.bookTree;
+    if (members.length == 1) return members.first.userImage;
+    final owner = members.firstWhere(
+      (m) => m.userNo == book.userNo,
+      orElse: () => members.first,
+    );
+    return owner.userImage;
   }
 
   // 현재 화면 높이 + 스크롤된 거리
@@ -348,18 +362,28 @@ class _GardenPageState extends ConsumerState<GardenPage>
                           Container(
                               margin: EdgeInsets.only(top: 8.h),
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 12.w, vertical: 4.h),
+                                  horizontal: 8.w, vertical: 4.h),
                               decoration: BoxDecoration(
                                   color: AppColors.grey_F2,
                                   border: Border.all(
                                       width: 1.w, color: AppColors.black_59),
                                   borderRadius: BorderRadius.circular(20.r)),
-                              child: Text(
-                                book.bookTitle,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    fontSize: 10.sp,
-                                    fontWeight: FontWeight.w600),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  AppAssets.flowerIcon(_ownerFlowerName(book))
+                                      .svg(width: 14.w, height: 14.w),
+                                  SizedBox(width: 4.w),
+                                  Flexible(
+                                    child: Text(
+                                      book.bookTitle,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
                               ))
                         ],
                       ),

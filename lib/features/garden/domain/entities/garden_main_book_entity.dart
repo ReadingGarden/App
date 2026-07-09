@@ -12,6 +12,7 @@ abstract class GardenMainBookEntity with _$GardenMainBookEntity {
     @Default('') String bookImageUrl,
     @Default('') String bookTree,
     @Default(0) double percent,
+    @Default(0) int userNo,
   }) = _GardenMainBookEntity;
 
   factory GardenMainBookEntity.fromJson(Map<String, dynamic> json) =>
