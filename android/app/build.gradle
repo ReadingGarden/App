@@ -40,7 +40,6 @@ if (System.getenv('CM_KEYSTORE_PATH')) {
 android {
     namespace "com.dokseogarden"
     compileSdkVersion 36
-    buildToolsVersion "35.0.1"
     ndkVersion flutter.ndkVersion
 
     compileOptions {
