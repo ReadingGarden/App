@@ -66,6 +66,7 @@ abstract class BookDetailEntity with _$BookDetailEntity {
       'garden_title': gardenTitle,
       'garden_color': gardenColor,
       'book_status': bookStatus,
+      'book_rating': bookRating,
       'book_title': bookTitle,
       'book_author': bookAuthor,
       'book_publisher': bookPublisher,

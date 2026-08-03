@@ -19,6 +19,16 @@ Future<void> fetchBookReadList(WidgetRef ref, int bookNo) async {
   ref.read(bookReadListProvider.notifier).state = list;
 }
 
+Future<bool> updateBookRating(
+  WidgetRef ref, {
+  required int bookNo,
+  required int rating,
+}) {
+  return ref
+      .read(bookEditRepositoryStateProvider)
+      .updateBookRating(bookNo, rating);
+}
+
 Future<void> updateBookReadDates(
   WidgetRef ref, {
   required List<BookEditHistoryEntity> bookReadList,

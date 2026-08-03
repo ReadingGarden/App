@@ -392,37 +392,9 @@ class _BookAddDonePageState extends ConsumerState<BookAddDonePage> {
                 //별점
                 Container(
                   margin: EdgeInsets.only(top: 40.h),
-                  padding: EdgeInsets.symmetric(vertical: 20.h),
-                  width: 312.w,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.r),
-                    border: Border.all(color: AppColors.grey_F2, width: 1.w),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      StarRatingInput(
-                        rating: _rating,
-                        size: 32.r,
-                        gap: 4.w,
-                        onChanged: (value) => setState(() => _rating = value),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 16.h),
-                        child: Text(
-                          kRatingTexts[_rating],
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: _rating == 0
-                                ? AppColors.grey_8D
-                                : AppColors.starSelectColor,
-                            fontWeight: _rating == 0
-                                ? FontWeight.w400
-                                : FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: StarRatingCard(
+                    rating: _rating,
+                    onChanged: (value) => setState(() => _rating = value),
                   ),
                 )
               ],

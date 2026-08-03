@@ -8,6 +8,7 @@ import 'package:book_flutter/shared/utils/functions.dart';
 import 'package:book_flutter/shared/utils/auto_input_formatter.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
+import 'package:book_flutter/shared/widgets/star_rating.dart';
 import 'package:book_flutter/features/book/domain/entities/book_edit_input_entity.dart';
 import 'package:book_flutter/features/book/presentation/providers/book_edit_provider.dart';
 
@@ -26,6 +27,9 @@ class BookEditPage extends ConsumerStatefulWidget {
 class _BookEditPageState extends ConsumerState<BookEditPage> {
   final TextEditingController _startController = TextEditingController();
   final TextEditingController _endController = TextEditingController();
+
+  //별점 (0 = 아직 안 매김)
+  late int _rating = widget.book.bookRating;
 
   @override
   void initState() {
@@ -62,6 +66,15 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
       startDate: _startController.text,
       endDate: _endController.text,
     );
+
+    //별점은 엔드포인트가 달라 별도 요청. 바뀐 경우에만 보낸다
+    if (_rating > 0 && _rating != widget.book.bookRating) {
+      await updateBookRating(
+        ref,
+        bookNo: widget.book.bookNo,
+        rating: _rating,
+      );
+    }
 
     if (!mounted) return;
     context.pop('BookDetailPage_getBookRead');
@@ -169,7 +182,26 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                         '완독한 날짜를 입력해주세요',
                         endErrorText,
                         endDateErrorProvider,
-                        () => _endValidate())
+                        () => _endValidate()),
+                    //별점
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.only(top: 4.h),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(bottom: 6.h),
+                            child: const Text('별점'),
+                          ),
+                          StarRatingCard(
+                            rating: _rating,
+                            onChanged: (value) =>
+                                setState(() => _rating = value),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               )
@@ -195,7 +227,9 @@ Widget _dateTextField(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Container(
-        padding: EdgeInsets.only(top: 6.h, bottom: 12.h),
+        //에러 없으면 텍스트필드 하단 12, 에러 있으면 에러텍스트 하단 6
+        padding: EdgeInsets.only(
+            top: 4.h, bottom: (errorText == null) ? 12.h : 6.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -226,7 +260,8 @@ Widget _dateTextField(
               },
               style: TextStyle(fontSize: 16.sp),
               decoration: InputDecoration(
-                counter: const Text(''),
+                //빈 counter 위젯은 행 높이를 그대로 차지해서 counterText로 대체
+                counterText: '',
                 fillColor: AppColors.grey_FA,
                 filled: true,
                 hintText: hint,
@@ -261,6 +296,8 @@ Widget _dateTextField(
           ],
         ),
       ),
+      //에러 없을 때만 다음 타이틀과의 추가 간격
+      if (errorText == null) SizedBox(height: 8.h),
     ],
   );
 }

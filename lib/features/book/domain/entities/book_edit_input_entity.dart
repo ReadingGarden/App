@@ -10,6 +10,7 @@ abstract class BookEditInputEntity with _$BookEditInputEntity {
     required String bookTitle,
     required String bookAuthor,
     required String? bookImageUrl,
+    @Default(0) int bookRating,
   }) = _BookEditInputEntity;
 
   factory BookEditInputEntity.fromJson(Map<String, dynamic> json) =>

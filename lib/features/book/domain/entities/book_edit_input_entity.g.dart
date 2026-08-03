@@ -12,6 +12,7 @@ _BookEditInputEntity _$BookEditInputEntityFromJson(Map<String, dynamic> json) =>
       bookTitle: json['book_title'] as String,
       bookAuthor: json['book_author'] as String,
       bookImageUrl: json['book_image_url'] as String?,
+      bookRating: (json['book_rating'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$BookEditInputEntityToJson(
@@ -21,4 +22,5 @@ Map<String, dynamic> _$BookEditInputEntityToJson(
   'book_title': instance.bookTitle,
   'book_author': instance.bookAuthor,
   'book_image_url': instance.bookImageUrl,
+  'book_rating': instance.bookRating,
 };
