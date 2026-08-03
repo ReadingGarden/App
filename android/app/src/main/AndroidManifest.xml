@@ -4,6 +4,13 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
+        <!-- targetSdk 36부터 600dp 이상 화면에서는 screenOrientation이 무시된다.
+             태블릿/폴더블 대응 전까지 세로 고정을 유지하기 위한 임시 opt-out
+             (targetSdk 37부터는 무효) -->
+        <property
+            android:name="android.window.PROPERTY_COMPAT_ALLOW_RESTRICTED_RESIZABILITY"
+            android:value="true" />
+
         <!-- Firebase 알림 채널 설정 -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
