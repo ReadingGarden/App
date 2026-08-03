@@ -25,12 +25,17 @@ class StarRatingCard extends StatelessWidget {
     required this.onChanged,
     this.onChangeEnd,
     this.width,
+    this.minRating = 0,
   });
 
   final int rating;
   final ValueChanged<int> onChanged;
   final VoidCallback? onChangeEnd;
   final double? width;
+
+  //고를 수 있는 최소 별점. 서버가 1~5만 받으므로 이미 별점을 매긴 책은
+  //1로 두어 0점(취소)을 막는다
+  final int minRating;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +55,7 @@ class StarRatingCard extends StatelessWidget {
             gap: 4.w,
             onChanged: onChanged,
             onChangeEnd: onChangeEnd,
+            minRating: minRating,
           ),
           Container(
             margin: EdgeInsets.only(top: 16.h),
@@ -79,11 +85,15 @@ class StarRatingInput extends StatelessWidget {
     required this.gap,
     required this.onChanged,
     this.onChangeEnd,
+    this.minRating = 0,
   });
 
   final int rating;
   final double size;
   final double gap;
+
+  //고를 수 있는 최소 별점
+  final int minRating;
 
   //드래그 중에도 계속 불림
   final ValueChanged<int> onChanged;
@@ -91,17 +101,21 @@ class StarRatingInput extends StatelessWidget {
   //손을 뗐을 때 한 번만 불림 (저장 시점용)
   final VoidCallback? onChangeEnd;
 
-  //x좌표로 별점 계산 (첫 별 왼쪽으로 나가면 0점)
+  //x좌표로 별점 계산 (첫 별 왼쪽으로 나가면 minRating)
   int _ratingByPosition(double dx) {
-    if (dx < 0) return 0;
+    if (dx < 0) return minRating;
     final index = (dx / (size + gap)).floor();
-    return (index + 1).clamp(0, kStarCount);
+    return (index + 1).clamp(minRating, kStarCount);
   }
 
-  //같은 별을 다시 누르면 0점으로
+  //같은 별을 다시 누르면 0점으로. 단 minRating이 있으면 현재 별점을 유지한다
   void _handleTap(double dx) {
     final tapped = _ratingByPosition(dx);
-    onChanged(tapped == rating ? 0 : tapped);
+    if (tapped == rating) {
+      if (minRating == 0) onChanged(0);
+      return;
+    }
+    onChanged(tapped);
   }
 
   void _handleDrag(double dx) {

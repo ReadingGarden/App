@@ -195,6 +195,8 @@ class _BookEditPageState extends ConsumerState<BookEditPage> {
                           ),
                           StarRatingCard(
                             rating: _rating,
+                            //이미 별점을 매긴 책은 0점(취소)으로 되돌릴 수 없다
+                            minRating: widget.book.bookRating > 0 ? 1 : 0,
                             onChanged: (value) =>
                                 setState(() => _rating = value),
                           ),
