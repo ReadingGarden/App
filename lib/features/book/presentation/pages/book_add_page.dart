@@ -305,12 +305,53 @@ class _BottomRevealClipper extends CustomClipper<Rect> {
   }
 }
 
-class BookAddDonePage extends ConsumerWidget {
+class BookAddDonePage extends ConsumerStatefulWidget {
   const BookAddDonePage({super.key, required this.bookRead});
 
   final BookAddDoneEntity bookRead;
 
-  void _goToGarden(BuildContext context, WidgetRef ref) async {
+  @override
+  ConsumerState<BookAddDonePage> createState() => _BookAddDonePageState();
+}
+
+class _BookAddDonePageState extends ConsumerState<BookAddDonePage> {
+  //별점 (0 = 선택 전)
+  int _rating = 0;
+
+  static const _starCount = 5;
+
+  double get _starSize => 32.r;
+  double get _starGap => 4.w;
+
+  //별점별 문구 (index 0 = 선택 전)
+  static const _ratingTexts = [
+    '이 책 어떠셨나요?',
+    '끝까지 읽은 나에게 치얼스',
+    '나와는 조금 안 맞았다',
+    '무난하게 잘 읽었다',
+    '언젠가 다시 펼쳐볼 책',
+    '오늘부터 나의 인생책',
+  ];
+
+  //x좌표로 별점 계산 (첫 별 왼쪽으로 나가면 0점)
+  int _ratingByPosition(double dx) {
+    if (dx < 0) return 0;
+    final index = (dx / (_starSize + _starGap)).floor();
+    return (index + 1).clamp(0, _starCount);
+  }
+
+  //같은 별을 다시 누르면 0점으로
+  void _onStarTap(double dx) {
+    final tapped = _ratingByPosition(dx);
+    setState(() => _rating = tapped == _rating ? 0 : tapped);
+  }
+
+  void _onStarDrag(double dx) {
+    final dragged = _ratingByPosition(dx);
+    if (dragged != _rating) setState(() => _rating = dragged);
+  }
+
+  void _goToGarden() async {
     ref.read(currentIndexProvider.notifier).state = 0;
     ref.read(gardenVisitCountProvider.notifier).state++;
     final targetGardenNo = ref.read(gardenNavigateToProvider);
@@ -318,19 +359,21 @@ class BookAddDonePage extends ConsumerWidget {
       await updateMainGarden(ref, targetGardenNo);
       ref.read(gardenNavigateToProvider.notifier).state = null;
     }
+    if (!mounted) return;
     context.go('/bottom-navi');
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) _goToGarden(context, ref);
+        if (!didPop) _goToGarden();
       },
       child: Scaffold(
-        body: Container(
-          margin: EdgeInsets.only(top: 174.h),
+        body: SafeArea(
+            child: Container(
+          margin: EdgeInsets.only(top: 60.h),
           child: Center(
             child: Column(
               children: [
@@ -339,24 +382,24 @@ class BookAddDonePage extends ConsumerWidget {
                         TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
                     TextSpan(children: [
                       TextSpan(
-                          text: bookRead.bookTree,
+                          text: widget.bookRead.bookTree,
                           style:
                               const TextStyle(color: AppColors.primaryColor)),
                       TextSpan(
                           text:
-                              '${Functions.getPostpositionString(bookRead.bookTree, '이', '가')} 다컸어요')
+                              '${Functions.getPostpositionString(widget.bookRead.bookTree, '이', '가')} 다컸어요')
                     ])),
                 Container(
                   margin: EdgeInsets.only(top: 24.h, bottom: 20.h),
                   width: 260.r,
                   height: 260.r,
-                  child: AppAssets.okFlower(bookRead.bookTree).image(),
+                  child: AppAssets.okFlower(widget.bookRead.bookTree).image(),
                 ),
                 Padding(
                   padding:
                       EdgeInsets.only(bottom: 6.h, left: 48.w, right: 48.w),
                   child: Text(
-                    bookRead.bookTitle,
+                    widget.bookRead.bookTitle,
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -365,16 +408,79 @@ class BookAddDonePage extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  '${Functions.formatBookReadDate(bookRead.bookStartDate)} - ${Functions.formatBookReadDate(bookRead.bookEndDate)}',
+                  '${Functions.formatBookReadDate(widget.bookRead.bookStartDate)} - ${Functions.formatBookReadDate(widget.bookRead.bookEndDate)}',
                   textAlign: TextAlign.center,
                   style: const TextStyle(color: AppColors.grey_8D),
+                ),
+                //별점
+                Container(
+                  margin: EdgeInsets.only(top: 40.h),
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  width: 312.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.r),
+                    border: Border.all(color: AppColors.grey_F2, width: 1.w),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTapDown: (details) =>
+                            _onStarTap(details.localPosition.dx),
+                        onHorizontalDragStart: (details) =>
+                            _onStarDrag(details.localPosition.dx),
+                        onHorizontalDragUpdate: (details) =>
+                            _onStarDrag(details.localPosition.dx),
+                        child: SizedBox(
+                          width: _starSize * _starCount +
+                              _starGap * (_starCount - 1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: _starGap,
+                            children: List.generate(_starCount, (index) {
+                              final selected = index < _rating;
+                              return (selected
+                                      ? AppAssets.iconStarSelect
+                                      : AppAssets.iconStarDeselect)
+                                  .svg(
+                                width: _starSize,
+                                height: _starSize,
+                                colorFilter: ColorFilter.mode(
+                                  selected
+                                      ? AppColors.starSelectColor
+                                      : AppColors.grey_CA,
+                                  BlendMode.srcIn,
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 16.h),
+                        child: Text(
+                          _ratingTexts[_rating],
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: _rating == 0
+                                ? AppColors.grey_8D
+                                : AppColors.starSelectColor,
+                            fontWeight: _rating == 0
+                                ? FontWeight.w400
+                                : FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
           ),
-        ),
+        )),
         bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('가든으로 가기', true, () {
-            _goToGarden(context, ref);
+            _goToGarden();
             //TODO: - 자동으로 해당 가든 변경?
           }),
         )),

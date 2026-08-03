@@ -13,6 +13,7 @@ class AppColors {
   static const black_2B = Color(0xff2b2b2b);
 
   static const starYellowColor = Color(0xffFFC038);
+  static const starSelectColor = Color(0xff00AA96);
   static const shadowGreyColor = Color(0xffFDFDFD);
   static const errorRedColor = Color(0xffEE5757);
   static const buttonRedColor = Color(0xffFFE7E7);
