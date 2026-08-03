@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BookAddDoneEntity {
 
- String get bookTitle; String get bookTree; String get bookStartDate; String get bookEndDate;
+ int get bookNo; String get bookTitle; String get bookTree; String get bookStartDate; String get bookEndDate;
 /// Create a copy of BookAddDoneEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BookAddDoneEntityCopyWith<BookAddDoneEntity> get copyWith => _$BookAddDoneEntit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookAddDoneEntity&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookStartDate, bookStartDate) || other.bookStartDate == bookStartDate)&&(identical(other.bookEndDate, bookEndDate) || other.bookEndDate == bookEndDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookAddDoneEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookStartDate, bookStartDate) || other.bookStartDate == bookStartDate)&&(identical(other.bookEndDate, bookEndDate) || other.bookEndDate == bookEndDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,bookTitle,bookTree,bookStartDate,bookEndDate);
+int get hashCode => Object.hash(runtimeType,bookNo,bookTitle,bookTree,bookStartDate,bookEndDate);
 
 @override
 String toString() {
-  return 'BookAddDoneEntity(bookTitle: $bookTitle, bookTree: $bookTree, bookStartDate: $bookStartDate, bookEndDate: $bookEndDate)';
+  return 'BookAddDoneEntity(bookNo: $bookNo, bookTitle: $bookTitle, bookTree: $bookTree, bookStartDate: $bookStartDate, bookEndDate: $bookEndDate)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BookAddDoneEntityCopyWith<$Res>  {
   factory $BookAddDoneEntityCopyWith(BookAddDoneEntity value, $Res Function(BookAddDoneEntity) _then) = _$BookAddDoneEntityCopyWithImpl;
 @useResult
 $Res call({
- String bookTitle, String bookTree, String bookStartDate, String bookEndDate
+ int bookNo, String bookTitle, String bookTree, String bookStartDate, String bookEndDate
 });
 
 
@@ -65,9 +65,10 @@ class _$BookAddDoneEntityCopyWithImpl<$Res>
 
 /// Create a copy of BookAddDoneEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? bookTitle = null,Object? bookTree = null,Object? bookStartDate = null,Object? bookEndDate = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? bookNo = null,Object? bookTitle = null,Object? bookTree = null,Object? bookStartDate = null,Object? bookEndDate = null,}) {
   return _then(_self.copyWith(
-bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
+bookNo: null == bookNo ? _self.bookNo : bookNo // ignore: cast_nullable_to_non_nullable
+as int,bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
 as String,bookTree: null == bookTree ? _self.bookTree : bookTree // ignore: cast_nullable_to_non_nullable
 as String,bookStartDate: null == bookStartDate ? _self.bookStartDate : bookStartDate // ignore: cast_nullable_to_non_nullable
 as String,bookEndDate: null == bookEndDate ? _self.bookEndDate : bookEndDate // ignore: cast_nullable_to_non_nullable
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String bookTitle,  String bookTree,  String bookStartDate,  String bookEndDate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int bookNo,  String bookTitle,  String bookTree,  String bookStartDate,  String bookEndDate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BookAddDoneEntity() when $default != null:
-return $default(_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEndDate);case _:
+return $default(_that.bookNo,_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEndDate);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEnd
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String bookTitle,  String bookTree,  String bookStartDate,  String bookEndDate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int bookNo,  String bookTitle,  String bookTree,  String bookStartDate,  String bookEndDate)  $default,) {final _that = this;
 switch (_that) {
 case _BookAddDoneEntity():
-return $default(_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEndDate);case _:
+return $default(_that.bookNo,_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEndDate);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEnd
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String bookTitle,  String bookTree,  String bookStartDate,  String bookEndDate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int bookNo,  String bookTitle,  String bookTree,  String bookStartDate,  String bookEndDate)?  $default,) {final _that = this;
 switch (_that) {
 case _BookAddDoneEntity() when $default != null:
-return $default(_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEndDate);case _:
+return $default(_that.bookNo,_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEndDate);case _:
   return null;
 
 }
@@ -212,9 +213,10 @@ return $default(_that.bookTitle,_that.bookTree,_that.bookStartDate,_that.bookEnd
 @JsonSerializable()
 
 class _BookAddDoneEntity implements BookAddDoneEntity {
-  const _BookAddDoneEntity({this.bookTitle = '', this.bookTree = '', this.bookStartDate = '', this.bookEndDate = ''});
+  const _BookAddDoneEntity({this.bookNo = 0, this.bookTitle = '', this.bookTree = '', this.bookStartDate = '', this.bookEndDate = ''});
   factory _BookAddDoneEntity.fromJson(Map<String, dynamic> json) => _$BookAddDoneEntityFromJson(json);
 
+@override@JsonKey() final  int bookNo;
 @override@JsonKey() final  String bookTitle;
 @override@JsonKey() final  String bookTree;
 @override@JsonKey() final  String bookStartDate;
@@ -233,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookAddDoneEntity&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookStartDate, bookStartDate) || other.bookStartDate == bookStartDate)&&(identical(other.bookEndDate, bookEndDate) || other.bookEndDate == bookEndDate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookAddDoneEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookStartDate, bookStartDate) || other.bookStartDate == bookStartDate)&&(identical(other.bookEndDate, bookEndDate) || other.bookEndDate == bookEndDate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,bookTitle,bookTree,bookStartDate,bookEndDate);
+int get hashCode => Object.hash(runtimeType,bookNo,bookTitle,bookTree,bookStartDate,bookEndDate);
 
 @override
 String toString() {
-  return 'BookAddDoneEntity(bookTitle: $bookTitle, bookTree: $bookTree, bookStartDate: $bookStartDate, bookEndDate: $bookEndDate)';
+  return 'BookAddDoneEntity(bookNo: $bookNo, bookTitle: $bookTitle, bookTree: $bookTree, bookStartDate: $bookStartDate, bookEndDate: $bookEndDate)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$BookAddDoneEntityCopyWith<$Res> implements $BookAddDoneEn
   factory _$BookAddDoneEntityCopyWith(_BookAddDoneEntity value, $Res Function(_BookAddDoneEntity) _then) = __$BookAddDoneEntityCopyWithImpl;
 @override @useResult
 $Res call({
- String bookTitle, String bookTree, String bookStartDate, String bookEndDate
+ int bookNo, String bookTitle, String bookTree, String bookStartDate, String bookEndDate
 });
 
 
@@ -270,9 +272,10 @@ class __$BookAddDoneEntityCopyWithImpl<$Res>
 
 /// Create a copy of BookAddDoneEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? bookTitle = null,Object? bookTree = null,Object? bookStartDate = null,Object? bookEndDate = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? bookNo = null,Object? bookTitle = null,Object? bookTree = null,Object? bookStartDate = null,Object? bookEndDate = null,}) {
   return _then(_BookAddDoneEntity(
-bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
+bookNo: null == bookNo ? _self.bookNo : bookNo // ignore: cast_nullable_to_non_nullable
+as int,bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
 as String,bookTree: null == bookTree ? _self.bookTree : bookTree // ignore: cast_nullable_to_non_nullable
 as String,bookStartDate: null == bookStartDate ? _self.bookStartDate : bookStartDate // ignore: cast_nullable_to_non_nullable
 as String,bookEndDate: null == bookEndDate ? _self.bookEndDate : bookEndDate // ignore: cast_nullable_to_non_nullable

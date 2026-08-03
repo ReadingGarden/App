@@ -15,5 +15,10 @@ class BookAddRepository {
     final response = await _service.postBookRead(data);
     return response?.statusCode;
   }
+
+  Future<int?> saveBookRating(int bookNo, int rating) async {
+    final response = await _service.putBook(bookNo, {'book_rating': rating});
+    return response?.statusCode;
+  }
 }
 

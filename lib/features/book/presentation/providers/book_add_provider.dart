@@ -45,6 +45,7 @@ Future<BookReadSaveResult> saveBookRead(
     return BookReadSaveResult(
       statusCode: statusCode,
       done: BookAddDoneEntity(
+        bookNo: bookRead.bookNo,
         bookTitle: bookRead.bookTitle,
         bookTree: bookRead.bookTree,
         bookStartDate: lastHistory['book_start_date'] as String? ??
@@ -55,4 +56,13 @@ Future<BookReadSaveResult> saveBookRead(
   }
 
   return BookReadSaveResult(statusCode: statusCode);
+}
+
+//완독 별점 저장 (1~5, 0은 미선택이라 호출하지 않음)
+Future<int?> saveBookRating(
+  WidgetRef ref, {
+  required int bookNo,
+  required int rating,
+}) {
+  return ref.read(bookAddRepositoryStateProvider).saveBookRating(bookNo, rating);
 }

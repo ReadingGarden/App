@@ -352,6 +352,15 @@ class _BookAddDonePageState extends ConsumerState<BookAddDonePage> {
   }
 
   void _goToGarden() async {
+    //화면을 벗어날 때 별점 한 번만 저장
+    if (_rating > 0 && widget.bookRead.bookNo > 0) {
+      await saveBookRating(
+        ref,
+        bookNo: widget.bookRead.bookNo,
+        rating: _rating,
+      );
+    }
+
     ref.read(currentIndexProvider.notifier).state = 0;
     ref.read(gardenVisitCountProvider.notifier).state++;
     final targetGardenNo = ref.read(gardenNavigateToProvider);
