@@ -61,54 +61,42 @@ class CustomBottomNavigationBar extends StatelessWidget {
       padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: bottomPadding),
       height: 70.h + bottomPadding,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.r),
+          topRight: Radius.circular(20.r),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildTabItem(
-            index: 0,
-            icon: 'icon_garden',
-            label: '가든',
-          ),
-          _buildTabItem(
-            index: 1,
-            icon: 'icon_book',
-            label: '책장',
-          ),
+          _buildTabItem(index: 0, icon: 'icon_garden', label: '가든'),
+          _buildTabItem(index: 1, icon: 'icon_book', label: '책장'),
           GestureDetector(
-              onTap: () => context.pushNamed('book-serach'),
-              child: SizedBox(
-                width: 72.w,
-                child: Container(
-                  alignment: Alignment.center,
-                  width: 50.r,
-                  height: 50.r,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.black_59,
-                  ),
-                  child: Assets.icons.iconAddBig.svg(
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
-                      BlendMode.srcIn,
-                    ),
-                    width: 28.r,
-                    height: 28.r,
-                  ),
+            onTap: () => context.pushNamed('book-serach'),
+            child: SizedBox(
+              width: 72.w,
+              child: Container(
+                alignment: Alignment.center,
+                width: 50.r,
+                height: 50.r,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.black_59,
                 ),
-              )),
-          _buildTabItem(
-            index: 2,
-            icon: 'icon_memo',
-            label: '메모',
+                child: Assets.icons.iconAddBig.svg(
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
+                  width: 28.r,
+                  height: 28.r,
+                ),
+              ),
+            ),
           ),
-          _buildTabItem(
-            index: 3,
-            icon: 'icon_user',
-            label: '설정',
-          )
+          _buildTabItem(index: 2, icon: 'icon_memo', label: '메모'),
+          _buildTabItem(index: 3, icon: 'icon_user', label: '설정'),
         ],
       ),
     );
@@ -144,10 +132,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                  fontSize: 10.sp,
-                  color: isSelected
-                      ? AppColors.black_59
-                      : AppColors.grey_8D),
+                fontSize: 10.sp,
+                color: isSelected ? AppColors.black_59 : AppColors.grey_8D,
+              ),
             ),
           ],
         ),
@@ -180,10 +167,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
 }
 
 class _AnimatedTabIcon extends StatefulWidget {
-  const _AnimatedTabIcon({
-    required this.isSelected,
-    required this.child,
-  });
+  const _AnimatedTabIcon({required this.isSelected, required this.child});
 
   final bool isSelected;
   final Widget child;
@@ -226,9 +210,6 @@ class _AnimatedTabIconState extends State<_AnimatedTabIcon>
 
   @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: _scale,
-      child: widget.child,
-    );
+    return ScaleTransition(scale: _scale, child: widget.child);
   }
 }

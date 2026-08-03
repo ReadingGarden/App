@@ -31,12 +31,8 @@ class BookRegisterRepository {
 }
 
 class BookRegisterResult {
-  const BookRegisterResult({
-    required this.statusCode,
-    required this.bookNo,
-  });
+  const BookRegisterResult({required this.statusCode, required this.bookNo});
 
   final int? statusCode;
   final int? bookNo;
 }
-

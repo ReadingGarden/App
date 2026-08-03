@@ -55,8 +55,10 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
     }
 
     return Scaffold(
-      appBar: Widgets.appBar(context,
-          title: ref.watch(garden_feature.gardenMainProvider).gardenTitle),
+      appBar: Widgets.appBar(
+        context,
+        title: ref.watch(garden_feature.gardenMainProvider).gardenTitle,
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           await garden_feature.fetchGardenDetail(ref, widget.gardenNo);
@@ -74,8 +76,10 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('책 ${bookList.length}권',
-                      style: const TextStyle(color: AppColors.grey_8D)),
+                  Text(
+                    '책 ${bookList.length}권',
+                    style: const TextStyle(color: AppColors.grey_8D),
+                  ),
                   (bookList.isNotEmpty)
                       ? Container(
                           margin: EdgeInsets.only(top: 18.h),
@@ -84,12 +88,12 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              childAspectRatio:
-                                  MediaQuery.of(context).size.aspectRatio /
+                                  childAspectRatio:
+                                      MediaQuery.of(context).size.aspectRatio /
                                       0.85,
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 12.w,
-                            ),
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 12.w,
+                                ),
                             itemCount: bookList.length,
                             itemBuilder: (context, index) {
                               final book = bookList[index];
@@ -97,8 +101,11 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
                               final end = (delay + 0.3).clamp(0.0, 1.0);
                               final animation = CurvedAnimation(
                                 parent: _listAnimController,
-                                curve: Interval(delay, end,
-                                    curve: Curves.easeOut),
+                                curve: Interval(
+                                  delay,
+                                  end,
+                                  curve: Curves.easeOut,
+                                ),
                               );
                               return AnimatedBuilder(
                                 animation: animation,
@@ -106,45 +113,54 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
                                   return Opacity(
                                     opacity: animation.value,
                                     child: Transform.translate(
-                                      offset:
-                                          Offset(0, 16 * (1 - animation.value)),
+                                      offset: Offset(
+                                        0,
+                                        16 * (1 - animation.value),
+                                      ),
                                       child: child,
                                     ),
                                   );
                                 },
                                 child: Pressable(
-                                onTap: () async {
-                                  await context.pushNamed('book-detail',
-                                      extra: book.bookNo);
-                                  if (mounted) {
-                                    _listAnimController.forward(from: 0);
-                                  }
-                                },
-                                child: Container(
-                                  color: Colors.transparent,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Stack(
-                                        alignment: Alignment.bottomRight,
-                                        children: [
-                                          Container(
-                                            decoration:
-                                                BoxDecoration(boxShadow: [
-                                              BoxShadow(
-                                                  offset: const Offset(0, 4),
-                                                  blurRadius: 16.r,
-                                                  color: AppColors.black_59
-                                                      .withValues(alpha: 0.1))
-                                            ]),
-                                            child: ClipRRect(
+                                  onTap: () async {
+                                    await context.pushNamed(
+                                      'book-detail',
+                                      extra: book.bookNo,
+                                    );
+                                    if (mounted) {
+                                      _listAnimController.forward(from: 0);
+                                    }
+                                  },
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Stack(
+                                          alignment: Alignment.bottomRight,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    offset: const Offset(0, 4),
+                                                    blurRadius: 16.r,
+                                                    color: AppColors.black_59
+                                                        .withValues(alpha: 0.1),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: ClipRRect(
                                                 borderRadius:
                                                     BorderRadius.circular(8.r),
-                                                child: (book.bookImageUrl
+                                                child:
+                                                    (book
+                                                        .bookImageUrl
                                                         .isNotEmpty)
                                                     ? CachedNetworkImage(
-                                                        imageUrl: book.bookImageUrl,
+                                                        imageUrl:
+                                                            book.bookImageUrl,
                                                         width: 96.w,
                                                         height: 132.h,
                                                         fit: BoxFit.cover,
@@ -152,53 +168,58 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
                                                     : Container(
                                                         width: 96.w,
                                                         height: 132.h,
-                                                        decoration:
-                                                            BoxDecoration(
+                                                        decoration: BoxDecoration(
                                                           borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.r),
+                                                              BorderRadius.circular(
+                                                                8.r,
+                                                              ),
                                                           color:
                                                               AppColors.grey_F2,
                                                         ),
-                                                      )),
-                                          ),
-                                          Container(
-                                            alignment: Alignment.center,
-                                            margin:
-                                                EdgeInsets.only(bottom: 10.h),
-                                            width: 50.w,
-                                            height: 28.h,
-                                            decoration: BoxDecoration(
+                                                      ),
+                                              ),
+                                            ),
+                                            Container(
+                                              alignment: Alignment.center,
+                                              margin: EdgeInsets.only(
+                                                bottom: 10.h,
+                                              ),
+                                              width: 50.w,
+                                              height: 28.h,
+                                              decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      Radius.circular(20.r),
-                                                  bottomLeft:
-                                                      Radius.circular(20.r),
+                                                  topLeft: Radius.circular(
+                                                    20.r,
+                                                  ),
+                                                  bottomLeft: Radius.circular(
+                                                    20.r,
+                                                  ),
                                                 ),
                                                 color: (book.percent == 100)
                                                     ? AppColors.black_59
                                                     : Colors.white,
                                                 boxShadow: [
                                                   BoxShadow(
-                                                      offset:
-                                                          const Offset(0, 4),
-                                                      blurRadius: 16.r,
-                                                      color: AppColors.black_59
-                                                          .withValues(alpha: 0.1))
-                                                ]),
-                                            child: Text(
-                                              '${book.percent.floor()}%',
-                                              style: TextStyle(
+                                                    offset: const Offset(0, 4),
+                                                    blurRadius: 16.r,
+                                                    color: AppColors.black_59
+                                                        .withValues(alpha: 0.1),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Text(
+                                                '${book.percent.floor()}%',
+                                                style: TextStyle(
                                                   fontSize: 12.sp,
                                                   color: (book.percent == 100)
                                                       ? Colors.white
-                                                      : AppColors.black_59),
+                                                      : AppColors.black_59,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
+                                          ],
+                                        ),
+                                        Container(
                                           margin: EdgeInsets.only(top: 8.h),
                                           width: 96.w,
                                           height: 20.h,
@@ -206,21 +227,23 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
                                             book.bookTitle,
                                             maxLines: 1,
                                             style: TextStyle(
-                                                fontSize: 12.sp,
-                                                overflow:
-                                                    TextOverflow.ellipsis),
-                                          ))
-                                    ],
+                                              fontSize: 12.sp,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
                               );
                             },
-                          ))
-                      : _bookEmpty()
+                          ),
+                        )
+                      : _bookEmpty(),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -232,29 +255,30 @@ class _GardenBookListPageState extends ConsumerState<GardenBookListPage>
       delay: const Duration(milliseconds: 80),
       intensity: 1.4,
       child: Container(
-          alignment: Alignment.center,
-          margin: EdgeInsets.only(top: 78.h),
-          child: Column(
-            children: [
-              SizedBox(
-                  width: 200.r,
-                  height: 200.r,
-                  child: AppAssets.emptyGardenBookList.image()),
-              Container(
-                margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
-                child: Text(
-                  '저장된 책이 없어요',
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(top: 78.h),
+        child: Column(
+          children: [
+            SizedBox(
+              width: 200.r,
+              height: 200.r,
+              child: AppAssets.emptyGardenBookList.image(),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 16.h, bottom: 6.h),
+              child: Text(
+                '저장된 책이 없어요',
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
               ),
-              const Text(
-                '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.grey_8D),
-              ),
-            ],
-          )),
+            ),
+            const Text(
+              '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: AppColors.grey_8D),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-

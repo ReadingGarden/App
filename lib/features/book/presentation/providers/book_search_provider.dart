@@ -12,10 +12,11 @@ final bookshelfCurrentPageProvider = StateProvider<int>((ref) => 1);
 final bookshelfHasMoreProvider = StateProvider<bool>((ref) => true);
 
 final bookSearchListProvider =
-    StateNotifierProvider<BookSearchListNotifier, List<BookSearchEntity>>(
-        (ref) {
-  return BookSearchListNotifier();
-});
+    StateNotifierProvider<BookSearchListNotifier, List<BookSearchEntity>>((
+      ref,
+    ) {
+      return BookSearchListNotifier();
+    });
 
 final bookSearchRepositoryStateProvider = Provider<BookSearchRepository>((ref) {
   return ref.read(bookSearchRepositoryProvider);
@@ -23,9 +24,10 @@ final bookSearchRepositoryStateProvider = Provider<BookSearchRepository>((ref) {
 
 final bookshelfBooksProvider =
     StateNotifierProvider<BookshelfBookListNotifier, List<BookshelfBookEntity>>(
-        (ref) {
-  return BookshelfBookListNotifier();
-});
+      (ref) {
+        return BookshelfBookListNotifier();
+      },
+    );
 
 class BookSearchListNotifier extends StateNotifier<List<BookSearchEntity>> {
   BookSearchListNotifier() : super([]);

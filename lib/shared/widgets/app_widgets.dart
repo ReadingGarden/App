@@ -11,22 +11,20 @@ import 'package:book_flutter/shared/theme/app_assets.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
 
 class Widgets {
-  static appBar(BuildContext context,
-      {String? title,
-      List<Widget>? actions,
-      Function? backFunction,
-      Color? color}) {
+  static appBar(
+    BuildContext context, {
+    String? title,
+    List<Widget>? actions,
+    Function? backFunction,
+    Color? color,
+  }) {
     return AppBar(
       // 스크롤 -> 반투명 없애기
       scrolledUnderElevation: 0,
       backgroundColor: (color != null) ? color : Colors.white,
       toolbarHeight: 60.h,
       centerTitle: true,
-      title: Text(
-        title ?? '',
-        maxLines: 1,
-        style: TextStyle(fontSize: 16.sp),
-      ),
+      title: Text(title ?? '', maxLines: 1, style: TextStyle(fontSize: 16.sp)),
       leading: GestureDetector(
         onTap: () {
           if (backFunction != null) {
@@ -38,10 +36,7 @@ class Widgets {
         child: Container(
           alignment: Alignment.center,
           color: Colors.transparent,
-          child: Assets.icons.iconAngleLeft.svg(
-            width: 24.r,
-            height: 24.r,
-          ),
+          child: Assets.icons.iconAngleLeft.svg(width: 24.r, height: 24.r),
         ),
       ),
 
@@ -58,64 +53,64 @@ class Widgets {
     );
   }
 
-  static button(
-    String title,
-    bool isValid,
-    Function function,
-  ) {
+  static button(String title, bool isValid, Function function) {
     return GestureDetector(
       onTap: () => isValid ? function() : null,
       child: Container(
         height: 60.h,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.r),
-            color: isValid ? AppColors.black_59 : AppColors.grey_CA),
+          borderRadius: BorderRadius.circular(20.r),
+          color: isValid ? AppColors.black_59 : AppColors.grey_CA,
+        ),
         child: Center(
-            child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 16.sp,
-              color: Colors.white),
-        )),
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }
 
-  static redButton(
-    String title,
-    Function function,
-  ) {
+  static redButton(String title, Function function) {
     return GestureDetector(
       onTap: () => function(),
       child: Container(
         height: 60.h,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20.r),
-            color: AppColors.buttonRedColor),
+          borderRadius: BorderRadius.circular(20.r),
+          color: AppColors.buttonRedColor,
+        ),
         child: Center(
-            child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: TextStyle(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 16.sp,
-              color: AppColors.errorRedColor),
-        )),
+              color: AppColors.errorRedColor,
+            ),
+          ),
+        ),
       ),
     );
   }
 
   static textfield(
-      WidgetRef ref,
-      TextEditingController controller,
-      String label,
-      String hintText,
-      String? errorText,
-      StateProvider<String?> errorProvider,
-      {Function? validateFunction,
-      bool? isPwd}) {
+    WidgetRef ref,
+    TextEditingController controller,
+    String label,
+    String hintText,
+    String? errorText,
+    StateProvider<String?> errorProvider, {
+    Function? validateFunction,
+    bool? isPwd,
+  }) {
     return Container(
       padding: EdgeInsets.only(bottom: 12.h),
       // padding: (errorText == null)
@@ -126,21 +121,19 @@ class Widgets {
         children: [
           Container(
             margin: EdgeInsets.only(bottom: 6.h),
-            child: Text(
-              label,
-            ),
+            child: Text(label),
           ),
           TextField(
             controller: controller,
             maxLength: (label == '가든 소개')
                 ? 30
                 : (label == '가든 이름')
-                    ? 10
-                    : (label == '총 페이지')
-                        ? 4
-                        : (label == '닉네임')
-                            ? 15
-                            : null,
+                ? 10
+                : (label == '총 페이지')
+                ? 4
+                : (label == '닉네임')
+                ? 15
+                : null,
             maxLines: (label == '가든 소개') ? 2 : 1,
             onChanged: (value) {
               // errorText 초기화
@@ -160,7 +153,8 @@ class Widgets {
             style: TextStyle(fontSize: 16.sp),
             obscureText: (isPwd == null) ? false : isPwd,
             decoration: InputDecoration(
-              counterText: (label == '가든 소개' ||
+              counterText:
+                  (label == '가든 소개' ||
                       label == '가든 이름' ||
                       label == '총 페이지' ||
                       label == '닉네임')
@@ -169,35 +163,38 @@ class Widgets {
               fillColor: AppColors.grey_FA,
               filled: true,
               hintText: hintText,
-              hintStyle: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.grey_8D,
-              ),
+              hintStyle: TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
               enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide:
-                      BorderSide(color: Colors.transparent, width: 1.w)),
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: BorderSide(color: Colors.transparent, width: 1.w),
+              ),
               border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide:
-                      BorderSide(color: Colors.transparent, width: 1.w)),
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: BorderSide(color: Colors.transparent, width: 1.w),
+              ),
               focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide:
-                      BorderSide(color: Colors.transparent, width: 1.w)),
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: BorderSide(color: Colors.transparent, width: 1.w),
+              ),
               errorText: errorText,
               errorStyle: TextStyle(
                 fontSize: 14.sp,
                 color: AppColors.errorRedColor,
               ),
               errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide:
-                      BorderSide(color: AppColors.errorRedColor, width: 1.w)),
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: BorderSide(
+                  color: AppColors.errorRedColor,
+                  width: 1.w,
+                ),
+              ),
               focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.r),
-                  borderSide:
-                      BorderSide(color: AppColors.errorRedColor, width: 1.w)),
+                borderRadius: BorderRadius.circular(10.r),
+                borderSide: BorderSide(
+                  color: AppColors.errorRedColor,
+                  width: 1.w,
+                ),
+              ),
             ),
           ),
         ],
@@ -207,10 +204,7 @@ class Widgets {
 
   static void showErrorToast(BuildContext context, [String? msg]) {
     CherryToast.error(
-      title: Text(
-        msg ?? '잠시 후 다시 시도해주세요',
-        style: TextStyle(fontSize: 14.sp),
-      ),
+      title: Text(msg ?? '잠시 후 다시 시도해주세요', style: TextStyle(fontSize: 14.sp)),
       toastPosition: Position.top,
       animationType: AnimationType.fromLeft,
     ).show(context);
@@ -218,10 +212,7 @@ class Widgets {
 
   static void showSuccessToast(BuildContext context, String msg) {
     CherryToast.success(
-      title: Text(
-        msg,
-        style: TextStyle(fontSize: 14.sp),
-      ),
+      title: Text(msg, style: TextStyle(fontSize: 14.sp)),
       toastPosition: Position.top,
       animationType: AnimationType.fromLeft,
     ).show(context);
@@ -229,10 +220,7 @@ class Widgets {
 
   static void showWarningToast(BuildContext context, String msg) {
     CherryToast.warning(
-      title: Text(
-        msg,
-        style: TextStyle(fontSize: 14.sp),
-      ),
+      title: Text(msg, style: TextStyle(fontSize: 14.sp)),
       toastPosition: Position.top,
       animationType: AnimationType.fromLeft,
     ).show(context);
@@ -240,10 +228,7 @@ class Widgets {
 
   static void showInfoToast(BuildContext context, String msg) {
     CherryToast.info(
-      title: Text(
-        msg,
-        style: TextStyle(fontSize: 14.sp),
-      ),
+      title: Text(msg, style: TextStyle(fontSize: 14.sp)),
       toastPosition: Position.top,
       animationType: AnimationType.fromLeft,
     ).show(context);
@@ -261,144 +246,162 @@ class Widgets {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: 14.sp),
-            ),
-            widget ?? Container()
+            Text(title, style: TextStyle(fontSize: 14.sp)),
+            widget ?? Container(),
           ],
         ),
       ),
     );
   }
 
-  static Future baseBottomSheet(BuildContext context, String title,
-      String content, String btnTitle, Function btnFunction,
-      {String? cancelTitle,
-      Widget? contentWidget,
-      Function? cancelBtnFunction}) {
+  static Future baseBottomSheet(
+    BuildContext context,
+    String title,
+    String content,
+    String btnTitle,
+    Function btnFunction, {
+    String? cancelTitle,
+    Widget? contentWidget,
+    Function? cancelBtnFunction,
+  }) {
     return showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.white,
-        useSafeArea: true,
-        builder: (context) {
-          return Container(
-            margin: EdgeInsets.only(
-              top: 30.h,
-              left: 24.w,
-              right: 24.w,
-              bottom: 16.h,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style:
-                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
-                  // height: 44.h,
-                  child: (content != '' && contentWidget == null)
-                      ? Text(
-                          content,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                          ),
-                        )
-                      : contentWidget!,
-                ),
-                Column(
-                  children: [
-                    Widgets.button(btnTitle, true, () {
-                      btnFunction();
-                    }),
-                    GestureDetector(
-                      onTap: () => (cancelBtnFunction != null)
-                          ? cancelBtnFunction()
-                          : context.pop(),
-                      child: Container(
-                        margin: EdgeInsets.only(top: 12.h),
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            color: AppColors.grey_F2),
-                        child: Center(
-                            child: Text(
+      context: context,
+      backgroundColor: Colors.white,
+      useSafeArea: true,
+      builder: (context) {
+        return Container(
+          margin: EdgeInsets.only(
+            top: 30.h,
+            left: 24.w,
+            right: 24.w,
+            bottom: 16.h,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
+                // height: 44.h,
+                child: (content != '' && contentWidget == null)
+                    ? Text(content, style: TextStyle(fontSize: 14.sp))
+                    : contentWidget!,
+              ),
+              Column(
+                children: [
+                  Widgets.button(btnTitle, true, () {
+                    btnFunction();
+                  }),
+                  GestureDetector(
+                    onTap: () => (cancelBtnFunction != null)
+                        ? cancelBtnFunction()
+                        : context.pop(),
+                    child: Container(
+                      margin: EdgeInsets.only(top: 12.h),
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        color: AppColors.grey_F2,
+                      ),
+                      child: Center(
+                        child: Text(
                           cancelTitle ?? '취소',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16.sp,
-                              color: AppColors.grey_8D),
-                        )),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16.sp,
+                            color: AppColors.grey_8D,
+                          ),
+                        ),
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          );
-        });
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
-  static Future deleteBottomSheet(BuildContext context, String title,
-      Widget content, String btnTitle, Function btnFunction) {
+  static Future deleteBottomSheet(
+    BuildContext context,
+    String title,
+    Widget content,
+    String btnTitle,
+    Function btnFunction,
+  ) {
     return showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.white,
-        useSafeArea: true,
-        builder: (context) {
-          return Container(
-            margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w, bottom: 16.h),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style:
-                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
-                Container(
-                    margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
-                    child: content),
-                Column(
-                  children: [
-                    Widgets.redButton(btnTitle, () {
-                      btnFunction();
-                    }),
-                    GestureDetector(
-                      onTap: () => context.pop(),
-                      child: Container(
-                        margin: EdgeInsets.only(top: 12.h),
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            color: AppColors.grey_F2),
-                        child: Center(
-                            child: Text(
+      context: context,
+      backgroundColor: Colors.white,
+      useSafeArea: true,
+      builder: (context) {
+        return Container(
+          margin: EdgeInsets.only(
+            top: 30.h,
+            left: 24.w,
+            right: 24.w,
+            bottom: 16.h,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 6.h, bottom: 24.h),
+                child: content,
+              ),
+              Column(
+                children: [
+                  Widgets.redButton(btnTitle, () {
+                    btnFunction();
+                  }),
+                  GestureDetector(
+                    onTap: () => context.pop(),
+                    child: Container(
+                      margin: EdgeInsets.only(top: 12.h),
+                      height: 60.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        color: AppColors.grey_F2,
+                      ),
+                      child: Center(
+                        child: Text(
                           '취소',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.sp,
-                              color: AppColors.grey_8D),
-                        )),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                            color: AppColors.grey_8D,
+                          ),
+                        ),
                       ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          );
-        });
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   static Future shareBottomSheet(
-      context, String title, String garden, int gardenNo) {
+    context,
+    String title,
+    String garden,
+    int gardenNo,
+  ) {
     return showModalBottomSheet(
       backgroundColor: Colors.white,
       useSafeArea: true,
@@ -406,7 +409,12 @@ class Widgets {
       builder: (context) {
         return Container(
           alignment: Alignment.topLeft,
-          margin: EdgeInsets.only(top: 30.h, left: 42.w, right: 42.w, bottom: 20.h),
+          margin: EdgeInsets.only(
+            top: 30.h,
+            left: 42.w,
+            right: 42.w,
+            bottom: 20.h,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -414,8 +422,10 @@ class Widgets {
                 padding: EdgeInsets.only(bottom: 24.h),
                 child: Text(
                   title,
-                  style:
-                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Row(
@@ -433,8 +443,9 @@ class Widgets {
                             width: 64.r,
                             height: 64.r,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.grey_F2),
+                              shape: BoxShape.circle,
+                              color: AppColors.grey_F2,
+                            ),
                           ),
                           Container(
                             alignment: Alignment.center,
@@ -442,11 +453,9 @@ class Widgets {
                             height: 20.h,
                             child: Text(
                               '카카오톡',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                              ),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -468,8 +477,9 @@ class Widgets {
                             width: 64.r,
                             height: 64.r,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.grey_F2),
+                              shape: BoxShape.circle,
+                              color: AppColors.grey_F2,
+                            ),
                           ),
                           Container(
                             alignment: Alignment.center,
@@ -477,11 +487,9 @@ class Widgets {
                             height: 20.h,
                             child: Text(
                               '링크복사',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                              ),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -496,8 +504,9 @@ class Widgets {
                             width: 64.r,
                             height: 64.r,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.grey_F2),
+                              shape: BoxShape.circle,
+                              color: AppColors.grey_F2,
+                            ),
                           ),
                           Container(
                             alignment: Alignment.center,
@@ -505,15 +514,13 @@ class Widgets {
                             height: 20.h,
                             child: Text(
                               '더보기',
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                              ),
+                              style: TextStyle(fontSize: 12.sp),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ],
@@ -555,15 +562,20 @@ class _EmptyBounceState extends State<EmptyBounce>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    _opacity = Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _opacity = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     final i = widget.intensity;
     _scale = TweenSequence<double>([
       TweenSequenceItem(
-          tween: Tween(begin: 1.0 - 0.2 * i, end: 1.0 + 0.05 * i), weight: 60),
+        tween: Tween(begin: 1.0 - 0.2 * i, end: 1.0 + 0.05 * i),
+        weight: 60,
+      ),
       TweenSequenceItem(
-          tween: Tween(begin: 1.0 + 0.05 * i, end: 1.0), weight: 40),
+        tween: Tween(begin: 1.0 + 0.05 * i, end: 1.0),
+        weight: 40,
+      ),
     ]).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     if (widget.delay != null) {
       Future.delayed(widget.delay!, () {
@@ -592,10 +604,7 @@ class _EmptyBounceState extends State<EmptyBounce>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _opacity,
-      child: ScaleTransition(
-        scale: _scale,
-        child: widget.child,
-      ),
+      child: ScaleTransition(scale: _scale, child: widget.child),
     );
   }
 }
@@ -659,19 +668,20 @@ class _AnimatedStarState extends State<AnimatedStar>
         color: Colors.transparent,
         child: ScaleTransition(
           scale: _scale,
-          child: (widget.isSelected
-                  ? AppAssets.iconStarSelect
-                  : AppAssets.iconStarDeselect)
-              .svg(
-            colorFilter: ColorFilter.mode(
-              widget.isSelected
-                  ? AppColors.starYellowColor
-                  : AppColors.grey_CA,
-              BlendMode.srcIn,
-            ),
-            width: 20.r,
-            height: 20.r,
-          ),
+          child:
+              (widget.isSelected
+                      ? AppAssets.iconStarSelect
+                      : AppAssets.iconStarDeselect)
+                  .svg(
+                    colorFilter: ColorFilter.mode(
+                      widget.isSelected
+                          ? AppColors.starYellowColor
+                          : AppColors.grey_CA,
+                      BlendMode.srcIn,
+                    ),
+                    width: 20.r,
+                    height: 20.r,
+                  ),
         ),
       ),
     );

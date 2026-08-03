@@ -17,11 +17,13 @@ class BookEditRepository {
     if (response?.statusCode == 200) {
       final List list = response?.data['data']['book_read_list'] ?? [];
       return list
-          .map((item) => BookEditHistoryEntity(
-                id: (item as Map)['id'] as int? ?? 0,
-                bookStartDate: item['book_start_date'] as String?,
-                bookEndDate: item['book_end_date'] as String?,
-              ))
+          .map(
+            (item) => BookEditHistoryEntity(
+              id: (item as Map)['id'] as int? ?? 0,
+              bookStartDate: item['book_start_date'] as String?,
+              bookEndDate: item['book_end_date'] as String?,
+            ),
+          )
           .toList();
     }
     return [];
@@ -38,4 +40,3 @@ class BookEditRepository {
     return response?.statusCode == 200;
   }
 }
-

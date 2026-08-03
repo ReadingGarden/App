@@ -17,8 +17,11 @@ class MemoBookRepository {
     if (response?.statusCode == 200) {
       final List<dynamic> bookList = response?.data['data']['list'] ?? [];
       return bookList
-          .map((item) => MemoBookSelectorEntity.fromJson(
-              Map<String, dynamic>.from(item as Map)))
+          .map(
+            (item) => MemoBookSelectorEntity.fromJson(
+              Map<String, dynamic>.from(item as Map),
+            ),
+          )
           .toList();
     }
     return [];

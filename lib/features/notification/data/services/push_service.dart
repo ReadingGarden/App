@@ -26,8 +26,10 @@ class PushService {
 
   Future<Response?> putPush(Map data) async {
     try {
-      final response =
-          await _authenticatedDio.put('${Constant.URL}push/', data: data);
+      final response = await _authenticatedDio.put(
+        '${Constant.URL}push/',
+        data: data,
+      );
       logger.d('푸시 설정 수정 응답: ${response.data}');
       return response;
     } on DioException catch (e) {

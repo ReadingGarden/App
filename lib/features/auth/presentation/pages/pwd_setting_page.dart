@@ -57,7 +57,7 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
     void putPwdUpdate() async {
       final data = {
         "user_email": widget.userEmail,
-        "user_password": _pwdController.text
+        "user_password": _pwdController.text,
       };
 
       final response = await authService.putPwdUpdate(data);
@@ -94,59 +94,68 @@ class _PwdSettingPageState extends ConsumerState<PwdSettingPage> {
     }
 
     return Scaffold(
-        appBar: Widgets.appBar(context),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(
-                  top: 20.h, bottom: 32.h, left: 24.w, right: 24.w),
-              child: Column(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          alignment: Alignment.centerLeft,
-                          margin: EdgeInsets.only(bottom: 60.h),
-                          child: Text(
-                            '비밀번호 설정하기',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 24.sp),
-                          )),
-                      SizedBox(
-                          child: Widgets.textfield(
-                              ref,
-                              _pwdController,
-                              '비밀번호',
-                              '6자 이상 12자 이하로 입력해주세요',
-                              pwdErrorText,
-                              pwdErrorProvider,
-                              validateFunction: validate,
-                              isPwd: true)),
-                      SizedBox(
-                          child: Widgets.textfield(
-                              ref,
-                              _pwdCheckController,
-                              '비밀번호 확인',
-                              '비밀번호를 다시 입력해주세요',
-                              pwdCheckErrorText,
-                              pwdCheckErrorProvider,
-                              validateFunction: validate,
-                              isPwd: true)),
-                    ],
-                  ),
-                ],
-              ),
+      appBar: Widgets.appBar(context),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
+            margin: EdgeInsets.only(
+              top: 20.h,
+              bottom: 32.h,
+              left: 24.w,
+              right: 24.w,
+            ),
+            child: Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(bottom: 60.h),
+                      child: Text(
+                        '비밀번호 설정하기',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 24.sp,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      child: Widgets.textfield(
+                        ref,
+                        _pwdController,
+                        '비밀번호',
+                        '6자 이상 12자 이하로 입력해주세요',
+                        pwdErrorText,
+                        pwdErrorProvider,
+                        validateFunction: validate,
+                        isPwd: true,
+                      ),
+                    ),
+                    SizedBox(
+                      child: Widgets.textfield(
+                        ref,
+                        _pwdCheckController,
+                        '비밀번호 확인',
+                        '비밀번호를 다시 입력해주세요',
+                        pwdCheckErrorText,
+                        pwdCheckErrorProvider,
+                        validateFunction: validate,
+                        isPwd: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
-        bottomNavigationBar: Widgets.bottomBar(context,
-          child: Widgets.button(
-            '비밀번호 저장하기',
-            isValid,
-            () => putPwdUpdate(),
-          ),
-        ));
+      ),
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button('비밀번호 저장하기', isValid, () => putPwdUpdate()),
+      ),
+    );
   }
 }

@@ -17,8 +17,9 @@ import 'package:book_flutter/features/book/presentation/providers/book_detail_pr
 import 'package:book_flutter/features/garden/presentation/pages/garden_edit_page.dart';
 import 'package:book_flutter/features/garden/presentation/providers/garden_provider.dart';
 
-final bookDetailAppBarColorProvider =
-    StateProvider<Color>((ref) => Colors.white);
+final bookDetailAppBarColorProvider = StateProvider<Color>(
+  (ref) => Colors.white,
+);
 
 class BookDetailPage extends ConsumerStatefulWidget {
   const BookDetailPage({super.key, required this.bookNo});
@@ -133,8 +134,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   }
 
   Future<void> _deleteBook() async {
-    final statusCode =
-        await ref.read(bookDetailProvider.notifier).deleteBook(widget.bookNo);
+    final statusCode = await ref
+        .read(bookDetailProvider.notifier)
+        .deleteBook(widget.bookNo);
     if (!mounted) {
       return;
     }
@@ -157,8 +159,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
 
     // 다른 사람 책일 때 표시할 책 주인 멤버 (가든 멤버 목록에서 user_no로 조회)
     final gardenMembers = ref.watch(gardenMainMemberListProvider);
-    final ownerMatches =
-        gardenMembers.where((m) => m.userNo == bookDetail.userNo);
+    final ownerMatches = gardenMembers.where(
+      (m) => m.userNo == bookDetail.userNo,
+    );
     final bookOwner = ownerMatches.isEmpty ? null : ownerMatches.first;
 
     // 별점은 완독(book_status 1)한 책에만 표시
@@ -189,7 +192,7 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                       ),
                     ),
                   )
-                : Container()
+                : Container(),
           ],
           backFunction: () => context.pop('fetchData'),
           // color: animatedColor
@@ -207,32 +210,34 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
-                          left: 24.w,
-                          right: 24.w,
-                        ),
+                        padding: EdgeInsets.only(left: 24.w, right: 24.w),
                         child: Row(
                           children: [
                             Padding(
                               padding: EdgeInsets.only(right: 8.w),
                               child: _borderContainer(bookDetail.gardenTitle),
                             ),
-                            _borderContainer(Functions.bookStatusString(
-                                bookDetail.bookStatus)),
+                            _borderContainer(
+                              Functions.bookStatusString(bookDetail.bookStatus),
+                            ),
                           ],
                         ),
                       ),
                       Padding(
-                        padding:
-                            EdgeInsets.only(top: 10.h, left: 24.w, right: 24.w),
+                        padding: EdgeInsets.only(
+                          top: 10.h,
+                          left: 24.w,
+                          right: 24.w,
+                        ),
                         child: Text(
                           bookDetail.bookTitle,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.w600,
-                              height: 1.33.h),
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.w600,
+                            height: 1.33.h,
+                          ),
                         ),
                       ),
                       Container(
@@ -241,25 +246,25 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         margin: EdgeInsets.only(bottom: 10.h),
                         child: AppAssets.bookFlower(
                           bookDetail.bookTree,
-                        ).image(
-                          width: 360.w,
-                          height: 420.h,
-                        ),
+                        ).image(width: 360.w, height: 420.h),
                       ),
                     ],
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              offset: const Offset(0, -4),
-                              color: Colors.black.withValues(alpha: 0.08),
-                              blurRadius: 16.r)
-                        ],
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20.r),
-                            topRight: Radius.circular(20.r))),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(0, -4),
+                          color: Colors.black.withValues(alpha: 0.08),
+                          blurRadius: 16.r,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20.r),
+                        topRight: Radius.circular(20.r),
+                      ),
+                    ),
                     child: Stack(
                       alignment: Alignment.topRight,
                       children: [
@@ -273,21 +278,29 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                               Text(
                                 '읽은 페이지',
                                 style: TextStyle(
-                                    fontSize: 12.sp, color: AppColors.grey_8D),
+                                  fontSize: 12.sp,
+                                  color: AppColors.grey_8D,
+                                ),
                               ),
-                              Text.rich(TextSpan(
+                              Text.rich(
+                                TextSpan(
                                   style: TextStyle(
-                                      fontSize: 24.sp,
-                                      fontWeight: FontWeight.w600),
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   children: [
                                     TextSpan(
-                                        text:
-                                            '${bookDetail.bookCurrentPage}p '),
+                                      text: '${bookDetail.bookCurrentPage}p ',
+                                    ),
                                     TextSpan(
-                                        text: '/ ${bookDetail.bookPage}p',
-                                        style: const TextStyle(
-                                            color: AppColors.grey_CA))
-                                  ]))
+                                      text: '/ ${bookDetail.bookPage}p',
+                                      style: const TextStyle(
+                                        color: AppColors.grey_CA,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -295,10 +308,14 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                           visible: bookDetail.userNo == user.userNo,
                           child: GestureDetector(
                             onTap: () async {
-                              ref.read(gardenNavigateToProvider.notifier).state =
+                              ref
+                                      .read(gardenNavigateToProvider.notifier)
+                                      .state =
                                   bookDetail.gardenNo;
-                              final result = await context.pushNamed('book-add',
-                                  extra: bookDetail.toBookAddPayload());
+                              final result = await context.pushNamed(
+                                'book-add',
+                                extra: bookDetail.toBookAddPayload(),
+                              );
                               if (result != null) {
                                 _loadBookDetail();
                               }
@@ -309,8 +326,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                               width: 64.r,
                               height: 64.r,
                               decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: AppColors.black_59),
+                                shape: BoxShape.circle,
+                                color: AppColors.black_59,
+                              ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -330,8 +348,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                     child: Text(
                                       '물주기',
                                       style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColors.grey_FA),
+                                        fontSize: 12.sp,
+                                        color: AppColors.grey_FA,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -341,10 +360,11 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                         ),
                         Container(
                           margin: EdgeInsets.only(
-                              left: 24.w,
-                              right: 24.w,
-                              top: 136.h,
-                              bottom: 53.h),
+                            left: 24.w,
+                            right: 24.w,
+                            top: 136.h,
+                            bottom: 53.h,
+                          ),
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             children: [
@@ -352,30 +372,38 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                 width: 145.w,
                                 height: 200.h,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    color: AppColors.grey_F2,
-                                    boxShadow: [
-                                      BoxShadow(
-                                          offset: const Offset(0, 4),
-                                          blurRadius: 16.r,
-                                          color: AppColors.black_59
-                                              .withValues(alpha: 0.1))
-                                    ]),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  color: AppColors.grey_F2,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: const Offset(0, 4),
+                                      blurRadius: 16.r,
+                                      color: AppColors.black_59.withValues(
+                                        alpha: 0.1,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 child: (bookDetail.bookImageUrl == null)
                                     ? Container()
                                     : ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
+                                        borderRadius: BorderRadius.circular(
+                                          8.r,
+                                        ),
                                         child: CachedNetworkImage(
-                                            imageUrl: bookDetail.bookImageUrl ?? '',
-                                            width: 145.w,
-                                            height: 200.h,
-                                            fit: BoxFit.cover),
+                                          imageUrl:
+                                              bookDetail.bookImageUrl ?? '',
+                                          width: 145.w,
+                                          height: 200.h,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                               ),
                               Padding(
-                                padding:
-                                    EdgeInsets.only(top: 30.h, bottom: 8.h),
+                                padding: EdgeInsets.only(
+                                  top: 30.h,
+                                  bottom: 8.h,
+                                ),
                                 child: Text(
                                   bookDetail.bookTitle,
                                   textAlign: TextAlign.center,
@@ -387,8 +415,9 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                 child: Text(
                                   bookDetail.bookAuthor,
                                   style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.grey_8D),
+                                    fontSize: 12.sp,
+                                    color: AppColors.grey_8D,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -397,30 +426,36 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                 child: Text(
                                   bookDetail.bookPublisher,
                                   style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.grey_8D),
+                                    fontSize: 12.sp,
+                                    color: AppColors.grey_8D,
+                                  ),
                                 ),
                               ),
                               if (bookDetail.userNo != user.userNo)
                                 Container(
                                   margin: EdgeInsets.only(bottom: 40.h),
                                   padding: EdgeInsets.only(
-                                      left: 24.w,
-                                      right: 24.w,
-                                      top: 20.h,
-                                      bottom: 20.h),
+                                    left: 24.w,
+                                    right: 24.w,
+                                    top: 20.h,
+                                    bottom: 20.h,
+                                  ),
                                   decoration: BoxDecoration(
-                                      boxShadow: [
-                                        BoxShadow(
-                                            offset: const Offset(0, 4),
-                                            blurRadius: 8.r,
-                                            color: const Color(0xff97CD8D)
-                                                .withValues(alpha: 0.05))
-                                      ],
-                                      border:
-                                          Border.all(color: AppColors.grey_F2),
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      color: Colors.white),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 8.r,
+                                        color: const Color(
+                                          0xff97CD8D,
+                                        ).withValues(alpha: 0.05),
+                                      ),
+                                    ],
+                                    border: Border.all(
+                                      color: AppColors.grey_F2,
+                                    ),
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    color: Colors.white,
+                                  ),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -431,292 +466,295 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                         child: Text(
                                           '책 소개',
                                           style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: AppColors.grey_8D),
+                                            fontSize: 12.sp,
+                                            color: AppColors.grey_8D,
+                                          ),
                                         ),
                                       ),
                                       (bookDetail.bookInfo != '')
                                           ? Text(
                                               Functions.cleanBookInfo(
-                                                  bookDetail.bookInfo),
+                                                bookDetail.bookInfo,
+                                              ),
                                               style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  height: 1.75.h),
+                                                fontSize: 12.sp,
+                                                height: 1.75.h,
+                                              ),
                                             )
                                           : Container(
                                               alignment: Alignment.center,
                                               margin: EdgeInsets.only(
-                                                  top: 8.h, bottom: 8.h),
+                                                top: 8.h,
+                                                bottom: 8.h,
+                                              ),
                                               child: Text(
-                                                  '소개글이 등록되지 않은 책이에요',
-                                                  style: TextStyle(
-                                                      fontSize: 12.sp,
-                                                      color:
-                                                          AppColors.grey_8D)),
+                                                '소개글이 등록되지 않은 책이에요',
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.grey_8D,
+                                                ),
+                                              ),
                                             ),
                                     ],
                                   ),
                                 ),
                               Column(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                      left: 24.w,
+                                      right: 38.w,
+                                      top: 20.h,
+                                      bottom: 2.h,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
+                                          offset: const Offset(0, 4),
+                                          blurRadius: 8.r,
+                                          color: const Color(
+                                            0xff97CD8D,
+                                          ).withValues(alpha: 0.05),
+                                        ),
+                                      ],
+                                      border: Border.all(
+                                        color: AppColors.grey_F2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20.r),
+                                      color: Colors.white,
+                                    ),
+                                    child: Column(
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              left: 24.w,
-                                              right: 38.w,
-                                              top: 20.h,
-                                              bottom: 2.h),
-                                          decoration: BoxDecoration(
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    offset: const Offset(0, 4),
-                                                    blurRadius: 8.r,
-                                                    color:
-                                                        const Color(0xff97CD8D)
-                                                            .withValues(alpha: 0.05))
-                                              ],
-                                              border: Border.all(
-                                                  color: AppColors.grey_F2),
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                              color: Colors.white),
-                                          child: Column(
+                                        if (bookDetail.userNo !=
+                                            user.userNo) ...[
+                                          Row(
                                             children: [
-                                              if (bookDetail.userNo !=
-                                                  user.userNo) ...[
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      '이 책을 심은 사람',
-                                                      style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          color: AppColors
-                                                              .grey_8D),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 16.h),
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 36.r,
-                                                        height: 36.r,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        child: AppAssets
-                                                                .profileFlower(
-                                                          bookOwner
-                                                                  ?.userImage ??
-                                                              '',
-                                                        ).image(),
-                                                      ),
-                                                      SizedBox(width: 8.w),
-                                                      Text(
-                                                        bookOwner?.userNick ??
-                                                            '',
-                                                        style: TextStyle(
-                                                            fontSize: 14.sp,
-                                                            fontWeight:
-                                                                FontWeight.w400),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                              //별점
-                                              if (isFinished) ...[
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: isOthersBook
-                                                          ? 16.h
-                                                          : 0),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        kRatingTexts[0],
-                                                        style: TextStyle(
-                                                            fontSize: 12.sp,
-                                                            color: AppColors
-                                                                .grey_8D),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: 16.h),
-                                                  child: Row(
-                                                    children: [
-                                                      StarRow(
-                                                        rating: bookDetail
-                                                            .bookRating,
-                                                        size: 24.r,
-                                                        gap: 4.w,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                if (bookDetail.bookRating > 0)
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 8.h),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          kRatingTexts[
-                                                              bookDetail
-                                                                  .bookRating],
-                                                          style: TextStyle(
-                                                              fontSize: 12.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: AppColors
-                                                                  .starSelectColor),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  )
-                                                //내 책인데 별점이 비어 있으면 수정 화면 진입점 노출
-                                                else if (!isOthersBook)
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 8.h),
-                                                    child: Row(
-                                                      children: [
-                                                        GestureDetector(
-                                                          behavior:
-                                                              HitTestBehavior
-                                                                  .opaque,
-                                                          onTap: _goToBookEdit,
-                                                          child: Text(
-                                                            '별점 기록하기 >',
-                                                            style: TextStyle(
-                                                                fontSize: 12.sp,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                color: AppColors
-                                                                    .starSelectColor),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                              ],
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: (isFinished ||
-                                                            isOthersBook)
-                                                        ? 16.h
-                                                        : 0,
-                                                    bottom: 18.h),
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '히스토리',
-                                                      style: TextStyle(
-                                                          fontSize: 12.sp,
-                                                          color: AppColors
-                                                              .grey_8D),
-                                                    ),
-                                                  ],
+                                              Text(
+                                                '이 책을 심은 사람',
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.grey_8D,
                                                 ),
                                               ),
-                                              (bookDetail.bookReadList
-                                                            .isNotEmpty)
-                                                        ? ListView(
-                                                            shrinkWrap: true,
-                                                            physics:
-                                                                const NeverScrollableScrollPhysics(),
-                                                            children:
-                                                                List.generate(
-                                                              bookDetail
-                                                                  .bookReadList
-                                                                  .length,
-                                                              (index) {
-                                                                return Container(
-                                                                    margin: EdgeInsets.only(
-                                                                        bottom: 18
-                                                                            .h),
-                                                                    child: _bookReadListWidget(
-                                                                        index));
-                                                              },
-                                                            ),
-                                                          )
-                                                        : Container()
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 16.h),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 36.r,
+                                                  height: 36.r,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                      ),
+                                                  child:
+                                                      AppAssets.profileFlower(
+                                                        bookOwner?.userImage ??
+                                                            '',
+                                                      ).image(),
+                                                ),
+                                                SizedBox(width: 8.w),
+                                                Text(
+                                                  bookOwner?.userNick ?? '',
+                                                  style: TextStyle(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                        //별점
+                                        if (isFinished) ...[
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              top: isOthersBook ? 16.h : 0,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  kRatingTexts[0],
+                                                  style: TextStyle(
+                                                    fontSize: 12.sp,
+                                                    color: AppColors.grey_8D,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(top: 16.h),
+                                            child: Row(
+                                              children: [
+                                                StarRow(
+                                                  rating: bookDetail.bookRating,
+                                                  size: 24.r,
+                                                  gap: 4.w,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          if (bookDetail.bookRating > 0)
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 8.h,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    kRatingTexts[bookDetail
+                                                        .bookRating],
+                                                    style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: AppColors
+                                                          .starSelectColor,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          //내 책인데 별점이 비어 있으면 수정 화면 진입점 노출
+                                          else if (!isOthersBook)
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                top: 8.h,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    behavior:
+                                                        HitTestBehavior.opaque,
+                                                    onTap: _goToBookEdit,
+                                                    child: Text(
+                                                      '별점 기록하기 >',
+                                                      style: TextStyle(
+                                                        fontSize: 12.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: AppColors
+                                                            .starSelectColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                        ],
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            top: (isFinished || isOthersBook)
+                                                ? 16.h
+                                                : 0,
+                                            bottom: 18.h,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                '히스토리',
+                                                style: TextStyle(
+                                                  fontSize: 12.sp,
+                                                  color: AppColors.grey_8D,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(top: 40.h),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                '메모',
-                                                style: TextStyle(
-                                                    fontSize: 18.sp,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              if (bookDetail.userNo ==
-                                                  user.userNo)
-                                                GestureDetector(
-                                                onTap: () async {
-                                                  final data = bookDetail
-                                                      .toBookAddPayload();
-                                                  data['book_no'] =
-                                                      widget.bookNo;
-                                                  final result = await context
-                                                      .pushNamed('memo-write',
-                                                          extra: data);
+                                        (bookDetail.bookReadList.isNotEmpty)
+                                            ? ListView(
+                                                shrinkWrap: true,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                children: List.generate(
+                                                  bookDetail
+                                                      .bookReadList
+                                                      .length,
+                                                  (index) {
+                                                    return Container(
+                                                      margin: EdgeInsets.only(
+                                                        bottom: 18.h,
+                                                      ),
+                                                      child:
+                                                          _bookReadListWidget(
+                                                            index,
+                                                          ),
+                                                    );
+                                                  },
+                                                ),
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 40.h),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '메모',
+                                          style: TextStyle(
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        if (bookDetail.userNo == user.userNo)
+                                          GestureDetector(
+                                            onTap: () async {
+                                              final data = bookDetail
+                                                  .toBookAddPayload();
+                                              data['book_no'] = widget.bookNo;
+                                              final result = await context
+                                                  .pushNamed(
+                                                    'memo-write',
+                                                    extra: data,
+                                                  );
 
-                                                  if (result != null) {
-                                                    _loadBookDetail();
-                                                  }
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    AppAssets.iconAdd.svg(
-                                                      colorFilter:
-                                                          const ColorFilter
-                                                              .mode(
+                                              if (result != null) {
+                                                _loadBookDetail();
+                                              }
+                                            },
+                                            child: Row(
+                                              children: [
+                                                AppAssets.iconAdd.svg(
+                                                  colorFilter:
+                                                      const ColorFilter.mode(
                                                         AppColors.primaryColor,
                                                         BlendMode.srcIn,
                                                       ),
-                                                      width: 16.r,
-                                                      height: 16.r,
-                                                    ),
-                                                    Container(
-                                                      color: Colors.transparent,
-                                                      child: const Text(
-                                                        '작성하기',
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .primaryColor),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  width: 16.r,
+                                                  height: 16.r,
                                                 ),
-                                              )
-                                            ],
+                                                Container(
+                                                  color: Colors.transparent,
+                                                  child: const Text(
+                                                    '작성하기',
+                                                    style: TextStyle(
+                                                      color: AppColors
+                                                          .primaryColor,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        _memoList()
                                       ],
                                     ),
+                                  ),
+                                  _memoList(),
+                                ],
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -736,82 +774,79 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
           margin: EdgeInsets.only(top: 20.h, bottom: 16.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: () async {
-                    context.pop();
-                    await _goToBookEdit();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 312.w,
-                    height: 26.h,
-                    color: Colors.transparent,
-                    child: Text(
-                      '책 수정하기',
-                      style: TextStyle(fontSize: 16.sp),
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  context.pop();
+                  await _goToBookEdit();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 312.w,
+                  height: 26.h,
+                  color: Colors.transparent,
+                  child: Text('책 수정하기', style: TextStyle(fontSize: 16.sp)),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20.h),
+                height: 1.h,
+                color: AppColors.grey_F2,
+              ),
+              GestureDetector(
+                onTap: () {
+                  final gardenNo = ref.watch(bookDetailProvider).gardenNo;
+                  if (gardenNo == null) {
+                    return;
+                  }
+                  context.pop();
+                  showModalBottomSheet(
+                    backgroundColor: Colors.white,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    context: context,
+                    builder: (context) => GardenEditBottomSheet(
+                      function: (int toGardenNo) {
+                        _moveBook(toGardenNo);
+                      },
+                      gardenNo: gardenNo,
+                    ),
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 312.w,
+                  height: 26.h,
+                  color: Colors.transparent,
+                  child: Text('다른 가든으로 이전', style: TextStyle(fontSize: 16.sp)),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20.h),
+                height: 1.h,
+                color: AppColors.grey_F2,
+              ),
+              GestureDetector(
+                onTap: () {
+                  context.pop();
+                  _bookDeleteBottomSheet();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 312.w,
+                  height: 26.h,
+                  color: Colors.transparent,
+                  child: Text(
+                    '책 삭제하기',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: AppColors.errorRedColor,
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 20.h),
-                  height: 1.h,
-                  color: AppColors.grey_F2,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    final gardenNo = ref.watch(bookDetailProvider).gardenNo;
-                    if (gardenNo == null) {
-                      return;
-                    }
-                    context.pop();
-                    showModalBottomSheet(
-                        backgroundColor: Colors.white,
-                        isScrollControlled: true,
-                        useSafeArea: true,
-                        context: context,
-                        builder: (context) => GardenEditBottomSheet(
-                              function: (int toGardenNo) {
-                                _moveBook(toGardenNo);
-                              },
-                              gardenNo: gardenNo,
-                            ));
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 312.w,
-                    height: 26.h,
-                    color: Colors.transparent,
-                    child: Text(
-                      '다른 가든으로 이전',
-                      style: TextStyle(fontSize: 16.sp),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 20.h),
-                  height: 1.h,
-                  color: AppColors.grey_F2,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    context.pop();
-                    _bookDeleteBottomSheet();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 312.w,
-                    height: 26.h,
-                    color: Colors.transparent,
-                    child: Text(
-                      '책 삭제하기',
-                      style: TextStyle(
-                          fontSize: 16.sp, color: AppColors.errorRedColor),
-                    ),
-                  ),
-                )
-              ],
-            ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -820,18 +855,29 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
   //책 삭제하기 바텀시트
   Future _bookDeleteBottomSheet() {
     return Widgets.deleteBottomSheet(
-        context,
-        '이 책을 삭제할까요?',
-        Text.rich(TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
-          TextSpan(text: '책을 삭제하면 내가 기록한 '),
-          TextSpan(
-              text: '독서 기록', style: TextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: '과 '),
-          TextSpan(text: '메모', style: TextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: '도 모두 삭제되어요.'),
-        ])),
-        '삭제하기',
-        _deleteBook);
+      context,
+      '이 책을 삭제할까요?',
+      Text.rich(
+        TextSpan(
+          style: TextStyle(fontSize: 14.sp),
+          children: const [
+            TextSpan(text: '책을 삭제하면 내가 기록한 '),
+            TextSpan(
+              text: '독서 기록',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '과 '),
+            TextSpan(
+              text: '메모',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '도 모두 삭제되어요.'),
+          ],
+        ),
+      ),
+      '삭제하기',
+      _deleteBook,
+    );
   }
 
   Widget _borderContainer(String title) {
@@ -839,15 +885,17 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
       margin: EdgeInsets.only(top: 15.h),
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
       decoration: BoxDecoration(
-          border: Border.all(color: AppColors.black_59),
-          borderRadius: BorderRadius.circular(20.r),
-          color: Colors.transparent),
+        border: Border.all(color: AppColors.black_59),
+        borderRadius: BorderRadius.circular(20.r),
+        color: Colors.transparent,
+      ),
       child: Text(
         title,
         style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w600,
-            color: AppColors.black_59),
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w600,
+          color: AppColors.black_59,
+        ),
       ),
     );
   }
@@ -863,66 +911,88 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text.rich(TextSpan(children: [
+              Text.rich(
                 TextSpan(
-                    text: bookDetail.bookTree,
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(
-                    text:
-                        '${Functions.getPostpositionString(bookDetail.bookTree, '이', '가')} 다컸어요')
-              ])),
+                  children: [
+                    TextSpan(
+                      text: bookDetail.bookTree,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                      text:
+                          '${Functions.getPostpositionString(bookDetail.bookTree, '이', '가')} 다컸어요',
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.only(top: 4.h),
                 child: Text(
                   Functions.formatDate(
-                      history.bookEndDate ?? DateTime.now().toString()),
+                    history.bookEndDate ?? DateTime.now().toString(),
+                  ),
                   style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
                 ),
-              )
+              ),
             ],
           )
         //맨 아래(독서 시작)
         : (index == bookReadList.length - 1)
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text.rich(TextSpan(children: [
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text.rich(
+                TextSpan(
+                  children: [
                     const TextSpan(text: '새로운 꽃 '),
                     TextSpan(
-                        text: bookDetail.bookTree,
-                        style: const TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(
-                        text:
-                            '${Functions.getPostpositionString(bookDetail.bookTree, '을', '를')} 심었어요')
-                  ])),
-                  Padding(
-                    padding: EdgeInsets.only(top: 4.h),
-                    child: Text(
-                      Functions.formatDate(
-                          history.bookStartDate ?? DateTime.now().toString()),
-                      style:
-                          TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                      text: bookDetail.bookTree,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                  )
-                ],
-              )
-            //중간 기록
-            : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text.rich(TextSpan(children: [
-                  TextSpan(
-                      text: '${history.bookCurrentPage}p',
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  const TextSpan(text: ' 만큼 물을 주었어요')
-                ])),
-                Padding(
-                  padding: EdgeInsets.only(top: 4.h),
-                  child: Text(
-                    Functions.formatDate(
-                        history.bookCreatedAt ?? DateTime.now().toString()),
-                    style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                    TextSpan(
+                      text:
+                          '${Functions.getPostpositionString(bookDetail.bookTree, '을', '를')} 심었어요',
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 4.h),
+                child: Text(
+                  Functions.formatDate(
+                    history.bookStartDate ?? DateTime.now().toString(),
                   ),
-                )
-              ]);
+                  style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                ),
+              ),
+            ],
+          )
+        //중간 기록
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${history.bookCurrentPage}p',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const TextSpan(text: ' 만큼 물을 주었어요'),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 4.h),
+                child: Text(
+                  Functions.formatDate(
+                    history.bookCreatedAt ?? DateTime.now().toString(),
+                  ),
+                  style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
+                ),
+              ),
+            ],
+          );
   }
 
   //메모 리스트
@@ -936,142 +1006,155 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
             shrinkWrap: true,
             padding: EdgeInsets.only(top: 20.h),
             physics: const NeverScrollableScrollPhysics(),
-            children: List.generate(
-              memoList.length,
-              (index) {
-                final memo = memoList[index];
-                return Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        final data = memo.toRoutePayload(
-                          bookNo: widget.bookNo,
-                          bookTitle: bookDetail.bookTitle,
-                          bookAuthor: bookDetail.bookAuthor,
-                          bookImageUrl: bookDetail.bookImageUrl,
-                          isMine: bookDetail.userNo == user.userNo,
-                        );
+            children: List.generate(memoList.length, (index) {
+              final memo = memoList[index];
+              return Stack(
+                alignment: Alignment.bottomRight,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      final data = memo.toRoutePayload(
+                        bookNo: widget.bookNo,
+                        bookTitle: bookDetail.bookTitle,
+                        bookAuthor: bookDetail.bookAuthor,
+                        bookImageUrl: bookDetail.bookImageUrl,
+                        isMine: bookDetail.userNo == user.userNo,
+                      );
 
-                        final result =
-                            await context.pushNamed('memo-detail', extra: data);
-                        if (result != null) {
-                          _loadBookDetail();
-                        }
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 10.h),
-                        padding: EdgeInsets.only(
-                            left: 20.w, right: 20.w, top: 20.h, bottom: 20.h),
-                        width: 312.w,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.grey_F2),
-                            borderRadius: BorderRadius.circular(20.r),
-                            color: Colors.transparent),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                (bookDetail.bookImageUrl == null)
-                                    ? Container(
+                      final result = await context.pushNamed(
+                        'memo-detail',
+                        extra: data,
+                      );
+                      if (result != null) {
+                        _loadBookDetail();
+                      }
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 10.h),
+                      padding: EdgeInsets.only(
+                        left: 20.w,
+                        right: 20.w,
+                        top: 20.h,
+                        bottom: 20.h,
+                      ),
+                      width: 312.w,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.grey_F2),
+                        borderRadius: BorderRadius.circular(20.r),
+                        color: Colors.transparent,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              (bookDetail.bookImageUrl == null)
+                                  ? Container(
+                                      width: 44.r,
+                                      height: 44.r,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          8.r,
+                                        ),
+                                        color: AppColors.grey_F2,
+                                      ),
+                                    )
+                                  : ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.r),
+                                      child: CachedNetworkImage(
+                                        imageUrl: bookDetail.bookImageUrl!,
                                         width: 44.r,
                                         height: 44.r,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.r),
-                                            color: AppColors.grey_F2),
-                                      )
-                                    : ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(8.r),
-                                        child: CachedNetworkImage(
-                                          imageUrl: bookDetail.bookImageUrl!,
-                                          width: 44.r,
-                                          height: 44.r,
-                                          fit: BoxFit.cover,
-                                        ),
+                                        fit: BoxFit.cover,
                                       ),
-                                Container(
-                                  width: 212.w,
-                                  margin: EdgeInsets.only(left: 12.w),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        bookDetail.bookTitle,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                    ),
+                              Container(
+                                width: 212.w,
+                                margin: EdgeInsets.only(left: 12.w),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      bookDetail.bookTitle,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      bookDetail.bookAuthor,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: AppColors.grey_8D,
                                       ),
-                                      Text(
-                                        bookDetail.bookAuthor,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColors.grey_8D),
-                                      )
-                                    ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Visibility(
+                            visible:
+                                memo.imageUrl != null &&
+                                memo.imageUrl!.isNotEmpty,
+                            child: Container(
+                              margin: EdgeInsets.only(top: 10.h),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      '${Constant.IMAGE_URL}${memo.imageUrl}',
+                                  width: 272.w,
+                                  height: 272.w,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10.h),
+                            child: Text(
+                              memo.memoContent,
+                              maxLines: 5,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Functions.formatDate(memo.memoCreatedAt),
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: AppColors.grey_8D,
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                            Visibility(
-                                visible: memo.imageUrl != null &&
-                                    memo.imageUrl!.isNotEmpty,
-                                child: Container(
-                                  margin: EdgeInsets.only(top: 10.h),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    child: CachedNetworkImage(
-                                        imageUrl: '${Constant.IMAGE_URL}${memo.imageUrl}',
-                                        width: 272.w,
-                                        height: 272.w,
-                                        fit: BoxFit.cover),
-                                  ),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: Text(
-                                  memo.memoContent,
-                                  maxLines: 5,
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      overflow: TextOverflow.ellipsis),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(top: 10.h),
-                                child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        Functions.formatDate(
-                                            memo.memoCreatedAt),
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColors.grey_8D),
-                                      ),
-                                    ])),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    (bookDetail.userNo == user.userNo &&
-                            ref
-                                .watch(bookDetailMemoSelectIndexListProvider)
-                                .isNotEmpty)
-                        ? AnimatedStar(
-                            isSelected: ref.watch(
-                                bookDetailMemoSelectIndexListProvider)[index],
-                            onTap: () => _toggleMemoLike(index, memo.id),
-                          )
-                        : Container()
-                  ],
-                );
-              },
-            ),
+                  ),
+                  (bookDetail.userNo == user.userNo &&
+                          ref
+                              .watch(bookDetailMemoSelectIndexListProvider)
+                              .isNotEmpty)
+                      ? AnimatedStar(
+                          isSelected: ref.watch(
+                            bookDetailMemoSelectIndexListProvider,
+                          )[index],
+                          onTap: () => _toggleMemoLike(index, memo.id),
+                        )
+                      : Container(),
+                ],
+              );
+            }),
           )
         : Container(
             margin: EdgeInsets.only(top: 40.h, bottom: 40.h),
@@ -1083,4 +1166,3 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
           );
   }
 }
-

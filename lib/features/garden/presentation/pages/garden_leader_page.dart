@@ -34,8 +34,11 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
     final gardenNo = gardenMain.gardenNo;
     final userNo = ref.read(gardenLeaderSelectIndexProvider);
 
-    final statusCode =
-        await garden_feature.updateGardenLeader(ref, gardenNo, userNo);
+    final statusCode = await garden_feature.updateGardenLeader(
+      ref,
+      gardenNo,
+      userNo,
+    );
     if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
@@ -55,10 +58,7 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
         scrolledUnderElevation: 0,
         leading: Container(),
         centerTitle: true,
-        title: Text(
-          '대표 변경하기',
-          style: TextStyle(fontSize: 16.sp),
-        ),
+        title: Text('대표 변경하기', style: TextStyle(fontSize: 16.sp)),
         actions: [
           GestureDetector(
             onTap: () async {
@@ -69,12 +69,9 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
               width: 60.r,
               height: 60.r,
               color: Colors.transparent,
-              child: AppAssets.iconClose.svg(
-                width: 24.r,
-                height: 24.r,
-              ),
+              child: AppAssets.iconClose.svg(width: 24.r, height: 24.r),
             ),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -85,72 +82,73 @@ class _GardenLeaderPageState extends ConsumerState<GardenLeaderPage> {
               ListView(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                children: List.generate(
-                  members.length,
-                  (index) {
-                    final member = members[index];
-                    return GestureDetector(
-                      onTap: () {
-                        ref
-                            .read(gardenLeaderSelectIndexProvider.notifier)
-                            .state = member.userNo;
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 24.h),
-                        height: 48.h,
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 48.r,
-                                  height: 48.r,
-                                  decoration: const BoxDecoration(
-                                      shape: BoxShape.circle),
-                                  child: AppAssets.profileFlower(
-                                    member.userImage,
-                                  ).image(),
+                children: List.generate(members.length, (index) {
+                  final member = members[index];
+                  return GestureDetector(
+                    onTap: () {
+                      ref.read(gardenLeaderSelectIndexProvider.notifier).state =
+                          member.userNo;
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 24.h),
+                      height: 48.h,
+                      color: Colors.transparent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 48.r,
+                                height: 48.r,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 12.w),
-                                  child: Text(
-                                    member.userNick,
-                                    style: TextStyle(fontSize: 16.sp),
-                                  ),
+                                child: AppAssets.profileFlower(
+                                  member.userImage,
+                                ).image(),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 12.w),
+                                child: Text(
+                                  member.userNick,
+                                  style: TextStyle(fontSize: 16.sp),
                                 ),
-                              ],
-                            ),
-                            ((ref.watch(gardenLeaderSelectIndexProvider) ==
+                              ),
+                            ],
+                          ),
+                          ((ref.watch(gardenLeaderSelectIndexProvider) ==
+                                      member.userNo)
+                                  ? AppAssets.iconCheckSelect
+                                  : AppAssets.iconCheckDeselect)
+                              .svg(
+                                colorFilter:
+                                    (ref.watch(
+                                          gardenLeaderSelectIndexProvider,
+                                        ) ==
                                         member.userNo)
-                                    ? AppAssets.iconCheckSelect
-                                    : AppAssets.iconCheckDeselect)
-                                .svg(
-                              colorFilter:
-                                  (ref.watch(gardenLeaderSelectIndexProvider) ==
-                                          member.userNo)
-                                      ? null
-                                      : const ColorFilter.mode(
-                                          AppColors.grey_CA,
-                                          BlendMode.srcIn,
-                                        ),
-                              width: 24.r,
-                              height: 24.r,
-                            )
-                          ],
-                        ),
+                                    ? null
+                                    : const ColorFilter.mode(
+                                        AppColors.grey_CA,
+                                        BlendMode.srcIn,
+                                      ),
+                                width: 24.r,
+                                height: 24.r,
+                              ),
+                        ],
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                }),
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Widgets.bottomBar(context,
-          child: Widgets.button('저장하기', true, () => putGardenLeader())),
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button('저장하기', true, () => putGardenLeader()),
+      ),
     );
   }
 }

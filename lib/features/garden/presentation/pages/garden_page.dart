@@ -122,13 +122,15 @@ class _GardenPageState extends ConsumerState<GardenPage>
       setState(() => _showFlash = false);
 
       try {
-        RenderRepaintBoundary? boundary = _scrollViewKey.currentContext
-            ?.findRenderObject() as RenderRepaintBoundary?;
+        RenderRepaintBoundary? boundary =
+            _scrollViewKey.currentContext?.findRenderObject()
+                as RenderRepaintBoundary?;
 
         if (boundary != null) {
           var image = await boundary.toImage(pixelRatio: 3.0);
-          ByteData? byteData =
-              await image.toByteData(format: ImageByteFormat.png);
+          ByteData? byteData = await image.toByteData(
+            format: ImageByteFormat.png,
+          );
           if (byteData == null) return;
           Uint8List uint8List = byteData.buffer.asUint8List();
 
@@ -151,8 +153,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
   @override
   Widget build(BuildContext context) {
     final gardenMain = ref.watch(garden_feature.gardenMainProvider);
-    final gardenMainBookList =
-        ref.watch(garden_feature.gardenMainBookListProvider);
+    final gardenMainBookList = ref.watch(
+      garden_feature.gardenMainBookListProvider,
+    );
     final navIndex = ref.watch(currentIndexProvider);
     final visitCount = ref.watch(garden_feature.gardenVisitCountProvider);
 
@@ -175,111 +178,124 @@ class _GardenPageState extends ConsumerState<GardenPage>
             controller: screenshotController,
             child: Stack(
               alignment: Alignment.bottomCenter,
-          children: [
-            Stack(
-              alignment: Alignment.topCenter,
               children: [
-                _gardenMain(gardenMainBookList),
-                GestureDetector(
-                  onTap: () async {
-                    _gardenMenuBottomSheet();
-                  },
-                  child: (!gardenMain.isEmpty)
-                      ? Container(
-                          margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).viewPadding.top + 8.h, left: 24.w, right: 24.w),
-                          color: Colors.transparent,
-                          child: Stack(
-                            alignment: Alignment.topRight,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 20.w, vertical: 14.h),
-                                width: 312.w,
-                                height: 86.h,
-                                decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
+                Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    _gardenMain(gardenMainBookList),
+                    GestureDetector(
+                      onTap: () async {
+                        _gardenMenuBottomSheet();
+                      },
+                      child: (!gardenMain.isEmpty)
+                          ? Container(
+                              margin: EdgeInsets.only(
+                                top:
+                                    MediaQuery.of(context).viewPadding.top +
+                                    8.h,
+                                left: 24.w,
+                                right: 24.w,
+                              ),
+                              color: Colors.transparent,
+                              child: Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 20.w,
+                                      vertical: 14.h,
+                                    ),
+                                    width: 312.w,
+                                    height: 86.h,
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(
                                           offset: const Offset(0, 4),
                                           blurRadius: 16.r,
-                                          color: AppColors.black_59
-                                              .withValues(alpha: 0.3))
-                                    ],
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20.r)),
-                                child: SizedBox(
-                                  height: 48.h,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Row(
+                                          color: AppColors.black_59.withValues(
+                                            alpha: 0.3,
+                                          ),
+                                        ),
+                                      ],
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20.r),
+                                    ),
+                                    child: SizedBox(
+                                      height: 48.h,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
                                         children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                gardenMain.gardenTitle,
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              AppAssets.iconAngleRight.svg(
+                                                width: 20.r,
+                                                height: 20.r,
+                                              ),
+                                            ],
+                                          ),
                                           Text(
-                                            gardenMain.gardenTitle,
+                                            gardenMain.gardenInfo,
+                                            maxLines: 1,
                                             style: TextStyle(
-                                              fontSize: 16.sp,
-                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12.sp,
+                                              color: AppColors.grey_8D,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
-                                          AppAssets.iconAngleRight.svg(
-                                            width: 20.r,
-                                            height: 20.r,
-                                          )
                                         ],
                                       ),
-                                      Text(
-                                        gardenMain.gardenInfo,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: AppColors.grey_8D,
-                                            overflow: TextOverflow.ellipsis),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(right: 20.w),
-                                child: AppAssets.iconBookmarkFull.svg(
-                                  colorFilter: ColorFilter.mode(
-                                    Functions.gardenColor(
-                                        gardenMain.gardenColor),
-                                    BlendMode.srcIn,
+                                  Container(
+                                    margin: EdgeInsets.only(right: 20.w),
+                                    child: AppAssets.iconBookmarkFull.svg(
+                                      colorFilter: ColorFilter.mode(
+                                        Functions.gardenColor(
+                                          gardenMain.gardenColor,
+                                        ),
+                                        BlendMode.srcIn,
+                                      ),
+                                      width: 20.w,
+                                      height: 24.h,
+                                    ),
                                   ),
-                                  width: 20.w,
-                                  height: 24.h,
-                                ),
+                                ],
                               ),
-                            ],
-                          ),
-                        )
-                      : Container(),
+                            )
+                          : Container(),
+                    ),
+                  ],
                 ),
+                if (gardenMainBookList.isEmpty && !gardenMain.isEmpty)
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom:
+                        (Platform.isIOS ? 90.h : 70.h) +
+                        MediaQuery.of(context).viewPadding.bottom,
+                    child: const _FloatingBalloon(),
+                  ),
               ],
             ),
-            if (gardenMainBookList.isEmpty && !gardenMain.isEmpty)
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: (Platform.isIOS ? 90.h : 70.h) +
-                    MediaQuery.of(context).viewPadding.bottom,
-                child: const _FloatingBalloon(),
-              ),
-          ],
-        ),
-      ),
-      IgnorePointer(
-        child: AnimatedOpacity(
-          opacity: _showFlash ? 1.0 : 0.0,
-          duration: Duration(milliseconds: _showFlash ? 150 : 400),
-          child: Container(color: Colors.white),
-        ),
-      ),
-      ],
+          ),
+          IgnorePointer(
+            child: AnimatedOpacity(
+              opacity: _showFlash ? 1.0 : 0.0,
+              duration: Duration(milliseconds: _showFlash ? 150 : 400),
+              child: Container(color: Colors.white),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -296,21 +312,22 @@ class _GardenPageState extends ConsumerState<GardenPage>
           children: [
             Column(
               children: [
-                Assets.images.mainTopBack
-                    .image(width: 360.w, height: 200.5.w, fit: BoxFit.fitWidth),
+                Assets.images.mainTopBack.image(
+                  width: 360.w,
+                  height: 200.5.w,
+                  fit: BoxFit.fitWidth,
+                ),
                 Assets.images.mainBottomBack.image(
                   fit: BoxFit.cover,
                   width: 360.w,
-                  height: getTotalScrollHeight(gardenMainBookList.length) + bottomNavHeight,
+                  height:
+                      getTotalScrollHeight(gardenMainBookList.length) +
+                      bottomNavHeight,
                 ),
               ],
             ),
             GridView.builder(
-              padding: EdgeInsets.only(
-                top: 210.h,
-                left: 20.w,
-                right: 20.w,
-              ),
+              padding: EdgeInsets.only(top: 210.h, left: 20.w, right: 20.w),
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisExtent: 130.h, //세로 길이
@@ -341,8 +358,10 @@ class _GardenPageState extends ConsumerState<GardenPage>
                   },
                   child: GestureDetector(
                     onTap: () async {
-                      final result = await context.pushNamed('book-detail',
-                          extra: book.bookNo);
+                      final result = await context.pushNamed(
+                        'book-detail',
+                        extra: book.bookNo,
+                      );
                       if (result != null) {
                         garden_feature.fetchGardenList(ref);
                       }
@@ -360,31 +379,39 @@ class _GardenPageState extends ConsumerState<GardenPage>
                             ).image(),
                           ),
                           Container(
-                              margin: EdgeInsets.only(top: 8.h),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w, vertical: 4.h),
-                              decoration: BoxDecoration(
-                                  color: AppColors.grey_F2,
-                                  border: Border.all(
-                                      width: 1.w, color: AppColors.black_59),
-                                  borderRadius: BorderRadius.circular(20.r)),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  AppAssets.flowerIcon(_ownerFlowerName(book))
-                                      .svg(width: 14.w, height: 14.w),
-                                  SizedBox(width: 4.w),
-                                  Flexible(
-                                    child: Text(
-                                      book.bookTitle,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w600),
+                            margin: EdgeInsets.only(top: 8.h),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 4.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.grey_F2,
+                              border: Border.all(
+                                width: 1.w,
+                                color: AppColors.black_59,
+                              ),
+                              borderRadius: BorderRadius.circular(20.r),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                AppAssets.flowerIcon(
+                                  _ownerFlowerName(book),
+                                ).svg(width: 14.w, height: 14.w),
+                                SizedBox(width: 4.w),
+                                Flexible(
+                                  child: Text(
+                                    book.bookTitle,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                ],
-                              ))
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -400,8 +427,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
 
   Future _gardenMenuBottomSheet() {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
-    final gardenMainBookList =
-        ref.read(garden_feature.gardenMainBookListProvider);
+    final gardenMainBookList = ref.read(
+      garden_feature.gardenMainBookListProvider,
+    );
     garden_feature.fetchGardenList(ref);
 
     return showModalBottomSheet(
@@ -416,8 +444,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
           gardenListWidget: _gardenList(),
           memberProfileWidget: _memberProfile(),
           gardenProgressWidget: _gardenProgress(),
-          bookListWidget:
-              gardenMainBookList.isEmpty ? _bookEmpty() : _bookList(),
+          bookListWidget: gardenMainBookList.isEmpty
+              ? _bookEmpty()
+              : _bookList(),
           onCapture: _captureScreenshot,
           scrollController: _scrollController,
         );
@@ -426,8 +455,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
   }
 
   Widget _bookList() {
-    final gardenMainBookList =
-        ref.watch(garden_feature.gardenMainBookListProvider);
+    final gardenMainBookList = ref.watch(
+      garden_feature.gardenMainBookListProvider,
+    );
 
     return ListView(
       padding: EdgeInsets.only(top: 12.h),
@@ -446,18 +476,20 @@ class _GardenPageState extends ConsumerState<GardenPage>
               padding: EdgeInsets.only(left: 14.w, right: 16.w),
               height: 68.h,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.r),
-                  color: Colors.white),
+                borderRadius: BorderRadius.circular(20.r),
+                color: Colors.white,
+              ),
               child: Row(
                 children: [
                   (book.bookImageUrl.isNotEmpty)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
                           child: CachedNetworkImage(
-                              imageUrl: book.bookImageUrl,
-                              width: 44.r,
-                              height: 44.r,
-                              fit: BoxFit.fitWidth),
+                            imageUrl: book.bookImageUrl,
+                            width: 44.r,
+                            height: 44.r,
+                            fit: BoxFit.fitWidth,
+                          ),
                         )
                       : Container(
                           width: 44.r,
@@ -484,7 +516,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                              fontSize: 12.sp, color: AppColors.grey_8D),
+                            fontSize: 12.sp,
+                            color: AppColors.grey_8D,
+                          ),
                         ),
                       ],
                     ),
@@ -516,7 +550,9 @@ class _GardenPageState extends ConsumerState<GardenPage>
             width: 32.r,
             height: 32.r,
             decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: Colors.green),
+              shape: BoxShape.circle,
+              color: Colors.green,
+            ),
             child: AppAssets.profileFlower(members[0].userImage).image(),
           ),
           (memberCount >= 2)
@@ -526,9 +562,12 @@ class _GardenPageState extends ConsumerState<GardenPage>
                     width: 32.r,
                     height: 32.r,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.red),
-                    child: AppAssets.profileFlower(members[1].userImage)
-                        .image(),
+                      shape: BoxShape.circle,
+                      color: Colors.red,
+                    ),
+                    child: AppAssets.profileFlower(
+                      members[1].userImage,
+                    ).image(),
                   ),
                 )
               : Container(),
@@ -539,9 +578,12 @@ class _GardenPageState extends ConsumerState<GardenPage>
                     width: 32.r,
                     height: 32.r,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.black),
-                    child: AppAssets.profileFlower(members[2].userImage)
-                        .image(),
+                      shape: BoxShape.circle,
+                      color: Colors.black,
+                    ),
+                    child: AppAssets.profileFlower(
+                      members[2].userImage,
+                    ).image(),
                   ),
                 )
               : Container(),
@@ -552,9 +594,12 @@ class _GardenPageState extends ConsumerState<GardenPage>
                     width: 32.r,
                     height: 32.r,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.amber),
-                    child: AppAssets.profileFlower(members[3].userImage)
-                        .image(),
+                      shape: BoxShape.circle,
+                      color: Colors.amber,
+                    ),
+                    child: AppAssets.profileFlower(
+                      members[3].userImage,
+                    ).image(),
                   ),
                 )
               : Container(),
@@ -565,13 +610,14 @@ class _GardenPageState extends ConsumerState<GardenPage>
 
   Widget _bookEmpty() {
     return Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.only(top: 40.h),
-        child: const Text(
-          '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: AppColors.grey_8D),
-        ));
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(top: 40.h),
+      child: const Text(
+        '지금 읽고 있는 책이 있나요?\n책을 추가하고 가든을 가꿔보세요',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: AppColors.grey_8D),
+      ),
+    );
   }
 
   Widget _gardenList() {
@@ -584,107 +630,114 @@ class _GardenPageState extends ConsumerState<GardenPage>
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
-        children: List.generate(
-          gardens.length + 1,
-          (index) {
-            return (index != gardens.length)
-                ? GestureDetector(
-                    onTap: () {
-                      garden_feature.updateMainGarden(
-                          ref, gardens[index].gardenNo);
-                      context.pop();
-                      _scrollController.animateTo(
-                        0.0, // 스크롤 초기 위치
-                        duration:
-                            const Duration(milliseconds: 300), // 애니메이션 지속 시간
-                        curve: Curves.easeOut, // 애니메이션 커브
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(right: 12.w),
-                      width: 52.w,
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width: 52.r,
-                            height: 52.r,
-                            decoration: BoxDecoration(
-                                border: (gardens[index].gardenNo ==
-                                        gardenMain.gardenNo)
-                                    ? Border.all(
-                                        width: 1.w, color: AppColors.black_59)
-                                    : null,
-                                shape: BoxShape.circle,
-                                color: Colors.white),
-                            child: AppAssets.iconBookmark.svg(
-                              colorFilter: ColorFilter.mode(
-                                Functions.gardenColor(
-                                    gardens[index].gardenColor),
-                                BlendMode.srcIn,
-                              ),
-                              width: 28.r,
-                              height: 28.r,
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 2.h),
-                            height: 18.h,
-                            child: Text(
-                              gardens[index].gardenTitle,
-                              style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: (gardens[index].gardenNo ==
-                                          gardenMain.gardenNo)
-                                      ? Colors.black
-                                      : AppColors.grey_8D,
-                                  overflow: TextOverflow.ellipsis),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : GestureDetector(
-                    onTap: () async {
-                      context.pop();
-                      context.pushNamed('garden-add');
-                      // final result = await context.pushNamed('garden-add');
-                      // if (result != null) {
-                      //   //TODO: - result를 담기
-                      //   getGardenDetail(20);
-                      // }
-                    },
+        children: List.generate(gardens.length + 1, (index) {
+          return (index != gardens.length)
+              ? GestureDetector(
+                  onTap: () {
+                    garden_feature.updateMainGarden(
+                      ref,
+                      gardens[index].gardenNo,
+                    );
+                    context.pop();
+                    _scrollController.animateTo(
+                      0.0, // 스크롤 초기 위치
+                      duration: const Duration(
+                        milliseconds: 300,
+                      ), // 애니메이션 지속 시간
+                      curve: Curves.easeOut, // 애니메이션 커브
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(right: 12.w),
+                    width: 52.w,
                     child: Column(
                       children: [
                         Container(
                           alignment: Alignment.center,
                           width: 52.r,
                           height: 52.r,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle, color: Colors.white),
-                          child: AppAssets.iconAdd.svg(
-                            colorFilter: const ColorFilter.mode(
-                              AppColors.grey_8D,
+                          decoration: BoxDecoration(
+                            border:
+                                (gardens[index].gardenNo == gardenMain.gardenNo)
+                                ? Border.all(
+                                    width: 1.w,
+                                    color: AppColors.black_59,
+                                  )
+                                : null,
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                          ),
+                          child: AppAssets.iconBookmark.svg(
+                            colorFilter: ColorFilter.mode(
+                              Functions.gardenColor(gardens[index].gardenColor),
                               BlendMode.srcIn,
                             ),
                             width: 28.r,
                             height: 28.r,
                           ),
                         ),
+                        Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: 2.h),
+                          height: 18.h,
+                          child: Text(
+                            gardens[index].gardenTitle,
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              color:
+                                  (gardens[index].gardenNo ==
+                                      gardenMain.gardenNo)
+                                  ? Colors.black
+                                  : AppColors.grey_8D,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  );
-          },
-        ),
+                  ),
+                )
+              : GestureDetector(
+                  onTap: () async {
+                    context.pop();
+                    context.pushNamed('garden-add');
+                    // final result = await context.pushNamed('garden-add');
+                    // if (result != null) {
+                    //   //TODO: - result를 담기
+                    //   getGardenDetail(20);
+                    // }
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        width: 52.r,
+                        height: 52.r,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                        ),
+                        child: AppAssets.iconAdd.svg(
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.grey_8D,
+                            BlendMode.srcIn,
+                          ),
+                          width: 28.r,
+                          height: 28.r,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+        }),
       ),
     );
   }
 
   Widget _gardenProgress() {
-    final bookCount =
-        ref.watch(garden_feature.gardenMainBookListProvider).length;
+    final bookCount = ref
+        .watch(garden_feature.gardenMainBookListProvider)
+        .length;
 
     double progress = bookCount / 30;
 
@@ -701,10 +754,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
                       '가든을 다 채울때까지 앞으로 ${30 - bookCount}권',
                       style: TextStyle(fontSize: 12.sp),
                     ),
-                    Text(
-                      '$bookCount/30',
-                      style: TextStyle(fontSize: 12.sp),
-                    ),
+                    Text('$bookCount/30', style: TextStyle(fontSize: 12.sp)),
                   ],
                 ),
                 Stack(
@@ -732,11 +782,12 @@ class _GardenPageState extends ConsumerState<GardenPage>
                           ),
                         );
                       },
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
-            ))
+            ),
+          )
         : Container(
             margin: EdgeInsets.only(top: 12.h),
             width: 272.w,
@@ -746,10 +797,7 @@ class _GardenPageState extends ConsumerState<GardenPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('가든을 다 채웠어요!'),
-                    Text(
-                      '30/30',
-                      style: TextStyle(fontSize: 12.sp),
-                    ),
+                    Text('30/30', style: TextStyle(fontSize: 12.sp)),
                   ],
                 ),
                 Stack(
@@ -779,9 +827,10 @@ class _GardenPageState extends ConsumerState<GardenPage>
                       },
                     ),
                   ],
-                )
+                ),
               ],
-            ));
+            ),
+          );
   }
 }
 
@@ -804,9 +853,10 @@ class _FloatingBalloonState extends State<_FloatingBalloon>
       vsync: this,
       duration: const Duration(milliseconds: 1500),
     )..repeat(reverse: true);
-    _offset = Tween(begin: 0.0, end: -8.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _offset = Tween(
+      begin: 0.0,
+      end: -8.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -834,23 +884,23 @@ class _FloatingBalloonState extends State<_FloatingBalloon>
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 40.w),
         child: SizedBox(
-        height: 52.h,
-        child: Stack(
-          children: [
-            AppAssets.imageAdd.svg(width: double.infinity, fit: BoxFit.fill),
-            Positioned(
-              left: 18.w,
-              top: 0,
-              bottom: 12.h,
-              child: Center(
-                child: Text(
-                  '💡   + 버튼으로 새로운 책을 등록해보세요!',
-                  style: TextStyle(color: Colors.white, fontSize: 12.sp),
+          height: 52.h,
+          child: Stack(
+            children: [
+              AppAssets.imageAdd.svg(width: double.infinity, fit: BoxFit.fill),
+              Positioned(
+                left: 18.w,
+                top: 0,
+                bottom: 12.h,
+                child: Center(
+                  child: Text(
+                    '💡   + 버튼으로 새로운 책을 등록해보세요!',
+                    style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
       ),
     );
@@ -933,7 +983,11 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
         physics: const BouncingScrollPhysics(),
         child: Container(
           margin: EdgeInsets.only(
-              left: 24.w, right: 24.w, top: 38.h, bottom: 54.h),
+            left: 24.w,
+            right: 24.w,
+            top: 38.h,
+            bottom: 54.h,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -947,10 +1001,15 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                       Container(
                         alignment: Alignment.topLeft,
                         padding: EdgeInsets.only(
-                            top: 56.h, left: 20.w, right: 20.w, bottom: 20.h),
+                          top: 56.h,
+                          left: 20.w,
+                          right: 20.w,
+                          bottom: 20.h,
+                        ),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            color: Colors.white),
+                          borderRadius: BorderRadius.circular(20.r),
+                          color: Colors.white,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -958,8 +1017,9 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                             Text(
                               gardenMain.gardenInfo,
                               style: TextStyle(
-                                  fontSize: 18.sp,
-                                  fontWeight: FontWeight.bold),
+                                fontSize: 18.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             widget.gardenProgressWidget,
                           ],
@@ -970,17 +1030,19 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                         padding: EdgeInsets.only(left: 20.w),
                         height: 36.h,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20.r),
-                                topRight: Radius.circular(20.r)),
-                            color:
-                                Functions.gardenColor(gardenMain.gardenColor)),
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20.r),
+                            topRight: Radius.circular(20.r),
+                          ),
+                          color: Functions.gardenColor(gardenMain.gardenColor),
+                        ),
                         child: Text(
                           gardenMain.gardenTitle,
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.white,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -992,23 +1054,28 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                 GestureDetector(
                   onTap: () {
                     context.pop();
-                    context.pushNamed('garden-member',
-                        extra: gardenMain.gardenNo);
+                    context.pushNamed(
+                      'garden-member',
+                      extra: gardenMain.gardenNo,
+                    );
                   },
                   child: Container(
                     margin: EdgeInsets.only(bottom: 16.h),
                     padding: EdgeInsets.only(left: 20.w, right: 16.w),
                     height: 56.h,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        color: Colors.white),
+                      borderRadius: BorderRadius.circular(20.r),
+                      color: Colors.white,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           '가든 멤버 보기',
                           style: TextStyle(
-                              fontSize: 14.sp, fontWeight: FontWeight.bold),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Row(
                           children: [
@@ -1022,7 +1089,7 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                               height: 20.r,
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -1042,7 +1109,9 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                             width: 64.r,
                             height: 64.r,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
                             child: AppAssets.iconPhoto.svg(
                               width: 28.r,
                               height: 28.r,
@@ -1051,9 +1120,11 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                           Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 8.h),
-                            child: Text('사진찍기',
-                                style: TextStyle(fontSize: 12.sp)),
-                          )
+                            child: Text(
+                              '사진찍기',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -1069,7 +1140,9 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                             width: 64.r,
                             height: 64.r,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
                             child: AppAssets.iconEdit.svg(
                               width: 28.r,
                               height: 28.r,
@@ -1078,9 +1151,11 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                           Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 8.h),
-                            child: Text('수정하기',
-                                style: TextStyle(fontSize: 12.sp)),
-                          )
+                            child: Text(
+                              '수정하기',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -1088,7 +1163,9 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                       onTap: () {
                         context.pop();
                         Functions.shareBranchLink(
-                            gardenMain.gardenTitle, gardenMain.gardenNo);
+                          gardenMain.gardenTitle,
+                          gardenMain.gardenNo,
+                        );
                       },
                       child: Column(
                         children: [
@@ -1097,7 +1174,9 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                             width: 64.r,
                             height: 64.r,
                             decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.white),
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
                             child: AppAssets.iconShare.svg(
                               width: 28.r,
                               height: 28.r,
@@ -1106,9 +1185,11 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                           Container(
                             alignment: Alignment.center,
                             margin: EdgeInsets.only(top: 8.h),
-                            child: Text('공유하기',
-                                style: TextStyle(fontSize: 12.sp)),
-                          )
+                            child: Text(
+                              '공유하기',
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -1119,8 +1200,10 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                 4,
                 GestureDetector(
                   onTap: () {
-                    context.pushNamed('garden-book',
-                        extra: gardenMain.gardenNo);
+                    context.pushNamed(
+                      'garden-book',
+                      extra: gardenMain.gardenNo,
+                    );
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: 30.h),
@@ -1131,12 +1214,11 @@ class _GardenMenuSheetState extends State<_GardenMenuSheet>
                         Text(
                           '가든에 있는 책 보기',
                           style: TextStyle(
-                              fontSize: 16.sp, fontWeight: FontWeight.bold),
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        AppAssets.iconAngleRight.svg(
-                          width: 20.r,
-                          height: 20.r,
-                        )
+                        AppAssets.iconAngleRight.svg(width: 20.r, height: 20.r),
                       ],
                     ),
                   ),

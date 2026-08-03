@@ -8,7 +8,9 @@ class AppService {
 
   Future<Response?> getMinVersion(String platform) async {
     try {
-      final response = await _dio.get('${Constant.URL}app/version?platform=$platform');
+      final response = await _dio.get(
+        '${Constant.URL}app/version?platform=$platform',
+      );
       logger.d('앱 버전 조회 응답: ${response.data}');
       return response;
     } on DioException catch (e) {

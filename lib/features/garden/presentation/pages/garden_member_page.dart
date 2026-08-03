@@ -81,160 +81,162 @@ class _GardenMemberPageState extends ConsumerState<GardenMemberPage> {
               ],
             ),
           ),
-          Expanded(child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Visibility(
-              visible:
-                  members.length > 1 && (members[0].userNo == user.userNo),
-              child: GestureDetector(
-                onTap: () {
-                  context.pushNamed('garden-leader');
-                },
-                child: Container(
-                  margin: EdgeInsets.only(top: 10.h),
-                  color: Colors.transparent,
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 24.w),
-                        height: 46.h,
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Visibility(
+                    visible:
+                        members.length > 1 &&
+                        (members[0].userNo == user.userNo),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.pushNamed('garden-leader');
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 10.h),
                         color: Colors.transparent,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
                           children: [
-                            const Text('대표 변경하기'),
-                            AppAssets.iconAngleRight.svg(
-                              colorFilter: const ColorFilter.mode(
-                                AppColors.grey_8D,
-                                BlendMode.srcIn,
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 24.w),
+                              height: 46.h,
+                              color: Colors.transparent,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text('대표 변경하기'),
+                                  AppAssets.iconAngleRight.svg(
+                                    colorFilter: const ColorFilter.mode(
+                                      AppColors.grey_8D,
+                                      BlendMode.srcIn,
+                                    ),
+                                    width: 20.r,
+                                    height: 20.r,
+                                  ),
+                                ],
                               ),
-                              width: 20.r,
-                              height: 20.r,
-                            )
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10.h),
+                              height: 1.h,
+                              color: AppColors.grey_F2,
+                            ),
                           ],
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.h),
-                        height: 1.h,
-                        color: AppColors.grey_F2,
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: 20.h,
-                left: 24.w,
-                right: 24.w,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '멤버 ${members.length}명',
-                    style: const TextStyle(color: AppColors.grey_8D),
-                  ),
-                  ListView(
-                    padding: EdgeInsets.only(top: 19.h),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: List.generate(
-                      members.length,
-                      (index) {
-                        final member = members[index];
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 24.h),
-                          // height: 48.h,
-                          child: Row(
-                            children: [
-                              Stack(
-                                alignment: Alignment.bottomRight,
+                  Container(
+                    margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '멤버 ${members.length}명',
+                          style: const TextStyle(color: AppColors.grey_8D),
+                        ),
+                        ListView(
+                          padding: EdgeInsets.only(top: 19.h),
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          children: List.generate(members.length, (index) {
+                            final member = members[index];
+                            return Container(
+                              margin: EdgeInsets.only(bottom: 24.h),
+                              // height: 48.h,
+                              child: Row(
                                 children: [
-                                  Container(
-                                    width: 48.r,
-                                    height: 48.r,
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: AppAssets.profileFlower(
-                                      member.userImage,
-                                    ).image(),
+                                  Stack(
+                                    alignment: Alignment.bottomRight,
+                                    children: [
+                                      Container(
+                                        width: 48.r,
+                                        height: 48.r,
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: AppAssets.profileFlower(
+                                          member.userImage,
+                                        ).image(),
+                                      ),
+                                      Visibility(
+                                        visible: member.gardenLeader,
+                                        child: AppAssets.iconLeader.svg(
+                                          width: 20.r,
+                                          height: 20.r,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Visibility(
-                                    visible: member.gardenLeader,
-                                    child: AppAssets.iconLeader.svg(
-                                      width: 20.r,
-                                      height: 20.r,
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 12.w),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          member.userNick,
+                                          style: TextStyle(fontSize: 16.sp),
+                                        ),
+                                        Text(
+                                          member.gardenLeader
+                                              ? '대표 가드너'
+                                              : '가드너',
+                                          style: TextStyle(
+                                            fontSize: 14.sp,
+                                            color: AppColors.grey_8D,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 12.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      member.userNick,
-                                      style: TextStyle(fontSize: 16.sp),
-                                    ),
-                                    Text(
-                                      member.gardenLeader
-                                          ? '대표 가드너'
-                                          : '가드너',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: AppColors.grey_8D),
-                                    )
-                                  ],
+                            );
+                          }),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Functions.shareBranchLink(
+                              gardenMain.gardenTitle,
+                              gardenMain.gardenNo,
+                            );
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            child: Row(
+                              children: [
+                                AppAssets.iconAdd.svg(
+                                  colorFilter: const ColorFilter.mode(
+                                    AppColors.primaryColor,
+                                    BlendMode.srcIn,
+                                  ),
+                                  width: 20.r,
+                                  height: 20.r,
                                 ),
-                              )
-                            ],
+                                const Text(
+                                  '멤버 초대하기',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Functions.shareBranchLink(
-                          gardenMain.gardenTitle, gardenMain.gardenNo);
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      child: Row(
-                        children: [
-                          AppAssets.iconAdd.svg(
-                            colorFilter: const ColorFilter.mode(
-                              AppColors.primaryColor,
-                              BlendMode.srcIn,
-                            ),
-                            width: 20.r,
-                            height: 20.r,
-                          ),
-                          const Text(
-                            '멤버 초대하기',
-                            style: TextStyle(
-                                color: AppColors.primaryColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
-          ],
-        ),
-      )),
-      ],
+          ),
+        ],
       ),
     );
   }

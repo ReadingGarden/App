@@ -148,15 +148,17 @@ class StarRow extends StatelessWidget {
       spacing: gap,
       children: List.generate(kStarCount, (index) {
         final selected = index < rating;
-        return (selected ? AppAssets.iconStarSelect : AppAssets.iconStarDeselect)
+        return (selected
+                ? AppAssets.iconStarSelect
+                : AppAssets.iconStarDeselect)
             .svg(
-          width: size,
-          height: size,
-          colorFilter: ColorFilter.mode(
-            selected ? AppColors.starSelectColor : AppColors.grey_CA,
-            BlendMode.srcIn,
-          ),
-        );
+              width: size,
+              height: size,
+              colorFilter: ColorFilter.mode(
+                selected ? AppColors.starSelectColor : AppColors.grey_CA,
+                BlendMode.srcIn,
+              ),
+            );
       }),
     );
   }

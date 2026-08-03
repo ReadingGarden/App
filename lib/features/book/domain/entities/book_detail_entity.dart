@@ -76,21 +76,25 @@ abstract class BookDetailEntity with _$BookDetailEntity {
       'book_current_page': bookCurrentPage,
       'book_page': bookPage,
       'book_read_list': bookReadList
-          .map((item) => {
-                'book_current_page': item.bookCurrentPage,
-                'book_created_at': item.bookCreatedAt,
-                'book_start_date': item.bookStartDate,
-                'book_end_date': item.bookEndDate,
-              })
+          .map(
+            (item) => {
+              'book_current_page': item.bookCurrentPage,
+              'book_created_at': item.bookCreatedAt,
+              'book_start_date': item.bookStartDate,
+              'book_end_date': item.bookEndDate,
+            },
+          )
           .toList(),
       'memo_list': memoList
-          .map((item) => {
-                'id': item.id,
-                'memo_content': item.memoContent,
-                'memo_created_at': item.memoCreatedAt,
-                'memo_like': item.memoLike,
-                'image_url': item.imageUrl,
-              })
+          .map(
+            (item) => {
+              'id': item.id,
+              'memo_content': item.memoContent,
+              'memo_created_at': item.memoCreatedAt,
+              'memo_like': item.memoLike,
+              'image_url': item.imageUrl,
+            },
+          )
           .toList(),
     };
   }

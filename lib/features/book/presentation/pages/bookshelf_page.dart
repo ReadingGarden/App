@@ -81,9 +81,11 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
             pageController: _pageController,
             currentIndex: ref.watch(bookshelfPageViewIndexProvider),
             onTap: (index) {
-              _pageController.animateToPage(index,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut);
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
             },
           ),
           Expanded(
@@ -116,175 +118,181 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
     }
 
     return Center(
-        child: (isLoading && bookStatusList.isEmpty)
-            ? const Center(
-                child: CircularProgressIndicator(
-                  backgroundColor: AppColors.primaryColor,
-                  color: AppColors.grey_CA,
+      child: (isLoading && bookStatusList.isEmpty)
+          ? const Center(
+              child: CircularProgressIndicator(
+                backgroundColor: AppColors.primaryColor,
+                color: AppColors.grey_CA,
+              ),
+            )
+          : bookStatusList.isEmpty
+          ? _bookshelfEmpty()
+          : RefreshIndicator(
+              onRefresh: () async {
+                resetBookshelf(ref);
+                await fetchBookshelfBooks(ref, pageViewIndex);
+              },
+              backgroundColor: Colors.white,
+              color: AppColors.grey_8D,
+              child: GridView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                controller: _scrollController,
+                padding: EdgeInsets.only(
+                  left: 24.w,
+                  right: 24.w,
+                  top: 24.h,
+                  bottom: 110.h + MediaQuery.of(context).viewPadding.bottom,
                 ),
-              )
-            : bookStatusList.isEmpty
-                ? _bookshelfEmpty()
-                : RefreshIndicator(
-                    onRefresh: () async {
-                      resetBookshelf(ref);
-                      await fetchBookshelfBooks(ref, pageViewIndex);
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio:
+                      MediaQuery.of(context).size.aspectRatio / 0.85,
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 12.w,
+                ),
+                children: List.generate(bookStatusList.length, (index) {
+                  final delay = (index * 0.05).clamp(0.0, 0.7);
+                  final end = (delay + 0.3).clamp(0.0, 1.0);
+                  final animation = CurvedAnimation(
+                    parent: _listAnimController,
+                    curve: Interval(delay, end, curve: Curves.easeOut),
+                  );
+                  return AnimatedBuilder(
+                    animation: animation,
+                    builder: (context, child) {
+                      return Opacity(
+                        opacity: animation.value,
+                        child: Transform.translate(
+                          offset: Offset(0, 16 * (1 - animation.value)),
+                          child: child,
+                        ),
+                      );
                     },
-                    backgroundColor: Colors.white,
-                    color: AppColors.grey_8D,
-                    child: GridView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      controller: _scrollController,
-                      padding: EdgeInsets.only(
-                          left: 24.w,
-                          right: 24.w,
-                          top: 24.h,
-                          bottom: 110.h +
-                              MediaQuery.of(context).viewPadding.bottom),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio:
-                            MediaQuery.of(context).size.aspectRatio / 0.85,
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 12.w,
-                      ),
-                      children: List.generate(
-                        bookStatusList.length,
-                        (index) {
-                          final delay = (index * 0.05).clamp(0.0, 0.7);
-                          final end = (delay + 0.3).clamp(0.0, 1.0);
-                          final animation = CurvedAnimation(
-                            parent: _listAnimController,
-                            curve: Interval(delay, end, curve: Curves.easeOut),
-                          );
-                          return AnimatedBuilder(
-                            animation: animation,
-                            builder: (context, child) {
-                              return Opacity(
-                                opacity: animation.value,
-                                child: Transform.translate(
-                                  offset: Offset(0, 16 * (1 - animation.value)),
-                                  child: child,
-                                ),
-                              );
-                            },
-                            child: Pressable(
-                            onTap: () async {
-                              if (pageViewIndex == 2) {
-                                final data = {
-                                  'book_no': bookStatusList[index].bookNo,
-                                  'title': bookStatusList[index].bookTitle,
-                                  'author': bookStatusList[index].bookAuthor,
-                                  'publisher':
-                                      bookStatusList[index].bookPublisher,
-                                  'description': bookStatusList[index].bookInfo,
-                                  'cover': bookStatusList[index].bookImageUrl,
-                                  'itemPage': bookStatusList[index].bookPage,
-                                };
+                    child: Pressable(
+                      onTap: () async {
+                        if (pageViewIndex == 2) {
+                          final data = {
+                            'book_no': bookStatusList[index].bookNo,
+                            'title': bookStatusList[index].bookTitle,
+                            'author': bookStatusList[index].bookAuthor,
+                            'publisher': bookStatusList[index].bookPublisher,
+                            'description': bookStatusList[index].bookInfo,
+                            'cover': bookStatusList[index].bookImageUrl,
+                            'itemPage': bookStatusList[index].bookPage,
+                          };
 
-                                context.pushNamed('book-add-garden',
-                                    extra: {'isbn13': 'null', 'book': data});
-                              } else {
-                                final result = await context.pushNamed(
-                                  'book-detail',
-                                  extra: bookStatusList[index].bookNo,
-                                );
-                                if (result != null) {
-                                  resetBookshelf(ref);
-                                  fetchBookshelfBooks(ref, pageViewIndex);
-                                }
-                              }
-                            },
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(boxShadow: [
-                                        BoxShadow(
-                                            offset: const Offset(0, 4),
-                                            blurRadius: 16.r,
-                                            color: AppColors.black_59
-                                                .withValues(alpha: 0.1))
-                                      ]),
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.r),
-                                          child: (bookStatusList[index]
-                                                      .bookImageUrl !=
-                                                  null)
-                                              ? CachedNetworkImage(
-                                                  imageUrl: bookStatusList[index]
-                                                      .bookImageUrl!,
-                                                  width: 96.w,
-                                                  height: 132.h,
-                                                  fit: BoxFit.cover,
-                                                )
-                                              : Container(
-                                                  width: 96.w,
-                                                  height: 132.h,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.r),
-                                                    color: AppColors.grey_F2,
-                                                  ),
-                                                )),
-                                    ),
-                                    Visibility(
-                                      visible: (pageViewIndex != 2),
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        margin: EdgeInsets.only(bottom: 10.h),
-                                        width: 50.w,
-                                        height: 28.h,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20.r),
-                                              bottomLeft: Radius.circular(20.r),
-                                            ),
-                                            color: (pageViewIndex == 1)
-                                                ? AppColors.black_59
-                                                : Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  offset: const Offset(0, 4),
-                                                  blurRadius: 16.r,
-                                                  color: AppColors.black_59
-                                                      .withValues(alpha: 0.1))
-                                            ]),
-                                        child: Text(
-                                          '${bookStatusList[index].percent.floor()}%',
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: (pageViewIndex == 1)
-                                                  ? Colors.white
-                                                  : AppColors.black_59),
-                                        ),
+                          context.pushNamed(
+                            'book-add-garden',
+                            extra: {'isbn13': 'null', 'book': data},
+                          );
+                        } else {
+                          final result = await context.pushNamed(
+                            'book-detail',
+                            extra: bookStatusList[index].bookNo,
+                          );
+                          if (result != null) {
+                            resetBookshelf(ref);
+                            fetchBookshelfBooks(ref, pageViewIndex);
+                          }
+                        }
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: const Offset(0, 4),
+                                      blurRadius: 16.r,
+                                      color: AppColors.black_59.withValues(
+                                        alpha: 0.1,
                                       ),
                                     ),
                                   ],
                                 ),
-                                Container(
-                                    margin: EdgeInsets.only(top: 8.h),
-                                    alignment: Alignment.centerLeft,
-                                    height: 20.h,
-                                    child: Text(
-                                      bookStatusList[index].bookTitle,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                  child:
+                                      (bookStatusList[index].bookImageUrl !=
+                                          null)
+                                      ? CachedNetworkImage(
+                                          imageUrl: bookStatusList[index]
+                                              .bookImageUrl!,
+                                          width: 96.w,
+                                          height: 132.h,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          width: 96.w,
+                                          height: 132.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
+                                            ),
+                                            color: AppColors.grey_F2,
+                                          ),
+                                        ),
+                                ),
+                              ),
+                              Visibility(
+                                visible: (pageViewIndex != 2),
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  margin: EdgeInsets.only(bottom: 10.h),
+                                  width: 50.w,
+                                  height: 28.h,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20.r),
+                                      bottomLeft: Radius.circular(20.r),
+                                    ),
+                                    color: (pageViewIndex == 1)
+                                        ? AppColors.black_59
+                                        : Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        offset: const Offset(0, 4),
+                                        blurRadius: 16.r,
+                                        color: AppColors.black_59.withValues(
+                                          alpha: 0.1,
+                                        ),
                                       ),
-                                    ))
-                              ],
+                                    ],
+                                  ),
+                                  child: Text(
+                                    '${bookStatusList[index].percent.floor()}%',
+                                    style: TextStyle(
+                                      fontSize: 12.sp,
+                                      color: (pageViewIndex == 1)
+                                          ? Colors.white
+                                          : AppColors.black_59,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 8.h),
+                            alignment: Alignment.centerLeft,
+                            height: 20.h,
+                            child: Text(
+                              bookStatusList[index].bookTitle,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 12.sp),
                             ),
                           ),
-                          );
-                        },
+                        ],
                       ),
                     ),
-                  ));
+                  );
+                }),
+              ),
+            ),
+    );
   }
 
   Widget _bookshelfEmpty() {
@@ -313,8 +321,8 @@ class _BookShelfPageState extends ConsumerState<BookShelfPage>
               (pageViewIndex == 0)
                   ? '지금 읽고 있는 책이 있다면 추가해주세요'
                   : (pageViewIndex == 1)
-                      ? '책을 끝까지 다 읽은 후 찾아와주세요!'
-                      : "나중에 읽고 싶은 책이 있다면\n책 추가하기에서 '읽고싶어요'를 눌러주세요",
+                  ? '책을 끝까지 다 읽은 후 찾아와주세요!'
+                  : "나중에 읽고 싶은 책이 있다면\n책 추가하기에서 '읽고싶어요'를 눌러주세요",
               textAlign: TextAlign.center,
               style: const TextStyle(color: AppColors.grey_8D),
             ),
@@ -375,7 +383,8 @@ class _TabBarState extends State<_TabBar> {
       height: 36.h,
       decoration: BoxDecoration(
         border: Border(
-            bottom: BorderSide(color: AppColors.grey_F2, width: 1.w)),
+          bottom: BorderSide(color: AppColors.grey_F2, width: 1.w),
+        ),
       ),
       child: Stack(
         children: [
@@ -404,7 +413,8 @@ class _TabBarState extends State<_TabBar> {
                     style: isActive
                         ? const TextStyle(
                             color: AppColors.black_59,
-                            fontWeight: FontWeight.bold)
+                            fontWeight: FontWeight.bold,
+                          )
                         : const TextStyle(color: AppColors.grey_8D),
                   ),
                 ),

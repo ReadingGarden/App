@@ -16,7 +16,9 @@ class TokenInterceptor extends Interceptor {
 
   @override
   void onRequest(
-      RequestOptions options, RequestInterceptorHandler handler) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     //요청 전에 토큰을 헤더에 추가
     final accessToken = await loadAccess();
     if (accessToken != null) {
@@ -66,8 +68,10 @@ class TokenInterceptor extends Interceptor {
       // 재발급 요청은 인터셉터가 없는 별도 Dio로 보낸다.
       // (인터셉터가 붙은 _dio를 쓰면 재발급 요청이 다시 401→onError로 재귀해 데드락)
       final refreshDio = Dio();
-      final response = await refreshDio.post('${Constant.URL}auth/refresh',
-          data: {'refresh_token': refreshToken});
+      final response = await refreshDio.post(
+        '${Constant.URL}auth/refresh',
+        data: {'refresh_token': refreshToken},
+      );
       logger.d('토큰 재발급 응답: ${response.data}');
 
       if (response.statusCode == 200) {

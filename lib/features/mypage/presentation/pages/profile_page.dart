@@ -32,9 +32,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               margin: EdgeInsets.only(bottom: 40.h),
               child: CircleAvatar(
                 radius: 60.r,
-                child: AppAssets.profileFlower(
-                  user.userImage,
-                ).image(),
+                child: AppAssets.profileFlower(user.userImage).image(),
               ),
             ),
             _titleList(
@@ -105,11 +103,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: TextStyle(fontSize: 14.sp),
-            ),
-            widget ?? Container()
+            Text(title, style: TextStyle(fontSize: 14.sp)),
+            widget ?? Container(),
           ],
         ),
       ),

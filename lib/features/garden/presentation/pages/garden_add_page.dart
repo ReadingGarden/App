@@ -55,8 +55,10 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
           Constant.GARDEN_COLOR_LIST[ref.read(gardenColorSelectIndexProvider)],
     );
 
-    final created =
-        await garden_add_feature.createGardenAndSelectMain(ref, input);
+    final created = await garden_add_feature.createGardenAndSelectMain(
+      ref,
+      input,
+    );
     if (!mounted) return;
     if (created) {
       context.pushNamed('garden-add-done');
@@ -89,18 +91,31 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Widgets.textfield(ref, _titleController, '가든 이름',
-                    '최대 12글자까지 쓸 수 있어요', null, StateProvider((ref) => null),
-                    validateFunction: _gardenAddValid),
-                Widgets.textfield(ref, _infoController, '가든 소개', '소개글을 입력해주세요',
-                    null, StateProvider((ref) => null),
-                    validateFunction: _gardenAddValid),
+                Widgets.textfield(
+                  ref,
+                  _titleController,
+                  '가든 이름',
+                  '최대 12글자까지 쓸 수 있어요',
+                  null,
+                  StateProvider((ref) => null),
+                  validateFunction: _gardenAddValid,
+                ),
+                Widgets.textfield(
+                  ref,
+                  _infoController,
+                  '가든 소개',
+                  '소개글을 입력해주세요',
+                  null,
+                  StateProvider((ref) => null),
+                  validateFunction: _gardenAddValid,
+                ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        margin: EdgeInsets.only(bottom: 16.h, top: 12.h),
-                        child: const Text('대표 색상')),
+                      margin: EdgeInsets.only(bottom: 16.h, top: 12.h),
+                      child: const Text('대표 색상'),
+                    ),
                     SizedBox(
                       height: 92.h,
                       child: GridView(
@@ -116,47 +131,60 @@ class _GardenAddPageState extends ConsumerState<GardenAddPage> {
                             return GestureDetector(
                               onTap: () {
                                 ref
-                                    .read(
-                                        gardenColorSelectIndexProvider.notifier)
-                                    .state = index;
+                                        .read(
+                                          gardenColorSelectIndexProvider
+                                              .notifier,
+                                        )
+                                        .state =
+                                    index;
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(2),
                                 width: 38.r,
                                 height: 38.r,
                                 decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.transparent,
-                                    border: (ref.watch(
-                                                gardenColorSelectIndexProvider) ==
-                                            index)
-                                        ? Border.all(
-                                            color: Constant
-                                                .GARDEN_COLOR_SET_LIST[index],
-                                            width: 2.w,
-                                          )
-                                        : null),
-                                child: Container(
-                                    decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Constant.GARDEN_COLOR_SET_LIST[index],
-                                )),
+                                  color: Colors.transparent,
+                                  border:
+                                      (ref.watch(
+                                            gardenColorSelectIndexProvider,
+                                          ) ==
+                                          index)
+                                      ? Border.all(
+                                          color: Constant
+                                              .GARDEN_COLOR_SET_LIST[index],
+                                          width: 2.w,
+                                        )
+                                      : null,
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color:
+                                        Constant.GARDEN_COLOR_SET_LIST[index],
+                                  ),
+                                ),
                               ),
                             );
                           },
                         ),
                       ),
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
         ),
       ),
-      bottomNavigationBar: Widgets.bottomBar(context,
-          child: Widgets.button(
-              '추가하기', ref.watch(gardenAddButtonProvider), () => postGarden())),
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button(
+          '추가하기',
+          ref.watch(gardenAddButtonProvider),
+          () => postGarden(),
+        ),
+      ),
     );
   }
 }
@@ -181,8 +209,6 @@ class _GardenAddDonePageState extends State<GardenAddDonePage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(),
-    );
+    return const Scaffold(body: Center());
   }
 }

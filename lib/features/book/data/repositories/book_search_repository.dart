@@ -20,8 +20,10 @@ class BookSearchRepository {
       return BookSearchResult(
         totalCount: response?.data['data']['totalResults'] as int? ?? 0,
         items: items
-            .map((json) =>
-                BookSearchDto(Map<String, dynamic>.from(json)).toEntity())
+            .map(
+              (json) =>
+                  BookSearchDto(Map<String, dynamic>.from(json)).toEntity(),
+            )
             .toList(),
       );
     }
@@ -33,19 +35,18 @@ class BookSearchRepository {
     return response?.statusCode;
   }
 
-  Future<BookshelfPageResult> fetchBookshelfBooks(
-    int status,
-    int page,
-  ) async {
+  Future<BookshelfPageResult> fetchBookshelfBooks(int status, int page) async {
     final response = await _service.getBookStatusList(status, page);
     if (response?.statusCode == 200) {
       final data = response?.data['data'];
       final List<dynamic> items = data['list'] ?? [];
       return BookshelfPageResult(
         books: items
-            .map((json) => BookshelfBookEntity.fromJson(
-                  Map<String, dynamic>.from(json as Map),
-                ))
+            .map(
+              (json) => BookshelfBookEntity.fromJson(
+                Map<String, dynamic>.from(json as Map),
+              ),
+            )
             .toList(),
         currentPage: data['current_page'] as int? ?? 1,
         maxPage: data['max_page'] as int? ?? 1,
@@ -68,10 +69,7 @@ class BookshelfPageResult {
 }
 
 class BookSearchResult {
-  const BookSearchResult({
-    required this.totalCount,
-    required this.items,
-  });
+  const BookSearchResult({required this.totalCount, required this.items});
 
   final int totalCount;
   final List items;

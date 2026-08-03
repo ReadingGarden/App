@@ -38,11 +38,7 @@ Future<int> updateUser(
   return statusCode;
 }
 
-Future<void> socialLogin(
-  WidgetRef ref,
-  BuildContext context,
-  Map data,
-) async {
+Future<void> socialLogin(WidgetRef ref, BuildContext context, Map data) async {
   final repository = ref.read(authRepositoryProvider);
   final result = await repository.socialLogin(data);
   if (!context.mounted) return;

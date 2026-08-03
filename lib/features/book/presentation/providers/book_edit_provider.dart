@@ -4,18 +4,18 @@ import 'package:book_flutter/shared/utils/functions.dart';
 import '../../data/repositories/book_edit_repository.dart';
 import '../../domain/entities/book_edit_history_entity.dart';
 
-final bookReadListProvider =
-    StateProvider<List<BookEditHistoryEntity>>((ref) => []);
+final bookReadListProvider = StateProvider<List<BookEditHistoryEntity>>(
+  (ref) => [],
+);
 
 final bookEditRepositoryStateProvider = Provider<BookEditRepository>((ref) {
   return ref.read(bookEditRepositoryProvider);
 });
 
 Future<void> fetchBookReadList(WidgetRef ref, int bookNo) async {
-  final list =
-      await ref.read(bookEditRepositoryStateProvider).fetchBookReadList(
-            bookNo,
-          );
+  final list = await ref
+      .read(bookEditRepositoryStateProvider)
+      .fetchBookReadList(bookNo);
   ref.read(bookReadListProvider.notifier).state = list;
 }
 

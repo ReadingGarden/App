@@ -70,9 +70,9 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
       ref.read(bookTotalCountProvider.notifier).state = result.totalCount;
 
       if (result.items.isNotEmpty) {
-        ref.read(bookSearchListProvider.notifier).addBookSearchList(
-              result.items.cast(),
-            );
+        ref
+            .read(bookSearchListProvider.notifier)
+            .addBookSearchList(result.items.cast());
         setState(() {
           _currentPage++;
         });
@@ -137,63 +137,79 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                   padding: EdgeInsets.only(left: 24.w),
                   child: Text(
                     '책 추가하기',
-                    style:
-                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                      margin: EdgeInsets.only(
-                          top: 20.h, left: 24.w, right: 24.w, bottom: 12.h),
-                      alignment: Alignment.center,
-                      height: 72.h,
-                      child: TextField(
-                        controller: _textEditingController,
-                        onSubmitted: (value) {
-                          _currentPage = 1;
-                          _query = value;
-                          ref.read(bookSearchListProvider.notifier).reset();
-                          ref.read(bookTotalCountProvider.notifier).state = 0;
-                          if (value.isNotEmpty) {
-                            getSearchBook(value);
-                          } else {
-                            _isSearch = false;
-                          }
-                        },
-                        style: TextStyle(fontSize: 16.sp),
-                        decoration: InputDecoration(
-                            prefixIcon: Container(
-                              alignment: Alignment.center,
-                              width: 20.r,
-                              height: 20.r,
-                              child: AppAssets.iconSearch.svg(
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.grey_8D,
-                                  BlendMode.srcIn,
-                                ),
-                                width: 20.r,
-                                height: 20.r,
-                              ),
+                    margin: EdgeInsets.only(
+                      top: 20.h,
+                      left: 24.w,
+                      right: 24.w,
+                      bottom: 12.h,
+                    ),
+                    alignment: Alignment.center,
+                    height: 72.h,
+                    child: TextField(
+                      controller: _textEditingController,
+                      onSubmitted: (value) {
+                        _currentPage = 1;
+                        _query = value;
+                        ref.read(bookSearchListProvider.notifier).reset();
+                        ref.read(bookTotalCountProvider.notifier).state = 0;
+                        if (value.isNotEmpty) {
+                          getSearchBook(value);
+                        } else {
+                          _isSearch = false;
+                        }
+                      },
+                      style: TextStyle(fontSize: 16.sp),
+                      decoration: InputDecoration(
+                        prefixIcon: Container(
+                          alignment: Alignment.center,
+                          width: 20.r,
+                          height: 20.r,
+                          child: AppAssets.iconSearch.svg(
+                            colorFilter: const ColorFilter.mode(
+                              AppColors.grey_8D,
+                              BlendMode.srcIn,
                             ),
-                            enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.transparent),
-                                borderRadius: BorderRadius.circular(10.r)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.transparent),
-                                borderRadius: BorderRadius.circular(10.r)),
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.transparent),
-                                borderRadius: BorderRadius.circular(10.r)),
-                            fillColor: AppColors.grey_FA,
-                            filled: true,
-                            hintText: '제목, 작가 명으로 검색',
-                            hintStyle: TextStyle(
-                                fontSize: 16.sp, color: AppColors.grey_8D)),
-                      )),
+                            width: 20.r,
+                            height: 20.r,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        border: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                        fillColor: AppColors.grey_FA,
+                        filled: true,
+                        hintText: '제목, 작가 명으로 검색',
+                        hintStyle: TextStyle(
+                          fontSize: 16.sp,
+                          color: AppColors.grey_8D,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 (_isLoading && _currentPage == 1)
                     ? Container(
@@ -206,137 +222,137 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
                         ),
                       )
                     : (_isSearch && ref.watch(bookTotalCountProvider) == 0)
-                        ? Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.only(top: 200.h),
-                            child: Column(
-                              children: [
-                                Text(
-                                  '검색 결과를 찾지 못했어요',
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: AppColors.black_2B,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 6.h, bottom: 20.h),
-                                  child: Text('책을 추가하려면 아래 기능을 이용해 보세요',
-                                      style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: AppColors.grey_8D)),
-                                ),
-                                GestureDetector(
-                                  onTap: () =>
-                                      context.pushNamed('book-user-write'),
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: 120.w,
-                                    height: 36.h,
-                                    decoration: BoxDecoration(
-                                        color: AppColors.grey_EF,
-                                        borderRadius:
-                                            BorderRadius.circular(8.r)),
-                                    child: Text(
-                                      '책 직접 입력하기',
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.black_59),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        : (ref.watch(bookSearchListProvider).isNotEmpty)
-                            ? _serachList(_textEditingController.text)
-                            : Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () =>
-                                        context.pushNamed('book-user-write'),
-                                    child: Container(
-                                        alignment: Alignment.center,
-                                        height: 72.h,
-                                        child: Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(
-                                              left: 24.w, right: 22.w),
-                                          width: 312.w,
-                                          height: 64.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: AppColors.grey_F2),
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                              color: Colors.transparent),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                '책 직접 입력하기',
-                                                style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                ),
-                                              ),
-                                              AppAssets.iconAngleRight.svg(
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  AppColors.grey_8D,
-                                                  BlendMode.srcIn,
-                                                ),
-                                                width: 20.r,
-                                                height: 20.r,
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                  ),
-                                  GestureDetector(
-                                    onTap: _scanBarcode,
-                                    // onTap: () => context.pushNamed('book-barcode'),
-                                    child: Container(
-                                        alignment: Alignment.center,
-                                        height: 72.h,
-                                        child: Container(
-                                          alignment: Alignment.centerLeft,
-                                          padding: EdgeInsets.only(
-                                              left: 24.w, right: 22.w),
-                                          width: 312.w,
-                                          height: 64.h,
-                                          decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: AppColors.grey_F2),
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                              color: Colors.transparent),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                '바코드로 검색하기',
-                                                style: TextStyle(
-                                                  fontSize: 16.sp,
-                                                ),
-                                              ),
-                                              AppAssets.iconAngleRight.svg(
-                                                colorFilter:
-                                                    const ColorFilter.mode(
-                                                  AppColors.grey_8D,
-                                                  BlendMode.srcIn,
-                                                ),
-                                                width: 20.r,
-                                                height: 20.r,
-                                              )
-                                            ],
-                                          ),
-                                        )),
-                                  )
-                                ],
+                    ? Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: 200.h),
+                        child: Column(
+                          children: [
+                            Text(
+                              '검색 결과를 찾지 못했어요',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: AppColors.black_2B,
+                                fontWeight: FontWeight.bold,
                               ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 6.h, bottom: 20.h),
+                              child: Text(
+                                '책을 추가하려면 아래 기능을 이용해 보세요',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: AppColors.grey_8D,
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => context.pushNamed('book-user-write'),
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 120.w,
+                                height: 36.h,
+                                decoration: BoxDecoration(
+                                  color: AppColors.grey_EF,
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Text(
+                                  '책 직접 입력하기',
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.black_59,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : (ref.watch(bookSearchListProvider).isNotEmpty)
+                    ? _serachList(_textEditingController.text)
+                    : Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () => context.pushNamed('book-user-write'),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 72.h,
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(
+                                  left: 24.w,
+                                  right: 22.w,
+                                ),
+                                width: 312.w,
+                                height: 64.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: AppColors.grey_F2),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  color: Colors.transparent,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '책 직접 입력하기',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    ),
+                                    AppAssets.iconAngleRight.svg(
+                                      colorFilter: const ColorFilter.mode(
+                                        AppColors.grey_8D,
+                                        BlendMode.srcIn,
+                                      ),
+                                      width: 20.r,
+                                      height: 20.r,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: _scanBarcode,
+                            // onTap: () => context.pushNamed('book-barcode'),
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 72.h,
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(
+                                  left: 24.w,
+                                  right: 22.w,
+                                ),
+                                width: 312.w,
+                                height: 64.h,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: AppColors.grey_F2),
+                                  borderRadius: BorderRadius.circular(20.r),
+                                  color: Colors.transparent,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '바코드로 검색하기',
+                                      style: TextStyle(fontSize: 16.sp),
+                                    ),
+                                    AppAssets.iconAngleRight.svg(
+                                      colorFilter: const ColorFilter.mode(
+                                        AppColors.grey_8D,
+                                        BlendMode.srcIn,
+                                      ),
+                                      width: 20.r,
+                                      height: 20.r,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),
@@ -349,75 +365,84 @@ class _BookSearchPageState extends ConsumerState<BookSearchPage> {
     final bookSearchList = ref.watch(bookSearchListProvider);
 
     return SizedBox(
-      height: (bookSearchList.length * 88.h) +
+      height:
+          (bookSearchList.length * 88.h) +
           42.h, //(itemcount * listcontainer) + titleContainer
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              height: 22.h,
-              margin: EdgeInsets.only(left: 24.w, top: 10.h, bottom: 10.h),
-              child: Text.rich(TextSpan(children: [
-                TextSpan(
+            height: 22.h,
+            margin: EdgeInsets.only(left: 24.w, top: 10.h, bottom: 10.h),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
                     text: '\'$value\' ',
-                    style: const TextStyle(color: AppColors.grey_8D)),
-                TextSpan(
+                    style: const TextStyle(color: AppColors.grey_8D),
+                  ),
+                  TextSpan(
                     text: ref.watch(bookTotalCountProvider).toString(),
-                    style: const TextStyle(color: AppColors.primaryColor))
-              ]))),
+                    style: const TextStyle(color: AppColors.primaryColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Expanded(
             child: ListView(
               physics: const NeverScrollableScrollPhysics(),
-              children: List.generate(
-                bookSearchList.length,
-                (index) {
-                  return GestureDetector(
-                    onTap: () => context.pushNamed('book-add-garden',
-                        extra: {'isbn13': bookSearchList[index].isbn13}),
-                    child: Container(
-                      padding: EdgeInsets.only(left: 24.w, right: 24.w),
-                      height: 88.h,
-                      color: Colors.transparent,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8.r),
-                            child: CachedNetworkImage(
-                              imageUrl: bookSearchList[index].cover,
-                              width: 48.w,
-                              height: 64.h,
-                              fit: BoxFit.cover,
-                            ),
+              children: List.generate(bookSearchList.length, (index) {
+                return GestureDetector(
+                  onTap: () => context.pushNamed(
+                    'book-add-garden',
+                    extra: {'isbn13': bookSearchList[index].isbn13},
+                  ),
+                  child: Container(
+                    padding: EdgeInsets.only(left: 24.w, right: 24.w),
+                    height: 88.h,
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.r),
+                          child: CachedNetworkImage(
+                            imageUrl: bookSearchList[index].cover,
+                            width: 48.w,
+                            height: 64.h,
+                            fit: BoxFit.cover,
                           ),
-                          SizedBox(
-                            width: 252.w,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  bookSearchList[index].title,
-                                  style: TextStyle(
-                                      fontSize: 16.sp,
-                                      overflow: TextOverflow.ellipsis),
+                        ),
+                        SizedBox(
+                          width: 252.w,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                bookSearchList[index].title,
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                Text(
-                                  bookSearchList[index].author,
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.grey_8D,
-                                      overflow: TextOverflow.ellipsis),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              ),
+                              Text(
+                                bookSearchList[index].author,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColors.grey_8D,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              }),
             ),
           ),
         ],

@@ -8,8 +8,8 @@ final bookNoProvider = StateProvider<int?>((ref) => null);
 
 final detailIsbnProvider =
     StateNotifierProvider<BookAddGardenNotifier, BookIsbnDetailEntity>((ref) {
-  return BookAddGardenNotifier(ref.read(bookAddGardenRepositoryProvider));
-});
+      return BookAddGardenNotifier(ref.read(bookAddGardenRepositoryProvider));
+    });
 
 class BookAddGardenNotifier extends StateNotifier<BookIsbnDetailEntity> {
   BookAddGardenNotifier(this._repository) : super(BookIsbnDetailEntity.empty);

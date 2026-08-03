@@ -47,8 +47,10 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
 
   //가든 초대 수락 api
   void postGardenInvite() async {
-    final statusCode =
-        await garden_feature.acceptGardenInvite(ref, widget.gardenNo);
+    final statusCode = await garden_feature.acceptGardenInvite(
+      ref,
+      widget.gardenNo,
+    );
     if (statusCode == 201) {
       // 초대 수락으로 가든에 실제 합류한 순간
       final event = BranchEvent.customEvent('garden_joined')
@@ -86,15 +88,21 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text.rich(TextSpan(
+                  Text.rich(
+                    TextSpan(
                       style: TextStyle(
-                          fontSize: 24.sp, fontWeight: FontWeight.w600),
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                       children: const [
                         TextSpan(
-                            text: '공유가든',
-                            style: TextStyle(color: AppColors.primaryColor)),
-                        TextSpan(text: '에 초대받았어요')
-                      ])),
+                          text: '공유가든',
+                          style: TextStyle(color: AppColors.primaryColor),
+                        ),
+                        TextSpan(text: '에 초대받았어요'),
+                      ],
+                    ),
+                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 8.h),
                     child: const Text(
@@ -108,8 +116,9 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                     width: 312.w,
                     // height: 300.h,
                     decoration: BoxDecoration(
-                        color: AppColors.grey_FA,
-                        borderRadius: BorderRadius.circular(20.r)),
+                      color: AppColors.grey_FA,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
                     child: Column(
                       children: [
                         Container(
@@ -117,7 +126,9 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                           width: 104.r,
                           height: 104.r,
                           decoration: const BoxDecoration(
-                              color: Colors.white, shape: BoxShape.circle),
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
                           child: AppAssets.iconBookmark.svg(
                             colorFilter: ColorFilter.mode(
                               Functions.gardenColor(inviteGarden.gardenColor),
@@ -132,9 +143,10 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                           child: Text(
                             inviteGarden.gardenTitle,
                             style: TextStyle(
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.black_59),
+                              fontSize: 24.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.black_59,
+                            ),
                           ),
                         ),
                         Padding(
@@ -151,7 +163,7 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                         Text(
                           '멤버 ${inviteGarden.gardenMembers.length}/10',
                           style: const TextStyle(color: AppColors.grey_8D),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -170,17 +182,20 @@ class _GardenInvitePageState extends ConsumerState<GardenInvitePage> {
                         child: Container(
                           height: 60.h,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.r),
-                              color: AppColors.grey_CA),
+                            borderRadius: BorderRadius.circular(20.r),
+                            color: AppColors.grey_CA,
+                          ),
                           child: Center(
-                              child: Text(
-                            '거절하기',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
+                            child: Text(
+                              '거절하기',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16.sp,
-                                color: Colors.white),
-                          )),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],

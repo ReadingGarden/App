@@ -65,5 +65,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'dokseogarden-68c26.appspot.com',
     iosBundleId: 'com.dokseogarden',
   );
-
 }

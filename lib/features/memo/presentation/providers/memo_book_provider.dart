@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/repositories/memo_book_repository.dart';
 import '../../domain/entities/memo_book_selector_entity.dart';
 
-final memoBookListProvider =
-    StateProvider<List<MemoBookSelectorEntity>>((ref) => []);
+final memoBookListProvider = StateProvider<List<MemoBookSelectorEntity>>(
+  (ref) => [],
+);
 final memoBookPageProvider = StateProvider<int>((ref) => 1);
 final memoBookLoadingProvider = StateProvider<bool>((ref) => false);
 

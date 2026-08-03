@@ -57,8 +57,9 @@ class BookService {
 
   Future<Response?> checkBookDuplication(String isbn) async {
     try {
-      final response =
-          await _authenticatedDio.get('${Constant.URL}book/?isbn=$isbn');
+      final response = await _authenticatedDio.get(
+        '${Constant.URL}book/?isbn=$isbn',
+      );
       return response;
     } on DioException catch (e) {
       if (e.response != null) {
@@ -77,8 +78,10 @@ class BookService {
 
   Future<Response?> createWishBook(Map data) async {
     try {
-      final response =
-          await _authenticatedDio.post('${Constant.URL}book/', data: data);
+      final response = await _authenticatedDio.post(
+        '${Constant.URL}book/',
+        data: data,
+      );
       logger.d('도서 등록 응답: ${response.data}');
       return response;
     } on DioException catch (e) {

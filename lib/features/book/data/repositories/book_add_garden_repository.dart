@@ -4,8 +4,9 @@ import '../../domain/entities/book_isbn_detail_entity.dart';
 import '../dtos/book_isbn_detail_dto.dart';
 import '../services/book_service.dart';
 
-final bookAddGardenRepositoryProvider =
-    Provider<BookAddGardenRepository>((ref) {
+final bookAddGardenRepositoryProvider = Provider<BookAddGardenRepository>((
+  ref,
+) {
   return BookAddGardenRepository(BookService());
 });
 
@@ -50,4 +51,3 @@ class BookAddGardenRepository {
     return response?.statusCode;
   }
 }
-

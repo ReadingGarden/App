@@ -54,8 +54,9 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
           response?.data['data']['push_book_ok'];
 
       final pushTime = response?.data['data']['push_time'];
-      ref.read(timeProvider.notifier).state =
-          pushTime != null ? DateTime.parse(pushTime) : DateTime.now();
+      ref.read(timeProvider.notifier).state = pushTime != null
+          ? DateTime.parse(pushTime)
+          : DateTime.now();
     } else {
       if (mounted) Widgets.showErrorToast(context, '알림 설정을 불러오지 못했어요');
     }
@@ -94,45 +95,46 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
               () {
                 if (ref.watch(bookSwitchProvider)) {
                   showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Colors.white,
-                      useSafeArea: true,
-                      builder: (context) {
-                        return Container(
-                          margin: EdgeInsets.only(
-                            top: 30.h,
-                            left: 24.w,
-                            right: 24.w,
-                            bottom: 16.h,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.only(bottom: 30.h),
-                                  width: 312.w,
-                                  height: 230.h,
-                                  child: CupertinoDatePicker(
-                                    mode: CupertinoDatePickerMode.time,
-                                    initialDateTime: selectedTime,
-                                    onDateTimeChanged: (newTime) {
-                                      //선택된 시간 상태 업데이트
-                                      ref.read(timeProvider.notifier).state =
-                                          newTime;
-                                    },
-                                  )),
-                              Widgets.button('확인', true, () {
-                                final data = {
-                                  "push_time":
-                                      ref.watch(timeProvider).toString()
-                                };
-                                putPush(data);
-                                context.pop();
-                              })
-                            ],
-                          ),
-                        );
-                      });
+                    context: context,
+                    backgroundColor: Colors.white,
+                    useSafeArea: true,
+                    builder: (context) {
+                      return Container(
+                        margin: EdgeInsets.only(
+                          top: 30.h,
+                          left: 24.w,
+                          right: 24.w,
+                          bottom: 16.h,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 30.h),
+                              width: 312.w,
+                              height: 230.h,
+                              child: CupertinoDatePicker(
+                                mode: CupertinoDatePickerMode.time,
+                                initialDateTime: selectedTime,
+                                onDateTimeChanged: (newTime) {
+                                  //선택된 시간 상태 업데이트
+                                  ref.read(timeProvider.notifier).state =
+                                      newTime;
+                                },
+                              ),
+                            ),
+                            Widgets.button('확인', true, () {
+                              final data = {
+                                "push_time": ref.watch(timeProvider).toString(),
+                              };
+                              putPush(data);
+                              context.pop();
+                            }),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 }
               },
               widget: Row(
@@ -154,7 +156,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -172,9 +174,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                title,
-              ),
+              Text(title),
               Text(
                 subTitle,
                 style: TextStyle(fontSize: 12.sp, color: AppColors.grey_8D),
@@ -204,7 +204,7 @@ class _AlertSettingPageState extends ConsumerState<AlertSettingPage> {
             padding: 1.w,
             inactiveColor: AppColors.grey_CA,
             activeColor: AppColors.primaryColor,
-          )
+          ),
         ],
       ),
     );

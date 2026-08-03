@@ -77,9 +77,10 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                   Text(
                     '저장된 책이 없어요!',
                     style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.black_2B),
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.black_2B,
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 6.h, bottom: 20.h),
@@ -98,17 +99,19 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
                       width: 96.w,
                       height: 36.h,
                       decoration: BoxDecoration(
-                          color: AppColors.grey_EF,
-                          borderRadius: BorderRadius.circular(8.r)),
+                        color: AppColors.grey_EF,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
                       child: Text(
                         '책 추가하기',
                         style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black_59),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.black_59,
+                        ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -119,84 +122,86 @@ class _MemoBookPageState extends ConsumerState<MemoBookPage> {
     return ListView(
       controller: _scrollController,
       padding: EdgeInsets.only(top: 10.h),
-      children: List.generate(
-        bookList.length,
-        (index) {
-          final book = bookList[index];
-          return GestureDetector(
-            onTap: () async {
-              final result = await context.pushNamed('memo-write',
-                  extra: book.toMemoWriteMap());
-              if (!context.mounted) return;
-              if (result != null) {
-                // ignore: use_build_context_synchronously
-                context.pop(result);
-              }
-            },
-            child: Container(
-              height: 88.h,
-              color: Colors.transparent,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      (book.bookImageUrl == null)
-                          ? Container(
+      children: List.generate(bookList.length, (index) {
+        final book = bookList[index];
+        return GestureDetector(
+          onTap: () async {
+            final result = await context.pushNamed(
+              'memo-write',
+              extra: book.toMemoWriteMap(),
+            );
+            if (!context.mounted) return;
+            if (result != null) {
+              // ignore: use_build_context_synchronously
+              context.pop(result);
+            }
+          },
+          child: Container(
+            height: 88.h,
+            color: Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    (book.bookImageUrl == null)
+                        ? Container(
+                            width: 48.w,
+                            height: 64.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              color: AppColors.grey_F2,
+                            ),
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: CachedNetworkImage(
+                              imageUrl: book.bookImageUrl!,
                               width: 48.w,
                               height: 64.h,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.r),
-                                color: AppColors.grey_F2,
-                              ),
-                            )
-                          : ClipRRect(
-                              borderRadius: BorderRadius.circular(8.r),
-                              child: CachedNetworkImage(
-                                imageUrl: book.bookImageUrl!,
-                                width: 48.w,
-                                height: 64.h,
-                                fit: BoxFit.cover,
-                              ),
+                              fit: BoxFit.cover,
                             ),
-                      Container(
-                        margin: EdgeInsets.only(left: 12.w),
-                        width: 220.w,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              book.bookTitle,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 16.sp),
+                          ),
+                    Container(
+                      margin: EdgeInsets.only(left: 12.w),
+                      width: 220.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            book.bookTitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 16.sp),
+                          ),
+                          Text(
+                            book.bookAuthor,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: AppColors.grey_8D,
                             ),
-                            Text(
-                              book.bookAuthor,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontSize: 12.sp, color: AppColors.grey_8D),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+                AppAssets.iconAngleRight.svg(
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.grey_8D,
+                    BlendMode.srcIn,
                   ),
-                  AppAssets.iconAngleRight.svg(
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.grey_8D,
-                        BlendMode.srcIn,
-                      ),
-                      width: 20.r,
-                      height: 20.r)
-                ],
-              ),
+                  width: 20.r,
+                  height: 20.r,
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      }),
     );
   }
 }

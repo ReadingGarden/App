@@ -18,8 +18,11 @@ class GardenRepository {
     if (response?.statusCode == 200) {
       final List data = response?.data['data'] ?? [];
       return data
-          .map((item) => GardenSummaryEntity.fromJson(
-              Map<String, dynamic>.from(item as Map)))
+          .map(
+            (item) => GardenSummaryEntity.fromJson(
+              Map<String, dynamic>.from(item as Map),
+            ),
+          )
           .toList();
     }
     return [];
@@ -40,10 +43,7 @@ class GardenRepository {
     return response?.statusCode == 200;
   }
 
-  Future<int> updateGarden(
-    int gardenNo,
-    Map<String, dynamic> data,
-  ) async {
+  Future<int> updateGarden(int gardenNo, Map<String, dynamic> data) async {
     final response = await _service.putGarden(gardenNo, data);
     return response?.statusCode ?? 0;
   }

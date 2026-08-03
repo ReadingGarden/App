@@ -38,7 +38,9 @@ void _updateFcmTokenOnServer(ProviderContainer container) async {
     final fcmToken = await container.read(fcmTokenProvider.future);
     if (fcmToken == null) return;
 
-    await container.read(authRepositoryProvider).updateUser({'user_fcm': fcmToken});
+    await container.read(authRepositoryProvider).updateUser({
+      'user_fcm': fcmToken,
+    });
     logger.d('FCM 토큰 서버 업데이트 완료: $fcmToken');
   } catch (e) {
     logger.e('FCM 토큰 업데이트 실패: $e');
@@ -79,9 +81,9 @@ Future<void> runMainApp() async {
 
   if (Platform.isAndroid) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(systemNavigationBarColor: Colors.transparent),
+    );
   }
 
   // ProviderContainer 생성
@@ -113,15 +115,18 @@ Future<void> runMainApp() async {
 
   // Branch 딥링크 리스너 (초대 링크)
   // 모든 진입 상태(cold start / background / 로그인 전)에서 수신하도록 최상위에 등록
-  FlutterBranchSdk.listSession().listen((data) {
-    logger.d('브랜치 딥링크 데이터 수신: $data');
-    if (data['+clicked_branch_link'] != true) return;
-    final gardenNo = int.tryParse('${data['garden_no']}');
-    if (gardenNo == null) return;
-    router.pushNamed('invite', extra: gardenNo);
-  }, onError: (error) {
-    logger.e('브랜치 딥링크 처리 실패: $error');
-  });
+  FlutterBranchSdk.listSession().listen(
+    (data) {
+      logger.d('브랜치 딥링크 데이터 수신: $data');
+      if (data['+clicked_branch_link'] != true) return;
+      final gardenNo = int.tryParse('${data['garden_no']}');
+      if (gardenNo == null) return;
+      router.pushNamed('invite', extra: gardenNo);
+    },
+    onError: (error) {
+      logger.e('브랜치 딥링크 처리 실패: $error');
+    },
+  );
 
   // 알림 초기화
   await messaging.initializeNotification();
@@ -136,10 +141,7 @@ Future<void> runMainApp() async {
   _updateFcmTokenOnServer(container);
 
   // 전역 컨테이너를 앱 루트에 연결합니다.
-  runApp(UncontrolledProviderScope(
-    container: container,
-    child: const MyApp(),
-  ));
+  runApp(UncontrolledProviderScope(container: container, child: const MyApp()));
 }
 
 /// 기본 진입점 — `flutter run`으로 실행 시 prod flavor로 동작.
@@ -159,18 +161,19 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) {
         return MaterialApp.router(
           theme: ThemeData(
-              fontFamily: 'SUITE',
-              scaffoldBackgroundColor: Colors.white,
-              textTheme: TextTheme(
-                //앱바
-                titleLarge: const TextStyle(color: Colors.black),
-                //내부 텍스트 필드
-                titleMedium: TextStyle(fontSize: 16.sp, color: Colors.black),
-                //기본 body 텍스트
-                bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
-                //텍스트 필드 에러 메세지
-                bodySmall: TextStyle(fontSize: 14.sp, color: Colors.black),
-              )),
+            fontFamily: 'SUITE',
+            scaffoldBackgroundColor: Colors.white,
+            textTheme: TextTheme(
+              //앱바
+              titleLarge: const TextStyle(color: Colors.black),
+              //내부 텍스트 필드
+              titleMedium: TextStyle(fontSize: 16.sp, color: Colors.black),
+              //기본 body 텍스트
+              bodyMedium: TextStyle(fontSize: 14.sp, color: Colors.black),
+              //텍스트 필드 에러 메세지
+              bodySmall: TextStyle(fontSize: 14.sp, color: Colors.black),
+            ),
+          ),
           debugShowCheckedModeBanner: false,
           builder: (context, child) {
             final isOnline =
@@ -210,10 +213,7 @@ class MyApp extends ConsumerWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          supportedLocales: const [
-            Locale('ko', 'KO'),
-            Locale('en', 'US'),
-          ],
+          supportedLocales: const [Locale('ko', 'KO'), Locale('en', 'US')],
         );
       },
     );

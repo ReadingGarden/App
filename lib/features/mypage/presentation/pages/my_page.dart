@@ -49,7 +49,8 @@ class _MyPageState extends ConsumerState<MyPage> {
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         padding: EdgeInsets.only(
-            bottom: 110.h + MediaQuery.of(context).viewPadding.bottom),
+          bottom: 110.h + MediaQuery.of(context).viewPadding.bottom,
+        ),
         child: Container(
           margin: EdgeInsets.only(top: 30.h, bottom: 24.h),
           child: Column(
@@ -65,8 +66,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                           margin: EdgeInsets.only(right: 14.w),
                           child: CircleAvatar(
                             radius: 30.r,
-                            child:
-                                AppAssets.profileFlower(user.userImage).image(),
+                            child: AppAssets.profileFlower(
+                              user.userImage,
+                            ).image(),
                           ),
                         ),
                         Column(
@@ -77,17 +79,22 @@ class _MyPageState extends ConsumerState<MyPage> {
                               child: Text(
                                 user.userNick,
                                 style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold),
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             SizedBox(
-                                child: Text(user.userEmail,
-                                    style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.grey_8D))),
+                              child: Text(
+                                user.userEmail,
+                                style: TextStyle(
+                                  fontSize: 12.sp,
+                                  color: AppColors.grey_8D,
+                                ),
+                              ),
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                     Container(
@@ -96,18 +103,19 @@ class _MyPageState extends ConsumerState<MyPage> {
                       padding: EdgeInsets.symmetric(vertical: 20.h),
                       width: 312.w,
                       decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.grey_FA,
+                        border: Border.all(color: AppColors.grey_FA),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.shadowGreyColor.withValues(
+                              alpha: 0.05,
+                            ),
+                            offset: const Offset(4, 4),
+                            blurRadius: 8.r,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                                color:
-                                    AppColors.shadowGreyColor.withValues(alpha: 0.05),
-                                offset: const Offset(4, 4),
-                                blurRadius: 8.r)
-                          ],
-                          borderRadius: BorderRadius.circular(20.r),
-                          color: Colors.white),
+                        ],
+                        borderRadius: BorderRadius.circular(20.r),
+                        color: Colors.white,
+                      ),
                       child: SizedBox(
                         width: 240.w,
                         child: Row(
@@ -120,8 +128,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   child: Text(
                                     '가든 수',
                                     style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.grey_8D),
+                                      fontSize: 12.sp,
+                                      color: AppColors.grey_8D,
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -130,9 +139,10 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   child: Text(
                                     user.gardenCount.toString(),
                                     style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primaryColor),
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryColor,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -144,8 +154,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   child: Text(
                                     '읽은 책',
                                     style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.grey_8D),
+                                      fontSize: 12.sp,
+                                      color: AppColors.grey_8D,
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -154,9 +165,10 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   child: Text(
                                     user.readBookCount.toString(),
                                     style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primaryColor),
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryColor,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -168,8 +180,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   child: Text(
                                     '찜한 책',
                                     style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: AppColors.grey_8D),
+                                      fontSize: 12.sp,
+                                      color: AppColors.grey_8D,
+                                    ),
                                   ),
                                 ),
                                 Container(
@@ -178,13 +191,14 @@ class _MyPageState extends ConsumerState<MyPage> {
                                   child: Text(
                                     user.likeBookCount.toString(),
                                     style: TextStyle(
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primaryColor),
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryColor,
+                                    ),
                                   ),
                                 ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -203,7 +217,9 @@ class _MyPageState extends ConsumerState<MyPage> {
                   _subTitleList('설정'),
                   Widgets.titleList('프로필', () => context.pushNamed('profile')),
                   Widgets.titleList(
-                      '계정 관리', () => context.pushNamed('auth-manage')),
+                    '계정 관리',
+                    () => context.pushNamed('auth-manage'),
+                  ),
                   Widgets.titleList('알림 설정', () => context.pushNamed('alert')),
                   Container(
                     margin: EdgeInsets.only(top: 20.h, bottom: 24.h),
@@ -213,7 +229,8 @@ class _MyPageState extends ConsumerState<MyPage> {
                   _subTitleList('지원'),
                   Widgets.titleList('이용 가이드', () {
                     Functions.launchURL(
-                        "https://www.notion.so/dokseogarden/1082d8001a9280f58ea8ea9916edbfea?v=b441041520b3422691c9f0d9cb091474&pvs=4");
+                      "https://www.notion.so/dokseogarden/1082d8001a9280f58ea8ea9916edbfea?v=b441041520b3422691c9f0d9cb091474&pvs=4",
+                    );
                   }),
                   Widgets.titleList('의견 보내기', () {
                     Functions.launchURL("https://forms.gle/EBuu4Vvw7C2g4LL58");
@@ -233,10 +250,11 @@ class _MyPageState extends ConsumerState<MyPage> {
                   Widgets.titleList('이용 약관', () => context.pushNamed('tos')),
                   Widgets.titleList('개발자 홈페이지 바로가기', () {
                     Functions.launchURL(
-                        "https://dokseogarden.notion.site/74d8c0678a4e49e6ab2e2152cfae24c7");
+                      "https://dokseogarden.notion.site/74d8c0678a4e49e6ab2e2152cfae24c7",
+                    );
                   }),
                 ],
-              )
+              ),
             ],
           ),
         ),

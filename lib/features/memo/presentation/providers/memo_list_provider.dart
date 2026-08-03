@@ -3,8 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/repositories/memo_repository.dart';
 import '../../domain/entities/memo_list_item_entity.dart';
 
-final memoListStateProvider =
-    StateProvider<List<MemoListItemEntity>>((ref) => []);
+final memoListStateProvider = StateProvider<List<MemoListItemEntity>>(
+  (ref) => [],
+);
 final memoListPageProvider = StateProvider<int>((ref) => 1);
 final memoListLoadingProvider = StateProvider<bool>((ref) => false);
 final memoListHasMoreProvider = StateProvider<bool>((ref) => true);

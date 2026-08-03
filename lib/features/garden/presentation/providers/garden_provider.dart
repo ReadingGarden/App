@@ -9,16 +9,21 @@ import '../../domain/entities/garden_summary_entity.dart';
 final gardenVisitCountProvider = StateProvider<int>((ref) => 0);
 final gardenNavigateToProvider = StateProvider<int?>((ref) => null);
 
-final gardenListProvider =
-    StateProvider<List<GardenSummaryEntity>>((ref) => []);
-final gardenMainProvider =
-    StateProvider<GardenMainEntity>((ref) => GardenMainEntity.empty);
-final gardenMainBookListProvider =
-    StateProvider<List<GardenMainBookEntity>>((ref) => []);
-final gardenMainMemberListProvider =
-    StateProvider<List<GardenMemberEntity>>((ref) => []);
-final inviteGardenProvider =
-    StateProvider<GardenMainEntity>((ref) => GardenMainEntity.empty);
+final gardenListProvider = StateProvider<List<GardenSummaryEntity>>(
+  (ref) => [],
+);
+final gardenMainProvider = StateProvider<GardenMainEntity>(
+  (ref) => GardenMainEntity.empty,
+);
+final gardenMainBookListProvider = StateProvider<List<GardenMainBookEntity>>(
+  (ref) => [],
+);
+final gardenMainMemberListProvider = StateProvider<List<GardenMemberEntity>>(
+  (ref) => [],
+);
+final inviteGardenProvider = StateProvider<GardenMainEntity>(
+  (ref) => GardenMainEntity.empty,
+);
 
 final gardenRepositoryStateProvider = Provider<GardenRepository>((ref) {
   return ref.read(gardenRepositoryProvider);
@@ -97,11 +102,7 @@ Future<int> leaveGarden(WidgetRef ref, int gardenNo) async {
   return statusCode;
 }
 
-Future<int> updateGardenLeader(
-  WidgetRef ref,
-  int gardenNo,
-  int userNo,
-) async {
+Future<int> updateGardenLeader(WidgetRef ref, int gardenNo, int userNo) async {
   final repository = ref.read(gardenRepositoryStateProvider);
   final statusCode = await repository.updateGardenLeader(gardenNo, userNo);
   if (statusCode == 200) {

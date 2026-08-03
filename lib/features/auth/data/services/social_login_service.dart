@@ -42,8 +42,8 @@ class SocialLogin {
         idToken: googleAuth.idToken,
       );
 
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(credential);
 
       final user = userCredential.user;
       if (user != null) {
@@ -57,7 +57,7 @@ class SocialLogin {
           "user_password": "",
           "user_fcm": fcmToken ?? '',
           "user_social_id": user.uid,
-          "user_social_type": "google"
+          "user_social_type": "google",
         };
         if (!context.mounted) return;
         auth_feature.socialLogin(ref, context, data);
@@ -122,8 +122,9 @@ class SocialLogin {
         accessToken: appleCredential.authorizationCode,
       );
 
-      final userCredential =
-          await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(
+        oauthCredential,
+      );
       final user = userCredential.user;
 
       if (user != null) {
@@ -137,7 +138,7 @@ class SocialLogin {
           "user_password": "",
           "user_fcm": fcmToken ?? '',
           "user_social_id": user.uid,
-          "user_social_type": "apple"
+          "user_social_type": "apple",
         };
         if (!context.mounted) return;
         auth_feature.socialLogin(ref, context, data);
@@ -154,8 +155,10 @@ class SocialLogin {
     const charset =
         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
     final random = Random.secure();
-    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-        .join();
+    return List.generate(
+      length,
+      (_) => charset[random.nextInt(charset.length)],
+    ).join();
   }
 
   static String _sha256ofString(String input) {
@@ -167,10 +170,12 @@ class SocialLogin {
     try {
       final user = await UserApi.instance.me();
 
-      logger.i('카카오 사용자 정보 조회 성공'
-          '\n회원번호: ${user.id}'
-          '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
-          '\n이메일: ${user.kakaoAccount?.email}');
+      logger.i(
+        '카카오 사용자 정보 조회 성공'
+        '\n회원번호: ${user.id}'
+        '\n닉네임: ${user.kakaoAccount?.profile?.nickname}'
+        '\n이메일: ${user.kakaoAccount?.email}',
+      );
 
       final fcmToken = await ref.read(fcmTokenProvider.future);
 
@@ -179,7 +184,7 @@ class SocialLogin {
         "user_password": "",
         "user_fcm": fcmToken ?? '',
         "user_social_id": user.id.toString(),
-        "user_social_type": "kakao"
+        "user_social_type": "kakao",
       };
       if (!context.mounted) return;
       auth_feature.socialLogin(ref, context, data);

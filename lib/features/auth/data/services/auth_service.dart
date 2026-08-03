@@ -48,9 +48,7 @@ class AuthService {
 
   Future<Response?> deleteUser() async {
     try {
-      final response = await _authenticatedDio.delete(
-        '${Constant.URL}auth/',
-      );
+      final response = await _authenticatedDio.delete('${Constant.URL}auth/');
       logger.d('회원 탈퇴 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
@@ -84,8 +82,10 @@ class AuthService {
 
   Future<Response?> postPwdFind(Map data) async {
     try {
-      final response =
-          await _dio.post('${Constant.URL}auth/find-password', data: data);
+      final response = await _dio.post(
+        '${Constant.URL}auth/find-password',
+        data: data,
+      );
       logger.d('비밀번호 찾기 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
@@ -102,8 +102,10 @@ class AuthService {
 
   Future<Response?> postPwdFindCheck(Map data) async {
     try {
-      final response = await _dio
-          .post('${Constant.URL}auth/find-password/check', data: data);
+      final response = await _dio.post(
+        '${Constant.URL}auth/find-password/check',
+        data: data,
+      );
       logger.d('비밀번호 찾기 확인 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
@@ -120,8 +122,10 @@ class AuthService {
 
   Future<Response?> putPwdUpdate(Map data) async {
     try {
-      final response = await _dio
-          .put('${Constant.URL}auth/find-password/update-password', data: data);
+      final response = await _dio.put(
+        '${Constant.URL}auth/find-password/update-password',
+        data: data,
+      );
       logger.d('비밀번호 재설정 응답: ${response.data}');
       return response;
     } on DioException catch (e) {
@@ -138,9 +142,7 @@ class AuthService {
 
   Future<Response?> getUser() async {
     try {
-      final response = await _authenticatedDio.get(
-        '${Constant.URL}auth/',
-      );
+      final response = await _authenticatedDio.get('${Constant.URL}auth/');
       logger.d('내 정보 조회 응답: ${response.data}');
       return response;
     } on DioException catch (e) {

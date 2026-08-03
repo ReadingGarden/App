@@ -4,15 +4,17 @@ import '../../data/repositories/book_detail_repository.dart';
 import '../../domain/entities/book_detail_entity.dart';
 import '../../domain/entities/book_memo_summary_entity.dart';
 
-final bookDetailMemoListProvider =
-    StateProvider<List<BookMemoSummaryEntity>>((ref) => []);
-final bookDetailMemoSelectIndexListProvider =
-    StateProvider<List<bool>>((ref) => []);
+final bookDetailMemoListProvider = StateProvider<List<BookMemoSummaryEntity>>(
+  (ref) => [],
+);
+final bookDetailMemoSelectIndexListProvider = StateProvider<List<bool>>(
+  (ref) => [],
+);
 
 final bookDetailProvider =
     StateNotifierProvider<BookDetailNotifier, BookDetailEntity>((ref) {
-  return BookDetailNotifier(ref.read(bookDetailRepositoryProvider));
-});
+      return BookDetailNotifier(ref.read(bookDetailRepositoryProvider));
+    });
 
 class BookDetailNotifier extends StateNotifier<BookDetailEntity> {
   BookDetailNotifier(this._repository) : super(BookDetailEntity.empty);
@@ -46,8 +48,9 @@ class BookDetailNotifier extends StateNotifier<BookDetailEntity> {
 
     final memoList = detail.memoList;
     ref.read(bookDetailMemoListProvider.notifier).state = memoList;
-    ref.read(bookDetailMemoSelectIndexListProvider.notifier).state =
-        memoList.map((memo) => memo.memoLike).toList();
+    ref.read(bookDetailMemoSelectIndexListProvider.notifier).state = memoList
+        .map((memo) => memo.memoLike)
+        .toList();
 
     final gardenNo = detail.gardenNo;
     if (gardenNo is int) {

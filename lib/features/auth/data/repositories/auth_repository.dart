@@ -100,10 +100,7 @@ class AuthRepository {
       }
       final socialType = data['user_social_type']?.toString() ?? 'social';
       _trackCompleteRegistration(socialType);
-      return (
-        status: 'signup',
-        nick: token?['user_nick'] as String?,
-      );
+      return (status: 'signup', nick: token?['user_nick'] as String?);
     }
     return (status: 'error', nick: null);
   }
