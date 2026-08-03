@@ -31,12 +31,14 @@ class _SplashPageState extends ConsumerState<SplashPage>
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
-    _opacity = Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
-    _scale = Tween(begin: 0.8, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _opacity = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+    _scale = Tween(
+      begin: 0.8,
+      end: 1.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
     _controller.forward();
 
     logger.d('스플래시에서 FCM 토큰 조회를 시작합니다: ${ref.read(fcmTokenProvider)}');
@@ -79,10 +81,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
             opacity: _opacity,
             child: ScaleTransition(
               scale: _scale,
-              child: Assets.images.splash.image(
-                width: 120.w,
-                height: 156.h,
-              ),
+              child: Assets.images.splash.image(width: 120.w, height: 156.h),
             ),
           ),
         ),

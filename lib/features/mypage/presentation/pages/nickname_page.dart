@@ -42,13 +42,20 @@ class _NickNamePageState extends ConsumerState<NickNamePage> {
     return Scaffold(
       appBar: Widgets.appBar(context, title: '닉네임'),
       body: Container(
-          margin: EdgeInsets.only(top: 10.h, left: 24.w, right: 24.w),
-          child: Widgets.textfield(ref, _nicknameController, '닉네임', '',
-              nicknameErrorText, nicknameErrorProvider)),
-      bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('저장하기', true, () {
-          final data = {
-            "user_nick": _nicknameController.text,
-          };
+        margin: EdgeInsets.only(top: 10.h, left: 24.w, right: 24.w),
+        child: Widgets.textfield(
+          ref,
+          _nicknameController,
+          '닉네임',
+          '',
+          nicknameErrorText,
+          nicknameErrorProvider,
+        ),
+      ),
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button('저장하기', true, () {
+          final data = {"user_nick": _nicknameController.text};
           updateUser(ref, context, data);
         }),
       ),

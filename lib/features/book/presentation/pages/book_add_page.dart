@@ -4,6 +4,7 @@ import 'package:book_flutter/shared/utils/functions.dart';
 import 'package:book_flutter/shared/theme/app_assets.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
+import 'package:book_flutter/shared/widgets/star_rating.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
 import 'package:book_flutter/core/review/in_app_review_helper.dart';
@@ -72,8 +73,10 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
         );
         // 완독한 긍정적 순간에 인앱 리뷰 프롬프트 시도
         InAppReviewHelper.maybeRequestAfterBookCompleted();
-        context.pushReplacementNamed('book-add-done',
-            extra: result.done!.toJson());
+        context.pushReplacementNamed(
+          'book-add-done',
+          extra: result.done!.toJson(),
+        );
       } else {
         context.pop('fetchData');
       }
@@ -94,69 +97,76 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Widgets.appBar(context, title: widget.bookRead.bookTitle),
-        body: Container(
-          margin: EdgeInsets.only(top: 40.h),
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  Text(
-                    '어디까지 읽었나요?',
-                    style:
-                        TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+      appBar: Widgets.appBar(context, title: widget.bookRead.bookTitle),
+      body: Container(
+        margin: EdgeInsets.only(top: 40.h),
+        child: Column(
+          children: [
+            Column(
+              children: [
+                Text(
+                  '어디까지 읽었나요?',
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 20.h, bottom: 90.h),
-                    child: GestureDetector(
-                      onTap: () async {
-                        final result = await pageBottomSheet(
-                            context,
-                            _textEditingController,
-                            widget.bookRead.bookCurrentPage);
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20.h, bottom: 90.h),
+                  child: GestureDetector(
+                    onTap: () async {
+                      final result = await pageBottomSheet(
+                        context,
+                        _textEditingController,
+                        widget.bookRead.bookCurrentPage,
+                      );
 
-                        if (result != null) {
-                          currentPage = result;
-                          setState(() {
-                            dragPosition = widget.bookRead.bookPage > 0
-                                ? (currentPage / widget.bookRead.bookPage)
-                                : 0.0;
-                          });
-                        }
-                      },
-                      child: Text.rich(TextSpan(
-                          style: TextStyle(
-                              fontSize: 32.sp, fontWeight: FontWeight.bold),
-                          children: [
-                            TextSpan(
-                                text: '${currentPage}p',
-                                style: const TextStyle(
-                                    color: AppColors.primaryColor,
-                                    decorationColor: AppColors.primaryColor,
-                                    decoration: ui.TextDecoration.underline)),
-                            TextSpan(
-                                text: ' / ${widget.bookRead.bookPage}p',
-                                style:
-                                    const TextStyle(color: AppColors.grey_CA))
-                          ])),
+                      if (result != null) {
+                        currentPage = result;
+                        setState(() {
+                          dragPosition = widget.bookRead.bookPage > 0
+                              ? (currentPage / widget.bookRead.bookPage)
+                              : 0.0;
+                        });
+                      }
+                    },
+                    child: Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          fontSize: 32.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '${currentPage}p',
+                            style: const TextStyle(
+                              color: AppColors.primaryColor,
+                              decorationColor: AppColors.primaryColor,
+                              decoration: ui.TextDecoration.underline,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' / ${widget.bookRead.bookPage}p',
+                            style: const TextStyle(color: AppColors.grey_CA),
+                          ),
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  AnimatedScale(
-                    scale: _isDragging ? 0.92 : 1.0,
-                    duration: const Duration(milliseconds: 150),
-                    curve: Curves.easeOut,
-                    child: Stack(
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                AnimatedScale(
+                  scale: _isDragging ? 0.92 : 1.0,
+                  duration: const Duration(milliseconds: 150),
+                  curve: Curves.easeOut,
+                  child: Stack(
                     children: [
                       Center(
-                          child: Image.asset(
-                        imagePath,
-                        width: 280,
-                        height: 304,
-                      )),
+                        child: Image.asset(imagePath, width: 280, height: 304),
+                      ),
                       Center(
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
@@ -171,14 +181,13 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                           },
                           onVerticalDragUpdate: (details) {
                             setState(() {
-                              dragPosition -=
-                                  details.primaryDelta! / 304;
+                              dragPosition -= details.primaryDelta! / 304;
                               dragPosition = dragPosition.clamp(0.0, 1.0);
                               currentPage =
                                   (widget.bookRead.bookPage * dragPosition)
                                       .toInt();
-                              _textEditingController.text =
-                                  currentPage.toString();
+                              _textEditingController.text = currentPage
+                                  .toString();
                             });
                           },
                           child: SizedBox(
@@ -188,7 +197,9 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                               clipper: _BottomRevealClipper(dragPosition),
                               child: ColorFiltered(
                                 colorFilter: const ColorFilter.mode(
-                                    AppColors.black_59, BlendMode.srcIn),
+                                  AppColors.black_59,
+                                  BlendMode.srcIn,
+                                ),
                                 child: Image.asset(
                                   imagePath,
                                   width: 280,
@@ -200,28 +211,35 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                         ),
                       ),
                     ],
-                  )),
-                  Padding(
-                    padding: EdgeInsets.only(top: 26.h),
-                    child: const Text(
-                      '물을 주려면 위로 슬라이드 해주세요',
-                      style: TextStyle(color: AppColors.grey_8D),
-                    ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 26.h),
+                  child: const Text(
+                    '물을 주려면 위로 슬라이드 해주세요',
+                    style: TextStyle(color: AppColors.grey_8D),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
-        bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('저장하기', true, () {
-            postBookRead();
-          }),
-        ));
+      ),
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button('저장하기', true, () {
+          postBookRead();
+        }),
+      ),
+    );
   }
 }
 
 Future pageBottomSheet(
-    BuildContext context, TextEditingController controller, int page) {
+  BuildContext context,
+  TextEditingController controller,
+  int page,
+) {
   return showModalBottomSheet(
     isScrollControlled: true,
     useSafeArea: true,
@@ -252,23 +270,35 @@ Future pageBottomSheet(
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
-                      counter: Container(),
-                      fillColor: AppColors.grey_FA,
-                      filled: true,
-                      hintStyle:
-                          TextStyle(fontSize: 16.sp, color: AppColors.grey_8D),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                          borderSide: BorderSide(
-                              color: Colors.transparent, width: 1.w)),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                          borderSide: BorderSide(
-                              color: Colors.transparent, width: 1.w)),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                          borderSide: BorderSide(
-                              color: Colors.transparent, width: 1.w))),
+                    counter: Container(),
+                    fillColor: AppColors.grey_FA,
+                    filled: true,
+                    hintStyle: TextStyle(
+                      fontSize: 16.sp,
+                      color: AppColors.grey_8D,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1.w,
+                      ),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1.w,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                      borderSide: BorderSide(
+                        color: Colors.transparent,
+                        width: 1.w,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Widgets.button('확인', true, () {
@@ -282,7 +312,6 @@ Future pageBottomSheet(
     },
   );
 }
-
 
 class _BottomRevealClipper extends CustomClipper<Rect> {
   _BottomRevealClipper(this.revealFraction);
@@ -305,12 +334,29 @@ class _BottomRevealClipper extends CustomClipper<Rect> {
   }
 }
 
-class BookAddDonePage extends ConsumerWidget {
+class BookAddDonePage extends ConsumerStatefulWidget {
   const BookAddDonePage({super.key, required this.bookRead});
 
   final BookAddDoneEntity bookRead;
 
-  void _goToGarden(BuildContext context, WidgetRef ref) async {
+  @override
+  ConsumerState<BookAddDonePage> createState() => _BookAddDonePageState();
+}
+
+class _BookAddDonePageState extends ConsumerState<BookAddDonePage> {
+  //별점 (0 = 선택 전)
+  int _rating = 0;
+
+  void _goToGarden() async {
+    //화면을 벗어날 때 별점 한 번만 저장
+    if (_rating > 0 && widget.bookRead.bookNo > 0) {
+      await saveBookRating(
+        ref,
+        bookNo: widget.bookRead.bookNo,
+        rating: _rating,
+      );
+    }
+
     ref.read(currentIndexProvider.notifier).state = 0;
     ref.read(gardenVisitCountProvider.notifier).state++;
     final targetGardenNo = ref.read(gardenNavigateToProvider);
@@ -318,66 +364,91 @@ class BookAddDonePage extends ConsumerWidget {
       await updateMainGarden(ref, targetGardenNo);
       ref.read(gardenNavigateToProvider.notifier).state = null;
     }
+    if (!mounted) return;
     context.go('/bottom-navi');
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
-        if (!didPop) _goToGarden(context, ref);
+        if (!didPop) _goToGarden();
       },
       child: Scaffold(
-        body: Container(
-          margin: EdgeInsets.only(top: 174.h),
-          child: Center(
-            child: Column(
-              children: [
-                Text.rich(
-                    style:
-                        TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-                    TextSpan(children: [
-                      TextSpan(
-                          text: bookRead.bookTree,
-                          style:
-                              const TextStyle(color: AppColors.primaryColor)),
-                      TextSpan(
+        body: SafeArea(
+          child: Container(
+            margin: EdgeInsets.only(top: 60.h),
+            child: Center(
+              child: Column(
+                children: [
+                  Text.rich(
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: widget.bookRead.bookTree,
+                          style: const TextStyle(color: AppColors.primaryColor),
+                        ),
+                        TextSpan(
                           text:
-                              '${Functions.getPostpositionString(bookRead.bookTree, '이', '가')} 다컸어요')
-                    ])),
-                Container(
-                  margin: EdgeInsets.only(top: 24.h, bottom: 20.h),
-                  width: 260.r,
-                  height: 260.r,
-                  child: AppAssets.okFlower(bookRead.bookTree).image(),
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.only(bottom: 6.h, left: 48.w, right: 48.w),
-                  child: Text(
-                    bookRead.bookTitle,
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style:
-                        TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                              '${Functions.getPostpositionString(widget.bookRead.bookTree, '이', '가')} 다컸어요',
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Text(
-                  '${Functions.formatBookReadDate(bookRead.bookStartDate)} - ${Functions.formatBookReadDate(bookRead.bookEndDate)}',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: AppColors.grey_8D),
-                )
-              ],
+                  Container(
+                    margin: EdgeInsets.only(top: 24.h, bottom: 20.h),
+                    width: 260.r,
+                    height: 260.r,
+                    child: AppAssets.okFlower(widget.bookRead.bookTree).image(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 6.h,
+                      left: 48.w,
+                      right: 48.w,
+                    ),
+                    child: Text(
+                      widget.bookRead.bookTitle,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${Functions.formatBookReadDate(widget.bookRead.bookStartDate)} - ${Functions.formatBookReadDate(widget.bookRead.bookEndDate)}',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(color: AppColors.grey_8D),
+                  ),
+                  //별점
+                  Container(
+                    margin: EdgeInsets.only(top: 40.h),
+                    child: StarRatingCard(
+                      rating: _rating,
+                      onChanged: (value) => setState(() => _rating = value),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-        bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('가든으로 가기', true, () {
-            _goToGarden(context, ref);
+        bottomNavigationBar: Widgets.bottomBar(
+          context,
+          child: Widgets.button('가든으로 가기', true, () {
+            _goToGarden();
             //TODO: - 자동으로 해당 가든 변경?
           }),
-        )),
+        ),
+      ),
     );
   }
 }

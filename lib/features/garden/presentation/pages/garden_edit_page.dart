@@ -42,7 +42,9 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     Future.microtask(() {
       final gardenMain = ref.read(garden_feature.gardenMainProvider);
       ref.read(gardenEditButtonProvider.notifier).state = true;
-      final colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(gardenMain.gardenColor);
+      final colorIndex = Constant.GARDEN_COLOR_LIST.indexOf(
+        gardenMain.gardenColor,
+      );
       ref.read(gardenEditColorSelectIndexProvider.notifier).state =
           colorIndex < 0 ? 0 : colorIndex;
       ref.read(gardenEditSelectIndexProvider.notifier).state = 0;
@@ -62,8 +64,10 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   void deleteGarden() async {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
-    final statusCode =
-        await garden_feature.deleteGarden(ref, gardenMain.gardenNo);
+    final statusCode = await garden_feature.deleteGarden(
+      ref,
+      gardenMain.gardenNo,
+    );
     if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
@@ -103,10 +107,13 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
       "garden_title": _titleController.text,
       "garden_info": _infoController.text,
       "garden_color": Constant
-          .GARDEN_COLOR_LIST[ref.watch(gardenEditColorSelectIndexProvider)]
+          .GARDEN_COLOR_LIST[ref.watch(gardenEditColorSelectIndexProvider)],
     };
-    final statusCode =
-        await garden_feature.updateGarden(ref, gardenMain.gardenNo, data);
+    final statusCode = await garden_feature.updateGarden(
+      ref,
+      gardenMain.gardenNo,
+      data,
+    );
     if (!mounted) return;
     if (statusCode == 200) {
       context.replaceNamed('bottom-navi');
@@ -119,8 +126,10 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   void byeGarden() async {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
-    final statusCode =
-        await garden_feature.leaveGarden(ref, gardenMain.gardenNo);
+    final statusCode = await garden_feature.leaveGarden(
+      ref,
+      gardenMain.gardenNo,
+    );
     if (!mounted) return;
     if (statusCode == 200) {
       context.pop();
@@ -165,8 +174,11 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
         _gardenEditBottomSheet();
       },
       child: Scaffold(
-        appBar: Widgets.appBar(context,
-            title: '가든 수정하기', backFunction: _gardenEditBottomSheet),
+        appBar: Widgets.appBar(
+          context,
+          title: '가든 수정하기',
+          backFunction: _gardenEditBottomSheet,
+        ),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
@@ -177,10 +189,7 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(
-                      left: 24.w,
-                      right: 24.w,
-                    ),
+                    padding: EdgeInsets.only(left: 24.w, right: 24.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -189,21 +198,23 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                           child: Column(
                             children: [
                               Widgets.textfield(
-                                  ref,
-                                  _titleController,
-                                  '가든 이름',
-                                  '최대 12글자까지 쓸 수 있어요',
-                                  null,
-                                  StateProvider((ref) => null),
-                                  validateFunction: _gardenEditValid),
+                                ref,
+                                _titleController,
+                                '가든 이름',
+                                '최대 12글자까지 쓸 수 있어요',
+                                null,
+                                StateProvider((ref) => null),
+                                validateFunction: _gardenEditValid,
+                              ),
                               Widgets.textfield(
-                                  ref,
-                                  _infoController,
-                                  '가든 소개',
-                                  '소개글을 입력해주세요',
-                                  null,
-                                  StateProvider((ref) => null),
-                                  validateFunction: _gardenEditValid),
+                                ref,
+                                _infoController,
+                                '가든 소개',
+                                '소개글을 입력해주세요',
+                                null,
+                                StateProvider((ref) => null),
+                                validateFunction: _gardenEditValid,
+                              ),
                             ],
                           ),
                         ),
@@ -211,19 +222,21 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                                margin: EdgeInsets.only(
-                                    bottom: 16.h,
-                                    top: (_gardenLeaderBool()) ? 12.h : 4.h),
-                                child: const Text('대표 색상')),
+                              margin: EdgeInsets.only(
+                                bottom: 16.h,
+                                top: (_gardenLeaderBool()) ? 12.h : 4.h,
+                              ),
+                              child: const Text('대표 색상'),
+                            ),
                             SizedBox(
                               height: 92.h,
                               child: GridView(
                                 gridDelegate:
                                     SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisSpacing: 26.w,
-                                  mainAxisSpacing: 18.w,
-                                  crossAxisCount: 6,
-                                ),
+                                      crossAxisSpacing: 26.w,
+                                      mainAxisSpacing: 18.w,
+                                      crossAxisCount: 6,
+                                    ),
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 children: List.generate(
@@ -232,42 +245,47 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                                     return GestureDetector(
                                       onTap: () {
                                         ref
-                                            .read(
-                                                gardenEditColorSelectIndexProvider
-                                                    .notifier)
-                                            .state = index;
+                                                .read(
+                                                  gardenEditColorSelectIndexProvider
+                                                      .notifier,
+                                                )
+                                                .state =
+                                            index;
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(2),
                                         width: 38.r,
                                         height: 38.r,
                                         decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.transparent,
-                                            border: (ref.watch(
-                                                        gardenEditColorSelectIndexProvider) ==
-                                                    index)
-                                                ? Border.all(
-                                                    color: Constant
-                                                            .GARDEN_COLOR_SET_LIST[
-                                                        index],
-                                                    width: 2.w,
-                                                  )
-                                                : null),
-                                        child: Container(
-                                            decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Constant
-                                              .GARDEN_COLOR_SET_LIST[index],
-                                        )),
+                                          color: Colors.transparent,
+                                          border:
+                                              (ref.watch(
+                                                    gardenEditColorSelectIndexProvider,
+                                                  ) ==
+                                                  index)
+                                              ? Border.all(
+                                                  color: Constant
+                                                      .GARDEN_COLOR_SET_LIST[index],
+                                                  width: 2.w,
+                                                )
+                                              : null,
+                                        ),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Constant
+                                                .GARDEN_COLOR_SET_LIST[index],
+                                          ),
+                                        ),
                                       ),
                                     );
                                   },
                                 ),
                               ),
-                            )
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -282,35 +300,40 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
                               ? _gardenDeleteBottomSheet()
                               : _gardenRealDeleteBottomSheet(),
                           child: Container(
-                              margin: EdgeInsets.only(left: 24.w),
-                              height: 46.h,
-                              color: Colors.transparent,
-                              child: const Text(
-                                '가든 삭제하기',
-                                style:
-                                    TextStyle(color: AppColors.errorRedColor),
-                              )),
+                            margin: EdgeInsets.only(left: 24.w),
+                            height: 46.h,
+                            color: Colors.transparent,
+                            child: const Text(
+                              '가든 삭제하기',
+                              style: TextStyle(color: AppColors.errorRedColor),
+                            ),
+                          ),
                         )
                       : GestureDetector(
                           onTap: () => _gardenByeBottomSheet(),
                           child: Container(
-                              margin: EdgeInsets.only(left: 24.w),
-                              height: 46.h,
-                              color: Colors.transparent,
-                              child: const Text(
-                                '가든 나가기',
-                                style:
-                                    TextStyle(color: AppColors.errorRedColor),
-                              )),
-                        )
+                            margin: EdgeInsets.only(left: 24.w),
+                            height: 46.h,
+                            color: Colors.transparent,
+                            child: const Text(
+                              '가든 나가기',
+                              style: TextStyle(color: AppColors.errorRedColor),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
           ),
         ),
-        bottomNavigationBar: Widgets.bottomBar(context,
-            child: Widgets.button('수정하기', ref.watch(gardenEditButtonProvider),
-                () => putGarden())),
+        bottomNavigationBar: Widgets.bottomBar(
+          context,
+          child: Widgets.button(
+            '수정하기',
+            ref.watch(gardenEditButtonProvider),
+            () => putGarden(),
+          ),
+        ),
       ),
     );
   }
@@ -318,35 +341,43 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
   //가든 수정 바텀시트
   Future _gardenEditBottomSheet() {
     return Widgets.baseBottomSheet(
-        context,
-        '수정한 내용을 저장할까요?',
-        '이전 화면으로 돌아가기 전 수정 내역을 저장할지 저희에게 알려주세요.',
-        '저장하고 나가기',
-        () {
-          context.pop();
-          putGarden();
-        },
-        cancelTitle: '그냥 나가기',
-        cancelBtnFunction: () {
-          context.pop();
-          context.pop();
-        });
+      context,
+      '수정한 내용을 저장할까요?',
+      '이전 화면으로 돌아가기 전 수정 내역을 저장할지 저희에게 알려주세요.',
+      '저장하고 나가기',
+      () {
+        context.pop();
+        putGarden();
+      },
+      cancelTitle: '그냥 나가기',
+      cancelBtnFunction: () {
+        context.pop();
+        context.pop();
+      },
+    );
   }
 
   //가든 나가기 바텀시트 (공유)
   Future _gardenByeBottomSheet() {
     return Widgets.deleteBottomSheet(
-        context,
-        '가든에서 나가시겠어요?',
-        Text.rich(TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
-          TextSpan(text: '가든에서 나가면 '),
-          TextSpan(
+      context,
+      '가든에서 나가시겠어요?',
+      Text.rich(
+        TextSpan(
+          style: TextStyle(fontSize: 14.sp),
+          children: const [
+            TextSpan(text: '가든에서 나가면 '),
+            TextSpan(
               text: '내가 기록한 모든 책의 기록',
-              style: TextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: '이 삭제되며, 다른 참여자들도. 나의 기록을 볼 수 없습니다.'),
-        ])),
-        '나가기',
-        () => byeGarden());
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '이 삭제되며, 다른 참여자들도. 나의 기록을 볼 수 없습니다.'),
+          ],
+        ),
+      ),
+      '나가기',
+      () => byeGarden(),
+    );
   }
 
   //가든 이전하기 바텀시트 (개인)
@@ -354,51 +385,67 @@ class _GardenEditPageState extends ConsumerState<GardenEditPage> {
     final gardenMain = ref.read(garden_feature.gardenMainProvider);
 
     return Widgets.baseBottomSheet(
-        context,
-        '가든에 남아있는 책이 있어요!',
-        '',
-        '전체 이전하기',
-        () {
-          context.pop();
-          showModalBottomSheet(
-              backgroundColor: Colors.white,
-              isScrollControlled: true,
-              useSafeArea: true,
-              context: context,
-              builder: (context) => GardenEditBottomSheet(
-                    function: (int toGardenNo) {
-                      moveToGarden(toGardenNo);
-                    },
-                    gardenNo: gardenMain.gardenNo,
-                  ));
-        },
-        cancelTitle: '건너뛰기',
-        contentWidget: Text.rich(
-            TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
-          TextSpan(text: '독서기록과 메모를 유지하고 싶다면 '),
-          TextSpan(
-              text: '전체 이전하기', style: TextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: '를 해주세요.'),
-        ])),
-        cancelBtnFunction: () {
-          context.pop();
-          _gardenRealDeleteBottomSheet();
-        });
+      context,
+      '가든에 남아있는 책이 있어요!',
+      '',
+      '전체 이전하기',
+      () {
+        context.pop();
+        showModalBottomSheet(
+          backgroundColor: Colors.white,
+          isScrollControlled: true,
+          useSafeArea: true,
+          context: context,
+          builder: (context) => GardenEditBottomSheet(
+            function: (int toGardenNo) {
+              moveToGarden(toGardenNo);
+            },
+            gardenNo: gardenMain.gardenNo,
+          ),
+        );
+      },
+      cancelTitle: '건너뛰기',
+      contentWidget: Text.rich(
+        TextSpan(
+          style: TextStyle(fontSize: 14.sp),
+          children: const [
+            TextSpan(text: '독서기록과 메모를 유지하고 싶다면 '),
+            TextSpan(
+              text: '전체 이전하기',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '를 해주세요.'),
+          ],
+        ),
+      ),
+      cancelBtnFunction: () {
+        context.pop();
+        _gardenRealDeleteBottomSheet();
+      },
+    );
   }
 
   //가든 삭제하기 바텀시트 (개인)
   Future _gardenRealDeleteBottomSheet() {
     return Widgets.deleteBottomSheet(
-        context,
-        '가든을 삭제하시겠어요?',
-        Text.rich(TextSpan(style: TextStyle(fontSize: 14.sp), children: const [
-          TextSpan(text: '가든을 삭제하면 저장된 '),
-          TextSpan(
-              text: '모든 독서 기록', style: TextStyle(fontWeight: FontWeight.bold)),
-          TextSpan(text: '이 삭제되며, 다시 되돌릴 수 없습니다.'),
-        ])),
-        '삭제하기',
-        () => deleteGarden());
+      context,
+      '가든을 삭제하시겠어요?',
+      Text.rich(
+        TextSpan(
+          style: TextStyle(fontSize: 14.sp),
+          children: const [
+            TextSpan(text: '가든을 삭제하면 저장된 '),
+            TextSpan(
+              text: '모든 독서 기록',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(text: '이 삭제되며, 다시 되돌릴 수 없습니다.'),
+          ],
+        ),
+      ),
+      '삭제하기',
+      () => deleteGarden(),
+    );
   }
 }
 
@@ -420,7 +467,8 @@ class GardenEditBottomSheet extends ConsumerWidget {
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     return Container(
       margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
-      height: (68.h + 10.h) * gardens.length + 24.h + 20.h + 30.h + bottomPadding,
+      height:
+          (68.h + 10.h) * gardens.length + 24.h + 20.h + 30.h + bottomPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -434,79 +482,80 @@ class GardenEditBottomSheet extends ConsumerWidget {
           ListView(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            children: List.generate(
-              gardens.length,
-              (index) {
-                final garden = gardens[index];
-                return GestureDetector(
-                  onTap: () {
-                    if (gardenNo != garden.gardenNo) {
-                      ref.read(gardenEditSelectIndexProvider.notifier).state =
-                          index;
+            children: List.generate(gardens.length, (index) {
+              final garden = gardens[index];
+              return GestureDetector(
+                onTap: () {
+                  if (gardenNo != garden.gardenNo) {
+                    ref.read(gardenEditSelectIndexProvider.notifier).state =
+                        index;
 
-                      function(garden.gardenNo);
-                    }
-                  },
-                  child: Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(bottom: 10.h),
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
-                        height: 68.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20.r),
-                            border: Border.all(
+                    function(garden.gardenNo);
+                  }
+                },
+                child: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(bottom: 10.h),
+                      padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      height: 68.h,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        border: Border.all(
+                          color: (gardenNo == garden.gardenNo)
+                              ? Colors.transparent
+                              : (index ==
+                                    ref.watch(gardenEditSelectIndexProvider))
+                              ? AppColors.black_59
+                              : AppColors.grey_F2,
+                        ),
+                        color: (gardenNo == garden.gardenNo)
+                            ? AppColors.grey_F2
+                            : Colors.white,
+                      ),
+                      child: SizedBox(
+                        // height: 44.h,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              garden.gardenTitle,
+                              style: TextStyle(
+                                fontSize: 14.sp,
                                 color: (gardenNo == garden.gardenNo)
-                                    ? Colors.transparent
-                                    : (index ==
-                                            ref.watch(
-                                                gardenEditSelectIndexProvider))
-                                        ? AppColors.black_59
-                                        : AppColors.grey_F2),
-                            color: (gardenNo == garden.gardenNo)
-                                ? AppColors.grey_F2
-                                : Colors.white),
-                        child: SizedBox(
-                          // height: 44.h,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                garden.gardenTitle,
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: (gardenNo == garden.gardenNo)
-                                        ? AppColors.grey_8D
-                                        : Colors.black),
+                                    ? AppColors.grey_8D
+                                    : Colors.black,
                               ),
-                              Text(
-                                '심은 꽃 ${garden.bookCount}/30',
-                                style: TextStyle(
-                                    fontSize: 12.sp, color: AppColors.grey_8D),
-                              )
-                            ],
-                          ),
+                            ),
+                            Text(
+                              '심은 꽃 ${garden.bookCount}/30',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: AppColors.grey_8D,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(right: 20.w),
-                        child: AppAssets.iconBookmarkFull.svg(
-                          width: 20.w,
-                          height: 24.h,
-                          colorFilter: ColorFilter.mode(
-                            Functions.gardenColor(garden.gardenColor),
-                            BlendMode.srcIn,
-                          ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 20.w),
+                      child: AppAssets.iconBookmarkFull.svg(
+                        width: 20.w,
+                        height: 24.h,
+                        colorFilter: ColorFilter.mode(
+                          Functions.gardenColor(garden.gardenColor),
+                          BlendMode.srcIn,
                         ),
                       ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    ),
+                  ],
+                ),
+              );
+            }),
           ),
         ],
       ),

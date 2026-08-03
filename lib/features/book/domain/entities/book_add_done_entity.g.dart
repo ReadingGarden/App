@@ -8,6 +8,7 @@ part of 'book_add_done_entity.dart';
 
 _BookAddDoneEntity _$BookAddDoneEntityFromJson(Map<String, dynamic> json) =>
     _BookAddDoneEntity(
+      bookNo: (json['book_no'] as num?)?.toInt() ?? 0,
       bookTitle: json['book_title'] as String? ?? '',
       bookTree: json['book_tree'] as String? ?? '',
       bookStartDate: json['book_start_date'] as String? ?? '',
@@ -16,6 +17,7 @@ _BookAddDoneEntity _$BookAddDoneEntityFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$BookAddDoneEntityToJson(_BookAddDoneEntity instance) =>
     <String, dynamic>{
+      'book_no': instance.bookNo,
       'book_title': instance.bookTitle,
       'book_tree': instance.bookTree,
       'book_start_date': instance.bookStartDate,

@@ -10,9 +10,7 @@ import '../../firebase_options.dart';
 Future<void> bootstrapApplication() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  KakaoSdk.init(
-    nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda',
-  );
+  KakaoSdk.init(nativeAppKey: 'a4fcc9bb270d51847a1ae05d63619bda');
 
   try {
     await Firebase.initializeApp(

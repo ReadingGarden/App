@@ -24,9 +24,6 @@ abstract class MemoWriteInputEntity with _$MemoWriteInputEntity {
   bool get isEdit => id != null;
 
   Map<String, dynamic> toRequestMap(String content) {
-    return {
-      'book_no': bookNo,
-      'memo_content': content,
-    };
+    return {'book_no': bookNo, 'memo_content': content};
   }
 }

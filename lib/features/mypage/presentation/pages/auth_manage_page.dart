@@ -53,10 +53,10 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
             Widgets.titleList(
               '비밀번호 변경',
               () {
-                context.pushNamed('pwd-setting', extra: {
-                  'user_email': user.userEmail,
-                  'isLoginPage': false
-                });
+                context.pushNamed(
+                  'pwd-setting',
+                  extra: {'user_email': user.userEmail, 'isLoginPage': false},
+                );
               },
               widget: AppAssets.iconAngleRight.svg(
                 colorFilter: const ColorFilter.mode(
@@ -69,31 +69,43 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
             ),
             Widgets.titleList(
               '로그아웃',
-              () => Widgets.baseBottomSheet(context, '로그아웃 하시겠어요?',
-                  '이때까지 작성한 책 기록을 보려면 다시 로그인 해주셔야 해요.', '로그아웃', () {
-                postLogout();
-              }),
+              () => Widgets.baseBottomSheet(
+                context,
+                '로그아웃 하시겠어요?',
+                '이때까지 작성한 책 기록을 보려면 다시 로그인 해주셔야 해요.',
+                '로그아웃',
+                () {
+                  postLogout();
+                },
+              ),
             ),
             GestureDetector(
               onTap: () => Widgets.deleteBottomSheet(
-                  context,
-                  '정말 탈퇴하시겠어요?',
-                  Text.rich(TextSpan(
-                      style: TextStyle(fontSize: 14.sp),
-                      children: const [
-                        TextSpan(text: '게정 삭제 시 '),
-                        TextSpan(
-                            text: '모든 가든',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: '과 '),
-                        TextSpan(
-                            text: '책 기록',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(text: '이 삭제되며 다시 복구할 수 없습니다.'),
-                      ])),
-                  '탈퇴하기', () {
-                deleteUser();
-              }),
+                context,
+                '정말 탈퇴하시겠어요?',
+                Text.rich(
+                  TextSpan(
+                    style: TextStyle(fontSize: 14.sp),
+                    children: const [
+                      TextSpan(text: '게정 삭제 시 '),
+                      TextSpan(
+                        text: '모든 가든',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: '과 '),
+                      TextSpan(
+                        text: '책 기록',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      TextSpan(text: '이 삭제되며 다시 복구할 수 없습니다.'),
+                    ],
+                  ),
+                ),
+                '탈퇴하기',
+                () {
+                  deleteUser();
+                },
+              ),
               child: Container(
                 alignment: Alignment.centerLeft,
                 padding: EdgeInsets.only(left: 24.w, right: 24.w),
@@ -103,10 +115,12 @@ class _AuthManagePageState extends ConsumerState<AuthManagePage> {
                 child: Text(
                   '계정 삭제하기',
                   style: TextStyle(
-                      fontSize: 14.sp, color: AppColors.errorRedColor),
+                    fontSize: 14.sp,
+                    color: AppColors.errorRedColor,
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

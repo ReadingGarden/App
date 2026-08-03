@@ -17,6 +17,7 @@ abstract class BookDetailEntity with _$BookDetailEntity {
     @Default('') String gardenTitle,
     @Default('') String gardenColor,
     @Default(0) int bookStatus,
+    @Default(0) int bookRating,
     @Default('') String bookTitle,
     @Default('') String bookAuthor,
     @Default('') String bookPublisher,
@@ -42,6 +43,7 @@ abstract class BookDetailEntity with _$BookDetailEntity {
     gardenTitle: '',
     gardenColor: '',
     bookStatus: 0,
+    bookRating: 0,
     bookTitle: '',
     bookAuthor: '',
     bookPublisher: '',
@@ -64,6 +66,7 @@ abstract class BookDetailEntity with _$BookDetailEntity {
       'garden_title': gardenTitle,
       'garden_color': gardenColor,
       'book_status': bookStatus,
+      'book_rating': bookRating,
       'book_title': bookTitle,
       'book_author': bookAuthor,
       'book_publisher': bookPublisher,
@@ -73,21 +76,25 @@ abstract class BookDetailEntity with _$BookDetailEntity {
       'book_current_page': bookCurrentPage,
       'book_page': bookPage,
       'book_read_list': bookReadList
-          .map((item) => {
-                'book_current_page': item.bookCurrentPage,
-                'book_created_at': item.bookCreatedAt,
-                'book_start_date': item.bookStartDate,
-                'book_end_date': item.bookEndDate,
-              })
+          .map(
+            (item) => {
+              'book_current_page': item.bookCurrentPage,
+              'book_created_at': item.bookCreatedAt,
+              'book_start_date': item.bookStartDate,
+              'book_end_date': item.bookEndDate,
+            },
+          )
           .toList(),
       'memo_list': memoList
-          .map((item) => {
-                'id': item.id,
-                'memo_content': item.memoContent,
-                'memo_created_at': item.memoCreatedAt,
-                'memo_like': item.memoLike,
-                'image_url': item.imageUrl,
-              })
+          .map(
+            (item) => {
+              'id': item.id,
+              'memo_content': item.memoContent,
+              'memo_created_at': item.memoCreatedAt,
+              'memo_like': item.memoLike,
+              'image_url': item.imageUrl,
+            },
+          )
           .toList(),
     };
   }

@@ -67,79 +67,86 @@ class _BookUserWritePageState extends ConsumerState<BookUserWritePage> {
         child: SingleChildScrollView(
           child: Container(
             margin: REdgeInsets.only(top: 20.h, bottom: 20.h),
-            child: Column(children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 8.h),
-                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
-                alignment: Alignment.center,
-                child: Widgets.textfield(
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 8.h),
+                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
+                  alignment: Alignment.center,
+                  child: Widgets.textfield(
                     ref,
                     _titleController,
                     '책 제목',
                     '제목을 입력해주세요',
                     ref.watch(bookTitleErrorProvider),
                     bookTitleErrorProvider,
-                    validateFunction: _titleErrorValid),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 8.h),
-                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
-                alignment: Alignment.center,
-                child: Widgets.textfield(
+                    validateFunction: _titleErrorValid,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 8.h),
+                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
+                  alignment: Alignment.center,
+                  child: Widgets.textfield(
                     ref,
                     _authorController,
                     '작가',
                     '작가명을 입력해주세요',
                     null,
-                    StateProvider(
-                      (ref) => null,
-                    )),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 8.h),
-                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
-                alignment: Alignment.center,
-                child: Widgets.textfield(
+                    StateProvider((ref) => null),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 8.h),
+                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
+                  alignment: Alignment.center,
+                  child: Widgets.textfield(
                     ref,
                     _publisherController,
                     '출판사',
                     '출판사명을 입력해주세요',
                     null,
-                    StateProvider(
-                      (ref) => null,
-                    )),
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
-                alignment: Alignment.center,
-                child: Widgets.textfield(
+                    StateProvider((ref) => null),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 4.h),
+                  alignment: Alignment.center,
+                  child: Widgets.textfield(
                     ref,
                     _pageController,
                     '총 페이지',
                     '총 페이지 수를 입력해주세요',
                     ref.watch(bookPageErrorProvider),
                     bookPageErrorProvider,
-                    validateFunction: _pageErrorValid),
-              )
-            ]),
+                    validateFunction: _pageErrorValid,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('내 가든에 심기', true, () {
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button('내 가든에 심기', true, () {
           _titleErrorValid();
           _pageErrorValid();
           if (ref.read(bookTitleErrorProvider) == null &&
               ref.read(bookPageErrorProvider) == null) {
-            context.pushNamed('book-register', extra: {
-              'title': _titleController.text,
-              'author': _authorController.text,
-              'publisher': _publisherController.text,
-              'description': '',
-              'isbn13': '',
-              'cover': null,
-              'itemPage': int.tryParse(_pageController.text) ?? 0,
-              'book_no': null,
-            });
+            context.pushNamed(
+              'book-register',
+              extra: {
+                'title': _titleController.text,
+                'author': _authorController.text,
+                'publisher': _publisherController.text,
+                'description': '',
+                'isbn13': '',
+                'cover': null,
+                'itemPage': int.tryParse(_pageController.text) ?? 0,
+                'book_no': null,
+              },
+            );
           }
         }),
       ),

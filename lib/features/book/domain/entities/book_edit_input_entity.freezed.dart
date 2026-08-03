@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BookEditInputEntity {
 
- int get bookNo; String get bookTitle; String get bookAuthor; String? get bookImageUrl;
+ int get bookNo; String get bookTitle; String get bookAuthor; String? get bookImageUrl; int get bookRating;
 /// Create a copy of BookEditInputEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BookEditInputEntityCopyWith<BookEditInputEntity> get copyWith => _$BookEditInpu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookEditInputEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookEditInputEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl)&&(identical(other.bookRating, bookRating) || other.bookRating == bookRating));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,bookNo,bookTitle,bookAuthor,bookImageUrl);
+int get hashCode => Object.hash(runtimeType,bookNo,bookTitle,bookAuthor,bookImageUrl,bookRating);
 
 @override
 String toString() {
-  return 'BookEditInputEntity(bookNo: $bookNo, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookImageUrl: $bookImageUrl)';
+  return 'BookEditInputEntity(bookNo: $bookNo, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookImageUrl: $bookImageUrl, bookRating: $bookRating)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BookEditInputEntityCopyWith<$Res>  {
   factory $BookEditInputEntityCopyWith(BookEditInputEntity value, $Res Function(BookEditInputEntity) _then) = _$BookEditInputEntityCopyWithImpl;
 @useResult
 $Res call({
- int bookNo, String bookTitle, String bookAuthor, String? bookImageUrl
+ int bookNo, String bookTitle, String bookAuthor, String? bookImageUrl, int bookRating
 });
 
 
@@ -65,13 +65,14 @@ class _$BookEditInputEntityCopyWithImpl<$Res>
 
 /// Create a copy of BookEditInputEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? bookNo = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookImageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? bookNo = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookImageUrl = freezed,Object? bookRating = null,}) {
   return _then(_self.copyWith(
 bookNo: null == bookNo ? _self.bookNo : bookNo // ignore: cast_nullable_to_non_nullable
 as int,bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
 as String,bookAuthor: null == bookAuthor ? _self.bookAuthor : bookAuthor // ignore: cast_nullable_to_non_nullable
 as String,bookImageUrl: freezed == bookImageUrl ? _self.bookImageUrl : bookImageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,bookRating: null == bookRating ? _self.bookRating : bookRating // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int bookNo,  String bookTitle,  String bookAuthor,  String? bookImageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int bookNo,  String bookTitle,  String bookAuthor,  String? bookImageUrl,  int bookRating)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BookEditInputEntity() when $default != null:
-return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl);case _:
+return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl,_that.bookRating);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int bookNo,  String bookTitle,  String bookAuthor,  String? bookImageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int bookNo,  String bookTitle,  String bookAuthor,  String? bookImageUrl,  int bookRating)  $default,) {final _that = this;
 switch (_that) {
 case _BookEditInputEntity():
-return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl);case _:
+return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl,_that.bookRating);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int bookNo,  String bookTitle,  String bookAuthor,  String? bookImageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int bookNo,  String bookTitle,  String bookAuthor,  String? bookImageUrl,  int bookRating)?  $default,) {final _that = this;
 switch (_that) {
 case _BookEditInputEntity() when $default != null:
-return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl);case _:
+return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl,_that.bookRating);case _:
   return null;
 
 }
@@ -212,13 +213,14 @@ return $default(_that.bookNo,_that.bookTitle,_that.bookAuthor,_that.bookImageUrl
 @JsonSerializable()
 
 class _BookEditInputEntity implements BookEditInputEntity {
-  const _BookEditInputEntity({required this.bookNo, required this.bookTitle, required this.bookAuthor, required this.bookImageUrl});
+  const _BookEditInputEntity({required this.bookNo, required this.bookTitle, required this.bookAuthor, required this.bookImageUrl, this.bookRating = 0});
   factory _BookEditInputEntity.fromJson(Map<String, dynamic> json) => _$BookEditInputEntityFromJson(json);
 
 @override final  int bookNo;
 @override final  String bookTitle;
 @override final  String bookAuthor;
 @override final  String? bookImageUrl;
+@override@JsonKey() final  int bookRating;
 
 /// Create a copy of BookEditInputEntity
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +235,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookEditInputEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookEditInputEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl)&&(identical(other.bookRating, bookRating) || other.bookRating == bookRating));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,bookNo,bookTitle,bookAuthor,bookImageUrl);
+int get hashCode => Object.hash(runtimeType,bookNo,bookTitle,bookAuthor,bookImageUrl,bookRating);
 
 @override
 String toString() {
-  return 'BookEditInputEntity(bookNo: $bookNo, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookImageUrl: $bookImageUrl)';
+  return 'BookEditInputEntity(bookNo: $bookNo, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookImageUrl: $bookImageUrl, bookRating: $bookRating)';
 }
 
 
@@ -253,7 +255,7 @@ abstract mixin class _$BookEditInputEntityCopyWith<$Res> implements $BookEditInp
   factory _$BookEditInputEntityCopyWith(_BookEditInputEntity value, $Res Function(_BookEditInputEntity) _then) = __$BookEditInputEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int bookNo, String bookTitle, String bookAuthor, String? bookImageUrl
+ int bookNo, String bookTitle, String bookAuthor, String? bookImageUrl, int bookRating
 });
 
 
@@ -270,13 +272,14 @@ class __$BookEditInputEntityCopyWithImpl<$Res>
 
 /// Create a copy of BookEditInputEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? bookNo = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookImageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? bookNo = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookImageUrl = freezed,Object? bookRating = null,}) {
   return _then(_BookEditInputEntity(
 bookNo: null == bookNo ? _self.bookNo : bookNo // ignore: cast_nullable_to_non_nullable
 as int,bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
 as String,bookAuthor: null == bookAuthor ? _self.bookAuthor : bookAuthor // ignore: cast_nullable_to_non_nullable
 as String,bookImageUrl: freezed == bookImageUrl ? _self.bookImageUrl : bookImageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,bookRating: null == bookRating ? _self.bookRating : bookRating // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

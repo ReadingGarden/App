@@ -110,10 +110,7 @@ class Functions {
         statuses[Permission.storage]!.isGranted) {
       function();
     } else {
-      statuses = await [
-        Permission.camera,
-        Permission.storage,
-      ].request();
+      statuses = await [Permission.camera, Permission.storage].request();
 
       if (statuses[Permission.camera]!.isGranted &&
           statuses[Permission.storage]!.isGranted) {
@@ -136,7 +133,7 @@ class Functions {
         statuses = await [
           Permission.camera,
           Permission.storage,
-          Permission.microphone
+          Permission.microphone,
         ].request();
 
         if (statuses[Permission.camera]!.isGranted &&
@@ -177,12 +174,16 @@ class Functions {
       );
 
       BranchResponse response = await FlutterBranchSdk.getShortUrl(
-          buo: buo, linkProperties: linkProperties);
+        buo: buo,
+        linkProperties: linkProperties,
+      );
 
       if (response.success) {
         _trackInviteEvent(buo, gardenNo);
-        await Share.share(response.result.toString(),
-            sharePositionOrigin: const Rect.fromLTWH(0, 0, 1, 1));
+        await Share.share(
+          response.result.toString(),
+          sharePositionOrigin: const Rect.fromLTWH(0, 0, 1, 1),
+        );
         return;
       }
     } catch (e) {
@@ -191,8 +192,9 @@ class Functions {
 
     // Branch 실패 시 폴백 URL
     await Share.share(
-        '$garden에 초대합니다🪴\n독서가든에서 함께 책을 읽고 기록해봐요!\nhttps://dokseogarden.app.link?garden_no=$gardenNo',
-        sharePositionOrigin: const Rect.fromLTWH(0, 0, 1, 1));
+      '$garden에 초대합니다🪴\n독서가든에서 함께 책을 읽고 기록해봐요!\nhttps://dokseogarden.app.link?garden_no=$gardenNo',
+      sharePositionOrigin: const Rect.fromLTWH(0, 0, 1, 1),
+    );
   }
 
   static Future<String?> createInviteLink(int gardenNo) async {
@@ -209,7 +211,9 @@ class Functions {
     );
 
     BranchResponse response = await FlutterBranchSdk.getShortUrl(
-        buo: buo, linkProperties: linkProperties);
+      buo: buo,
+      linkProperties: linkProperties,
+    );
 
     if (response.success) {
       _trackInviteEvent(buo, gardenNo);
@@ -241,7 +245,9 @@ class Functions {
     );
 
     BranchResponse response = await FlutterBranchSdk.getShortUrl(
-        buo: buo, linkProperties: linkProperties);
+      buo: buo,
+      linkProperties: linkProperties,
+    );
 
     if (response.success) {
       logger.d('초대 링크 생성 성공: ${response.result}');
@@ -257,10 +263,12 @@ class Functions {
         title: '딸기 치즈 케익',
         description: '#케익 #딸기 #삼평동 #카페 #분위기 #소개팅',
         imageUrl: Uri.parse(
-            'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png'),
+          'https://mud-kage.kakao.com/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png',
+        ),
         link: Link(
-            webUrl: Uri.parse(deepLinkUrl),
-            mobileWebUrl: Uri.parse(deepLinkUrl)),
+          webUrl: Uri.parse(deepLinkUrl),
+          mobileWebUrl: Uri.parse(deepLinkUrl),
+        ),
       ),
       social: Social(likeCount: 286, commentCount: 45, sharedCount: 845),
       buttons: [
@@ -274,21 +282,23 @@ class Functions {
       ],
     );
 
-    bool isKakaoTalkSharingAvailable =
-        await ShareClient.instance.isKakaoTalkSharingAvailable();
+    bool isKakaoTalkSharingAvailable = await ShareClient.instance
+        .isKakaoTalkSharingAvailable();
 
     if (isKakaoTalkSharingAvailable) {
       try {
-        Uri uri =
-            await ShareClient.instance.shareDefault(template: defaultFeed);
+        Uri uri = await ShareClient.instance.shareDefault(
+          template: defaultFeed,
+        );
         await launchBrowserTab(uri, popupOpen: true);
       } catch (error) {
         logger.e('카카오톡 공유 실행 실패: $error');
       }
     } else {
       try {
-        Uri shareUrl = await WebSharerClient.instance
-            .makeDefaultUrl(template: defaultFeed);
+        Uri shareUrl = await WebSharerClient.instance.makeDefaultUrl(
+          template: defaultFeed,
+        );
         await launchBrowserTab(shareUrl, popupOpen: true);
       } catch (error) {
         logger.e('웹 공유 링크 실행 실패: $error');
@@ -324,7 +334,9 @@ class Functions {
   }
 
   static Future<void> captureWidget(
-      GlobalKey widgetKey, Function(Uint8List?) onCaptured) async {
+    GlobalKey widgetKey,
+    Function(Uint8List?) onCaptured,
+  ) async {
     RenderRepaintBoundary boundary =
         widgetKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
     var image = await boundary.toImage(pixelRatio: 3.0);

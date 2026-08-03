@@ -58,8 +58,9 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       }
     });
 
-    _dateController.text =
-        Functions.formatBookReadDate(DateTime.now().toString());
+    _dateController.text = Functions.formatBookReadDate(
+      DateTime.now().toString(),
+    );
   }
 
   @override
@@ -74,12 +75,14 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       ref,
       book: widget.book,
       gardens: gardens
-          .map((garden) => {
-                'garden_no': garden.gardenNo,
-                'garden_title': garden.gardenTitle,
-                'garden_color': garden.gardenColor,
-                'book_count': garden.bookCount,
-              })
+          .map(
+            (garden) => {
+              'garden_no': garden.gardenNo,
+              'garden_title': garden.gardenTitle,
+              'garden_color': garden.gardenColor,
+              'book_count': garden.bookCount,
+            },
+          )
           .toList(),
       selectedGardenIndex: ref.read(gardenSelectIndexProvider),
       selectedFlowerIndex: ref.read(flowerSelectIndexProvider),
@@ -90,9 +93,12 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       if (!mounted) {
         return;
       }
-      ref.read(garden_feature.gardenNavigateToProvider.notifier).state = result.gardenNo;
-      context.pushReplacementNamed('book-register-done',
-          extra: result.gardenTitle);
+      ref.read(garden_feature.gardenNavigateToProvider.notifier).state =
+          result.gardenNo;
+      context.pushReplacementNamed(
+        'book-register-done',
+        extra: result.gardenTitle,
+      );
     } else if (result.statusCode == 403) {
       Widgets.showWarningToast(context, '꽉 찼어요! 다른 가든을 선택해주세요');
     } else {
@@ -112,168 +118,186 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Widgets.appBar(context, title: '책 등록하기'),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Container(
-                margin: EdgeInsets.only(bottom: 60.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        padding: EdgeInsets.only(bottom: 12.h),
-                        margin: EdgeInsets.only(left: 24.w, right: 24.w),
-                        child: Row(children: [
-                          (widget.book.cover != null && widget.book.cover != '')
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  child: CachedNetworkImage(
-                                    imageUrl: widget.book.cover!,
-                                    width: 48.w,
-                                    height: 64.h,
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : Container(
-                                  width: 48.w,
-                                  height: 64.h,
-                                  decoration: BoxDecoration(
-                                      color: AppColors.grey_F2,
-                                      borderRadius: BorderRadius.circular(8.r)),
-                                ),
-                          Container(
-                            margin: EdgeInsets.only(left: 12.w),
-                            width: 252.w,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  widget.book.title,
-                                  maxLines: 3,
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                  ),
-                                ),
-                                Text(
-                                  widget.book.author,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: AppColors.grey_8D),
-                                ),
-                              ],
+      appBar: Widgets.appBar(context, title: '책 등록하기'),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Container(
+            margin: EdgeInsets.only(bottom: 60.h),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  margin: EdgeInsets.only(left: 24.w, right: 24.w),
+                  child: Row(
+                    children: [
+                      (widget.book.cover != null && widget.book.cover != '')
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: CachedNetworkImage(
+                                imageUrl: widget.book.cover!,
+                                width: 48.w,
+                                height: 64.h,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Container(
+                              width: 48.w,
+                              height: 64.h,
+                              decoration: BoxDecoration(
+                                color: AppColors.grey_F2,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
                             ),
-                          ),
-                        ])),
-                    Container(
-                      height: 1.h,
-                      color: AppColors.grey_F2,
-                    ),
-                    Container(
-                        margin:
-                            EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
+                      Container(
+                        margin: EdgeInsets.only(left: 12.w),
+                        width: 252.w,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '어느 가든에 심을까요?',
-                              style: TextStyle(
-                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                              widget.book.title,
+                              maxLines: 3,
+                              style: TextStyle(fontSize: 16.sp),
                             ),
-                            _gardenList()
-                          ],
-                        )),
-                    Container(
-                        margin: EdgeInsets.only(top: 43.h, left: 24.w),
-                        child: Text(
-                          '어떤 꽃으로 자랄까요?',
-                          style: TextStyle(
-                              fontSize: 18.sp, fontWeight: FontWeight.bold),
-                        )),
-                    _flowerList(),
-                    Container(
-                        margin:
-                            EdgeInsets.only(top: 40.h, left: 24.w, right: 24.w),
-                        child: SizedBox(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(bottom: 16.h),
-                                child: Text(
-                                  '언제 읽기 시작했나요?',
-                                  style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                            Text(
+                              widget.book.author,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: AppColors.grey_8D,
                               ),
-                              TextField(
-                                controller: _dateController,
-                                keyboardType: TextInputType.number,
-                                maxLength: 10,
-                                inputFormatters: [AutoInputFormatter()],
-                                onChanged: (value) {
-                                  // errorText 초기화
-                                  ref.read(dateErrorProvider.notifier).state =
-                                      null;
-                                },
-                                onTapOutside: (event) {
-                                  _validate();
-                                },
-                                onSubmitted: (value) {
-                                  _validate();
-                                },
-                                decoration: InputDecoration(
-                                  counter: const Text(''),
-                                  hintStyle: TextStyle(
-                                      fontSize: 16.sp,
-                                      color: AppColors.grey_8D),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: const BorderSide(
-                                        color: AppColors.grey_F2),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: const BorderSide(
-                                        color: AppColors.grey_F2),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
-                                    borderSide: const BorderSide(
-                                        color: AppColors.grey_F2),
-                                  ),
-                                  errorText: ref.watch(dateErrorProvider),
-                                  errorStyle: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: AppColors.errorRedColor,
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: BorderSide(
-                                          color: AppColors.errorRedColor,
-                                          width: 1.w)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10.r),
-                                      borderSide: BorderSide(
-                                          color: AppColors.errorRedColor,
-                                          width: 1.w)),
-                                ),
-                              )
-                            ],
-                          ),
-                        ))
-                  ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              )),
+                Container(height: 1.h, color: AppColors.grey_F2),
+                Container(
+                  margin: EdgeInsets.only(top: 30.h, left: 24.w, right: 24.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '어느 가든에 심을까요?',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      _gardenList(),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 43.h, left: 24.w),
+                  child: Text(
+                    '어떤 꽃으로 자랄까요?',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                _flowerList(),
+                Container(
+                  margin: EdgeInsets.only(top: 40.h, left: 24.w, right: 24.w),
+                  child: SizedBox(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(bottom: 16.h),
+                          child: Text(
+                            '언제 읽기 시작했나요?',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        TextField(
+                          controller: _dateController,
+                          keyboardType: TextInputType.number,
+                          maxLength: 10,
+                          inputFormatters: [AutoInputFormatter()],
+                          onChanged: (value) {
+                            // errorText 초기화
+                            ref.read(dateErrorProvider.notifier).state = null;
+                          },
+                          onTapOutside: (event) {
+                            _validate();
+                          },
+                          onSubmitted: (value) {
+                            _validate();
+                          },
+                          decoration: InputDecoration(
+                            counter: const Text(''),
+                            hintStyle: TextStyle(
+                              fontSize: 16.sp,
+                              color: AppColors.grey_8D,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey_F2,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey_F2,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: const BorderSide(
+                                color: AppColors.grey_F2,
+                              ),
+                            ),
+                            errorText: ref.watch(dateErrorProvider),
+                            errorStyle: TextStyle(
+                              fontSize: 14.sp,
+                              color: AppColors.errorRedColor,
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: BorderSide(
+                                color: AppColors.errorRedColor,
+                                width: 1.w,
+                              ),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: BorderSide(
+                                color: AppColors.errorRedColor,
+                                width: 1.w,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('등록하기', true, () {
-              submitBookRegistration();
-            })));
+      ),
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button('등록하기', true, () {
+          submitBookRegistration();
+        }),
+      ),
+    );
   }
 
   Widget _gardenList() {
@@ -284,71 +308,72 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       height: (68.h + 10.h) * gardens.length,
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
-        children: List.generate(
-          gardens.length,
-          (index) {
-            final garden = gardens[index];
-            return GestureDetector(
-              onTap: () {
-                // 북 카운트가 30이 아닌 경우에만 선택 가능
-                if (garden.bookCount < 30) {
-                  ref.read(gardenSelectIndexProvider.notifier).state = index;
-                }
-              },
-              child: Stack(
-                alignment: Alignment.topRight,
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(bottom: 10.h),
-                    padding: EdgeInsets.symmetric(horizontal: 24.w),
-                    height: 68.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.r),
-                        border: Border.all(
-                            color:
-                                (index == ref.watch(gardenSelectIndexProvider))
-                                    ? AppColors.black_59
-                                    : AppColors.grey_F2),
-                        color: (garden.bookCount < 30)
-                            ? Colors.white
-                            : AppColors.grey_F2),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          garden.gardenTitle,
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: (garden.bookCount < 30)
-                                  ? Colors.black
-                                  : AppColors.grey_8D),
+        children: List.generate(gardens.length, (index) {
+          final garden = gardens[index];
+          return GestureDetector(
+            onTap: () {
+              // 북 카운트가 30이 아닌 경우에만 선택 가능
+              if (garden.bookCount < 30) {
+                ref.read(gardenSelectIndexProvider.notifier).state = index;
+              }
+            },
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(bottom: 10.h),
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  height: 68.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.r),
+                    border: Border.all(
+                      color: (index == ref.watch(gardenSelectIndexProvider))
+                          ? AppColors.black_59
+                          : AppColors.grey_F2,
+                    ),
+                    color: (garden.bookCount < 30)
+                        ? Colors.white
+                        : AppColors.grey_F2,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        garden.gardenTitle,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: (garden.bookCount < 30)
+                              ? Colors.black
+                              : AppColors.grey_8D,
                         ),
-                        Text(
-                          '심은 꽃 ${garden.bookCount}/30',
-                          style: TextStyle(
-                              fontSize: 12.sp, color: AppColors.grey_8D),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 20.w),
-                    child: AppAssets.iconBookmarkFull.svg(
-                      width: 20.h,
-                      height: 24.h,
-                      colorFilter: ColorFilter.mode(
-                        Functions.gardenColor(garden.gardenColor),
-                        BlendMode.srcIn,
                       ),
+                      Text(
+                        '심은 꽃 ${garden.bookCount}/30',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: AppColors.grey_8D,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(right: 20.w),
+                  child: AppAssets.iconBookmarkFull.svg(
+                    width: 20.h,
+                    height: 24.h,
+                    colorFilter: ColorFilter.mode(
+                      Functions.gardenColor(garden.gardenColor),
+                      BlendMode.srcIn,
                     ),
                   ),
-                ],
-              ),
-            );
-          },
-        ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
@@ -360,52 +385,52 @@ class _BookRegisterPageState extends ConsumerState<BookRegisterPage> {
       child: ListView(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        children: List.generate(
-          Constant.FLOWER_LIST.length,
-          (index) {
-            return GestureDetector(
-              onTap: () {
-                ref.read(flowerSelectIndexProvider.notifier).state = index;
-              },
-              child: Padding(
-                padding:
-                    EdgeInsets.only(right: 8.w, left: (index == 0) ? 24.w : 0),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(bottom: 8.h),
-                      width: 120.r,
-                      height: 120.r,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20.r),
-                          border: Border.all(
-                              color: (index ==
-                                      ref.watch(flowerSelectIndexProvider))
-                                  ? Colors.black
-                                  : AppColors.grey_F2),
-                          color: Colors.transparent),
-                      child: AppAssets.selectFlower(
-                        Constant.FLOWER_LIST[index],
-                      ).image(),
-                    ),
-                    SizedBox(
-                      height: 24.h,
-                      child: Text(
-                        Constant.FLOWER_LIST[index],
-                        style: TextStyle(
-                            fontSize: 14.sp,
-                            color:
-                                (index == ref.watch(flowerSelectIndexProvider))
-                                    ? Colors.black
-                                    : AppColors.grey_8D),
-                      ),
-                    )
-                  ],
-                ),
+        children: List.generate(Constant.FLOWER_LIST.length, (index) {
+          return GestureDetector(
+            onTap: () {
+              ref.read(flowerSelectIndexProvider.notifier).state = index;
+            },
+            child: Padding(
+              padding: EdgeInsets.only(
+                right: 8.w,
+                left: (index == 0) ? 24.w : 0,
               ),
-            );
-          },
-        ),
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    width: 120.r,
+                    height: 120.r,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.r),
+                      border: Border.all(
+                        color: (index == ref.watch(flowerSelectIndexProvider))
+                            ? Colors.black
+                            : AppColors.grey_F2,
+                      ),
+                      color: Colors.transparent,
+                    ),
+                    child: AppAssets.selectFlower(
+                      Constant.FLOWER_LIST[index],
+                    ).image(),
+                  ),
+                  SizedBox(
+                    height: 24.h,
+                    child: Text(
+                      Constant.FLOWER_LIST[index],
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: (index == ref.watch(flowerSelectIndexProvider))
+                            ? Colors.black
+                            : AppColors.grey_8D,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }),
       ),
     );
   }
@@ -430,43 +455,51 @@ class BookRegisterDonePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        body: Container(
-          margin: EdgeInsets.only(top: 142.h),
-          child: Center(
-            child: Column(
-              children: [
-                Text.rich(
-                    style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w600,
-                        height: 1.33.h),
-                    TextSpan(children: [
-                      TextSpan(
-                          text: gardenName,
-                          style:
-                              const TextStyle(color: AppColors.primaryColor)),
-                      const TextSpan(text: '에')
-                    ])),
-                Text(
-                  '새로운 책을 심었어요',
-                  style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.w600,
-                      height: 1.33.h),
+      body: Container(
+        margin: EdgeInsets.only(top: 142.h),
+        child: Center(
+          child: Column(
+            children: [
+              Text.rich(
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w600,
+                  height: 1.33.h,
                 ),
-                Container(
-                  margin: EdgeInsets.only(top: 62.h),
-                  width: 260.r,
-                  height: 260.r,
-                  child: Assets.images.bookRegister.image(),
-                )
-              ],
-            ),
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: gardenName,
+                      style: const TextStyle(color: AppColors.primaryColor),
+                    ),
+                    const TextSpan(text: '에'),
+                  ],
+                ),
+              ),
+              Text(
+                '새로운 책을 심었어요',
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w600,
+                  height: 1.33.h,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 62.h),
+                width: 260.r,
+                height: 260.r,
+                child: Assets.images.bookRegister.image(),
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: Widgets.bottomBar(context, child: Widgets.button('가든으로 가기', true, () {
-            _goToGarden(context, ref);
-          }),
-        ));
+      ),
+      bottomNavigationBar: Widgets.bottomBar(
+        context,
+        child: Widgets.button('가든으로 가기', true, () {
+          _goToGarden(context, ref);
+        }),
+      ),
+    );
   }
 }

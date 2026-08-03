@@ -14,10 +14,15 @@ class Messaging {
     try {
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>()
-          ?.createNotificationChannel(const AndroidNotificationChannel(
-              'high_importance_channel', 'high_importance_notification',
-              importance: Importance.max));
+            AndroidFlutterLocalNotificationsPlugin
+          >()
+          ?.createNotificationChannel(
+            const AndroidNotificationChannel(
+              'high_importance_channel',
+              'high_importance_notification',
+              importance: Importance.max,
+            ),
+          );
 
       await flutterLocalNotificationsPlugin.initialize(
         const InitializationSettings(
@@ -38,10 +43,10 @@ class Messaging {
 
       await FirebaseMessaging.instance
           .setForegroundNotificationPresentationOptions(
-        alert: true,
-        badge: true,
-        sound: true,
-      );
+            alert: true,
+            badge: true,
+            sound: true,
+          );
     } catch (e) {
       logger.e('알림 초기화 실패: $e');
     }
@@ -58,10 +63,12 @@ class Messaging {
           notification.body,
           const NotificationDetails(
             android: AndroidNotificationDetails(
-                'high_importance_channel', 'high_importance_notification',
-                importance: Importance.max,
-                priority: Priority.high,
-                icon: '@drawable/ic_notification'),
+              'high_importance_channel',
+              'high_importance_notification',
+              importance: Importance.max,
+              priority: Priority.high,
+              icon: '@drawable/ic_notification',
+            ),
             iOS: DarwinNotificationDetails(
               presentAlert: true,
               presentBadge: true,

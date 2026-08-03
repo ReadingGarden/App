@@ -25,7 +25,9 @@ class DioClient {
 
     // 네트워크 에러 처리 추가
     void handleNetworkError(
-        DioException error, ErrorInterceptorHandler handler) {
+      DioException error,
+      ErrorInterceptorHandler handler,
+    ) {
       if (error.type == DioExceptionType.connectionTimeout ||
           error.type == DioExceptionType.receiveTimeout) {
         logger.e('네트워크 연결 시간 초과: ${error.message}');
@@ -50,8 +52,9 @@ class DioClient {
 
     // 네트워크 에러 인터셉터 추가
     dio.interceptors.add(InterceptorsWrapper(onError: handleNetworkError));
-    authenticatedDio.interceptors
-        .add(InterceptorsWrapper(onError: handleNetworkError));
+    authenticatedDio.interceptors.add(
+      InterceptorsWrapper(onError: handleNetworkError),
+    );
   }
 
   void _goToErrorPage(ErrorType errorType) {

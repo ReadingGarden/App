@@ -79,10 +79,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           physics: const BouncingScrollPhysics(),
           child: Container(
             margin: EdgeInsets.only(
-                top: 20.h,
-                bottom: (errorText == null) ? 80.h : 40.h,
-                left: 24.w,
-                right: 24.w),
+              top: 20.h,
+              bottom: (errorText == null) ? 80.h : 40.h,
+              left: 24.w,
+              right: 24.w,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -92,19 +93,34 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Text(
                     '책을 읽어서\n나만의 가든을 꾸며봐요',
                     style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24.sp,
-                        height: 1.33.h),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 24.sp,
+                      height: 1.33.h,
+                    ),
                   ),
                 ),
                 SizedBox(
-                    child: Widgets.textfield(ref, _emailController, '이메일',
-                        '이메일을 입력해주세요', errorText, loginErrorProvider)),
+                  child: Widgets.textfield(
+                    ref,
+                    _emailController,
+                    '이메일',
+                    '이메일을 입력해주세요',
+                    errorText,
+                    loginErrorProvider,
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(bottom: 24.h),
-                    child: Widgets.textfield(ref, _pwdController, '비밀번호',
-                        '비밀번호를 입력해주세요', errorText, loginErrorProvider,
-                        isPwd: true)),
+                  margin: EdgeInsets.only(bottom: 24.h),
+                  child: Widgets.textfield(
+                    ref,
+                    _pwdController,
+                    '비밀번호',
+                    '비밀번호를 입력해주세요',
+                    errorText,
+                    loginErrorProvider,
+                    isPwd: true,
+                  ),
+                ),
                 Widgets.button('이메일로 로그인', true, () async {
                   // FCM 토큰을 비동기적으로 가져오기
                   final fcmToken = await ref.read(fcmTokenProvider.future);
@@ -114,7 +130,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     "user_password": _pwdController.text,
                     "user_fcm": fcmToken ?? '',
                     "user_social_id": "",
-                    "user_social_type": ""
+                    "user_social_type": "",
                   };
                   postEmailLogin(data);
                 }),
@@ -138,18 +154,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                       ),
                       GestureDetector(
-                          onTap: () => context.goNamed('signup'),
-                          child: const Text(
-                            '회원가입',
-                            style: TextStyle(color: AppColors.primaryColor),
-                          ))
+                        onTap: () => context.goNamed('signup'),
+                        child: const Text(
+                          '회원가입',
+                          style: TextStyle(color: AppColors.primaryColor),
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                const Divider(
-                  thickness: 1,
-                  color: AppColors.grey_F2,
-                ),
+                const Divider(thickness: 1, color: AppColors.grey_F2),
                 Container(
                   margin: EdgeInsets.only(top: 40.h, left: 58.w, right: 58.w),
                   child: Row(

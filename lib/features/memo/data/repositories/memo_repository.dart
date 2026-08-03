@@ -19,8 +19,11 @@ class MemoRepository {
       final List<dynamic> memoList = data['list'] ?? [];
       return MemoPageResult(
         memos: memoList
-            .map((item) => MemoListItemEntity.fromJson(
-                Map<String, dynamic>.from(item as Map)))
+            .map(
+              (item) => MemoListItemEntity.fromJson(
+                Map<String, dynamic>.from(item as Map),
+              ),
+            )
             .toList(),
         currentPage: data['current_page'] as int? ?? 1,
         maxPage: data['max_page'] as int? ?? 1,

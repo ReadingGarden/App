@@ -15,47 +15,46 @@ import 'package:book_flutter/features/book/presentation/pages/bookshelf_page.dar
 import 'package:go_router/go_router.dart';
 
 List<RouteBase> get bookRoutes => [
+  GoRoute(
+    path: '/bottom-navi/book-serach',
+    name: 'book-serach',
+    builder: (context, state) => const BookSearchPage(),
+    routes: [
       GoRoute(
-        path: '/bottom-navi/book-serach',
-        name: 'book-serach',
-        builder: (context, state) => const BookSearchPage(),
+        path: 'barcode-scan',
+        name: 'barcode-scan',
+        builder: (context, state) => const BarcodeScanPage(),
+      ),
+      GoRoute(
+        path: 'book-add-garden',
+        name: 'book-add-garden',
+        builder: (context, state) {
+          final extra = state.extra as Map;
+          final isbn13 = extra['isbn13'] as String;
+          final Map? book = extra['book'] as Map?;
+          return BookAddGardenPage(book, isbn13: isbn13);
+        },
         routes: [
           GoRoute(
-            path: 'barcode-scan',
-            name: 'barcode-scan',
-            builder: (context, state) => const BarcodeScanPage(),
-          ),
-          GoRoute(
-            path: 'book-add-garden',
-            name: 'book-add-garden',
+            path: 'book-register',
+            name: 'book-register',
             builder: (context, state) {
-              final extra = state.extra as Map;
-              final isbn13 = extra['isbn13'] as String;
-              final Map? book = extra['book'] as Map?;
-              return BookAddGardenPage(book, isbn13: isbn13);
+              final book = Map<String, dynamic>.from(state.extra as Map);
+              return BookRegisterPage(
+                book: BookRegisterInputEntity.fromJson(book),
+              );
             },
             routes: [
               GoRoute(
-                path: 'book-register',
-                name: 'book-register',
-                builder: (context, state) {
-                  final book =
-                      Map<String, dynamic>.from(state.extra as Map);
-                  return BookRegisterPage(
-                    book: BookRegisterInputEntity.fromJson(book),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: 'book-register-done',
-                    name: 'book-register-done',
-                    pageBuilder: (context, state) {
-                      final gardenName = state.extra as String;
-                      return CustomTransitionPage(
-                        child: BookRegisterDonePage(gardenName: gardenName),
-                        transitionDuration: const Duration(milliseconds: 300),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
+                path: 'book-register-done',
+                name: 'book-register-done',
+                pageBuilder: (context, state) {
+                  final gardenName = state.extra as String;
+                  return CustomTransitionPage(
+                    child: BookRegisterDonePage(gardenName: gardenName),
+                    transitionDuration: const Duration(milliseconds: 300),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
                             opacity: CurvedAnimation(
                               parent: animation,
@@ -64,66 +63,63 @@ List<RouteBase> get bookRoutes => [
                             child: child,
                           );
                         },
-                      );
-                    },
-                  ),
-                ],
+                  );
+                },
               ),
             ],
-          ),
-          GoRoute(
-            path: 'book-user-write',
-            name: 'book-user-write',
-            builder: (context, state) => const BookUserWritePage(),
           ),
         ],
       ),
       GoRoute(
-        path: '/bottom-navi/bookshelf',
-        name: 'bookshelf',
-        builder: (context, state) => const BookShelfPage(),
+        path: 'book-user-write',
+        name: 'book-user-write',
+        builder: (context, state) => const BookUserWritePage(),
+      ),
+    ],
+  ),
+  GoRoute(
+    path: '/bottom-navi/bookshelf',
+    name: 'bookshelf',
+    builder: (context, state) => const BookShelfPage(),
+    routes: [
+      GoRoute(
+        path: 'book-detail',
+        name: 'book-detail',
+        builder: (context, state) {
+          final bookNo = state.extra as int;
+          return BookDetailPage(bookNo: bookNo);
+        },
         routes: [
           GoRoute(
-            path: 'book-detail',
-            name: 'book-detail',
+            path: 'book-edit',
+            name: 'book-edit',
             builder: (context, state) {
-              final bookNo = state.extra as int;
-              return BookDetailPage(bookNo: bookNo);
+              final book = Map<String, dynamic>.from(state.extra as Map);
+              return BookEditPage(book: BookEditInputEntity.fromJson(book));
+            },
+          ),
+          GoRoute(
+            path: 'book-add',
+            name: 'book-add',
+            builder: (context, state) {
+              final bookRead = state.extra as Map<String, dynamic>;
+              return BookAddPage(
+                bookRead: BookReadInputEntity.fromJson(bookRead),
+              );
             },
             routes: [
               GoRoute(
-                path: 'book-edit',
-                name: 'book-edit',
-                builder: (context, state) {
-                  final book =
-                      Map<String, dynamic>.from(state.extra as Map);
-                  return BookEditPage(
-                    book: BookEditInputEntity.fromJson(book),
-                  );
-                },
-              ),
-              GoRoute(
-                path: 'book-add',
-                name: 'book-add',
-                builder: (context, state) {
+                path: 'book-add-done',
+                name: 'book-add-done',
+                pageBuilder: (context, state) {
                   final bookRead = state.extra as Map<String, dynamic>;
-                  return BookAddPage(
-                    bookRead: BookReadInputEntity.fromJson(bookRead),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: 'book-add-done',
-                    name: 'book-add-done',
-                    pageBuilder: (context, state) {
-                      final bookRead = state.extra as Map<String, dynamic>;
-                      return CustomTransitionPage(
-                        child: BookAddDonePage(
-                          bookRead: BookAddDoneEntity.fromJson(bookRead),
-                        ),
-                        transitionDuration: const Duration(milliseconds: 300),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
+                  return CustomTransitionPage(
+                    child: BookAddDonePage(
+                      bookRead: BookAddDoneEntity.fromJson(bookRead),
+                    ),
+                    transitionDuration: const Duration(milliseconds: 300),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
                             opacity: CurvedAnimation(
                               parent: animation,
@@ -132,13 +128,13 @@ List<RouteBase> get bookRoutes => [
                             child: child,
                           );
                         },
-                      );
-                    },
-                  ),
-                ],
+                  );
+                },
               ),
             ],
           ),
         ],
       ),
-    ];
+    ],
+  ),
+];

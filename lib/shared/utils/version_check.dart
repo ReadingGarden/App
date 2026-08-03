@@ -51,7 +51,10 @@ Future<bool> checkForceUpdate(BuildContext context) async {
   return false;
 }
 
-Future<void> showForceUpdateSheet(BuildContext context, String? storeUrl) async {
+Future<void> showForceUpdateSheet(
+  BuildContext context,
+  String? storeUrl,
+) async {
   await showModalBottomSheet(
     context: context,
     backgroundColor: Colors.white,
@@ -85,7 +88,10 @@ Future<void> showForceUpdateSheet(BuildContext context, String? storeUrl) async 
               ),
               Widgets.button('업데이트', true, () {
                 if (storeUrl != null) {
-                  launchUrl(Uri.parse(storeUrl), mode: LaunchMode.externalApplication);
+                  launchUrl(
+                    Uri.parse(storeUrl),
+                    mode: LaunchMode.externalApplication,
+                  );
                 }
               }),
             ],

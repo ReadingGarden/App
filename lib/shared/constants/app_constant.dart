@@ -26,7 +26,7 @@ class Constant {
     'green',
     'blue',
     'purple',
-    'black'
+    'black',
   ];
 
   static const GARDEN_COLOR_SET_LIST = [

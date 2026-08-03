@@ -6,7 +6,9 @@ import 'package:intl/intl.dart';
 class AutoInputFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
     String newText = newValue.text;
 
     newText = newText.replaceAll(RegExp(r'[^0-9]'), '');
@@ -15,7 +17,8 @@ class AutoInputFormatter extends TextInputFormatter {
       newText =
           newText.substring(0, 4) + '.' + newText.substring(4, newText.length);
     } else if (newText.length > 6) {
-      newText = newText.substring(0, 4) +
+      newText =
+          newText.substring(0, 4) +
           '.' +
           newText.substring(4, 6) +
           '.' +
@@ -40,7 +43,8 @@ class AutoInputFormatter extends TextInputFormatter {
     }
 
     return TextEditingValue(
-        text: newText,
-        selection: TextSelection.collapsed(offset: newText.length));
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
+    );
   }
 }

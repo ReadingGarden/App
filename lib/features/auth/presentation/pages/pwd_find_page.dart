@@ -102,14 +102,16 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
     void postPwdFindCheck(BuildContext context, ref) async {
       final data = {
         "user_email": _emailController.text,
-        "auth_number": _authController.text
+        "auth_number": _authController.text,
       };
 
       final response = await authService.postPwdFindCheck(data);
       if (!context.mounted) return;
       if (response?.statusCode == 200) {
-        context.goNamed('pwd-setting',
-            extra: {'user_email': _emailController.text, 'isLoginPage': true});
+        context.goNamed(
+          'pwd-setting',
+          extra: {'user_email': _emailController.text, 'isLoginPage': true},
+        );
       } else if (response?.statusCode == 400) {
         ref.read(authErrorProvider.notifier).state = '인증번호가 일치하지 않아요';
       }
@@ -135,12 +137,12 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
     }
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: Widgets.appBar(context),
-        body: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: SingleChildScrollView(
-              child: Container(
+      resizeToAvoidBottomInset: false,
+      appBar: Widgets.appBar(context),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
             margin: EdgeInsets.only(top: 20.h, left: 24.w, right: 24.w),
             child: Column(
               children: [
@@ -148,44 +150,57 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.only(bottom: 60.h),
-                        child: Text(
-                          '비밀번호 찾기',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 24.sp),
-                        )),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.only(bottom: 60.h),
+                      child: Text(
+                        '비밀번호 찾기',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 24.sp,
+                        ),
+                      ),
+                    ),
                     SizedBox(
-                        child: Widgets.textfield(ref, _emailController, '이메일',
-                            '이메일을 입력해주세요', emailErrorText, emailErrorProvider,
-                            validateFunction: emailValidate)),
+                      child: Widgets.textfield(
+                        ref,
+                        _emailController,
+                        '이메일',
+                        '이메일을 입력해주세요',
+                        emailErrorText,
+                        emailErrorProvider,
+                        validateFunction: emailValidate,
+                      ),
+                    ),
                     (authSendBool)
                         ? Stack(
                             alignment: Alignment.bottomRight,
                             children: [
                               SizedBox(
                                 child: Widgets.textfield(
-                                    ref,
-                                    _authController,
-                                    '인증번호',
-                                    '대소문자에 유의하여 입력해주세요',
-                                    authErrorText,
-                                    authErrorProvider,
-                                    validateFunction: authValidate),
+                                  ref,
+                                  _authController,
+                                  '인증번호',
+                                  '대소문자에 유의하여 입력해주세요',
+                                  authErrorText,
+                                  authErrorProvider,
+                                  validateFunction: authValidate,
+                                ),
                               ),
                               Container(
-                                  height: 20.h,
-                                  margin: EdgeInsets.only(
-                                      bottom:
-                                          (authErrorText == null) ? 30.h : 52.h,
-                                      right: 16.w),
-                                  child: Text(
-                                    '${(timeRemaining ~/ 60).toString().padLeft(2, '0')}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
-                                    style: TextStyle(
-                                        fontSize: 13.sp,
-                                        fontWeight: FontWeight.w500,
-                                        color: AppColors.primaryColor),
-                                  )),
+                                height: 20.h,
+                                margin: EdgeInsets.only(
+                                  bottom: (authErrorText == null) ? 30.h : 52.h,
+                                  right: 16.w,
+                                ),
+                                child: Text(
+                                  '${(timeRemaining ~/ 60).toString().padLeft(2, '0')}:${(timeRemaining % 60).toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                    fontSize: 13.sp,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                ),
+                              ),
                             ],
                           )
                         : Container(),
@@ -193,20 +208,26 @@ class _PwdFindPageState extends ConsumerState<PwdFindPage> {
                 ),
               ],
             ),
-          )),
+          ),
         ),
-        bottomNavigationBar: (authSendBool && (timeRemaining != 0))
-            ? Widgets.bottomBar(context,
-                child: Widgets.button(
-                  '다음',
-                  authCheckBool,
-                  () => postPwdFindCheck(context, ref),
-                ))
-            : Widgets.bottomBar(context,
-                child: Widgets.button(
-                  ref.watch(authSendTextProvider),
-                  authButtonBool,
-                  () => postPwdFind(),
-                )));
+      ),
+      bottomNavigationBar: (authSendBool && (timeRemaining != 0))
+          ? Widgets.bottomBar(
+              context,
+              child: Widgets.button(
+                '다음',
+                authCheckBool,
+                () => postPwdFindCheck(context, ref),
+              ),
+            )
+          : Widgets.bottomBar(
+              context,
+              child: Widgets.button(
+                ref.watch(authSendTextProvider),
+                authButtonBool,
+                () => postPwdFind(),
+              ),
+            ),
+    );
   }
 }

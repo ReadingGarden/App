@@ -67,8 +67,9 @@ class MemoService {
   }
 
   Future<Response?> postMemoImage(int id, String imagePath) async {
-    final formData =
-        FormData.fromMap({'file': await MultipartFile.fromFile(imagePath)});
+    final formData = FormData.fromMap({
+      'file': await MultipartFile.fromFile(imagePath),
+    });
     try {
       final response = await _authenticatedDio.post(
         '${Constant.URL}memo/image?id=$id',

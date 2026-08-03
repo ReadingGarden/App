@@ -6,6 +6,7 @@ part 'book_add_done_entity.g.dart';
 @freezed
 abstract class BookAddDoneEntity with _$BookAddDoneEntity {
   const factory BookAddDoneEntity({
+    @Default(0) int bookNo,
     @Default('') String bookTitle,
     @Default('') String bookTree,
     @Default('') String bookStartDate,

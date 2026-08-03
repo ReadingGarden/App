@@ -36,8 +36,10 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
   }
 
   void _openMemoEdit() async {
-    final result =
-        await context.pushNamed('memo-update', extra: widget.memo.toJson());
+    final result = await context.pushNamed(
+      'memo-update',
+      extra: widget.memo.toJson(),
+    );
     if (result != null && mounted) {
       context.pop(result);
     }
@@ -58,7 +60,9 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Widgets.appBar(context, actions: [
+      appBar: Widgets.appBar(
+        context,
+        actions: [
           if (widget.isMine)
             GestureDetector(
               onTap: () {
@@ -70,10 +74,12 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
                 height: 60.r,
                 child: AppAssets.iconEllipsis.svg(width: 24.r, height: 24.r),
               ),
-            )
-        ]),
-        body: SingleChildScrollView(
-          child: Column(children: [
+            ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
             Container(
               height: 88.h,
               margin: EdgeInsets.only(left: 24.w, right: 24.w),
@@ -84,8 +90,9 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
                           width: 48.w,
                           height: 64.h,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.r),
-                              color: AppColors.grey_F2),
+                            borderRadius: BorderRadius.circular(8.r),
+                            color: AppColors.grey_F2,
+                          ),
                         )
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
@@ -107,25 +114,22 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
                           widget.memo.bookTitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                          ),
+                          style: TextStyle(fontSize: 16.sp),
                         ),
                         Text(
                           widget.memo.bookAuthor,
                           style: TextStyle(
-                              fontSize: 12.sp, color: AppColors.grey_8D),
-                        )
+                            fontSize: 12.sp,
+                            color: AppColors.grey_8D,
+                          ),
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
-            Container(
-              height: 1.h,
-              color: AppColors.grey_F2,
-            ),
+            Container(height: 1.h, color: AppColors.grey_F2),
             Container(
               margin: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 100.h),
               child: Column(
@@ -134,8 +138,10 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
                     Container(
                       margin: EdgeInsets.only(top: 20.h),
                       child: CachedNetworkImage(
-                          imageUrl: '${Constant.IMAGE_URL}${widget.memo.imageUrl}',
-                          width: 320.w),
+                        imageUrl:
+                            '${Constant.IMAGE_URL}${widget.memo.imageUrl}',
+                        width: 320.w,
+                      ),
                     ),
                   Container(
                     alignment: Alignment.topLeft,
@@ -145,12 +151,14 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
                       textAlign: TextAlign.start,
                       style: TextStyle(fontSize: 14.sp, height: 1.7.h),
                     ),
-                  )
+                  ),
                 ],
               ),
-            )
-          ]),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Future _moreBottomSheet() {
@@ -163,50 +171,54 @@ class _MemoDetailPageState extends ConsumerState<MemoDetailPage> {
           margin: EdgeInsets.only(top: 20.h, bottom: 16.h),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    context.pop();
-                    _openMemoEdit();
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 312.w,
-                    height: 26.h,
-                    color: Colors.transparent,
-                    child: Text(
-                      '메모 수정하기',
-                      style: TextStyle(fontSize: 16.sp),
-                    ),
-                  ),
+            children: [
+              GestureDetector(
+                onTap: () {
+                  context.pop();
+                  _openMemoEdit();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 312.w,
+                  height: 26.h,
+                  color: Colors.transparent,
+                  child: Text('메모 수정하기', style: TextStyle(fontSize: 16.sp)),
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 20.h),
-                  height: 1.h,
-                  color: AppColors.grey_F2,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    context.pop();
-                    Widgets.deleteBottomSheet(context, '이 메모를 삭제할까요?',
-                        const Text('한번 삭제된 메모는 다시 되돌릴 수없어요.'), '삭제하기', () {
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 20.h),
+                height: 1.h,
+                color: AppColors.grey_F2,
+              ),
+              GestureDetector(
+                onTap: () {
+                  context.pop();
+                  Widgets.deleteBottomSheet(
+                    context,
+                    '이 메모를 삭제할까요?',
+                    const Text('한번 삭제된 메모는 다시 되돌릴 수없어요.'),
+                    '삭제하기',
+                    () {
                       deleteMemo();
-                    });
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 312.w,
-                    height: 26.h,
-                    color: Colors.transparent,
-                    child: Text(
-                      '메모 삭제하기',
-                      style: TextStyle(
-                          fontSize: 16.sp, color: AppColors.errorRedColor),
+                    },
+                  );
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: 312.w,
+                  height: 26.h,
+                  color: Colors.transparent,
+                  child: Text(
+                    '메모 삭제하기',
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: AppColors.errorRedColor,
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

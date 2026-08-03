@@ -13,8 +13,9 @@ import 'package:go_router/go_router.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-final FirebaseAnalyticsObserver analyticsObserver =
-    FirebaseAnalyticsObserver(analytics: analytics);
+final FirebaseAnalyticsObserver analyticsObserver = FirebaseAnalyticsObserver(
+  analytics: analytics,
+);
 
 final GoRouter router = GoRouter(
   navigatorKey: navigatorKey,
@@ -30,9 +31,8 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/error',
       name: 'error',
-      builder: (context, state) => ErrorPage(
-        errorType: state.extra as ErrorType? ?? ErrorType.server,
-      ),
+      builder: (context, state) =>
+          ErrorPage(errorType: state.extra as ErrorType? ?? ErrorType.server),
     ),
     GoRoute(
       path: '/bottom-navi',
