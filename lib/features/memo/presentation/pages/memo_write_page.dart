@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:book_flutter/core/media/image_picker_helper.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
 import 'package:book_flutter/features/memo/domain/entities/memo_write_input_entity.dart';
 import 'package:book_flutter/features/memo/presentation/providers/memo_write_provider.dart'
@@ -27,8 +28,6 @@ class MemoWritePage extends ConsumerStatefulWidget {
 class _MemoBookPageState extends ConsumerState<MemoWritePage> {
   final TextEditingController _memoController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
-
-  final ImagePicker _imagePicker = ImagePicker();
 
   @override
   void initState() {
@@ -83,15 +82,13 @@ class _MemoBookPageState extends ConsumerState<MemoWritePage> {
 
   //갤러리 열기
   Future<void> _pickImage() async {
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await AppImagePicker.pickFromGallery();
     memo_write_feature.setMemoImage(ref, image);
   }
 
   //카메라
   Future<void> _takePhoto() async {
-    final XFile? photo =
-        await _imagePicker.pickImage(source: ImageSource.camera);
+    final XFile? photo = await AppImagePicker.takePhoto();
 
     if (photo != null) {
       memo_write_feature.setMemoImage(ref, photo);
