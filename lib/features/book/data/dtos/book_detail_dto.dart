@@ -15,6 +15,7 @@ class BookDetailDto {
       gardenTitle: json['garden_title'] as String? ?? '',
       gardenColor: json['garden_color'] as String? ?? '',
       bookStatus: json['book_status'] as int? ?? 0,
+      bookRating: json['book_rating'] as int? ?? 0,
       bookTitle: json['book_title'] as String? ?? '',
       bookAuthor: json['book_author'] as String? ?? '',
       bookPublisher: json['book_publisher'] as String? ?? '',

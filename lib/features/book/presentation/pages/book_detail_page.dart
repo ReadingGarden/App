@@ -10,6 +10,7 @@ import 'package:book_flutter/shared/constants/app_constant.dart';
 import 'package:book_flutter/shared/theme/app_assets.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
+import 'package:book_flutter/shared/widgets/star_rating.dart';
 import 'package:book_flutter/features/auth/presentation/providers/auth_user_provider.dart'
     as auth_feature;
 import 'package:book_flutter/features/book/presentation/providers/book_detail_provider.dart';
@@ -96,6 +97,15 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
     }
   }
 
+  //책 수정 화면으로 이동 (별점 수정도 여기서)
+  Future<void> _goToBookEdit() async {
+    final data = ref.read(bookDetailProvider).toBookAddPayload();
+    final response = await context.pushNamed('book-edit', extra: data);
+    if (response != null) {
+      _loadBookDetail();
+    }
+  }
+
   Future<void> _moveBook(int toGardenNo) async {
     final statusCode = await ref
         .read(bookDetailProvider.notifier)
@@ -150,6 +160,10 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
     final ownerMatches =
         gardenMembers.where((m) => m.userNo == bookDetail.userNo);
     final bookOwner = ownerMatches.isEmpty ? null : ownerMatches.first;
+
+    // 별점은 완독(book_status 1)한 책에만 표시
+    final isFinished = bookDetail.bookStatus == 1;
+    final isOthersBook = bookDetail.userNo != user.userNo;
 
     return PopScope(
       canPop: false,
@@ -513,10 +527,91 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
                                                   ),
                                                 ),
                                               ],
+                                              //별점
+                                              if (isFinished) ...[
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: isOthersBook
+                                                          ? 16.h
+                                                          : 0),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        kRatingTexts[0],
+                                                        style: TextStyle(
+                                                            fontSize: 12.sp,
+                                                            color: AppColors
+                                                                .grey_8D),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: 16.h),
+                                                  child: Row(
+                                                    children: [
+                                                      StarRow(
+                                                        rating: bookDetail
+                                                            .bookRating,
+                                                        size: 24.r,
+                                                        gap: 4.w,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                if (bookDetail.bookRating > 0)
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 8.h),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          kRatingTexts[
+                                                              bookDetail
+                                                                  .bookRating],
+                                                          style: TextStyle(
+                                                              fontSize: 12.sp,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: AppColors
+                                                                  .starSelectColor),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
+                                                //내 책인데 별점이 비어 있으면 수정 화면 진입점 노출
+                                                else if (!isOthersBook)
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        top: 8.h),
+                                                    child: Row(
+                                                      children: [
+                                                        GestureDetector(
+                                                          behavior:
+                                                              HitTestBehavior
+                                                                  .opaque,
+                                                          onTap: _goToBookEdit,
+                                                          child: Text(
+                                                            '별점 기록하기 >',
+                                                            style: TextStyle(
+                                                                fontSize: 12.sp,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: AppColors
+                                                                    .starSelectColor),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                              ],
                                               Padding(
                                                 padding: EdgeInsets.only(
-                                                    top: bookDetail.userNo !=
-                                                            user.userNo
+                                                    top: (isFinished ||
+                                                            isOthersBook)
                                                         ? 16.h
                                                         : 0,
                                                     bottom: 18.h),
@@ -644,15 +739,8 @@ class _BookDetailPageState extends ConsumerState<BookDetailPage>
               children: [
                 GestureDetector(
                   onTap: () async {
-                    final data =
-                        ref.watch(bookDetailProvider).toBookAddPayload();
-
                     context.pop();
-                    final response =
-                        await context.pushNamed('book-edit', extra: data);
-                    if (response != null) {
-                      _loadBookDetail();
-                    }
+                    await _goToBookEdit();
                   },
                   child: Container(
                     alignment: Alignment.center,

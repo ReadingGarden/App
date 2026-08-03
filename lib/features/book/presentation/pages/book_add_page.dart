@@ -4,6 +4,7 @@ import 'package:book_flutter/shared/utils/functions.dart';
 import 'package:book_flutter/shared/theme/app_assets.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
 import 'package:book_flutter/shared/widgets/app_widgets.dart';
+import 'package:book_flutter/shared/widgets/star_rating.dart';
 import 'package:book_flutter/features/book/domain/entities/book_add_done_entity.dart';
 import 'package:book_flutter/features/book/domain/entities/book_read_input_entity.dart';
 import 'package:book_flutter/core/review/in_app_review_helper.dart';
@@ -318,39 +319,6 @@ class _BookAddDonePageState extends ConsumerState<BookAddDonePage> {
   //별점 (0 = 선택 전)
   int _rating = 0;
 
-  static const _starCount = 5;
-
-  double get _starSize => 32.r;
-  double get _starGap => 4.w;
-
-  //별점별 문구 (index 0 = 선택 전)
-  static const _ratingTexts = [
-    '이 책 어떠셨나요?',
-    '끝까지 읽은 나에게 치얼스',
-    '나와는 조금 안 맞았다',
-    '무난하게 잘 읽었다',
-    '언젠가 다시 펼쳐볼 책',
-    '오늘부터 나의 인생책',
-  ];
-
-  //x좌표로 별점 계산 (첫 별 왼쪽으로 나가면 0점)
-  int _ratingByPosition(double dx) {
-    if (dx < 0) return 0;
-    final index = (dx / (_starSize + _starGap)).floor();
-    return (index + 1).clamp(0, _starCount);
-  }
-
-  //같은 별을 다시 누르면 0점으로
-  void _onStarTap(double dx) {
-    final tapped = _ratingByPosition(dx);
-    setState(() => _rating = tapped == _rating ? 0 : tapped);
-  }
-
-  void _onStarDrag(double dx) {
-    final dragged = _ratingByPosition(dx);
-    if (dragged != _rating) setState(() => _rating = dragged);
-  }
-
   void _goToGarden() async {
     //화면을 벗어날 때 별점 한 번만 저장
     if (_rating > 0 && widget.bookRead.bookNo > 0) {
@@ -433,43 +401,16 @@ class _BookAddDonePageState extends ConsumerState<BookAddDonePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTapDown: (details) =>
-                            _onStarTap(details.localPosition.dx),
-                        onHorizontalDragStart: (details) =>
-                            _onStarDrag(details.localPosition.dx),
-                        onHorizontalDragUpdate: (details) =>
-                            _onStarDrag(details.localPosition.dx),
-                        child: SizedBox(
-                          width: _starSize * _starCount +
-                              _starGap * (_starCount - 1),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: _starGap,
-                            children: List.generate(_starCount, (index) {
-                              final selected = index < _rating;
-                              return (selected
-                                      ? AppAssets.iconStarSelect
-                                      : AppAssets.iconStarDeselect)
-                                  .svg(
-                                width: _starSize,
-                                height: _starSize,
-                                colorFilter: ColorFilter.mode(
-                                  selected
-                                      ? AppColors.starSelectColor
-                                      : AppColors.grey_CA,
-                                  BlendMode.srcIn,
-                                ),
-                              );
-                            }),
-                          ),
-                        ),
+                      StarRatingInput(
+                        rating: _rating,
+                        size: 32.r,
+                        gap: 4.w,
+                        onChanged: (value) => setState(() => _rating = value),
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 16.h),
                         child: Text(
-                          _ratingTexts[_rating],
+                          kRatingTexts[_rating],
                           style: TextStyle(
                             fontSize: 12.sp,
                             color: _rating == 0

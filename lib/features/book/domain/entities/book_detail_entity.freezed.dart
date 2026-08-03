@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BookDetailEntity {
 
- int? get bookNo; int? get userNo; int? get gardenNo; String get gardenTitle; String get gardenColor; int get bookStatus; String get bookTitle; String get bookAuthor; String get bookPublisher; String get bookInfo; String? get bookImageUrl; String get bookTree; int get bookCurrentPage; int get bookPage; List<BookReadHistoryEntity> get bookReadList; List<BookMemoSummaryEntity> get memoList;
+ int? get bookNo; int? get userNo; int? get gardenNo; String get gardenTitle; String get gardenColor; int get bookStatus; int get bookRating; String get bookTitle; String get bookAuthor; String get bookPublisher; String get bookInfo; String? get bookImageUrl; String get bookTree; int get bookCurrentPage; int get bookPage; List<BookReadHistoryEntity> get bookReadList; List<BookMemoSummaryEntity> get memoList;
 /// Create a copy of BookDetailEntity
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BookDetailEntityCopyWith<BookDetailEntity> get copyWith => _$BookDetailEntityCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookDetailEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.userNo, userNo) || other.userNo == userNo)&&(identical(other.gardenNo, gardenNo) || other.gardenNo == gardenNo)&&(identical(other.gardenTitle, gardenTitle) || other.gardenTitle == gardenTitle)&&(identical(other.gardenColor, gardenColor) || other.gardenColor == gardenColor)&&(identical(other.bookStatus, bookStatus) || other.bookStatus == bookStatus)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookPublisher, bookPublisher) || other.bookPublisher == bookPublisher)&&(identical(other.bookInfo, bookInfo) || other.bookInfo == bookInfo)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookCurrentPage, bookCurrentPage) || other.bookCurrentPage == bookCurrentPage)&&(identical(other.bookPage, bookPage) || other.bookPage == bookPage)&&const DeepCollectionEquality().equals(other.bookReadList, bookReadList)&&const DeepCollectionEquality().equals(other.memoList, memoList));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BookDetailEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.userNo, userNo) || other.userNo == userNo)&&(identical(other.gardenNo, gardenNo) || other.gardenNo == gardenNo)&&(identical(other.gardenTitle, gardenTitle) || other.gardenTitle == gardenTitle)&&(identical(other.gardenColor, gardenColor) || other.gardenColor == gardenColor)&&(identical(other.bookStatus, bookStatus) || other.bookStatus == bookStatus)&&(identical(other.bookRating, bookRating) || other.bookRating == bookRating)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookPublisher, bookPublisher) || other.bookPublisher == bookPublisher)&&(identical(other.bookInfo, bookInfo) || other.bookInfo == bookInfo)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookCurrentPage, bookCurrentPage) || other.bookCurrentPage == bookCurrentPage)&&(identical(other.bookPage, bookPage) || other.bookPage == bookPage)&&const DeepCollectionEquality().equals(other.bookReadList, bookReadList)&&const DeepCollectionEquality().equals(other.memoList, memoList));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,bookNo,userNo,gardenNo,gardenTitle,gardenColor,bookStatus,bookTitle,bookAuthor,bookPublisher,bookInfo,bookImageUrl,bookTree,bookCurrentPage,bookPage,const DeepCollectionEquality().hash(bookReadList),const DeepCollectionEquality().hash(memoList));
+int get hashCode => Object.hash(runtimeType,bookNo,userNo,gardenNo,gardenTitle,gardenColor,bookStatus,bookRating,bookTitle,bookAuthor,bookPublisher,bookInfo,bookImageUrl,bookTree,bookCurrentPage,bookPage,const DeepCollectionEquality().hash(bookReadList),const DeepCollectionEquality().hash(memoList));
 
 @override
 String toString() {
-  return 'BookDetailEntity(bookNo: $bookNo, userNo: $userNo, gardenNo: $gardenNo, gardenTitle: $gardenTitle, gardenColor: $gardenColor, bookStatus: $bookStatus, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookPublisher: $bookPublisher, bookInfo: $bookInfo, bookImageUrl: $bookImageUrl, bookTree: $bookTree, bookCurrentPage: $bookCurrentPage, bookPage: $bookPage, bookReadList: $bookReadList, memoList: $memoList)';
+  return 'BookDetailEntity(bookNo: $bookNo, userNo: $userNo, gardenNo: $gardenNo, gardenTitle: $gardenTitle, gardenColor: $gardenColor, bookStatus: $bookStatus, bookRating: $bookRating, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookPublisher: $bookPublisher, bookInfo: $bookInfo, bookImageUrl: $bookImageUrl, bookTree: $bookTree, bookCurrentPage: $bookCurrentPage, bookPage: $bookPage, bookReadList: $bookReadList, memoList: $memoList)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BookDetailEntityCopyWith<$Res>  {
   factory $BookDetailEntityCopyWith(BookDetailEntity value, $Res Function(BookDetailEntity) _then) = _$BookDetailEntityCopyWithImpl;
 @useResult
 $Res call({
- int? bookNo, int? userNo, int? gardenNo, String gardenTitle, String gardenColor, int bookStatus, String bookTitle, String bookAuthor, String bookPublisher, String bookInfo, String? bookImageUrl, String bookTree, int bookCurrentPage, int bookPage, List<BookReadHistoryEntity> bookReadList, List<BookMemoSummaryEntity> memoList
+ int? bookNo, int? userNo, int? gardenNo, String gardenTitle, String gardenColor, int bookStatus, int bookRating, String bookTitle, String bookAuthor, String bookPublisher, String bookInfo, String? bookImageUrl, String bookTree, int bookCurrentPage, int bookPage, List<BookReadHistoryEntity> bookReadList, List<BookMemoSummaryEntity> memoList
 });
 
 
@@ -65,7 +65,7 @@ class _$BookDetailEntityCopyWithImpl<$Res>
 
 /// Create a copy of BookDetailEntity
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? bookNo = freezed,Object? userNo = freezed,Object? gardenNo = freezed,Object? gardenTitle = null,Object? gardenColor = null,Object? bookStatus = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookPublisher = null,Object? bookInfo = null,Object? bookImageUrl = freezed,Object? bookTree = null,Object? bookCurrentPage = null,Object? bookPage = null,Object? bookReadList = null,Object? memoList = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? bookNo = freezed,Object? userNo = freezed,Object? gardenNo = freezed,Object? gardenTitle = null,Object? gardenColor = null,Object? bookStatus = null,Object? bookRating = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookPublisher = null,Object? bookInfo = null,Object? bookImageUrl = freezed,Object? bookTree = null,Object? bookCurrentPage = null,Object? bookPage = null,Object? bookReadList = null,Object? memoList = null,}) {
   return _then(_self.copyWith(
 bookNo: freezed == bookNo ? _self.bookNo : bookNo // ignore: cast_nullable_to_non_nullable
 as int?,userNo: freezed == userNo ? _self.userNo : userNo // ignore: cast_nullable_to_non_nullable
@@ -73,6 +73,7 @@ as int?,gardenNo: freezed == gardenNo ? _self.gardenNo : gardenNo // ignore: cas
 as int?,gardenTitle: null == gardenTitle ? _self.gardenTitle : gardenTitle // ignore: cast_nullable_to_non_nullable
 as String,gardenColor: null == gardenColor ? _self.gardenColor : gardenColor // ignore: cast_nullable_to_non_nullable
 as String,bookStatus: null == bookStatus ? _self.bookStatus : bookStatus // ignore: cast_nullable_to_non_nullable
+as int,bookRating: null == bookRating ? _self.bookRating : bookRating // ignore: cast_nullable_to_non_nullable
 as int,bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
 as String,bookAuthor: null == bookAuthor ? _self.bookAuthor : bookAuthor // ignore: cast_nullable_to_non_nullable
 as String,bookPublisher: null == bookPublisher ? _self.bookPublisher : bookPublisher // ignore: cast_nullable_to_non_nullable
@@ -168,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? bookNo,  int? userNo,  int? gardenNo,  String gardenTitle,  String gardenColor,  int bookStatus,  String bookTitle,  String bookAuthor,  String bookPublisher,  String bookInfo,  String? bookImageUrl,  String bookTree,  int bookCurrentPage,  int bookPage,  List<BookReadHistoryEntity> bookReadList,  List<BookMemoSummaryEntity> memoList)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? bookNo,  int? userNo,  int? gardenNo,  String gardenTitle,  String gardenColor,  int bookStatus,  int bookRating,  String bookTitle,  String bookAuthor,  String bookPublisher,  String bookInfo,  String? bookImageUrl,  String bookTree,  int bookCurrentPage,  int bookPage,  List<BookReadHistoryEntity> bookReadList,  List<BookMemoSummaryEntity> memoList)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BookDetailEntity() when $default != null:
-return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that.gardenColor,_that.bookStatus,_that.bookTitle,_that.bookAuthor,_that.bookPublisher,_that.bookInfo,_that.bookImageUrl,_that.bookTree,_that.bookCurrentPage,_that.bookPage,_that.bookReadList,_that.memoList);case _:
+return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that.gardenColor,_that.bookStatus,_that.bookRating,_that.bookTitle,_that.bookAuthor,_that.bookPublisher,_that.bookInfo,_that.bookImageUrl,_that.bookTree,_that.bookCurrentPage,_that.bookPage,_that.bookReadList,_that.memoList);case _:
   return orElse();
 
 }
@@ -189,10 +190,10 @@ return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? bookNo,  int? userNo,  int? gardenNo,  String gardenTitle,  String gardenColor,  int bookStatus,  String bookTitle,  String bookAuthor,  String bookPublisher,  String bookInfo,  String? bookImageUrl,  String bookTree,  int bookCurrentPage,  int bookPage,  List<BookReadHistoryEntity> bookReadList,  List<BookMemoSummaryEntity> memoList)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? bookNo,  int? userNo,  int? gardenNo,  String gardenTitle,  String gardenColor,  int bookStatus,  int bookRating,  String bookTitle,  String bookAuthor,  String bookPublisher,  String bookInfo,  String? bookImageUrl,  String bookTree,  int bookCurrentPage,  int bookPage,  List<BookReadHistoryEntity> bookReadList,  List<BookMemoSummaryEntity> memoList)  $default,) {final _that = this;
 switch (_that) {
 case _BookDetailEntity():
-return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that.gardenColor,_that.bookStatus,_that.bookTitle,_that.bookAuthor,_that.bookPublisher,_that.bookInfo,_that.bookImageUrl,_that.bookTree,_that.bookCurrentPage,_that.bookPage,_that.bookReadList,_that.memoList);case _:
+return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that.gardenColor,_that.bookStatus,_that.bookRating,_that.bookTitle,_that.bookAuthor,_that.bookPublisher,_that.bookInfo,_that.bookImageUrl,_that.bookTree,_that.bookCurrentPage,_that.bookPage,_that.bookReadList,_that.memoList);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +210,10 @@ return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? bookNo,  int? userNo,  int? gardenNo,  String gardenTitle,  String gardenColor,  int bookStatus,  String bookTitle,  String bookAuthor,  String bookPublisher,  String bookInfo,  String? bookImageUrl,  String bookTree,  int bookCurrentPage,  int bookPage,  List<BookReadHistoryEntity> bookReadList,  List<BookMemoSummaryEntity> memoList)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? bookNo,  int? userNo,  int? gardenNo,  String gardenTitle,  String gardenColor,  int bookStatus,  int bookRating,  String bookTitle,  String bookAuthor,  String bookPublisher,  String bookInfo,  String? bookImageUrl,  String bookTree,  int bookCurrentPage,  int bookPage,  List<BookReadHistoryEntity> bookReadList,  List<BookMemoSummaryEntity> memoList)?  $default,) {final _that = this;
 switch (_that) {
 case _BookDetailEntity() when $default != null:
-return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that.gardenColor,_that.bookStatus,_that.bookTitle,_that.bookAuthor,_that.bookPublisher,_that.bookInfo,_that.bookImageUrl,_that.bookTree,_that.bookCurrentPage,_that.bookPage,_that.bookReadList,_that.memoList);case _:
+return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that.gardenColor,_that.bookStatus,_that.bookRating,_that.bookTitle,_that.bookAuthor,_that.bookPublisher,_that.bookInfo,_that.bookImageUrl,_that.bookTree,_that.bookCurrentPage,_that.bookPage,_that.bookReadList,_that.memoList);case _:
   return null;
 
 }
@@ -224,7 +225,7 @@ return $default(_that.bookNo,_that.userNo,_that.gardenNo,_that.gardenTitle,_that
 @JsonSerializable()
 
 class _BookDetailEntity extends BookDetailEntity {
-  const _BookDetailEntity({this.bookNo, this.userNo, this.gardenNo, this.gardenTitle = '', this.gardenColor = '', this.bookStatus = 0, this.bookTitle = '', this.bookAuthor = '', this.bookPublisher = '', this.bookInfo = '', this.bookImageUrl, this.bookTree = '', this.bookCurrentPage = 0, this.bookPage = 0, final  List<BookReadHistoryEntity> bookReadList = const [], final  List<BookMemoSummaryEntity> memoList = const []}): _bookReadList = bookReadList,_memoList = memoList,super._();
+  const _BookDetailEntity({this.bookNo, this.userNo, this.gardenNo, this.gardenTitle = '', this.gardenColor = '', this.bookStatus = 0, this.bookRating = 0, this.bookTitle = '', this.bookAuthor = '', this.bookPublisher = '', this.bookInfo = '', this.bookImageUrl, this.bookTree = '', this.bookCurrentPage = 0, this.bookPage = 0, final  List<BookReadHistoryEntity> bookReadList = const [], final  List<BookMemoSummaryEntity> memoList = const []}): _bookReadList = bookReadList,_memoList = memoList,super._();
   factory _BookDetailEntity.fromJson(Map<String, dynamic> json) => _$BookDetailEntityFromJson(json);
 
 @override final  int? bookNo;
@@ -233,6 +234,7 @@ class _BookDetailEntity extends BookDetailEntity {
 @override@JsonKey() final  String gardenTitle;
 @override@JsonKey() final  String gardenColor;
 @override@JsonKey() final  int bookStatus;
+@override@JsonKey() final  int bookRating;
 @override@JsonKey() final  String bookTitle;
 @override@JsonKey() final  String bookAuthor;
 @override@JsonKey() final  String bookPublisher;
@@ -269,16 +271,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookDetailEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.userNo, userNo) || other.userNo == userNo)&&(identical(other.gardenNo, gardenNo) || other.gardenNo == gardenNo)&&(identical(other.gardenTitle, gardenTitle) || other.gardenTitle == gardenTitle)&&(identical(other.gardenColor, gardenColor) || other.gardenColor == gardenColor)&&(identical(other.bookStatus, bookStatus) || other.bookStatus == bookStatus)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookPublisher, bookPublisher) || other.bookPublisher == bookPublisher)&&(identical(other.bookInfo, bookInfo) || other.bookInfo == bookInfo)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookCurrentPage, bookCurrentPage) || other.bookCurrentPage == bookCurrentPage)&&(identical(other.bookPage, bookPage) || other.bookPage == bookPage)&&const DeepCollectionEquality().equals(other._bookReadList, _bookReadList)&&const DeepCollectionEquality().equals(other._memoList, _memoList));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BookDetailEntity&&(identical(other.bookNo, bookNo) || other.bookNo == bookNo)&&(identical(other.userNo, userNo) || other.userNo == userNo)&&(identical(other.gardenNo, gardenNo) || other.gardenNo == gardenNo)&&(identical(other.gardenTitle, gardenTitle) || other.gardenTitle == gardenTitle)&&(identical(other.gardenColor, gardenColor) || other.gardenColor == gardenColor)&&(identical(other.bookStatus, bookStatus) || other.bookStatus == bookStatus)&&(identical(other.bookRating, bookRating) || other.bookRating == bookRating)&&(identical(other.bookTitle, bookTitle) || other.bookTitle == bookTitle)&&(identical(other.bookAuthor, bookAuthor) || other.bookAuthor == bookAuthor)&&(identical(other.bookPublisher, bookPublisher) || other.bookPublisher == bookPublisher)&&(identical(other.bookInfo, bookInfo) || other.bookInfo == bookInfo)&&(identical(other.bookImageUrl, bookImageUrl) || other.bookImageUrl == bookImageUrl)&&(identical(other.bookTree, bookTree) || other.bookTree == bookTree)&&(identical(other.bookCurrentPage, bookCurrentPage) || other.bookCurrentPage == bookCurrentPage)&&(identical(other.bookPage, bookPage) || other.bookPage == bookPage)&&const DeepCollectionEquality().equals(other._bookReadList, _bookReadList)&&const DeepCollectionEquality().equals(other._memoList, _memoList));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,bookNo,userNo,gardenNo,gardenTitle,gardenColor,bookStatus,bookTitle,bookAuthor,bookPublisher,bookInfo,bookImageUrl,bookTree,bookCurrentPage,bookPage,const DeepCollectionEquality().hash(_bookReadList),const DeepCollectionEquality().hash(_memoList));
+int get hashCode => Object.hash(runtimeType,bookNo,userNo,gardenNo,gardenTitle,gardenColor,bookStatus,bookRating,bookTitle,bookAuthor,bookPublisher,bookInfo,bookImageUrl,bookTree,bookCurrentPage,bookPage,const DeepCollectionEquality().hash(_bookReadList),const DeepCollectionEquality().hash(_memoList));
 
 @override
 String toString() {
-  return 'BookDetailEntity(bookNo: $bookNo, userNo: $userNo, gardenNo: $gardenNo, gardenTitle: $gardenTitle, gardenColor: $gardenColor, bookStatus: $bookStatus, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookPublisher: $bookPublisher, bookInfo: $bookInfo, bookImageUrl: $bookImageUrl, bookTree: $bookTree, bookCurrentPage: $bookCurrentPage, bookPage: $bookPage, bookReadList: $bookReadList, memoList: $memoList)';
+  return 'BookDetailEntity(bookNo: $bookNo, userNo: $userNo, gardenNo: $gardenNo, gardenTitle: $gardenTitle, gardenColor: $gardenColor, bookStatus: $bookStatus, bookRating: $bookRating, bookTitle: $bookTitle, bookAuthor: $bookAuthor, bookPublisher: $bookPublisher, bookInfo: $bookInfo, bookImageUrl: $bookImageUrl, bookTree: $bookTree, bookCurrentPage: $bookCurrentPage, bookPage: $bookPage, bookReadList: $bookReadList, memoList: $memoList)';
 }
 
 
@@ -289,7 +291,7 @@ abstract mixin class _$BookDetailEntityCopyWith<$Res> implements $BookDetailEnti
   factory _$BookDetailEntityCopyWith(_BookDetailEntity value, $Res Function(_BookDetailEntity) _then) = __$BookDetailEntityCopyWithImpl;
 @override @useResult
 $Res call({
- int? bookNo, int? userNo, int? gardenNo, String gardenTitle, String gardenColor, int bookStatus, String bookTitle, String bookAuthor, String bookPublisher, String bookInfo, String? bookImageUrl, String bookTree, int bookCurrentPage, int bookPage, List<BookReadHistoryEntity> bookReadList, List<BookMemoSummaryEntity> memoList
+ int? bookNo, int? userNo, int? gardenNo, String gardenTitle, String gardenColor, int bookStatus, int bookRating, String bookTitle, String bookAuthor, String bookPublisher, String bookInfo, String? bookImageUrl, String bookTree, int bookCurrentPage, int bookPage, List<BookReadHistoryEntity> bookReadList, List<BookMemoSummaryEntity> memoList
 });
 
 
@@ -306,7 +308,7 @@ class __$BookDetailEntityCopyWithImpl<$Res>
 
 /// Create a copy of BookDetailEntity
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? bookNo = freezed,Object? userNo = freezed,Object? gardenNo = freezed,Object? gardenTitle = null,Object? gardenColor = null,Object? bookStatus = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookPublisher = null,Object? bookInfo = null,Object? bookImageUrl = freezed,Object? bookTree = null,Object? bookCurrentPage = null,Object? bookPage = null,Object? bookReadList = null,Object? memoList = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? bookNo = freezed,Object? userNo = freezed,Object? gardenNo = freezed,Object? gardenTitle = null,Object? gardenColor = null,Object? bookStatus = null,Object? bookRating = null,Object? bookTitle = null,Object? bookAuthor = null,Object? bookPublisher = null,Object? bookInfo = null,Object? bookImageUrl = freezed,Object? bookTree = null,Object? bookCurrentPage = null,Object? bookPage = null,Object? bookReadList = null,Object? memoList = null,}) {
   return _then(_BookDetailEntity(
 bookNo: freezed == bookNo ? _self.bookNo : bookNo // ignore: cast_nullable_to_non_nullable
 as int?,userNo: freezed == userNo ? _self.userNo : userNo // ignore: cast_nullable_to_non_nullable
@@ -314,6 +316,7 @@ as int?,gardenNo: freezed == gardenNo ? _self.gardenNo : gardenNo // ignore: cas
 as int?,gardenTitle: null == gardenTitle ? _self.gardenTitle : gardenTitle // ignore: cast_nullable_to_non_nullable
 as String,gardenColor: null == gardenColor ? _self.gardenColor : gardenColor // ignore: cast_nullable_to_non_nullable
 as String,bookStatus: null == bookStatus ? _self.bookStatus : bookStatus // ignore: cast_nullable_to_non_nullable
+as int,bookRating: null == bookRating ? _self.bookRating : bookRating // ignore: cast_nullable_to_non_nullable
 as int,bookTitle: null == bookTitle ? _self.bookTitle : bookTitle // ignore: cast_nullable_to_non_nullable
 as String,bookAuthor: null == bookAuthor ? _self.bookAuthor : bookAuthor // ignore: cast_nullable_to_non_nullable
 as String,bookPublisher: null == bookPublisher ? _self.bookPublisher : bookPublisher // ignore: cast_nullable_to_non_nullable
