@@ -13,7 +13,4 @@ class FontFamily {
 
   /// Font family: SUIT
   static const String suit = 'SUIT';
-
-  /// Font family: SUITE
-  static const String suite = 'SUITE';
 }

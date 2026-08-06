@@ -117,6 +117,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    #폰트 자체는 fonts:로 선언되지만, OFL 사본은 런타임에 읽어야 해서 별도 선언한다.
+    - assets/fonts/SUIT-ttf/LICENSE
     - assets/icons/
     - assets/images/
     - assets/images/main_flowers/
@@ -157,18 +159,6 @@ flutter:
           weight: 300
         - asset: assets/fonts/SUIT-ttf/SUIT-Thin.ttf
           weight: 100
-    - family: SUITE
-      fonts:
-        - asset: assets/fonts/SUITE-otf/SUITE-Bold.otf
-          weight: 700
-        - asset: assets/fonts/SUITE-otf/SUITE-SemiBold.otf
-          weight: 600
-        - asset: assets/fonts/SUITE-otf/SUITE-Medium.otf
-          weight: 500
-        - asset: assets/fonts/SUITE-otf/SUITE-Regular.otf
-          weight: 400
-        - asset: assets/fonts/SUITE-otf/SUITE-Light.otf
-          weight: 300
 
 flutter_gen:
   output: lib/gen/

@@ -11,7 +11,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_branch_sdk/flutter_branch_sdk.dart';
 
 import 'package:book_flutter/core/network/connectivity_provider.dart';
+import 'package:book_flutter/gen/fonts.gen.dart';
 import 'package:book_flutter/shared/theme/app_colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -66,6 +68,14 @@ Future<void> runMainApp() async {
   await bootstrapApplication();
 
   logger.i('앱 실행 flavor: ${FlavorConfig.flavor.name}');
+
+  // SUIT 폰트는 SIL OFL이라 배포물에 라이선스 사본을 동봉해야 한다.
+  // showLicensePage()에 노출되도록 등록한다.
+  LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(const [
+      'SUIT',
+    ], await rootBundle.loadString('assets/fonts/SUIT-ttf/LICENSE'));
+  });
 
   // Flutter/Dart 에러를 Crashlytics로 자동 전송
   // (디버그 모드에서는 비활성화 — JIT PAC 크래시 방지)
@@ -161,7 +171,7 @@ class MyApp extends ConsumerWidget {
       builder: (context, child) {
         return MaterialApp.router(
           theme: ThemeData(
-            fontFamily: 'SUITE',
+            fontFamily: FontFamily.suit,
             scaffoldBackgroundColor: Colors.white,
             textTheme: TextTheme(
               //앱바

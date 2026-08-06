@@ -14,6 +14,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart' as _svg;
 import 'package:vector_graphics/vector_graphics.dart' as _vg;
 
+class $AssetsFontsGen {
+  const $AssetsFontsGen();
+
+  /// Directory path: assets/fonts/SUIT-ttf
+  $AssetsFontsSUITTtfGen get sUITTtf => const $AssetsFontsSUITTtfGen();
+}
+
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
@@ -243,6 +250,16 @@ class $AssetsImagesGen {
     start2,
     start3,
   ];
+}
+
+class $AssetsFontsSUITTtfGen {
+  const $AssetsFontsSUITTtfGen();
+
+  /// File path: assets/fonts/SUIT-ttf/LICENSE
+  String get license => 'assets/fonts/SUIT-ttf/LICENSE';
+
+  /// List of all assets
+  List<String> get values => [license];
 }
 
 class $AssetsImagesBookFlowersGen {
@@ -530,6 +547,7 @@ class $AssetsImagesSelectFlowersGen {
 class Assets {
   const Assets._();
 
+  static const $AssetsFontsGen fonts = $AssetsFontsGen();
   static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
