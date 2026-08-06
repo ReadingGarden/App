@@ -203,6 +203,9 @@ class $AssetsImagesGen {
   /// Directory path: assets/images/page_flowers
   $AssetsImagesPageFlowersGen get pageFlowers => const $AssetsImagesPageFlowersGen();
 
+  /// Directory path: assets/images/page_flowers_fill
+  $AssetsImagesPageFlowersFillGen get pageFlowersFill => const $AssetsImagesPageFlowersFillGen();
+
   /// Directory path: assets/images/profile
   $AssetsImagesProfileGen get profile => const $AssetsImagesProfileGen();
 
@@ -435,6 +438,30 @@ class $AssetsImagesPageFlowersGen {
 
   /// File path: assets/images/page_flowers/page_팬지.png
   AssetGenImage get pagePng____ => const AssetGenImage('assets/images/page_flowers/page_팬지.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [pagePng, pagePng_, pagePng__, pagePng___, pagePng____];
+}
+
+class $AssetsImagesPageFlowersFillGen {
+  const $AssetsImagesPageFlowersFillGen();
+
+  /// File path: assets/images/page_flowers_fill/page_데이지.png
+  AssetGenImage get pagePng => const AssetGenImage('assets/images/page_flowers_fill/page_데이지.png');
+
+  /// File path: assets/images/page_flowers_fill/page_수선화.png
+  AssetGenImage get pagePng_ => const AssetGenImage('assets/images/page_flowers_fill/page_수선화.png');
+
+  /// File path: assets/images/page_flowers_fill/page_장미.png
+  AssetGenImage get pagePng__ => const AssetGenImage('assets/images/page_flowers_fill/page_장미.png');
+
+  /// File path: assets/images/page_flowers_fill/page_튤립.png
+  AssetGenImage get pagePng___ =>
+      const AssetGenImage('assets/images/page_flowers_fill/page_튤립.png');
+
+  /// File path: assets/images/page_flowers_fill/page_팬지.png
+  AssetGenImage get pagePng____ =>
+      const AssetGenImage('assets/images/page_flowers_fill/page_팬지.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [pagePng, pagePng_, pagePng__, pagePng___, pagePng____];

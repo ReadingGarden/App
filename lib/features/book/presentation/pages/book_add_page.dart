@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui' as ui;
 
 import 'package:book_flutter/shared/utils/functions.dart';
@@ -28,16 +29,21 @@ class BookAddPage extends ConsumerStatefulWidget {
 }
 
 class _BookAddPageState extends ConsumerState<BookAddPage> {
+  //꽃 에셋 원본 아트보드 비율(260:282). 남는 공간에 맞춰 크기를 잡을 때 이 비율을 유지한다.
+  static const double _flowerAspect = 260 / 282;
+
   final TextEditingController _textEditingController = TextEditingController();
   double dragPosition = 0.0;
-  late String imagePath;
+  late String emptyImagePath;
+  late String fillImagePath;
   int currentPage = 0;
   bool _isDragging = false;
 
   @override
   void initState() {
     super.initState();
-    imagePath = AppAssets.pageFlower(widget.bookRead.bookTree).path;
+    emptyImagePath = AppAssets.pageFlower(widget.bookRead.bookTree).path;
+    fillImagePath = AppAssets.pageFlowerFill(widget.bookRead.bookTree).path;
     dragPosition = 0.0;
     currentPage = widget.bookRead.bookCurrentPage;
     dragPosition = widget.bookRead.bookPage > 0
@@ -112,7 +118,7 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 20.h, bottom: 90.h),
+                  padding: EdgeInsets.only(top: 20.h, bottom: 40.h),
                   child: GestureDetector(
                     onTap: () async {
                       final result = await pageBottomSheet(
@@ -156,71 +162,25 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
                 ),
               ],
             ),
-            Column(
-              children: [
-                AnimatedScale(
-                  scale: _isDragging ? 0.92 : 1.0,
-                  duration: const Duration(milliseconds: 150),
-                  curve: Curves.easeOut,
-                  child: Stack(
-                    children: [
-                      Center(
-                        child: Image.asset(imagePath, width: 280, height: 304),
-                      ),
-                      Center(
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onVerticalDragStart: (_) {
-                            setState(() => _isDragging = true);
-                          },
-                          onVerticalDragEnd: (_) {
-                            setState(() => _isDragging = false);
-                          },
-                          onVerticalDragCancel: () {
-                            setState(() => _isDragging = false);
-                          },
-                          onVerticalDragUpdate: (details) {
-                            setState(() {
-                              dragPosition -= details.primaryDelta! / 304;
-                              dragPosition = dragPosition.clamp(0.0, 1.0);
-                              currentPage =
-                                  (widget.bookRead.bookPage * dragPosition)
-                                      .toInt();
-                              _textEditingController.text = currentPage
-                                  .toString();
-                            });
-                          },
-                          child: SizedBox(
-                            width: 280,
-                            height: 304,
-                            child: ClipRect(
-                              clipper: _BottomRevealClipper(dragPosition),
-                              child: ColorFiltered(
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.black_59,
-                                  BlendMode.srcIn,
-                                ),
-                                child: Image.asset(
-                                  imagePath,
-                                  width: 280,
-                                  height: 304,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 26.h),
-                  child: const Text(
-                    '물을 주려면 위로 슬라이드 해주세요',
-                    style: TextStyle(color: AppColors.grey_8D),
-                  ),
-                ),
-              ],
+            //남는 높이를 꽃이 전부 차지한다. 기기마다 최대 크기가 되고 작은 화면에서도 넘치지 않는다.
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final height = math.min(
+                    constraints.maxHeight,
+                    constraints.maxWidth / _flowerAspect,
+                  );
+                  final width = height * _flowerAspect;
+                  return Center(child: _flower(width, height));
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 26.h, bottom: 58.h),
+              child: const Text(
+                '물을 주려면 위로 슬라이드 해주세요',
+                style: TextStyle(color: AppColors.grey_8D),
+              ),
             ),
           ],
         ),
@@ -230,6 +190,53 @@ class _BookAddPageState extends ConsumerState<BookAddPage> {
         child: Widgets.button('저장하기', true, () {
           postBookRead();
         }),
+      ),
+    );
+  }
+
+  //회색 실루엣 위에 컬러 꽃을 아래에서부터 드러낸다. 두 에셋은 같은 아트보드라 정렬이 맞는다.
+  Widget _flower(double width, double height) {
+    return AnimatedScale(
+      scale: _isDragging ? 0.92 : 1.0,
+      duration: const Duration(milliseconds: 150),
+      curve: Curves.easeOut,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Stack(
+          children: [
+            Image.asset(emptyImagePath, width: width, height: height),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onVerticalDragStart: (_) {
+                setState(() => _isDragging = true);
+              },
+              onVerticalDragEnd: (_) {
+                setState(() => _isDragging = false);
+              },
+              onVerticalDragCancel: () {
+                setState(() => _isDragging = false);
+              },
+              onVerticalDragUpdate: (details) {
+                setState(() {
+                  dragPosition -= details.primaryDelta! / height;
+                  dragPosition = dragPosition.clamp(0.0, 1.0);
+                  currentPage = (widget.bookRead.bookPage * dragPosition)
+                      .toInt();
+                  _textEditingController.text = currentPage.toString();
+                });
+              },
+              child: ClipRect(
+                clipper: _BottomRevealClipper(dragPosition),
+                child: Image.asset(
+                  fillImagePath,
+                  width: width,
+                  height: height,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

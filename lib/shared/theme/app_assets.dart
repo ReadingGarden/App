@@ -58,6 +58,24 @@ class AppAssets {
     }
   }
 
+  //물주기 화면의 꽃. 그대로 쓰면 채워진 상태, grey_CA로 칠하면 빈 상태가 된다.
+  static AssetGenImage pageFlowerFill(String flowerName) {
+    switch (flowerName) {
+      case '데이지':
+        return Assets.images.pageFlowersFill.pagePng;
+      case '수선화':
+        return Assets.images.pageFlowersFill.pagePng_;
+      case '장미':
+        return Assets.images.pageFlowersFill.pagePng__;
+      case '튤립':
+        return Assets.images.pageFlowersFill.pagePng___;
+      case '팬지':
+        return Assets.images.pageFlowersFill.pagePng____;
+      default:
+        return Assets.images.pageFlowersFill.pagePng;
+    }
+  }
+
   static AssetGenImage okFlower(String flowerName) {
     switch (flowerName) {
       case '데이지':

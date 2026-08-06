@@ -123,6 +123,7 @@ flutter:
     - assets/images/book_flowers/
     - assets/images/ok_flowers/
     - assets/images/page_flowers/
+    - assets/images/page_flowers_fill/
     - assets/images/select_flowers/
     - assets/images/flower_icons/
     - assets/images/profile/
@@ -153,7 +154,9 @@ flutter:
         - asset: assets/fonts/SUIT-ttf/SUIT-Regular.ttf
           weight: 400
         - asset: assets/fonts/SUIT-ttf/SUIT-Light.ttf
+          weight: 300
         - asset: assets/fonts/SUIT-ttf/SUIT-Thin.ttf
+          weight: 100
     - family: SUITE
       fonts:
         - asset: assets/fonts/SUITE-otf/SUITE-Bold.otf
@@ -165,6 +168,7 @@ flutter:
         - asset: assets/fonts/SUITE-otf/SUITE-Regular.otf
           weight: 400
         - asset: assets/fonts/SUITE-otf/SUITE-Light.otf
+          weight: 300
 
 flutter_gen:
   output: lib/gen/
